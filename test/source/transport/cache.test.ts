@@ -280,6 +280,70 @@ test("transport cache suppresses duplicate stale refresh scheduling", async () =
   assert.equal(backgroundErrors.length, 0);
 });
 
+test("transport cache delete and clear fence pending refreshes and loads", async () => {
+  const fake = createFakeClock();
+  const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 3 });
+
+  await cache.getOrLoad(
+    { partition, request: request("/api/clear"), policy: { ttlMs: 1, swrMs: 100 } },
+    async () => response("req-clear-1", { version: 1 }),
+  );
+  fake.advanceBy(2);
+  assert.deepEqual(
+    (await cache.getOrLoad(
+      { partition, request: request("/api/clear"), policy: { ttlMs: 1, swrMs: 100 } },
+      async () => response("req-clear-2", { version: 2 }),
+    )).payload,
+    { version: 1 },
+  );
+  assert.equal(fake.pending(), 1);
+  cache.clear();
+  assert.equal(fake.pending(), 0);
+  fake.scheduler.runDue();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(cache.read({ partition, request: request("/api/clear") }), undefined);
+
+  let resolveDeleteRefresh: ((value: OperationResponse) => void) | undefined;
+  await cache.getOrLoad(
+    { partition, request: request("/api/delete-refresh"), policy: { ttlMs: 1, swrMs: 100 } },
+    async () => response("req-delete-refresh-1", { version: 1 }),
+  );
+  fake.advanceBy(2);
+  await cache.getOrLoad(
+    { partition, request: request("/api/delete-refresh"), policy: { ttlMs: 1, swrMs: 100 } },
+    () => new Promise<OperationResponse>((resolve) => {
+      resolveDeleteRefresh = resolve;
+    }),
+  );
+  fake.scheduler.runDue();
+  assert.equal(cache.delete({ partition, request: request("/api/delete-refresh") }), true);
+  resolveDeleteRefresh?.(response("req-delete-refresh-2", { version: 2 }));
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+  assert.equal(cache.read({ partition, request: request("/api/delete-refresh") }), undefined);
+
+  let resolveInflight: ((value: OperationResponse) => void) | undefined;
+  const oldLoad = cache.getOrLoad(
+    { partition, request: request("/api/inflight"), policy },
+    () => new Promise<OperationResponse>((resolve) => {
+      resolveInflight = resolve;
+    }),
+  );
+  assert.equal(cache.delete({ partition, request: request("/api/inflight") }), false);
+  resolveInflight?.(response("req-inflight-old", { version: "old" }));
+  assert.deepEqual((await oldLoad).payload, { version: "old" });
+  assert.equal(cache.read({ partition, request: request("/api/inflight") }), undefined);
+  assert.deepEqual(
+    (await cache.getOrLoad(
+      { partition, request: request("/api/inflight"), policy },
+      async () => response("req-inflight-new", { version: "new" }),
+    )).payload,
+    { version: "new" },
+  );
+});
+
 test("transport cache per-request policies bypass or refresh without new instances", async () => {
   const fake = createFakeClock();
   const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 2 });

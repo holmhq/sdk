@@ -3,7 +3,7 @@ import {
   normalizeCacheSourceIdentity,
   type CacheSourceIdentity,
 } from "../core/cache-key.js";
-import type { Clock, OperationResponse, Scheduler } from "../core/runtime.js";
+import type { Clock, OperationResponse, ScheduledTask, Scheduler } from "../core/runtime.js";
 import { copyWireValue } from "../core/wire-value.js";
 import type { TransportRequest } from "./index.js";
 
@@ -69,13 +69,29 @@ interface NormalizedGetInput extends TransportCacheGetInput {
   readonly policy: NormalizedPolicy;
 }
 
+interface InflightLoad {
+  readonly promise: Promise<OperationResponse>;
+  readonly token: object;
+  readonly keyGeneration: number;
+  readonly clearGeneration: number;
+}
+
+interface ScheduledRefresh {
+  readonly task: ScheduledTask;
+  readonly token: object;
+  readonly keyGeneration: number;
+  readonly clearGeneration: number;
+}
+
 export function createTransportCache(options: TransportCacheOptions): TransportCache {
   const clock = options.clock;
   const scheduler = options.scheduler;
   const maxEntries = normalizeMaxEntries(options.maxEntries);
   const entries = new Map<string, CacheEntry>();
-  const inflight = new Map<string, Promise<OperationResponse>>();
-  const scheduledRefreshes = new Set<string>();
+  const inflight = new Map<string, InflightLoad>();
+  const scheduledRefreshes = new Map<string, ScheduledRefresh>();
+  const keyGenerations = new Map<string, number>();
+  let clearGeneration = 0;
 
   async function getOrLoad(input: TransportCacheGetInput, loader: TransportCacheLoader): Promise<OperationResponse> {
     const normalized = normalizeGetInput(input);
@@ -111,12 +127,23 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
   }
 
   function deleteEntry(input: TransportCacheKeyInput): boolean {
-    return entries.delete(createTransportCacheKey(input));
+    const key = createTransportCacheKey(input);
+    const deleted = entries.delete(key);
+    cancelScheduledRefresh(key);
+    inflight.delete(key);
+    advanceKeyGeneration(key);
+    return deleted;
   }
 
   function clear(): void {
     entries.clear();
+    for (const scheduled of scheduledRefreshes.values()) {
+      scheduled.task.cancel();
+    }
     scheduledRefreshes.clear();
+    inflight.clear();
+    keyGenerations.clear();
+    clearGeneration += 1;
   }
 
   function normalizeGetInput(input: TransportCacheGetInput): NormalizedGetInput {
@@ -135,26 +162,40 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
   ): Promise<OperationResponse> {
     const pending = inflight.get(input.key);
     if (pending !== undefined) {
-      return pending;
+      return pending.promise;
     }
+    const token = Object.freeze({});
+    const keyGeneration = currentKeyGeneration(input.key);
+    const loadClearGeneration = clearGeneration;
     const next = invokeLoader(loader)
       .then(
-        (response) => store(input.key, response, input.policy),
+        (response) => storeIfCurrent(input.key, response, input.policy, keyGeneration, loadClearGeneration),
         (error: unknown) => {
           onError?.(error);
           throw error;
         },
       )
       .finally(() => {
-        inflight.delete(input.key);
+        if (inflight.get(input.key)?.token === token) {
+          inflight.delete(input.key);
+        }
       });
-    inflight.set(input.key, next);
+    inflight.set(input.key, Object.freeze({ promise: next, token, keyGeneration, clearGeneration: loadClearGeneration }));
     return next;
   }
 
-  function store(key: string, response: OperationResponse, policy: NormalizedPolicy): OperationResponse {
-    const storedAt = clock.now();
+  function storeIfCurrent(
+    key: string,
+    response: OperationResponse,
+    policy: NormalizedPolicy,
+    keyGeneration: number,
+    loadClearGeneration: number,
+  ): OperationResponse {
     const stored = copyOperationResponse(response);
+    if (!isCurrentGeneration(key, keyGeneration, loadClearGeneration)) {
+      return stored;
+    }
+    const storedAt = clock.now();
     const entry = Object.freeze({
       response: stored,
       storedAt,
@@ -186,9 +227,18 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
     if (inflight.has(input.key) || scheduledRefreshes.has(input.key)) {
       return;
     }
-    scheduledRefreshes.add(input.key);
-    scheduler.schedule(0, () => {
+    const token = Object.freeze({});
+    const keyGeneration = currentKeyGeneration(input.key);
+    const refreshClearGeneration = clearGeneration;
+    const task = scheduler.schedule(0, () => {
+      const scheduled = scheduledRefreshes.get(input.key);
+      if (scheduled?.token !== token) {
+        return;
+      }
       scheduledRefreshes.delete(input.key);
+      if (!isCurrentGeneration(input.key, keyGeneration, refreshClearGeneration)) {
+        return;
+      }
       void loadShared(input, loader, (error: unknown) => {
         options.onBackgroundError?.(Object.freeze({
           key: input.key,
@@ -198,6 +248,31 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
         }));
       }).catch(() => undefined);
     });
+    scheduledRefreshes.set(
+      input.key,
+      Object.freeze({ task, token, keyGeneration, clearGeneration: refreshClearGeneration }),
+    );
+  }
+
+  function cancelScheduledRefresh(key: string): void {
+    const scheduled = scheduledRefreshes.get(key);
+    if (scheduled === undefined) {
+      return;
+    }
+    scheduled.task.cancel();
+    scheduledRefreshes.delete(key);
+  }
+
+  function currentKeyGeneration(key: string): number {
+    return keyGenerations.get(key) ?? 0;
+  }
+
+  function advanceKeyGeneration(key: string): void {
+    keyGenerations.set(key, currentKeyGeneration(key) + 1);
+  }
+
+  function isCurrentGeneration(key: string, keyGeneration: number, loadClearGeneration: number): boolean {
+    return clearGeneration === loadClearGeneration && currentKeyGeneration(key) === keyGeneration;
   }
 
   return Object.freeze({
