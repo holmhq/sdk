@@ -1,10 +1,10 @@
 ---
-updated_at: "14 Jul 2026 | 03:29 AM IST"
+updated_at: "14 Jul 2026 | 04:39 AM IST"
 state: IN_PROGRESS
 active_window: A2
-active_issue: 004
+active_issue: 005
 orchestration_mode: blind
-stop_gate: "Mandatory coordinator rollover reached after four implementation entries including S04 coverage tooling; fresh coordinator resumes Queue #001 at S07; do not start Issue #007"
+stop_gate: "Coordinator 03b stopped at the Issue #004 boundary; fresh coordinator resumes Queue #001 at S09; do not start Issue #007"
 ---
 
 # Koder State
@@ -18,17 +18,16 @@ stop_gate: "Mandatory coordinator rollover reached after four implementation ent
   approved, with `@holmhq/sdk/state` as canonical.
 - Issue `#003` is resolved: strict TS/toolchain, ambient-boundary fixtures,
   declarations/dist smoke, reproducibility, CI, size, license, and README proof.
-- A2 Queue `#001` rows `S01`-`S06` are approved. Coordinator `02` added
-  coverage tooling (`58185e3`/review `7413329`) and completed `S04`-`S06`:
-  `S04` `69554db` + fix `61441ed` + re-review `a6cde0d`; `S05` `e3e518d` +
-  review `8b9e2aa`; `S06` `5bd80ca` + fix `9e9dba6` + re-review `8537693`.
+- Issue `#004` is resolved: Queue `#001` rows `S04`-`S08` are approved with
+  validation and coverage; coordinator `03b` recovered `S07` review/fixes and
+  completed `S08` through independent re-review.
 
 ## Present
 
-- Queue `#001` remains **IN_PROGRESS** in `blind` mode; `S07` is the next
-  eligible row in Issue `#004`.
-- Coordinator `02` reached the four-entry cap when counting the required `S04`
-  coverage tooling pretask, so it must close rather than dispatching `S07`.
+- Queue `#001` remains **IN_PROGRESS** in `blind` mode; the next eligible row is
+  `S09` in Issue `#005`.
+- Coordinator `03b` is stopping at the practical Issue `#004` child-boundary
+  rollover, before starting transport/cache/auth work.
 - The primary remains routing-only: fresh workers own source, tests, diffs,
   implementation, review, fixes, and re-review; primary consumes compact
   sidecars, validation outcomes, commit refs, verdict/counts, blockers, and Git
@@ -39,10 +38,9 @@ stop_gate: "Mandatory coordinator rollover reached after four implementation ent
 ## Future
 
 1. Fresh coordinator: run `/open`, confirm `Mode: blind orchestrator`, read only
-   Queue `#001` metadata and current row `S07`, then route a fresh `S07`
+   Queue `#001` metadata and current row `S09`, then route a fresh `S09`
    implementation worker followed by independent review.
-2. Continue Issue `#004` rows `S07`-`S08` under the same sidecar, coverage,
+2. Continue Issue `#005` rows `S09`-`S12` under the sidecar, TDD, coverage,
    validation, and review gates; do not preload later plans.
-3. If Issue `#004` resolves, continue serially through Issues `#005`-`#006`
-   only within A2; stop before Issue `#007` and final core API/conformance
-   review gate.
+3. Continue through Issue `#006` only within A2; stop before Issue `#007` and
+   final core API/conformance review gate.
