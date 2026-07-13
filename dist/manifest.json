@@ -1,0 +1,55 @@
+{
+  "artifacts": [
+    {
+      "bytes": 90,
+      "path": "dist/index.js",
+      "sha256": "24a9e460420e5d13d4fce5d496684378b8b9ffcbbb4ed5ad7ca94a7a93d04f01"
+    },
+    {
+      "bytes": 145,
+      "path": "dist/index.js.map",
+      "sha256": "f54a4390b1cf7d222b0101cf841049bcdc2e36c9d1715c01d2f374dfa6ee38d7"
+    },
+    {
+      "bytes": 148,
+      "path": "dist/index.d.ts",
+      "sha256": "d15a75393c88ef4e07150a0fa780e3b72c9fc9f279745c4fe9297e2236b7419c"
+    },
+    {
+      "bytes": 190,
+      "path": "dist/index.d.ts.map",
+      "sha256": "36d149639ffa1c4e29d10d4ea1ea279c01e3fb386c3bc612bff0b155df49d505"
+    },
+    {
+      "bytes": 96,
+      "path": "dist/core/index.js",
+      "sha256": "8934d5b53b794e4f803437578e7f8731601db6c2f475019dd6795887555c6626"
+    },
+    {
+      "bytes": 163,
+      "path": "dist/core/index.js.map",
+      "sha256": "7cb398c448f91e7a6a136ab330ea1cc5cac6be334b767ae5c678f92e4e4b87e6"
+    },
+    {
+      "bytes": 139,
+      "path": "dist/core/index.d.ts",
+      "sha256": "1e6f5461e3f9f29f3003469c4a04cb30a63c676f2ceff5ce562d8f0749ada926"
+    },
+    {
+      "bytes": 182,
+      "path": "dist/core/index.d.ts.map",
+      "sha256": "1d18876eaebf9573a8362f32c06b94334331ece2c2510b7e760bbcd17740dec2"
+    }
+  ],
+  "package": {
+    "license": "MIT",
+    "name": "@holmhq/sdk",
+    "private": true,
+    "version": "0.0.0-dev"
+  },
+  "schema": "holm.sdk.dist-manifest/1",
+  "source": {
+    "commit": null,
+    "commitPolicy": "Tracked development artifacts are commit-independent; distribute them from an immutable Git SHA or reviewed tag."
+  }
+}

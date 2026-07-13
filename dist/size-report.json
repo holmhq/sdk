@@ -1,0 +1,37 @@
+{
+  "artifacts": [
+    {
+      "budgets": {
+        "gzipBytes": 512,
+        "rawBytes": 512
+      },
+      "gzipBytes": 71,
+      "minifiedBytes": 51,
+      "path": "dist/index.js",
+      "rawBytes": 90,
+      "sha256": "24a9e460420e5d13d4fce5d496684378b8b9ffcbbb4ed5ad7ca94a7a93d04f01"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 512,
+        "rawBytes": 512
+      },
+      "gzipBytes": 74,
+      "minifiedBytes": 54,
+      "path": "dist/core/index.js",
+      "rawBytes": 96,
+      "sha256": "8934d5b53b794e4f803437578e7f8731601db6c2f475019dd6795887555c6626"
+    }
+  ],
+  "package": {
+    "name": "@holmhq/sdk",
+    "version": "0.0.0-dev"
+  },
+  "schema": "holm.sdk.size-report/1",
+  "status": "pass",
+  "totals": {
+    "gzipBytes": 145,
+    "minifiedBytes": 105,
+    "rawBytes": 186
+  }
+}

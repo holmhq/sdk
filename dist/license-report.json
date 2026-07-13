@@ -1,0 +1,42 @@
+{
+  "allowedLicenses": [
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "MIT",
+    "Python-2.0",
+    "Unlicense"
+  ],
+  "package": {
+    "license": "MIT",
+    "name": "@holmhq/sdk",
+    "private": true,
+    "version": "0.0.0-dev"
+  },
+  "packages": [
+    {
+      "allowed": true,
+      "dev": true,
+      "license": "MIT",
+      "name": "@types/node",
+      "version": "24.13.3"
+    },
+    {
+      "allowed": true,
+      "dev": true,
+      "license": "Apache-2.0",
+      "name": "typescript",
+      "version": "5.9.3"
+    },
+    {
+      "allowed": true,
+      "dev": true,
+      "license": "MIT",
+      "name": "undici-types",
+      "version": "7.18.2"
+    }
+  ],
+  "schema": "holm.sdk.license-report/1",
+  "status": "pass"
+}

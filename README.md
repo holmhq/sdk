@@ -143,6 +143,32 @@ ownership and release readiness are explicitly approved.
 - The existing Holm SDK and `holm-state` are migration sources, not APIs that
   must be copied unchanged.
 
+## Developer commands
+
+The repository uses local npm scripts for source, generated-artifact, size,
+license, and reproducibility checks. The canonical local and CI gate is:
+
+```bash
+npm run ci
+```
+
+Useful narrower checks are:
+
+```bash
+npm run build            # regenerate tracked dist/ JS, declarations, maps, and manifest
+npm run typecheck:core   # prove core stays free of DOM/Node ambient types
+npm run test:types       # prove runtime-specific ambient types stay opt-in
+npm run test:source      # run source-level tests through the TS harness
+npm run test:declarations # type-test package declarations from a consumer fixture
+npm run test:dist        # smoke-test generated ESM artifacts
+npm run coverage         # enforce native node:test coverage thresholds
+npm run check:licenses   # verify package privacy and MIT-compatible locked licenses
+npm run size             # write raw/minified/gzip artifact sizes and enforce budgets
+npm run check:repro      # regenerate dist/ reports and fail on drift
+```
+
+CI runs these same checks and never publishes, tags, or deploys the package.
+
 ## Project state
 
 Start with:
@@ -158,10 +184,9 @@ Implementation is expected to proceed slice by slice with strict
 red → green → refactor tests. Existing code in Holm is not deleted during the
 migration; ownership moves only after conformance evidence exists.
 
-An agent should begin with `open`. The repository currently authorizes one
-bounded architecture window and requires a clean `REVIEW_READY` checkpoint
-before implementation starts; the agent must not roll directly into the next
-slice.
+An agent should begin with `open`. The active autonomous window is recorded in
+`koder/docs/EXECUTION.md`; do not continue beyond its stop gate or into release
+work without explicit approval.
 
 ## Relationship to Holm
 
