@@ -1,6 +1,14 @@
 import { HolmError } from "./errors.js";
 import { createLifecycleController, } from "./lifecycle.js";
-const reservedNamespaces = new Set(["lifecycle", "capabilities", "resources", "extensions"]);
+const reservedNamespaces = new Set([
+    "capabilities",
+    "dispose",
+    "extensions",
+    "invoke",
+    "lifecycle",
+    "resources",
+    "start",
+]);
 export class ExtensionError extends HolmError {
     constructor(options) {
         super({

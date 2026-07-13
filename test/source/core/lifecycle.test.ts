@@ -5,6 +5,7 @@ import {
   CancelledError,
   createCancellationController,
   createHolm,
+  ExtensionError,
   InvalidCapabilityRequirementError,
   LifecycleError,
   TimeoutError,
@@ -139,6 +140,31 @@ test("lifecycle rolls back runtime and extensions when extension start fails", a
     "extension:alpha:dispose",
     "runtime:dispose",
   ]);
+});
+
+test("lifecycle rejects extension namespaces that collide with root methods before setup", () => {
+  const effects: string[] = [];
+
+  assert.throws(
+    () =>
+      createHolm({
+        runtime: createInMemoryRuntimeAdapter({ offers: [reportsOffer] }),
+        caller: { current: () => testCaller },
+        extensions: [
+          {
+            id: "com.example.start_collision",
+            namespace: "start",
+            version: { major: 1, minor: 0 },
+            setup: () => {
+              effects.push("setup:start");
+              return { api: { replace: true } };
+            },
+          },
+        ] as const,
+      }),
+    (error: unknown) => error instanceof ExtensionError && error.code === "reserved_extension_namespace",
+  );
+  assert.deepEqual(effects, []);
 });
 
 test("lifecycle rejects pre-cancelled work before adapter invocation", async () => {

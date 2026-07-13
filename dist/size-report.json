@@ -60,11 +60,11 @@
         "gzipBytes": 4096,
         "rawBytes": 18432
       },
-      "gzipBytes": 2936,
-      "minifiedBytes": 11964,
+      "gzipBytes": 2952,
+      "minifiedBytes": 11992,
       "path": "dist/core/extensions.js",
-      "rawBytes": 16385,
-      "sha256": "230ecccddb52bae9479c77cd497b2539c1d506b44b60789a6c1a779e43b6ca5e"
+      "rawBytes": 16446,
+      "sha256": "c9a4221f42a42a054b3f3aefdcefc07f34e667f1779605fc34200cae0858148c"
     },
     {
       "budgets": {
@@ -118,8 +118,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 10850,
-    "minifiedBytes": 36747,
-    "rawBytes": 49842
+    "gzipBytes": 10866,
+    "minifiedBytes": 36775,
+    "rawBytes": 49903
   }
 }
