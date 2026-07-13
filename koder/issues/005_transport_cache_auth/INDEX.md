@@ -57,6 +57,10 @@ Use current Holm client tests as evidence, not as an API-shape mandate.
       source paths and conformance proof.
 - [ ] Source, declarations, web bundle, and Node bundle tests pass.
 
+## Slice Evidence
+
+- `S09` transport/auth/error contract passed at implementation `ebbd434` and independent review `328140a`; validation and coverage passed.
+
 ## Non-Goals
 
 - App/admin endpoint namespaces.
