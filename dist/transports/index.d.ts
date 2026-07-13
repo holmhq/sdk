@@ -1,3 +1,5 @@
+export { createTransportCache, createTransportCacheKey, } from "./cache.js";
+export type { TransportCache, TransportCacheBackgroundErrorEvent, TransportCacheGetInput, TransportCacheKeyInput, TransportCacheLoader, TransportCacheMode, TransportCacheOptions, TransportCachePartition, TransportCachePolicy, } from "./cache.js";
 import { HolmError } from "../core/errors.js";
 import type { CancellationSignal, OperationResponse } from "../core/runtime.js";
 import { type ReadonlyBytes, type WireValue } from "../core/wire-value.js";

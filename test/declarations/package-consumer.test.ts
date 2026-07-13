@@ -23,8 +23,12 @@ import {
 } from "@holmhq/sdk";
 import {
   applyTransportAuth,
+  createTransportCache,
+  createTransportCacheKey,
   createTransportRequest,
   decodeTransportResponse,
+  type TransportCachePolicy,
+  type TransportCachePartition,
   type TransportRequest,
   type TransportResponseMode,
 } from "@holmhq/sdk/transports";
@@ -87,6 +91,17 @@ const transportRequest: TransportRequest = createTransportRequest({
   url: "/api/reports",
   responseMode,
 });
+const cachePolicy: TransportCachePolicy = { ttlMs: 100, swrMs: 25 };
+const cachePartition: TransportCachePartition = {
+  source: { id: "runtime-test", surface: "test" },
+  callerFingerprint: fingerprint,
+};
+const transportCacheKey = createTransportCacheKey({ partition: cachePartition, request: transportRequest });
+const transportCache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 2 });
+const cachedTransport = transportCache.getOrLoad(
+  { partition: cachePartition, request: transportRequest, policy: cachePolicy },
+  () => ({ requestId: "req-cache", payload: { ok: true } }),
+);
 const webAuth = createWebSessionAuth({ credentials: "same-origin" });
 const nodeAuth = createNodeTokenAuth({ token: "test-token" });
 const decoded = decodeTransportResponse({ requestId: "req-decl", status: 200, body: "{\"ok\":true}", responseMode });
@@ -108,6 +123,11 @@ void extensionLifecycle;
 void holm;
 void timeout;
 void transportRequest;
+void cachePolicy;
+void cachePartition;
+void transportCacheKey;
+void transportCache;
+void cachedTransport;
 void webAuth;
 void nodeAuth;
 void decoded;

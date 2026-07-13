@@ -5,6 +5,15 @@ export function createCoreEnvironment(): CoreEnvironment {
 }
 
 export {
+  createCallerPartitionedCacheKey,
+  normalizeCacheSourceIdentity,
+} from "./cache-key.js";
+export type {
+  CacheSourceIdentity,
+  CallerPartitionedCacheKeyInput,
+} from "./cache-key.js";
+
+export {
   assertWireValue,
   canonicalEncodeWireValue,
   copyWireValue,

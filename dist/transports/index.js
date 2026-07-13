@@ -1,3 +1,4 @@
+export { createTransportCache, createTransportCacheKey, } from "./cache.js";
 import { CancelledError } from "../core/cancellation.js";
 import { HolmError } from "../core/errors.js";
 import { canonicalEncodeWireValue, copyWireValue, createReadonlyBytes, isReadonlyBytes, } from "../core/wire-value.js";

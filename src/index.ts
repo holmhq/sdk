@@ -3,6 +3,7 @@ export {
   CancelledError,
   canonicalEncodeWireValue,
   copyWireValue,
+  createCallerPartitionedCacheKey,
   createCancellationController,
   createCoreEnvironment,
   createExtensionGraph,
@@ -14,6 +15,7 @@ export {
   createInvocationContext,
   createReadonlyBytes,
   createStaticCallerProvider,
+  normalizeCacheSourceIdentity,
   CapabilityVersionError,
   DuplicateCapabilityOfferError,
   ExtensionError,
@@ -34,10 +36,12 @@ export {
 } from "./core/index.js";
 export type {
   CallerAppContext,
+  CallerPartitionedCacheKeyInput,
   CallerContext,
   CallerPartition,
   CallerPartitionListener,
   CallerProvider,
+  CacheSourceIdentity,
   CapabilityOffer,
   CapabilityOrigin,
   CapabilityRegistry,

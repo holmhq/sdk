@@ -18,6 +18,8 @@ import {
 } from "../../dist/index.js";
 import {
   applyTransportAuth,
+  createTransportCache,
+  createTransportCacheKey,
   createTransportRequest,
   decodeTransportResponse,
   redactAuthenticatedTransport,
@@ -121,6 +123,28 @@ test("generated ESM artifact exposes S09 transport auth and error contracts", as
   assert.equal(JSON.stringify(redactAuthenticatedTransport(authenticated)).includes("dist-secret"), false);
   assert.equal(webAuthenticated.privateProof.credentials, "include");
   assert.deepEqual(decoded.payload, { ok: true });
+});
+
+test("generated ESM artifact exposes S10 caller-partitioned transport cache", async () => {
+  const fake = createFakeClock();
+  const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 2 });
+  const request = createTransportRequest({ method: "GET", url: "/api/cache", responseMode: "json" });
+  const partition = { source: { id: "runtime-test", surface: "test" }, callerFingerprint: "caller:v1:dist" };
+  let loads = 0;
+
+  const key = createTransportCacheKey({ partition, request });
+  const first = await cache.getOrLoad(
+    { partition, request, policy: { ttlMs: 100, swrMs: 25 } },
+    () => ({ requestId: "req-cache", payload: { loads: (loads += 1) } }),
+  );
+  const second = await cache.getOrLoad(
+    { partition, request, policy: { ttlMs: 100, swrMs: 25 } },
+    () => ({ requestId: "req-cache-2", payload: { loads: (loads += 1) } }),
+  );
+
+  assert.equal(key.startsWith("cache:v1:"), true);
+  assert.deepEqual(first.payload, { loads: 1 });
+  assert.deepEqual(second.payload, { loads: 1 });
 });
 
 test("generated ESM artifact exposes S08 createHolm lifecycle fakes", async () => {
