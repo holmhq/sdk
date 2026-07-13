@@ -21,6 +21,15 @@ import {
   type SerializedHolmError,
   type WireValue,
 } from "@holmhq/sdk";
+import {
+  applyTransportAuth,
+  createTransportRequest,
+  decodeTransportResponse,
+  type TransportRequest,
+  type TransportResponseMode,
+} from "@holmhq/sdk/transports";
+import { createNodeTokenAuth } from "@holmhq/sdk/node";
+import { createWebSessionAuth } from "@holmhq/sdk/web";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 
 const environment: CoreEnvironment = createCoreEnvironment();
@@ -72,6 +81,16 @@ const fake = createFakeClock();
 const testRuntime = createInMemoryRuntimeAdapter({ clock: fake.clock, scheduler: fake.scheduler });
 const holm = createHolm({ runtime: testRuntime, caller });
 const timeout = new TimeoutError({ timeoutMs: 1 });
+const responseMode: TransportResponseMode = "json";
+const transportRequest: TransportRequest = createTransportRequest({
+  method: "GET",
+  url: "/api/reports",
+  responseMode,
+});
+const webAuth = createWebSessionAuth({ credentials: "same-origin" });
+const nodeAuth = createNodeTokenAuth({ token: "test-token" });
+const decoded = decodeTransportResponse({ requestId: "req-decl", status: 200, body: "{\"ok\":true}", responseMode });
+const appliedTransport = applyTransportAuth(transportRequest, nodeAuth);
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -88,4 +107,9 @@ void runtimeEnvelopeProtocol;
 void extensionLifecycle;
 void holm;
 void timeout;
+void transportRequest;
+void webAuth;
+void nodeAuth;
+void decoded;
+void appliedTransport;
 void invalidEnvironment;

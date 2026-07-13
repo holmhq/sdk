@@ -16,6 +16,14 @@ import {
   runtimeEnvelopeProtocol,
   serializeHolmError,
 } from "../../dist/index.js";
+import {
+  applyTransportAuth,
+  createTransportRequest,
+  decodeTransportResponse,
+  redactAuthenticatedTransport,
+} from "../../dist/transports/index.js";
+import { createNodeTokenAuth } from "../../dist/node/index.js";
+import { createWebSessionAuth } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
@@ -89,6 +97,30 @@ test("generated ESM artifact exposes S07 extension lifecycle", async () => {
   await lifecycle.start();
   await lifecycle.dispose();
   assert.deepEqual(effects, ["start", "dispose"]);
+});
+
+test("generated ESM artifact exposes S09 transport auth and error contracts", async () => {
+  const request = createTransportRequest({
+    method: "POST",
+    url: "/api/reports",
+    body: { mode: "json", value: { ok: true } },
+    responseMode: "json",
+  });
+  const nodeAuth = createNodeTokenAuth({ token: "dist-secret" });
+  const webAuth = createWebSessionAuth({ credentials: "include" });
+  const authenticated = await applyTransportAuth(request, nodeAuth);
+  const webAuthenticated = await applyTransportAuth(request, webAuth);
+  const decoded = decodeTransportResponse({
+    requestId: "req-dist-transport",
+    status: 200,
+    body: '{"ok":true}',
+    responseMode: "json",
+  });
+
+  assert.equal(authenticated.request.headers.authorization, "Bearer dist-secret");
+  assert.equal(JSON.stringify(redactAuthenticatedTransport(authenticated)).includes("dist-secret"), false);
+  assert.equal(webAuthenticated.privateProof.credentials, "include");
+  assert.deepEqual(decoded.payload, { ok: true });
 });
 
 test("generated ESM artifact exposes S08 createHolm lifecycle fakes", async () => {
