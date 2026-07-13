@@ -95,4 +95,5 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 - 2026-07-14: `S01` implemented at `1c450cf` and independently approved at `48a772e`; required validation passed.
 - 2026-07-14: `S02` implemented at `c1504a9` and independently approved at `a3e4296`; required validation passed.
 - 2026-07-14: `S03` implemented at `f48ea37` and independently approved at `c2ef6e0`; required validation passed, Issue `#003` is resolved, and the next eligible row is `S04`.
-- pending: `S04` has not started.
+- 2026-07-14: coverage measurement pretask for `S04` implemented at `58185e3` and independently approved at `7413329`; required coverage validation passed.
+- pending: `S04` product work has not started.
