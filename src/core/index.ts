@@ -68,6 +68,38 @@ export type {
 export { invokeRuntime } from "./invoke.js";
 export type { InvokeRuntimeOptions } from "./invoke.js";
 
+export {
+  createLifecycleController,
+  LifecycleError,
+} from "./lifecycle.js";
+export type {
+  LifecycleController,
+  LifecycleControllerOptions,
+  LifecycleErrorOptions,
+  LifecycleSnapshot,
+  LifecycleState,
+} from "./lifecycle.js";
+
+export {
+  createExtensionGraph,
+  createExtensionLifecycle,
+  ExtensionError,
+} from "./extensions.js";
+export type {
+  ExtensionDescriptor,
+  ExtensionErrorOptions,
+  ExtensionGraph,
+  ExtensionLifecycle,
+  ExtensionLifecycleOptions,
+  ExtensionNamespaceMap,
+  ExtensionNamespaces,
+  ExtensionRequirement,
+  ExtensionSetupContext,
+  ExtensionSetupResult,
+  HolmExtension,
+  ReadonlyDeep,
+} from "./extensions.js";
+
 export { runtimeEnvelopeProtocol } from "./runtime.js";
 export type {
   CancellationSignal,

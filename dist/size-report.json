@@ -5,22 +5,22 @@
         "gzipBytes": 512,
         "rawBytes": 1024
       },
-      "gzipBytes": 277,
-      "minifiedBytes": 512,
+      "gzipBytes": 311,
+      "minifiedBytes": 614,
       "path": "dist/index.js",
-      "rawBytes": 573,
-      "sha256": "fe10117cce4831b2bc310a26f3f7f7d15dbdcee9f2076ee680711dc4ee914305"
+      "rawBytes": 680,
+      "sha256": "97b1e1a666104f62685c254837e73b919cab81c659664a779679be548b3a0d83"
     },
     {
       "budgets": {
         "gzipBytes": 768,
         "rawBytes": 2048
       },
-      "gzipBytes": 328,
-      "minifiedBytes": 679,
+      "gzipBytes": 376,
+      "minifiedBytes": 840,
       "path": "dist/core/index.js",
-      "rawBytes": 773,
-      "sha256": "721256784dd82854ddafa35f05d1409c7a81701947640b7a57bcbedc1eb87358"
+      "rawBytes": 949,
+      "sha256": "8bceb22c2907ee24e557e5c200d05b6f4ee9248085f5bb98292d5cca8c24af81"
     },
     {
       "budgets": {
@@ -57,6 +57,17 @@
     },
     {
       "budgets": {
+        "gzipBytes": 4096,
+        "rawBytes": 18432
+      },
+      "gzipBytes": 2747,
+      "minifiedBytes": 10919,
+      "path": "dist/core/extensions.js",
+      "rawBytes": 14899,
+      "sha256": "b7c106059b88941a567b0ae268e276aaecd0b9aa91f8f1ecb16fd29479a7c1d5"
+    },
+    {
+      "budgets": {
         "gzipBytes": 2048,
         "rawBytes": 6144
       },
@@ -65,6 +76,17 @@
       "path": "dist/core/invoke.js",
       "rawBytes": 2753,
       "sha256": "77577b55bd81c195e5ad01dc79dc006e780518c0f7cc4ea7bae0b26ad96bf743"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 6144
+      },
+      "gzipBytes": 750,
+      "minifiedBytes": 2674,
+      "path": "dist/core/lifecycle.js",
+      "rawBytes": 4195,
+      "sha256": "be8ad59fbf9dac0170003c178c6cb3a86f365c264d312cb09015950174794c4d"
     },
     {
       "budgets": {
@@ -96,8 +118,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 7031,
-    "minifiedBytes": 21647,
-    "rawBytes": 28762
+    "gzipBytes": 10610,
+    "minifiedBytes": 35503,
+    "rawBytes": 48139
   }
 }

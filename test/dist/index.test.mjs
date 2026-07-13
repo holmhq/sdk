@@ -6,6 +6,7 @@ import {
   createCallerFingerprint,
   createCapabilityRegistry,
   createCoreEnvironment,
+  createExtensionLifecycle,
   createStaticCallerProvider,
   createReadonlyBytes,
   CapabilityVersionError,
@@ -55,4 +56,34 @@ test("generated ESM artifact exposes S06 runtime invocation caller helpers", asy
   assert.equal(runtimeEnvelopeProtocol, "holm.sdk.runtime/1");
   assert.equal(createCallerFingerprint(first), createCallerFingerprint(second));
   assert.notEqual(first, second);
+});
+
+test("generated ESM artifact exposes S07 extension lifecycle", async () => {
+  const effects = [];
+  const lifecycle = createExtensionLifecycle(
+    [
+      {
+        id: "com.example.reports",
+        namespace: "reports",
+        version: { major: 1, minor: 0 },
+        setup() {
+          return {
+            api: { list: () => ["ready"] },
+            start: () => {
+              effects.push("start");
+            },
+            dispose: () => {
+              effects.push("dispose");
+            },
+          };
+        },
+      },
+    ],
+    { capabilities: createCapabilityRegistry([]) },
+  );
+
+  assert.equal(Object.isFrozen(lifecycle.namespaces.reports), true);
+  await lifecycle.start();
+  await lifecycle.dispose();
+  assert.deepEqual(effects, ["start", "dispose"]);
 });

@@ -3,11 +3,14 @@ import {
   createCapabilityRegistry,
   createCallerFingerprint,
   createCoreEnvironment,
+  createExtensionLifecycle,
   createReadonlyBytes,
   createStaticCallerProvider,
   type CapabilityOffer,
   type CapabilitySnapshot,
   type CallerContext,
+  type ExtensionLifecycle,
+  type HolmExtension,
   HolmError,
   runtimeEnvelopeProtocol,
   type RuntimeAdapter,
@@ -42,6 +45,17 @@ const runtime: RuntimeAdapter = {
     return { requestId: request.requestId, payload: null };
   },
 };
+const reportsExtension = {
+  id: "com.example.reports",
+  namespace: "reports",
+  version: { major: 1, minor: 0 },
+  setup() {
+    return { api: { list: () => ["ready"] as const } };
+  },
+} satisfies HolmExtension<{ readonly list: () => readonly string[] }, "reports">;
+const extensionLifecycle: ExtensionLifecycle = createExtensionLifecycle([reportsExtension] as const, {
+  capabilities: createCapabilityRegistry([]),
+});
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -55,4 +69,5 @@ void caller;
 void fingerprint;
 void runtime;
 void runtimeEnvelopeProtocol;
+void extensionLifecycle;
 void invalidEnvironment;
