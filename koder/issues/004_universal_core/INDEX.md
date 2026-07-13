@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-14
 tags: core, capabilities, adapters, extensions, lifecycle
 parent: 001
 depends_on: [002, 003]
@@ -46,8 +46,9 @@ the slice contract.
 - [ ] Unsupported or version-mismatched capabilities fail with typed,
       actionable errors rather than undefined methods.
 - [ ] Extensions cannot overwrite namespaces silently.
-- [ ] Values crossing an adapter boundary are serializable or explicitly binary;
-      tests reject unsafe shared mutable objects.
+- [x] Values crossing an adapter boundary are serializable or explicitly binary;
+      tests reject unsafe shared mutable objects. (`S04`: `69554db`, fix
+      `61441ed`, re-review `a6cde0d`)
 - [ ] Mock adapter and fake clock make behavior deterministic.
 - [ ] Generated ESM/declarations pass consumer tests.
 - [ ] Public exports and bundle contribution are documented and size-reported.
