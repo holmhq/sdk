@@ -1,7 +1,10 @@
 import {
   canonicalEncodeWireValue,
+  createCapabilityRegistry,
   createCoreEnvironment,
   createReadonlyBytes,
+  type CapabilityOffer,
+  type CapabilitySnapshot,
   HolmError,
   type CoreEnvironment,
   type SerializedHolmError,
@@ -18,6 +21,11 @@ const error = new HolmError({
   message: "Invalid wire value",
 });
 const serialized: SerializedHolmError = error.toJSON();
+const registry = createCapabilityRegistry([
+  { id: "com.example.reports", origin: "runtime", version: { major: 1, minor: 0 } },
+]);
+const capability: CapabilityOffer = registry.require({ id: "com.example.reports", major: 1 });
+const capabilitySnapshot: CapabilitySnapshot = registry.getSnapshot();
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -25,4 +33,6 @@ const invalidEnvironment: CoreEnvironment = "browser";
 void environment;
 void encoded;
 void serialized;
+void capability;
+void capabilitySnapshot;
 void invalidEnvironment;

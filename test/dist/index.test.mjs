@@ -3,8 +3,10 @@ import { test } from "node:test";
 
 import {
   canonicalEncodeWireValue,
+  createCapabilityRegistry,
   createCoreEnvironment,
   createReadonlyBytes,
+  CapabilityVersionError,
   HolmError,
   serializeHolmError,
 } from "../../dist/index.js";
@@ -27,4 +29,17 @@ test("generated ESM artifact exposes S04 wire values and errors", () => {
 
   assert.equal(encoded, '{"bytes":{"$holm":"bytes","base64":"AQID"},"ok":true}');
   assert.equal(serializeHolmError(error).details.token, "[redacted]");
+});
+
+test("generated ESM artifact exposes S05 capability negotiation", () => {
+  const registry = createCapabilityRegistry([
+    { id: "com.example.reports", origin: "runtime", version: { major: 1, minor: 0 } },
+    { id: "com.example.reports", origin: "runtime", version: { major: 1, minor: 2 } },
+  ]);
+
+  assert.equal(registry.require({ id: "com.example.reports", major: 1, minMinor: 1 }).version.minor, 2);
+  assert.throws(
+    () => registry.require({ id: "com.example.reports", major: 2 }),
+    CapabilityVersionError,
+  );
 });
