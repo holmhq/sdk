@@ -11,14 +11,14 @@
       "sha256": "3d1a1d8194cac7f816e2e2368a30fb32726a29c63711b843c3db8a0df6aafe23"
     },
     {
-      "bytes": 3063,
+      "bytes": 3667,
       "path": "dist/core/caller.js",
-      "sha256": "1c568cefb79e1b9578ab2d64fc35584d0ddd6c8da72c69404ed9d87e2b6a686a"
+      "sha256": "c5d2f482c74b199e5a619e17bb4f015e788987d3abf520c22664d6e2e35f5e78"
     },
     {
-      "bytes": 3504,
+      "bytes": 4470,
       "path": "dist/core/caller.js.map",
-      "sha256": "72fc42f3afeab47eae29744883512932f954558cb23b07d3f586ff7eb17c8b9d"
+      "sha256": "bf782a996c100b066ac09a97992214bedd0c3d20e9756d35f762cc9c4d92d0f0"
     },
     {
       "bytes": 2625,

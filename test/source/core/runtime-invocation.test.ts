@@ -146,7 +146,7 @@ test("runtime invocation copies request payload, caller context, and response va
   assert.equal(Object.isFrozen(response.payload), true);
 });
 
-test("caller fingerprints are deterministic, partition-safe, and do not include ambient auth fields", () => {
+test("runtime caller fingerprints are deterministic, partition-safe, and do not include ambient auth fields", () => {
   const left = createCallerFingerprint({
     surface: "test",
     principal: { kind: "operator", id: "operator-1" },
@@ -165,7 +165,7 @@ test("caller fingerprints are deterministic, partition-safe, and do not include 
   } as CallerContext & { readonly cookie: string });
 
   assert.equal(left, right);
-  assert.match(left, /^caller:v1:[0-9a-f]{8}$/);
+  assert.match(left, /^caller:v1:[0-9a-f]{32}$/);
   assert.equal(left.includes("operator-1"), false);
   assert.equal(left.includes("do-not-include"), false);
 
@@ -178,6 +178,40 @@ test("caller fingerprints are deterministic, partition-safe, and do not include 
     createCallerFingerprint({ surface: "test", principal: { kind: "service", id: "service-1" } }),
   ];
   assert.equal(new Set(principalFingerprints).size, principalFingerprints.length);
+
+  const partitionFingerprints = [
+    createCallerFingerprint({
+      surface: "test",
+      principal: { kind: "member", id: "member-1" },
+      app: { id: "app-1" },
+      scope: { type: "team", id: "scope-1" },
+    }),
+    createCallerFingerprint({
+      surface: "test",
+      principal: { kind: "member", id: "member-2" },
+      app: { id: "app-1" },
+      scope: { type: "team", id: "scope-1" },
+    }),
+    createCallerFingerprint({
+      surface: "test",
+      principal: { kind: "member", id: "member-1" },
+      app: { id: "app-2" },
+      scope: { type: "team", id: "scope-1" },
+    }),
+    createCallerFingerprint({
+      surface: "test",
+      principal: { kind: "member", id: "member-1" },
+      app: { id: "app-1" },
+      scope: { type: "project", id: "scope-1" },
+    }),
+    createCallerFingerprint({
+      surface: "test",
+      principal: { kind: "member", id: "member-1" },
+      app: { id: "app-1" },
+      scope: { type: "team", id: "scope-2" },
+    }),
+  ];
+  assert.equal(new Set(partitionFingerprints).size, partitionFingerprints.length);
 });
 
 test("static caller providers return isolated caller snapshots", async () => {
