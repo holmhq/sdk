@@ -145,11 +145,18 @@ Start with:
 - [`koder/STATE.md`](koder/STATE.md) — current handoff
 - [`koder/issues/001_universal_sdk_foundation/INDEX.md`](koder/issues/001_universal_sdk_foundation/INDEX.md) — umbrella track and slice ledger
 - [`koder/docs/HOLM_SOURCE_MAP.md`](koder/docs/HOLM_SOURCE_MAP.md) — pinned source references in the Holm repository
+- [`koder/docs/EXECUTION.md`](koder/docs/EXECUTION.md) — active autonomous work window and mandatory review stop
+- [`koder/projects/INDEX.md`](koder/projects/INDEX.md) — cross-repository ownership and write-policy registry
 - [`AGENTS.md`](AGENTS.md) — repository workflow and safety rules
 
 Implementation is expected to proceed slice by slice with strict
 red → green → refactor tests. Existing code in Holm is not deleted during the
 migration; ownership moves only after conformance evidence exists.
+
+An agent should begin with `open`. The repository currently authorizes one
+bounded architecture window and requires a clean `REVIEW_READY` checkpoint
+before implementation starts; the agent must not roll directly into the next
+slice.
 
 ## Relationship to Holm
 
