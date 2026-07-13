@@ -46,7 +46,7 @@ the slice contract.
 - [x] Unsupported or version-mismatched capabilities fail with typed,
       actionable errors rather than undefined methods. (`S05`: `e3e518d`,
       review `8b9e2aa`)
-- [ ] Extensions cannot overwrite namespaces silently.
+- [x] Extensions cannot overwrite namespaces silently, and extension graph lifecycle ordering/conflicts are deterministic. (`S07`: `28e1c6a`, fixes `dfd4864`/`ab9e883`, re-review `f2dc29c`)
 - [x] Values crossing an adapter boundary are serializable or explicitly binary;
       tests reject unsafe shared mutable objects. (`S04`: `69554db`, fix
       `61441ed`, re-review `a6cde0d`)
@@ -60,6 +60,8 @@ the slice contract.
 - `S05` established immutable capability offers and fail-closed negotiation.
 - `S06` established copied invocation envelopes, per-call caller resolution,
   deterministic non-secret fingerprints, and partition hooks.
+- `S07` established extension namespace sealing, dependency/conflict graph
+  validation, deterministic lifecycle order, rollback, and reverse disposal.
 
 ## Non-Goals
 
