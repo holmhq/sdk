@@ -161,7 +161,8 @@ npm run test:types       # prove runtime-specific ambient types stay opt-in
 npm run test:source      # run source-level tests through the TS harness
 npm run test:declarations # type-test package declarations from a consumer fixture
 npm run test:dist        # smoke-test generated ESM artifacts
-npm run coverage         # enforce native node:test coverage thresholds
+npm run test:coverage    # enforce native node:test coverage and compact measured metrics
+npm run coverage         # alias for test:coverage
 npm run check:licenses   # verify package privacy and MIT-compatible locked licenses
 npm run size             # write raw/minified/gzip artifact sizes and enforce budgets
 npm run check:repro      # regenerate dist/ reports and fail on drift
