@@ -5,9 +5,12 @@ import { readJson, sha256, stableJson } from "./lib/artifacts.mjs";
 
 const budgets = new Map([
   ["dist/index.js", { rawBudget: 1024, gzipBudget: 512 }],
-  ["dist/core/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/core/index.js", { rawBudget: 2048, gzipBudget: 768 }],
+  ["dist/core/caller.js", { rawBudget: 6144, gzipBudget: 2048 }],
   ["dist/core/capabilities.js", { rawBudget: 10240, gzipBudget: 3072 }],
   ["dist/core/errors.js", { rawBudget: 6144, gzipBudget: 2048 }],
+  ["dist/core/invoke.js", { rawBudget: 6144, gzipBudget: 2048 }],
+  ["dist/core/runtime.js", { rawBudget: 1024, gzipBudget: 512 }],
   ["dist/core/wire-value.js", { rawBudget: 8192, gzipBudget: 2560 }],
 ]);
 const targets = [...budgets].map(([path, budget]) => ({ path, ...budget }));

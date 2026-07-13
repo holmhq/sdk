@@ -1,11 +1,16 @@
 import {
   canonicalEncodeWireValue,
   createCapabilityRegistry,
+  createCallerFingerprint,
   createCoreEnvironment,
   createReadonlyBytes,
+  createStaticCallerProvider,
   type CapabilityOffer,
   type CapabilitySnapshot,
+  type CallerContext,
   HolmError,
+  runtimeEnvelopeProtocol,
+  type RuntimeAdapter,
   type CoreEnvironment,
   type SerializedHolmError,
   type WireValue,
@@ -26,6 +31,17 @@ const registry = createCapabilityRegistry([
 ]);
 const capability: CapabilityOffer = registry.require({ id: "com.example.reports", major: 1 });
 const capabilitySnapshot: CapabilitySnapshot = registry.getSnapshot();
+const callerContext: CallerContext = { surface: "test", principal: { kind: "anonymous" } };
+const caller = createStaticCallerProvider(callerContext);
+const fingerprint: string = createCallerFingerprint(callerContext);
+const runtime: RuntimeAdapter = {
+  id: "runtime-test",
+  surface: "test",
+  clock: { now: () => 1 },
+  async invoke(request) {
+    return { requestId: request.requestId, payload: null };
+  },
+};
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -35,4 +51,8 @@ void encoded;
 void serialized;
 void capability;
 void capabilitySnapshot;
+void caller;
+void fingerprint;
+void runtime;
+void runtimeEnvelopeProtocol;
 void invalidEnvironment;

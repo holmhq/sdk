@@ -1,6 +1,26 @@
 {
   "artifacts": [
     {
+      "bytes": 2064,
+      "path": "dist/core/caller.d.ts",
+      "sha256": "a399f8c212650cda64359744073f154fe6f8c207b2a5d47464f389a68a9715c2"
+    },
+    {
+      "bytes": 2106,
+      "path": "dist/core/caller.d.ts.map",
+      "sha256": "3d1a1d8194cac7f816e2e2368a30fb32726a29c63711b843c3db8a0df6aafe23"
+    },
+    {
+      "bytes": 3063,
+      "path": "dist/core/caller.js",
+      "sha256": "1c568cefb79e1b9578ab2d64fc35584d0ddd6c8da72c69404ed9d87e2b6a686a"
+    },
+    {
+      "bytes": 3504,
+      "path": "dist/core/caller.js.map",
+      "sha256": "72fc42f3afeab47eae29744883512932f954558cb23b07d3f586ff7eb17c8b9d"
+    },
+    {
       "bytes": 2625,
       "path": "dist/core/capabilities.d.ts",
       "sha256": "e45efd53dd63d71d97f6b4c9551d185ca78d59fb383c7a5707c6c088c9b8f043"
@@ -41,24 +61,64 @@
       "sha256": "119828caaaccaeb5f092a57efe1609b1b74af21fbd28b9039b50b69826fe8061"
     },
     {
-      "bytes": 1097,
+      "bytes": 1739,
       "path": "dist/core/index.d.ts",
-      "sha256": "a3ba42037861571d5b873469d3f8d16bb9e5a0d5b34bda10ec717f58be195b1f"
+      "sha256": "001a88fbca01b13acd9ee9690d83b97377eae218da22eeb5d3040eb349904646"
     },
     {
-      "bytes": 788,
+      "bytes": 1247,
       "path": "dist/core/index.d.ts.map",
-      "sha256": "9abe3541c9a83bf013115e1e1c88610207e8a19fd87e395b05612c2ac4e922d5"
+      "sha256": "54e6c0a09f89598c253e5685df70ae6ae3f5def1d0a8ef16b44d977dba3a5f60"
     },
     {
-      "bytes": 517,
+      "bytes": 773,
       "path": "dist/core/index.js",
-      "sha256": "55124b5fd17d3863b5cff7188396d20bcd05a57e98330fc8d27ea1f8a21aa16c"
+      "sha256": "721256784dd82854ddafa35f05d1409c7a81701947640b7a57bcbedc1eb87358"
     },
     {
-      "bytes": 436,
+      "bytes": 616,
       "path": "dist/core/index.js.map",
-      "sha256": "ee6eaf04e1ce643528eed4b1fbeba052163031b5c0ed37c2a091d3774b6a4c35"
+      "sha256": "8c6850b1853fb7e9bc3daa68c911d00aaa7daf04b5f44710f0ce90eb28e85a8d"
+    },
+    {
+      "bytes": 831,
+      "path": "dist/core/invoke.d.ts",
+      "sha256": "fc7cc7358bfec612fca5f5415ea1eed9e3ad04e1c1f6eb010b76c81940370deb"
+    },
+    {
+      "bytes": 804,
+      "path": "dist/core/invoke.d.ts.map",
+      "sha256": "19e789f6205d8f492151468fde64766272856c3f4a489121afe77ea63eb79321"
+    },
+    {
+      "bytes": 2753,
+      "path": "dist/core/invoke.js",
+      "sha256": "77577b55bd81c195e5ad01dc79dc006e780518c0f7cc4ea7bae0b26ad96bf743"
+    },
+    {
+      "bytes": 2713,
+      "path": "dist/core/invoke.js.map",
+      "sha256": "7bcf47cf408420788882979a0ee1d18e6f3dc552e99f85579fef75bdc84fde0c"
+    },
+    {
+      "bytes": 1295,
+      "path": "dist/core/runtime.d.ts",
+      "sha256": "72134ec68bdb347d9db5bc58741c92096786d70e61a03e76e9df7000b40f6abe"
+    },
+    {
+      "bytes": 1318,
+      "path": "dist/core/runtime.d.ts.map",
+      "sha256": "3fcdffe7a1bdd91ac49ed94709f789e1ec369f8e1e3a094515cb7537b9f289f3"
+    },
+    {
+      "bytes": 96,
+      "path": "dist/core/runtime.js",
+      "sha256": "4fbbef5935b5e22bc9d6995fb14f3a77c68d80d1f18cc770767420c28cd62d73"
+    },
+    {
+      "bytes": 157,
+      "path": "dist/core/runtime.js.map",
+      "sha256": "272e32d712998b7143a56afde4ef89810ef59a3158a0225fea769d8fccce6043"
     },
     {
       "bytes": 1092,
@@ -81,24 +141,24 @@
       "sha256": "70b8db071cba5c3a08b46192fcb0b9a4934adb9f07926f2c7ab5c8601e541589"
     },
     {
-      "bytes": 888,
+      "bytes": 1310,
       "path": "dist/index.d.ts",
-      "sha256": "9cdeced702583dad36a52565f4389e59d7c35bcb4a7385b4e1c992a34611b9f0"
+      "sha256": "9c7f0dfd4ac4f5cd8497a4618688c3f4acbabe670ab0d4396e1036f41421e4d2"
     },
     {
-      "bytes": 604,
+      "bytes": 866,
       "path": "dist/index.d.ts.map",
-      "sha256": "fed1098d2e68ed403eb81d35e0f9f6fdafb7546e7af55f9861e57b413c3c2a5b"
+      "sha256": "c38e60e9b6f040d5e44649a5bb2c64cef84ec94ee393c6c010b15c489611a586"
     },
     {
-      "bytes": 409,
+      "bytes": 573,
       "path": "dist/index.js",
-      "sha256": "b55ea218994cc1f255368a28f27478784de5654b63fdf8bcc2f720d887ecf7c4"
+      "sha256": "fe10117cce4831b2bc310a26f3f7f7d15dbdcee9f2076ee680711dc4ee914305"
     },
     {
-      "bytes": 323,
+      "bytes": 411,
       "path": "dist/index.js.map",
-      "sha256": "4f1a495beb85c0d16cd15a51d165e9bad6822b9fb6ca5bfae81b530437144549"
+      "sha256": "0ecd8ec04d0808efbd6ccc205f53e4e77cd362fe00084f06f8537161fc338370"
     }
   ],
   "package": {

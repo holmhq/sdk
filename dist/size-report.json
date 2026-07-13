@@ -5,22 +5,33 @@
         "gzipBytes": 512,
         "rawBytes": 1024
       },
-      "gzipBytes": 206,
-      "minifiedBytes": 355,
+      "gzipBytes": 277,
+      "minifiedBytes": 512,
       "path": "dist/index.js",
-      "rawBytes": 409,
-      "sha256": "b55ea218994cc1f255368a28f27478784de5654b63fdf8bcc2f720d887ecf7c4"
+      "rawBytes": 573,
+      "sha256": "fe10117cce4831b2bc310a26f3f7f7d15dbdcee9f2076ee680711dc4ee914305"
     },
     {
       "budgets": {
-        "gzipBytes": 512,
-        "rawBytes": 1024
+        "gzipBytes": 768,
+        "rawBytes": 2048
       },
-      "gzipBytes": 245,
-      "minifiedBytes": 445,
+      "gzipBytes": 328,
+      "minifiedBytes": 679,
       "path": "dist/core/index.js",
-      "rawBytes": 517,
-      "sha256": "55124b5fd17d3863b5cff7188396d20bcd05a57e98330fc8d27ea1f8a21aa16c"
+      "rawBytes": 773,
+      "sha256": "721256784dd82854ddafa35f05d1409c7a81701947640b7a57bcbedc1eb87358"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 2048,
+        "rawBytes": 6144
+      },
+      "gzipBytes": 735,
+      "minifiedBytes": 2354,
+      "path": "dist/core/caller.js",
+      "rawBytes": 3063,
+      "sha256": "1c568cefb79e1b9578ab2d64fc35584d0ddd6c8da72c69404ed9d87e2b6a686a"
     },
     {
       "budgets": {
@@ -46,6 +57,28 @@
     },
     {
       "budgets": {
+        "gzipBytes": 2048,
+        "rawBytes": 6144
+      },
+      "gzipBytes": 645,
+      "minifiedBytes": 2080,
+      "path": "dist/core/invoke.js",
+      "rawBytes": 2753,
+      "sha256": "77577b55bd81c195e5ad01dc79dc006e780518c0f7cc4ea7bae0b26ad96bf743"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 512,
+        "rawBytes": 1024
+      },
+      "gzipBytes": 73,
+      "minifiedBytes": 58,
+      "path": "dist/core/runtime.js",
+      "rawBytes": 96,
+      "sha256": "4fbbef5935b5e22bc9d6995fb14f3a77c68d80d1f18cc770767420c28cd62d73"
+    },
+    {
+      "budgets": {
         "gzipBytes": 2560,
         "rawBytes": 8192
       },
@@ -63,8 +96,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 5256,
-    "minifiedBytes": 16302,
-    "rawBytes": 21826
+    "gzipBytes": 6863,
+    "minifiedBytes": 21185,
+    "rawBytes": 28158
   }
 }

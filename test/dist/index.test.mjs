@@ -3,11 +3,14 @@ import { test } from "node:test";
 
 import {
   canonicalEncodeWireValue,
+  createCallerFingerprint,
   createCapabilityRegistry,
   createCoreEnvironment,
+  createStaticCallerProvider,
   createReadonlyBytes,
   CapabilityVersionError,
   HolmError,
+  runtimeEnvelopeProtocol,
   serializeHolmError,
 } from "../../dist/index.js";
 
@@ -42,4 +45,14 @@ test("generated ESM artifact exposes S05 capability negotiation", () => {
     () => registry.require({ id: "com.example.reports", major: 2 }),
     CapabilityVersionError,
   );
+});
+
+test("generated ESM artifact exposes S06 runtime invocation caller helpers", async () => {
+  const caller = createStaticCallerProvider({ surface: "test", principal: { kind: "anonymous" } });
+  const first = await caller.current();
+  const second = await caller.current();
+
+  assert.equal(runtimeEnvelopeProtocol, "holm.sdk.runtime/1");
+  assert.equal(createCallerFingerprint(first), createCallerFingerprint(second));
+  assert.notEqual(first, second);
 });
