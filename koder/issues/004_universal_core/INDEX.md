@@ -43,8 +43,9 @@ the slice contract.
 - [ ] Core compiles and runs with no DOM or Node ambient/runtime dependency.
 - [ ] Two independent instances can use different adapters/callers without
       shared state leakage.
-- [ ] Unsupported or version-mismatched capabilities fail with typed,
-      actionable errors rather than undefined methods.
+- [x] Unsupported or version-mismatched capabilities fail with typed,
+      actionable errors rather than undefined methods. (`S05`: `e3e518d`,
+      review `8b9e2aa`)
 - [ ] Extensions cannot overwrite namespaces silently.
 - [x] Values crossing an adapter boundary are serializable or explicitly binary;
       tests reject unsafe shared mutable objects. (`S04`: `69554db`, fix
