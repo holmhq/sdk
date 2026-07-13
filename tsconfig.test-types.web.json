@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.web.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["test/types/web-ambient-opt-in.test.ts"]
+}

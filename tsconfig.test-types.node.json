@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.node.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["test/types/node-ambient-opt-in.test.ts"]
+}

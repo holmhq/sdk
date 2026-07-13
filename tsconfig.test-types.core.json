@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.core.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["src/core/**/*.ts", "test/types/core-ambient-boundary.test.ts"]
+}
