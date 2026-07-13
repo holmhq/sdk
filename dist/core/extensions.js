@@ -270,8 +270,17 @@ function disposeSetupComponents(components) {
     for (const component of [...components].reverse()) {
         try {
             const disposal = component.dispose?.();
-            if (disposal !== undefined) {
+            if (isPromiseLike(disposal)) {
                 void Promise.resolve(disposal).catch(() => undefined);
+                errors.push(new ExtensionError({
+                    code: "extension_setup_rollback_async_disposer",
+                    message: `Extension "${component.descriptor.id}" returned an async disposer during setup rollback.`,
+                    extensionId: component.descriptor.id,
+                    details: {
+                        phase: "setup_rollback",
+                        requirement: "setup rollback disposers must complete synchronously",
+                    },
+                }));
             }
         }
         catch (error) {
@@ -282,6 +291,12 @@ function disposeSetupComponents(components) {
         return undefined;
     }
     return new AggregateError(errors, "One or more extension setup rollback disposers failed.");
+}
+function isPromiseLike(value) {
+    if (value === null || (typeof value !== "object" && typeof value !== "function")) {
+        return false;
+    }
+    return typeof value.then === "function";
 }
 async function disposeComponents(components) {
     const errors = [];

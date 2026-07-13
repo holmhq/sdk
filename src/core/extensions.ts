@@ -41,6 +41,15 @@ export interface ExtensionSetupContext {
 export interface ExtensionSetupResult<Api = unknown> {
   readonly api: Api;
   start?(): void | Promise<void>;
+  /**
+   * Releases resources owned by the extension.
+   *
+   * Async disposers are supported after a lifecycle has been created. If a
+   * later extension setup fails while `createExtensionLifecycle()` is still in
+   * its synchronous construction path, rollback disposers must complete
+   * synchronously; returned promises are reported as deterministic setup
+   * rollback contract failures and their eventual rejection is suppressed.
+   */
   dispose?(): void | Promise<void>;
 }
 
@@ -447,8 +456,19 @@ function disposeSetupComponents(components: readonly ExtensionComponent[]): Aggr
   for (const component of [...components].reverse()) {
     try {
       const disposal = component.dispose?.();
-      if (disposal !== undefined) {
+      if (isPromiseLike(disposal)) {
         void Promise.resolve(disposal).catch(() => undefined);
+        errors.push(
+          new ExtensionError({
+            code: "extension_setup_rollback_async_disposer",
+            message: `Extension "${component.descriptor.id}" returned an async disposer during setup rollback.`,
+            extensionId: component.descriptor.id,
+            details: {
+              phase: "setup_rollback",
+              requirement: "setup rollback disposers must complete synchronously",
+            },
+          }),
+        );
       }
     } catch (error) {
       errors.push(error);
@@ -458,6 +478,13 @@ function disposeSetupComponents(components: readonly ExtensionComponent[]): Aggr
     return undefined;
   }
   return new AggregateError(errors, "One or more extension setup rollback disposers failed.");
+}
+
+function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
+  if (value === null || (typeof value !== "object" && typeof value !== "function")) {
+    return false;
+  }
+  return typeof (value as { readonly then?: unknown }).then === "function";
 }
 
 async function disposeComponents(components: readonly ExtensionComponent[]): Promise<AggregateError | undefined> {

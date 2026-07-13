@@ -24,6 +24,15 @@ export interface ExtensionSetupContext {
 export interface ExtensionSetupResult<Api = unknown> {
     readonly api: Api;
     start?(): void | Promise<void>;
+    /**
+     * Releases resources owned by the extension.
+     *
+     * Async disposers are supported after a lifecycle has been created. If a
+     * later extension setup fails while `createExtensionLifecycle()` is still in
+     * its synchronous construction path, rollback disposers must complete
+     * synchronously; returned promises are reported as deterministic setup
+     * rollback contract failures and their eventual rejection is suppressed.
+     */
     dispose?(): void | Promise<void>;
 }
 export interface HolmExtension<Api = unknown, Namespace extends string = string> {

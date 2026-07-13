@@ -61,24 +61,24 @@
       "sha256": "119828caaaccaeb5f092a57efe1609b1b74af21fbd28b9039b50b69826fe8061"
     },
     {
-      "bytes": 3560,
+      "bytes": 4022,
       "path": "dist/core/extensions.d.ts",
-      "sha256": "5d49eb436aa0903968d16beff0d3725a2aab62b7f49a6a18f6b5845e367ca344"
+      "sha256": "f9f44ce225cac6349727cf8eeb59d148ce44110a86f4b1c8866f5b8faeafdb7e"
     },
     {
-      "bytes": 3475,
+      "bytes": 3492,
       "path": "dist/core/extensions.d.ts.map",
-      "sha256": "a91f40ca1c9c3b36b7e31315ccce9f9e9ff6c6dcdf580bb94ee6acfce415c68b"
+      "sha256": "12df16c49d8b1b604732b2eefd5d6242ceb1688851f02305fa7c704d7a642255"
     },
     {
-      "bytes": 15615,
+      "bytes": 16325,
       "path": "dist/core/extensions.js",
-      "sha256": "384719411b77ead0d77a7a459198478ee702efa77eda8de63f25ef7ff2d1ba6c"
+      "sha256": "192a75f37bab210ead85ac7246af4cdc50fd9c1610c65884c23a2607556e9702"
     },
     {
-      "bytes": 15110,
+      "bytes": 15577,
       "path": "dist/core/extensions.js.map",
-      "sha256": "edc689d806d45140ac255b243015a22258b3aed76bc883acd595b73e8930b530"
+      "sha256": "b66e6247ffc39c48d5f2691854d9d08c6501c9ec31d21c563e2bff0e75470604"
     },
     {
       "bytes": 2348,

@@ -305,6 +305,62 @@ test("extensions rollback prior setup components in reverse order when later set
   assert.deepEqual(effects, ["setup:alpha", "setup:bravo", "setup:charlie", "dispose:bravo", "dispose:alpha"]);
 });
 
+test("extensions report async setup rollback disposers when later setup fails", () => {
+  const effects: string[] = [];
+  const setupFailure = new Error("bravo setup failed");
+  const asyncCleanupFailure = new Error("alpha async setup rollback failed");
+
+  assert.throws(
+    () =>
+      createExtensionLifecycle(
+        [
+          extension({
+            id: "com.example.alpha",
+            namespace: "alpha",
+            setup: () => {
+              effects.push("setup:alpha");
+              return {
+                api: { ok: true },
+                dispose: () => {
+                  effects.push("dispose:alpha");
+                  return Promise.reject(asyncCleanupFailure);
+                },
+              };
+            },
+          }),
+          extension({
+            id: "com.example.bravo",
+            namespace: "bravo",
+            setup: () => {
+              effects.push("setup:bravo");
+              throw setupFailure;
+            },
+          }),
+        ],
+        { capabilities: testCapabilities() },
+      ),
+    (error: unknown) => {
+      if (!(error instanceof ExtensionError) || error.code !== "extension_setup_failed") {
+        return false;
+      }
+      if (!(error.cause instanceof AggregateError) || error.cause.errors[0] !== setupFailure) {
+        return false;
+      }
+      const rollback = error.cause.errors[1];
+      if (!(rollback instanceof AggregateError)) {
+        return false;
+      }
+      const asyncRollback = rollback.errors[0];
+      return asyncRollback instanceof ExtensionError &&
+        asyncRollback.code === "extension_setup_rollback_async_disposer" &&
+        (asyncRollback.toJSON().details as { readonly extensionId?: unknown } | undefined)?.extensionId ===
+          "com.example.alpha";
+    },
+  );
+
+  assert.deepEqual(effects, ["setup:alpha", "setup:bravo", "dispose:alpha"]);
+});
+
 test("extensions setup and start in deterministic dependency order with frozen namespaces", async () => {
   const effects: string[] = [];
   const lifecycle = createExtensionLifecycle(
