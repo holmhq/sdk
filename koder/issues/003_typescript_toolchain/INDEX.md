@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-14
 tags: typescript, build, tests, conformance, ci
 parent: 001
 depends_on: [002]
@@ -37,18 +37,19 @@ Create the minimal toolchain needed for strict TDD:
 
 ## Acceptance Criteria
 
-- [ ] A deliberately failing test/type fixture is observed before the scaffold
-      turns green.
-- [ ] `src/core` compilation cannot access DOM or Node globals.
-- [ ] Runtime configs can opt into web or Node types without contaminating core.
+- [x] A deliberately failing test/type fixture is observed before the scaffold
+      turns green. (`S01`: `1c450cf`, review `48a772e`)
+- [x] `src/core` compilation cannot access DOM or Node globals. (`S01`)
+- [x] Runtime configs can opt into web or Node types without contaminating core.
+      (`S01`)
 - [ ] Tests cover source ESM and at least one generated ESM artifact.
 - [ ] Declaration output is generated and type-tested from a consumer fixture.
 - [ ] Build output is reproducible from a clean checkout.
 - [ ] Coverage and raw/minified/gzip size commands exist and fail clearly.
 - [ ] CI runs typecheck, tests, build, declaration consumer test, bundle smoke,
       license checks, and diff/reproducibility checks.
-- [ ] `npm publish` remains blocked by `"private": true`; no registry setup is
-      required.
+- [x] `npm publish` remains blocked by `"private": true`; no registry setup is
+      required. (`S01`)
 - [ ] README developer commands match the implemented scripts.
 
 ## Non-Goals
