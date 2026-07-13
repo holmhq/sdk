@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# dist/ is intentionally tracked: raw BFBB apps vendor immutable JS artifacts
+# directly from tagged or commit-pinned GitHub/jsDelivr URLs.
