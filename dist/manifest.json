@@ -71,14 +71,14 @@
       "sha256": "a91f40ca1c9c3b36b7e31315ccce9f9e9ff6c6dcdf580bb94ee6acfce415c68b"
     },
     {
-      "bytes": 14899,
+      "bytes": 15615,
       "path": "dist/core/extensions.js",
-      "sha256": "b7c106059b88941a567b0ae268e276aaecd0b9aa91f8f1ecb16fd29479a7c1d5"
+      "sha256": "384719411b77ead0d77a7a459198478ee702efa77eda8de63f25ef7ff2d1ba6c"
     },
     {
-      "bytes": 14403,
+      "bytes": 15110,
       "path": "dist/core/extensions.js.map",
-      "sha256": "5e61340154676199e79cc255d18def5f0347749f2d31e500fb52ab6ec9120e66"
+      "sha256": "edc689d806d45140ac255b243015a22258b3aed76bc883acd595b73e8930b530"
     },
     {
       "bytes": 2348,

@@ -246,6 +246,65 @@ test("extensions wrap setup failures and freeze cyclic extension APIs", () => {
   assert.equal((lifecycle.namespaces.cyclic as typeof api).self, lifecycle.namespaces.cyclic);
 });
 
+test("extensions rollback prior setup components in reverse order when later setup fails", () => {
+  const effects: string[] = [];
+  const setupFailure = new Error("charlie setup failed");
+  const cleanupFailure = new Error("alpha setup rollback failed");
+
+  assert.throws(
+    () =>
+      createExtensionLifecycle(
+        [
+          extension({
+            id: "com.example.alpha",
+            namespace: "alpha",
+            setup: () => {
+              effects.push("setup:alpha");
+              return {
+                api: { ok: true },
+                dispose: () => {
+                  effects.push("dispose:alpha");
+                  throw cleanupFailure;
+                },
+              };
+            },
+          }),
+          extension({
+            id: "com.example.bravo",
+            namespace: "bravo",
+            setup: () => {
+              effects.push("setup:bravo");
+              return {
+                api: { ok: true },
+                dispose: () => {
+                  effects.push("dispose:bravo");
+                },
+              };
+            },
+          }),
+          extension({
+            id: "com.example.charlie",
+            namespace: "charlie",
+            setup: () => {
+              effects.push("setup:charlie");
+              throw setupFailure;
+            },
+          }),
+        ],
+        { capabilities: testCapabilities() },
+      ),
+    (error: unknown) =>
+      error instanceof ExtensionError &&
+      error.code === "extension_setup_failed" &&
+      error.cause instanceof AggregateError &&
+      error.cause.errors[0] === setupFailure &&
+      error.cause.errors[1] instanceof AggregateError &&
+      error.cause.errors[1].errors[0] === cleanupFailure,
+  );
+
+  assert.deepEqual(effects, ["setup:alpha", "setup:bravo", "setup:charlie", "dispose:bravo", "dispose:alpha"]);
+});
+
 test("extensions setup and start in deterministic dependency order with frozen namespaces", async () => {
   const effects: string[] = [];
   const lifecycle = createExtensionLifecycle(

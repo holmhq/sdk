@@ -414,11 +414,12 @@ function setupComponents(
         }),
       );
     } catch (error) {
+      const rollback = disposeSetupComponents(ordered);
       throw new ExtensionError({
         code: "extension_setup_failed",
         message: `Extension "${extension.descriptor.id}" failed during setup.`,
         extensionId: extension.descriptor.id,
-        cause: error,
+        cause: rollback ? new AggregateError([error, rollback], "Extension setup and rollback failed.") : error,
       });
     }
     const api = deepFreeze(result.api);
@@ -439,6 +440,24 @@ function setupComponents(
     ordered: Object.freeze(ordered),
     namespaces: Object.freeze(namespaces),
   });
+}
+
+function disposeSetupComponents(components: readonly ExtensionComponent[]): AggregateError | undefined {
+  const errors: unknown[] = [];
+  for (const component of [...components].reverse()) {
+    try {
+      const disposal = component.dispose?.();
+      if (disposal !== undefined) {
+        void Promise.resolve(disposal).catch(() => undefined);
+      }
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+  if (errors.length === 0) {
+    return undefined;
+  }
+  return new AggregateError(errors, "One or more extension setup rollback disposers failed.");
 }
 
 async function disposeComponents(components: readonly ExtensionComponent[]): Promise<AggregateError | undefined> {
