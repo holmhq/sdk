@@ -42,8 +42,9 @@ Create the minimal toolchain needed for strict TDD:
 - [x] `src/core` compilation cannot access DOM or Node globals. (`S01`)
 - [x] Runtime configs can opt into web or Node types without contaminating core.
       (`S01`)
-- [ ] Tests cover source ESM and at least one generated ESM artifact.
-- [ ] Declaration output is generated and type-tested from a consumer fixture.
+- [x] Tests cover source ESM and at least one generated ESM artifact. (`S02`)
+- [x] Declaration output is generated and type-tested from a consumer fixture.
+      (`S02`)
 - [ ] Build output is reproducible from a clean checkout.
 - [ ] Coverage and raw/minified/gzip size commands exist and fail clearly.
 - [ ] CI runs typecheck, tests, build, declaration consumer test, bundle smoke,
