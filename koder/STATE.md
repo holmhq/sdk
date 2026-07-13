@@ -1,29 +1,40 @@
 ---
-updated_at: "13 Jul 2026 | 11:36 PM IST"
-state: REVIEW_READY
-active_window: A1
-active_issue: 002
-stop_gate: "Approve or revise D001-D015 before Issue #003; package/API, capability, extension, and artifact boundaries require owner review"
+updated_at: "14 Jul 2026 | 12:44 AM IST"
+state: READY
+active_window: A2
+active_issue: 003
+stop_gate: "Complete and independently review Issues #003-#006 as one core API/conformance checkpoint; do not start Issue #007"
 ---
 
 # Koder State
 
 ## Past
 
-- Repository, MIT/package identity, canonical remote `main`, and cross-harness koder-pattern scaffold are initialized.
-- Issue `#001` defines `14` child slices (`#002`–`#015`) against Holm baseline `11ceae0d88e9c800eb77916e3244fbd231ad81bb`.
-- A1 produced `koder/docs/{ARCHITECTURE,DECISIONS}.md` and the Issue `#002` evidence map in architecture commit `986b509`.
+- Repository, MIT/package identity, canonical remote `main`, and cross-harness
+  koder-pattern scaffold are initialized.
+- Issue `#001` defines `14` dependency-ordered child slices against Holm baseline
+  `11ceae0d88e9c800eb77916e3244fbd231ad81bb`.
+- A1 produced the architecture/evidence package at `986b509`; independent review
+  `dd7296c` returned APPROVE with no P1/P2 findings.
+- The owner chose `@holmhq/sdk/state` as the canonical clean-break state entry
+  point in `0d443cf` and approved `D001`–`D015` with that D013 revision.
 
 ## Present
 
-- State is **REVIEW_READY** at the A1 stop gate; Issue `#002` remains open and its final owner-review criterion is intentionally unchecked.
-- Review `D001`–`D015`, especially capability versioning (`D004`), sealed extension namespaces (`D008`), package exports (`D013`), and artifacts (`D014`).
-- Local links, pinned Holm source paths, all `14` umbrella invariants, Markdown structure, and whitespace checks pass.
-- No SDK implementation, dependency install, npm publication, tag, release, or cross-repository mutation occurred.
-- Existing Holm `packages/holm-sdk` and `packages/holm-state` remain authoritative for current behavior.
+- State is **READY** for A2, beginning with Issue `#003` strict TypeScript
+  toolchain and conformance harness.
+- A2 may proceed serially through `#003` toolchain, `#004` universal core,
+  `#005` transport/cache/auth, and `#006` framework-neutral state.
+- Strict TDD, per-slice review, local validation, logical commits, and clean
+  pushed checkpoints are mandatory.
+- npm publication, releases/tags, deploys, credentials, cross-repository edits,
+  and Issue `#007+` implementation remain forbidden.
 
 ## Future
 
-1. Owner reviews the architecture commit and chooses **approve**, **revise**, or **split**.
-2. Record requested revisions in A1, or record explicit approval before changing the execution window.
-3. **Do not start Issue `#003` or activate A2 without that approval.**
+1. Build or consume the A2 queue-conveyor artifact and start its first eligible
+   Issue `#003` slice.
+2. Drain dependent slices serially, recording tests, reviews, commits, issue
+   movement, and queue evidence rather than treating one large issue as one row.
+3. Stop after Issue `#006` at **REVIEW_READY** for a core API/conformance owner
+   decision; do not begin Issue `#007` automatically.

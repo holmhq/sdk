@@ -1,8 +1,8 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-14
 tags: architecture, contracts, capabilities, extensions
 parent: 001
 source:
@@ -79,7 +79,7 @@ approval activates A2.
       jsDelivr/SHA distribution are recorded.
 - [x] Open questions genuinely blocking implementation are surfaced for user
       decision; non-blocking details are delegated to later slices.
-- [ ] A review finds no conflict with umbrella invariants.
+- [x] A review finds no conflict with umbrella invariants.
 
 ## A1 Progress and Evidence
 
@@ -95,8 +95,8 @@ that exact clean commit while evidence was read. No Holm file was modified.
 | Surface-dependent context | Runtime matrix, per-invocation caller/auth separation, capability negotiation, and native mailbox rules cover web, CLI/Node, server/Sobek, desktop, mobile, and test. | ready |
 | Behavioral contracts | Resource transitions, deterministic extension ordering, lifecycle state, injected clock/scheduler, cancellation propagation, and typed errors are test-extractable. | ready |
 | Package/distribution | The package/subpath and bundle sections pin `@holmhq/sdk`, MIT, private npm state, three candidate ESM artifacts, tracked reproducibility gates, and immutable SHA/tag vendoring. | ready for owner decision |
-| Blocking/open questions | [`DECISIONS.md`](../../docs/DECISIONS.md) resolves load-bearing choices and delegates only bounded implementation details. No internal A1 blocker remains; the exact review ask covers capability versioning, sealed extensions, and package/artifact boundaries. | review required |
-| Umbrella invariants | [`Umbrella invariant traceability`](../../docs/ARCHITECTURE.md#umbrella-invariant-traceability) maps all `14` Issue `#001` invariants. A source reconciliation table covers Holm Issues `085`, `196`, `341`, `342`, `485`, and `517`. | pending owner review |
+| Blocking/open questions | [`DECISIONS.md`](../../docs/DECISIONS.md) resolves load-bearing choices and delegates only bounded implementation details. The owner approved all decisions after making `/state` canonical in D013. | approved |
+| Umbrella invariants | [`Umbrella invariant traceability`](../../docs/ARCHITECTURE.md#umbrella-invariant-traceability) maps all `14` Issue `#001` invariants. Independent review found no conflict; the owner approval is recorded in the review directory. | approved |
 
 ### Source and measurement notes
 
@@ -112,11 +112,18 @@ that exact clean commit while evidence was read. No Holm file was modified.
   `86,064` raw bytes / `18,461` gzip bytes. It is context only, not a target or
   reproducibility claim.
 
-### Review stop
+### Review outcome
 
-Review and approve or revise decisions `D001`–`D015` in
-[`DECISIONS.md`](../../docs/DECISIONS.md). **Do not start Issue `#003` from this
-checkpoint.**
+Independent review [`01_codex.md`](../../reviews/001_architecture_contract/01_codex.md)
+returned APPROVE with no P1/P2 findings. Owner decision
+[`02_owner.md`](../../reviews/001_architecture_contract/02_owner.md) resolved the
+only P3 by making `/state` canonical, approved `D001`–`D015`, and authorized A2.
+
+## Resolution
+
+Resolved on 2026-07-14 by architecture commits `986b509` and `0d443cf`, review
+commit `dd7296c`, and the recorded owner decision. Issue `#003` is now the active
+A2 entry point.
 
 ## Non-Goals
 

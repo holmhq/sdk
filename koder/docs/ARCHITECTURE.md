@@ -1,6 +1,6 @@
 ---
 title: Holm SDK Architecture Contract
-status: proposed-for-approval
+status: approved
 updated: 2026-07-14
 issue: 002
 holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
@@ -10,7 +10,7 @@ holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
 
 ## Status and intent
 
-This is the decision-ready architecture proposal for
+This is the approved architecture contract for
 [Issue `#002`](../issues/002_architecture_contract/INDEX.md). It defines the
 boundaries that implementation issues must test. It does **not** claim that the
 new SDK, Holm's CLI action registry, private realtime, collaboration substrate,

@@ -1,6 +1,6 @@
 ---
 title: Holm SDK Architecture Decision Register
-status: proposed-for-approval
+status: approved
 updated: 2026-07-14
 issue: 002
 holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
@@ -9,9 +9,9 @@ holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
 # Architecture Decision Register
 
 This register is the compact review companion to
-[`ARCHITECTURE.md`](ARCHITECTURE.md). Every entry is an A1 recommendation, not a
-published API promise. Status remains **proposed for approval** until the owner
-passes the Issue `#002` review gate.
+[`ARCHITECTURE.md`](ARCHITECTURE.md). The owner approved `D001`–`D015` on
+2026-07-14, with `D013` revised to make `/state` canonical. These decisions bind
+A2 implementation but are not yet a published compatibility promise.
 
 Confidence means confidence that the boundary is correct, not confidence that a
 corresponding Holm capability already ships.

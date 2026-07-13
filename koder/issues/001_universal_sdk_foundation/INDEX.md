@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-14
 tags: sdk, typescript, surfaces, state, realtime, frameworks, bfbb
 source:
   repo: holmhq/holm
@@ -12,7 +12,7 @@ source:
 type: design
 issue_kind: track
 slice_count: 14
-slices_done: 0
+slices_done: 1
 context: Build a new universal TypeScript SDK without deleting the existing Holm SDK/state packages, then migrate capabilities only with conformance evidence.
 ---
 
@@ -182,7 +182,7 @@ Highest-value sources at Holm commit
 
 | Slice | Status | Ref | Depends on | Closure gate |
 | --- | --- | --- | --- | --- |
-| Architecture charter and contract vocabulary | planned | [`#002`](../002_architecture_contract/INDEX.md) | — | reviewed architecture + API invariants |
+| Architecture charter and contract vocabulary | done | [`#002`](../002_architecture_contract/INDEX.md) | — | reviewed architecture + API invariants |
 | Strict TypeScript toolchain and conformance harness | planned | [`#003`](../003_typescript_toolchain/INDEX.md) | `#002` | source/dist/type tests green |
 | Universal core, capabilities, adapters, extensions | planned | [`#004`](../004_universal_core/INDEX.md) | `#002`, `#003` | no DOM/Node ambient leakage |
 | Transport, auth, cache, uploads, errors | planned | [`#005`](../005_transport_cache_auth/INDEX.md) | `#004` | transport conformance + parity fixtures |
