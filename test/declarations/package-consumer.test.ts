@@ -4,6 +4,7 @@ import {
   createCallerFingerprint,
   createCoreEnvironment,
   createExtensionLifecycle,
+  createHolm,
   createReadonlyBytes,
   createStaticCallerProvider,
   type CapabilityOffer,
@@ -12,12 +13,15 @@ import {
   type ExtensionLifecycle,
   type HolmExtension,
   HolmError,
+  TimeoutError,
   runtimeEnvelopeProtocol,
   type RuntimeAdapter,
+  type Scheduler,
   type CoreEnvironment,
   type SerializedHolmError,
   type WireValue,
 } from "@holmhq/sdk";
+import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 
 const environment: CoreEnvironment = createCoreEnvironment();
 const bytes = createReadonlyBytes([1, 2, 3]);
@@ -37,12 +41,20 @@ const capabilitySnapshot: CapabilitySnapshot = registry.getSnapshot();
 const callerContext: CallerContext = { surface: "test", principal: { kind: "anonymous" } };
 const caller = createStaticCallerProvider(callerContext);
 const fingerprint: string = createCallerFingerprint(callerContext);
+const scheduler: Scheduler = { schedule: () => ({ cancel: () => undefined }) };
 const runtime: RuntimeAdapter = {
   id: "runtime-test",
   surface: "test",
   clock: { now: () => 1 },
+  scheduler,
+  async start() {
+    return [];
+  },
   async invoke(request) {
     return { requestId: request.requestId, payload: null };
+  },
+  async dispose() {
+    return undefined;
   },
 };
 const reportsExtension = {
@@ -56,6 +68,10 @@ const reportsExtension = {
 const extensionLifecycle: ExtensionLifecycle = createExtensionLifecycle([reportsExtension] as const, {
   capabilities: createCapabilityRegistry([]),
 });
+const fake = createFakeClock();
+const testRuntime = createInMemoryRuntimeAdapter({ clock: fake.clock, scheduler: fake.scheduler });
+const holm = createHolm({ runtime: testRuntime, caller });
+const timeout = new TimeoutError({ timeoutMs: 1 });
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -70,4 +86,6 @@ void fingerprint;
 void runtime;
 void runtimeEnvelopeProtocol;
 void extensionLifecycle;
+void holm;
+void timeout;
 void invalidEnvironment;

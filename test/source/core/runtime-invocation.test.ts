@@ -37,8 +37,12 @@ function createRecordingRuntime(
     id: "runtime-test",
     surface: "test",
     clock: { now: () => 1234 },
+    scheduler: { schedule: () => ({ cancel: () => undefined }) },
     calls,
     controls,
+    async start() {
+      return [matchingOffer];
+    },
     async invoke(request, control) {
       calls.push(request);
       controls.push(control);
@@ -48,6 +52,9 @@ function createRecordingRuntime(
         payload: { ok: true },
       }
     );
+    },
+    async dispose() {
+      return undefined;
     },
   };
 }

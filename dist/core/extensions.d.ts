@@ -66,6 +66,7 @@ export interface ExtensionLifecycle<Namespaces extends object = ExtensionNamespa
 }
 export interface ExtensionLifecycleOptions {
     readonly capabilities: CapabilityRegistry;
+    readonly validateCapabilities?: boolean;
 }
 export interface ExtensionErrorOptions {
     readonly code: string;

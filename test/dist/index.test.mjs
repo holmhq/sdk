@@ -7,13 +7,16 @@ import {
   createCapabilityRegistry,
   createCoreEnvironment,
   createExtensionLifecycle,
+  createHolm,
   createStaticCallerProvider,
   createReadonlyBytes,
   CapabilityVersionError,
   HolmError,
+  TimeoutError,
   runtimeEnvelopeProtocol,
   serializeHolmError,
 } from "../../dist/index.js";
+import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
   assert.equal(createCoreEnvironment(), "core");
@@ -86,4 +89,30 @@ test("generated ESM artifact exposes S07 extension lifecycle", async () => {
   await lifecycle.start();
   await lifecycle.dispose();
   assert.deepEqual(effects, ["start", "dispose"]);
+});
+
+test("generated ESM artifact exposes S08 createHolm lifecycle fakes", async () => {
+  const fake = createFakeClock(7);
+  const runtime = createInMemoryRuntimeAdapter({
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    offers: [{ id: "com.example.reports", origin: "runtime", version: { major: 1, minor: 0 } }],
+  });
+  const holm = createHolm({
+    runtime,
+    caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+  });
+
+  await holm.start();
+  const response = await holm.invoke({
+    capability: { id: "com.example.reports", major: 1 },
+    operation: "list",
+    payload: { ok: true },
+    requestId: "req-dist",
+  });
+
+  assert.equal(holm.lifecycle.state, "ready");
+  assert.deepEqual(response.payload, { ok: true });
+  assert.equal(runtime.requests[0].caller.startedAt, 7);
+  assert.equal(new TimeoutError({ timeoutMs: 1 }).code, "operation_timeout");
 });

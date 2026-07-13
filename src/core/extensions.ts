@@ -97,6 +97,7 @@ export interface ExtensionLifecycle<Namespaces extends object = ExtensionNamespa
 
 export interface ExtensionLifecycleOptions {
   readonly capabilities: CapabilityRegistry;
+  readonly validateCapabilities?: boolean;
 }
 
 export interface ExtensionErrorOptions {
@@ -150,7 +151,9 @@ export function createExtensionLifecycle<const Extensions extends readonly HolmE
   options: ExtensionLifecycleOptions,
 ): ExtensionLifecycle<ExtensionNamespaces<Extensions>> {
   const built = buildExtensionGraph(extensions);
-  validateCapabilityRequirements(built.ordered, options.capabilities);
+  if (options.validateCapabilities !== false) {
+    validateCapabilityRequirements(built.ordered, options.capabilities);
+  }
   const components = setupComponents(built.ordered, options);
   return new InstanceExtensionLifecycle(
     built.graph,

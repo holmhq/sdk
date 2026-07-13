@@ -69,6 +69,28 @@ export { invokeRuntime } from "./invoke.js";
 export type { InvokeRuntimeOptions } from "./invoke.js";
 
 export {
+  CancelledError,
+  createCancellationController,
+  TimeoutError,
+} from "./cancellation.js";
+export type {
+  CancellationController,
+  CancelledErrorOptions,
+  CancellationScope,
+  CancellationScopeOptions,
+  TimeoutErrorOptions,
+} from "./cancellation.js";
+
+export {
+  createHolm,
+} from "./create-holm.js";
+export type {
+  Holm,
+  HolmInvokeOptions,
+  HolmOptions,
+} from "./create-holm.js";
+
+export {
   createLifecycleController,
   LifecycleError,
 } from "./lifecycle.js";
@@ -108,5 +130,7 @@ export type {
   OperationRequest,
   OperationResponse,
   RuntimeAdapter,
+  ScheduledTask,
+  Scheduler,
   SurfaceKind,
 } from "./runtime.js";

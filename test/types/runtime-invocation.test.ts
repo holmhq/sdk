@@ -23,8 +23,15 @@ const runtime: RuntimeAdapter = {
   id: "runtime-test",
   surface: "test",
   clock: { now: () => 1 },
+  scheduler: { schedule: () => ({ cancel: () => undefined }) },
+  async start() {
+    return [];
+  },
   async invoke(request) {
     return { requestId: request.requestId, payload: null };
+  },
+  async dispose() {
+    return undefined;
   },
 };
 

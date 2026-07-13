@@ -8,6 +8,7 @@
     "test/types/capabilities.test.ts",
     "test/types/core-ambient-boundary.test.ts",
     "test/types/extensions.test.ts",
+    "test/types/lifecycle.test.ts",
     "test/types/runtime-invocation.test.ts",
     "test/types/wire-value-errors.test.ts"
   ]

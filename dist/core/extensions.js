@@ -18,7 +18,9 @@ export function createExtensionGraph(extensions) {
 }
 export function createExtensionLifecycle(extensions, options) {
     const built = buildExtensionGraph(extensions);
-    validateCapabilityRequirements(built.ordered, options.capabilities);
+    if (options.validateCapabilities !== false) {
+        validateCapabilityRequirements(built.ordered, options.capabilities);
+    }
     const components = setupComponents(built.ordered, options);
     return new InstanceExtensionLifecycle(built.graph, components.namespaces, components.ordered);
 }
