@@ -43,3 +43,18 @@ This repo uses the koder pattern for durable agent handoff and project memory.
 - Never commit secrets, credentials, private account identifiers, sensitive personal data, private payloads, full prompts, or large generated outputs.
 - Ask before running commands that deploy, create cloud resources, mutate production data, install packages globally, rotate credentials, or change account/member access.
 - Preserve live project conventions; these instructions are the operator baseline, not a replacement for project-specific policy.
+
+## Holm SDK project overlay
+
+- Mission: build `@holmhq/sdk`, the strict-TypeScript universal SDK for Holm capabilities across web, CLI, server/Sobek, and future desktop/mobile surfaces.
+- Read `koder/issues/001_universal_sdk_foundation/INDEX.md` and `koder/docs/HOLM_SOURCE_MAP.md` before architecture or implementation work. Follow the child issue for the active slice.
+- Holm remains the runtime/protocol authority. The primary checkout is `~/Projects/holmhq/holm/master`; do not edit it from this repo without explicit user approval. Pin source evidence to a Holm commit.
+- Existing Holm `packages/holm-sdk` and `packages/holm-state` remain live during migration. Do not delete, redirect, or silently fork their ownership.
+- **TDD is mandatory for implementation:** strict red → green → refactor, with source and generated-artifact checks where relevant.
+- Author source in strict TypeScript. The universal core must compile without DOM or Node ambient types; runtime-specific APIs belong behind explicit adapters.
+- Keep framework runtimes and CRDT engines optional/peer dependencies. Core resources expose framework-neutral immutable snapshots and subscriptions.
+- Preserve the Universal App Runtime invariants: action/state/schema contract below the SDK, surface-dependent caller identity, message passing across native loops, BFBB first, no direct SQLite, and no universal UI DSL.
+- npm publication is explicitly deferred. Keep `package.json` private until the user approves publishing. GitHub/jsDelivr artifacts must be immutable-tag/SHA addressable; never recommend `@main` for deployed apps.
+- `dist/` is intentionally tracked once builds exist because BFBB apps vendor generated ESM artifacts. Commit generated output only when source tests, declaration checks, bundle smoke tests, and size reports pass.
+- MIT is the project license. New dependencies must be license-compatible and justified; avoid dependency-heavy convenience layers in the core.
+- Implementation is serial on `main` inside this repo unless the user explicitly authorizes parallel worktrees. A separate agent may work here concurrently with agents in other repositories.
