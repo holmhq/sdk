@@ -1,7 +1,7 @@
 ---
 title: Holm SDK Architecture Contract
 status: proposed-for-approval
-updated: 2026-07-13
+updated: 2026-07-14
 issue: 002
 holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
 ---
@@ -856,7 +856,7 @@ The export architecture is:
 | `@holmhq/sdk/bridge` | platform-neutral mailbox/native bridge interfaces | no production desktop/mobile constructor |
 | `@holmhq/sdk/app` | member/app auth, app routes, links, uploads, surface helpers | shared contracts; runtime services injected |
 | `@holmhq/sdk/admin` | privileged operator namespaces | explicit operator capability/auth required |
-| `@holmhq/sdk/resources` | query/mutation/derived resource implementation | framework-neutral |
+| `@holmhq/sdk/state` | query/mutation/derived resource implementation and resource contracts | framework-neutral |
 | `@holmhq/sdk/actions` | registry JSON types/builders and list/invoke extension | production invocation capability-gated |
 | `@holmhq/sdk/realtime` | channel/connection extension | WebSocket/runtime transport injected |
 | `@holmhq/sdk/collaboration` | model/oplog/codec/provider seams | no CRDT engine bundled |
@@ -865,10 +865,14 @@ The export architecture is:
 | `@holmhq/sdk/svelte` | Svelte binding if needed | optional Svelte peer |
 | `@holmhq/sdk/vue` | Vue binding | optional Vue peer |
 
-There is no initial `@holmhq/sdk/state` compatibility alias. The old package's
-semantics are deliberately classified before aliases can become accidental
-promises. Runtime adapters are imported explicitly; package conditions and
-runtime sniffing do not silently choose one.
+The canonical framework-neutral state entry point is `@holmhq/sdk/state`. It
+exports the query, mutation, derived-resource, `Resource`, and
+`ResourceSnapshot` contracts defined above. The name aligns with Holm's
+action/state/schema vocabulary; it does **not** preserve the legacy
+`holm-state` API (`ref`, `computed`, `watch`, `effect`, `remote`, `channel`, and
+related helpers). There is no initial `@holmhq/sdk/resources` alias: one concept
+has one public subpath. Runtime adapters are imported explicitly; package
+conditions and runtime sniffing do not silently choose one.
 
 The root declaration graph cannot reference DOM or Node ambient types. Web and
 Node declarations are compiled/type-tested separately. Framework runtimes and

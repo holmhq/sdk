@@ -86,6 +86,11 @@ dist/holm-web.js
 dist/holm-node.js
 ```
 
+`@holmhq/sdk/state` is the canonical clean-break entry point for immutable
+query, mutation, and derived-resource APIs. It does not preserve the legacy
+`holm-state` exports; `Resource` remains the precise API/type vocabulary inside
+the `/state` entry point.
+
 A complete convenience bundle is welcome. Narrow artifacts remain useful for
 runtime isolation and low-end mobile startup budgets. Framework runtimes and
 heavy CRDT engines remain peer/optional dependencies rather than being embedded

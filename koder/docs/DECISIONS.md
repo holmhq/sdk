@@ -1,7 +1,7 @@
 ---
 title: Holm SDK Architecture Decision Register
 status: proposed-for-approval
-updated: 2026-07-13
+updated: 2026-07-14
 issue: 002
 holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
 ---
@@ -304,22 +304,28 @@ prevents lost durable state.
 ## `D013` — Package export isolation
 
 **Recommendation:** Keep `@holmhq/sdk` environment-neutral. Use explicit
-subpaths for `web`, `node`, `sobek`, `test`, `bridge`, `app`, `admin`,
-`resources`, `actions`, `realtime`, `collaboration`, and framework bindings.
-Do not add an initial legacy `state` alias. Root declarations reference neither
-DOM nor Node ambient types. Frameworks and CRDTs are optional peers/separate
-providers.
+subpaths for `web`, `node`, `sobek`, `test`, `bridge`, `app`, `admin`, `state`,
+`actions`, `realtime`, `collaboration`, and framework bindings.
+`@holmhq/sdk/state` is the canonical clean-break entry point for framework-neutral
+query, mutation, derived-resource, `Resource`, and `ResourceSnapshot` APIs. It
+does not preserve the legacy `holm-state` exports, and there is no initial
+`@holmhq/sdk/resources` alias. Root declarations reference neither DOM nor Node
+ambient types. Frameworks and CRDTs are optional peers/separate providers.
 
-**Rationale:** Consumers import only intended runtimes/capabilities. Universal
-core compiles in constrained environments, while BFBB and framework paths stay
+**Rationale:** Consumers import only intended runtimes/capabilities. `state`
+aligns with Holm's action/state/schema product vocabulary, while resource
+remains the precise API/type vocabulary inside that entry point. Universal core
+compiles in constrained environments, while BFBB and framework paths stay
 ergonomic. Explicit imports avoid runtime sniffing and accidental bundle cost.
 
 **Rejected alternatives:**
 
 - Root re-exports every concrete runtime — ambient type/bundle contamination.
 - One file selected by global sniffing — ambiguous and untestable.
-- Preserve old package topology as aliases immediately — accidental contract
-  freeze before migration evidence.
+- Preserve legacy `holm-state` exports under `/state` — accidental API-shape
+  compatibility without migration evidence.
+- Publish both `/state` and `/resources` initially — duplicate public contracts
+  and needless alias maintenance.
 
 **Confidence:** Medium-high. Review should confirm the breadth/naming of public
 subpaths before Issue `#003`; implementation may omit a subpath until its owning
