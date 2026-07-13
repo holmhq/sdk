@@ -1,10 +1,10 @@
 ---
-updated_at: "14 Jul 2026 | 01:19 AM IST"
-state: BLOCKED
+updated_at: "14 Jul 2026 | 01:26 AM IST"
+state: READY
 active_window: A2
 active_issue: 003
 orchestration_mode: blind
-stop_gate: "Review the new blind-orchestrator/context-rollover hard gate before Queue #001 launch; then stop before Issue #007"
+stop_gate: "Run Queue #001 only through fresh isolated workers with four-entry coordinator rollover; review Issues #003-#006 and do not start Issue #007"
 ---
 
 # Koder State
@@ -22,25 +22,27 @@ stop_gate: "Review the new blind-orchestrator/context-rollover hard gate before 
 - A2 Queue `#001` now contains `16` dependency-ordered implementation slices
   (`28h20m` nominal) across Issues `#003`–`#006`; independent re-review
   `5f8ad2f` returned APPROVE with no open findings.
+- Blind-orchestrator hardening `58ba56a` and independent review `95ebc69` now
+  make primary-context isolation, compact sidecars, fresh workers, and
+  four-entry coordinator rollover mandatory with no open findings.
 
 ## Present
 
-- Queue `#001` is temporarily **BLOCKED** from launch while its new
-  `koder/docs/BLIND_ORCHESTRATION.md` hard gate receives focused review.
-- The primary must remain a routing-only coordinator: fresh workers own source,
-  tests, diffs, reviews, and fixes; primary sees compact summaries and process
-  state only. Direct mega-session implementation is forbidden.
-- Coordinators may route at most `4` completed implementation entries before a
-  clean durable handoff and fresh context. If unattended relaunch is unavailable,
-  stop at rollover rather than accumulate context.
+- Queue `#001` is **READY** in `blind` mode, beginning at `001_S01`.
+- The primary is routing-only: fresh harnex workers own source, tests, diffs,
+  implementation, review, and fixes; primary consumes compact summaries,
+  validation outcomes, commit refs, verdicts, blockers, and Git/process state.
+- Never preload later plans or read worker detail into primary context. Route at
+  most `4` completed implementation entries, then commit a clean handoff and
+  resume fresh; stop if unattended relaunch is unavailable.
 - npm publication, releases/tags, deploys, credentials, cross-repository edits,
   and Issue `#007+` implementation remain forbidden.
 
 ## Future
 
-1. Independently review the blind-orchestration hard gate and return Queue
-   `#001` to READY only if it prevents primary-context ingestion.
-2. Start at `001_S01` with one fresh implementation worker and one fresh reviewer;
-   do not preload later plans or read their work into primary context.
-3. Continue under the `8h`/`45m` closeout contract and mandatory four-entry
-   coordinator rollover; never begin Issue `#007` automatically.
+1. Run `/open`; confirm `Mode: blind orchestrator`, then answer **yes** to route
+   a fresh `001_S01` implementation worker followed by a fresh reviewer.
+2. Continue under the `8h`/`45m` closeout contract and mandatory four-entry
+   context rollover, using sidecars rather than reading worker artifacts.
+3. If `S16` drains, run final core API/conformance review and stop before Issue
+   `#007`; never continue automatically.

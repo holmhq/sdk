@@ -1,5 +1,5 @@
 ---
-status: review
+status: ready
 target_window: 8h
 queued_effort_target: 28h20m
 autonomy_level: A2
@@ -91,5 +91,5 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 ## Run Log
 
 - 2026-07-14: arithmetic reconciled; 16 rows sum to 1,700m (28h20m), 3.54x the 8h target window.
-- 2026-07-14: blind-orchestrator/context-rollover contract added; launch awaits focused review.
+- 2026-07-14: blind-orchestrator/context-rollover contract added and independently approved at `95ebc69` with no findings.
 - pending: no implementation entries have started.
