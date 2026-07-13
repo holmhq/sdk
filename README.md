@@ -98,7 +98,7 @@ versioned artifacts, and jsDelivr can serve immutable commit- or tag-pinned
 files directly:
 
 ```text
-https://cdn.jsdelivr.net/gh/holmhq-admin/sdk@<commit-sha>/dist/holm.js
+https://cdn.jsdelivr.net/gh/holmhq/sdk@<commit-sha>/dist/holm.js
 ```
 
 A raw BFBB app should normally **vendor** the pinned artifact instead of relying
@@ -107,7 +107,7 @@ on a public CDN at runtime:
 ```bash
 mkdir -p vendor/holm
 curl -fL \
-  "https://cdn.jsdelivr.net/gh/holmhq-admin/sdk@<commit-sha>/dist/holm.js" \
+  "https://cdn.jsdelivr.net/gh/holmhq/sdk@<commit-sha>/dist/holm.js" \
   -o vendor/holm/holm.js
 ```
 

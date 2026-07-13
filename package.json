@@ -8,11 +8,11 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/holmhq-admin/sdk.git"
+    "url": "git+https://github.com/holmhq/sdk.git"
   },
-  "homepage": "https://github.com/holmhq-admin/sdk#readme",
+  "homepage": "https://github.com/holmhq/sdk#readme",
   "bugs": {
-    "url": "https://github.com/holmhq-admin/sdk/issues"
+    "url": "https://github.com/holmhq/sdk/issues"
   },
   "engines": {
     "node": ">=20"
