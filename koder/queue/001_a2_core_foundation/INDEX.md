@@ -1,7 +1,7 @@
 ---
 status: ready
 target_window: 8h
-queued_effort_target: 18-24h
+queued_effort_target: 28h20m
 autonomy_level: A2
 created: 2026-07-14
 updated: 2026-07-14
@@ -30,7 +30,7 @@ Run the A2 implementation conveyor serially through Issues #003-#006, using the 
 - Slices queued: 16.
 - Likely child issues closed: up to 4.
 - Release/live gate: none.
-- Nominal queued effort: 18-24h, which is at least 2x the 8h target window.
+- Nominal queued effort: 28h20m, which is at least 2x the 8h target window.
 
 ## Done State
 
@@ -69,4 +69,5 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 
 ## Run Log
 
+- 2026-07-14: arithmetic reconciled; 16 rows sum to 1,700m (28h20m), 3.54x the 8h target window.
 - pending: no implementation entries have started.

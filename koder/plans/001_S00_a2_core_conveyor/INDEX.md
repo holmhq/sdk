@@ -119,7 +119,7 @@ Each row is sized to pass the queue gate: <=120 minutes nominal, single-purpose,
 - Issues touched: 4 (`#003`, `#004`, `#005`, `#006`).
 - Likely child issues closed if all entries drain: 4.
 - Release/live gates touched: 0.
-- Nominal queue work: 18-24 hours, intentionally more than 2x the 8-hour away window.
+- Nominal queue work: 28h20m, intentionally more than 2x the 8-hour away window.
 - Timebox: stop starting new implementation work after 7h15m and reserve 45m for validation, queue/state handoff, clean commit, and push.
 
 ## A2 Stop
