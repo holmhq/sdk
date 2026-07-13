@@ -54,6 +54,13 @@ the slice contract.
 - [ ] Generated ESM/declarations pass consumer tests.
 - [ ] Public exports and bundle contribution are documented and size-reported.
 
+## Progress Evidence
+
+- `S04` established serializable/binary-safe wire values and redacted errors.
+- `S05` established immutable capability offers and fail-closed negotiation.
+- `S06` established copied invocation envelopes, per-call caller resolution,
+  deterministic non-secret fingerprints, and partition hooks.
+
 ## Non-Goals
 
 - HTTP endpoint wrappers.

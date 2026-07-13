@@ -76,7 +76,7 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 | 03 | approved | [koder/plans/001_S03_repro_ci_size_license/INDEX.md](../../plans/001_S03_repro_ci_size_license/INDEX.md) | 90m | medium | low | harnex-light | `npm run ci`; `npm run check:repro`; `npm run check:licenses`; `npm run size` | stop on credential/release/cloud requirement |
 | 04 | approved | [koder/plans/001_S04_wire_value_errors/INDEX.md](../../plans/001_S04_wire_value_errors/INDEX.md) | 100m | medium | low | harnex-chain | `npm run ci`; targeted wire/error tests; dist smoke | stop if D006/D011 need revision |
 | 05 | approved | [koder/plans/001_S05_capability_registry/INDEX.md](../../plans/001_S05_capability_registry/INDEX.md) | 90m | medium | low | harnex-light | `npm run ci`; targeted capability tests; type tests | stop if canonical Holm IDs are required |
-| 06 | queued | [koder/plans/001_S06_runtime_invocation_caller/INDEX.md](../../plans/001_S06_runtime_invocation_caller/INDEX.md) | 110m | medium-high | medium | harnex-chain | `npm run ci`; targeted runtime/caller tests; dist smoke | stop if auth semantics would be invented |
+| 06 | approved | [koder/plans/001_S06_runtime_invocation_caller/INDEX.md](../../plans/001_S06_runtime_invocation_caller/INDEX.md) | 110m | medium-high | medium | harnex-chain | `npm run ci`; targeted runtime/caller tests; dist smoke | stop if auth semantics would be invented |
 | 07 | queued | [koder/plans/001_S07_extension_lifecycle/INDEX.md](../../plans/001_S07_extension_lifecycle/INDEX.md) | 120m | high | medium | harnex-chain | `npm run ci`; extension tests; type tests | stop if graph/type work exceeds 120m |
 | 08 | queued | [koder/plans/001_S08_create_holm_lifecycle_fakes/INDEX.md](../../plans/001_S08_create_holm_lifecycle_fakes/INDEX.md) | 120m | high | medium | harnex-chain | `npm run ci`; lifecycle tests; declarations/dist/size | stop if HTTP or state behavior is needed |
 | 09 | queued | [koder/plans/001_S09_transport_auth_errors/INDEX.md](../../plans/001_S09_transport_auth_errors/INDEX.md) | 115m | high | medium | harnex-chain | `npm run ci`; transport conformance; declarations/dist/size | stop if endpoint payloads are required |
@@ -98,4 +98,5 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 - 2026-07-14: coverage measurement pretask for `S04` implemented at `58185e3` and independently approved at `7413329`; required coverage validation passed.
 - 2026-07-14: `S04` implemented at `69554db`, received P2 fixes at `61441ed`, and was independently approved at `a6cde0d`; required validation and coverage passed.
 - 2026-07-14: `S05` implemented at `e3e518d` and independently approved at `8b9e2aa`; required validation and coverage passed.
-- pending: `S06` has not started.
+- 2026-07-14: `S06` implemented at `5bd80ca`, received P2 fixes at `9e9dba6`, and was independently approved at `8537693`; required validation and coverage passed.
+- rollover: coordinator `02` reached its four-entry cap including the `S04` coverage tooling pretask; next eligible row is `S07` for a fresh blind coordinator.
