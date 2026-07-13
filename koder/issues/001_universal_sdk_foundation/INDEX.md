@@ -197,6 +197,16 @@ Highest-value sources at Holm commit
 | BFBB bundles and jsDelivr vendoring | planned | [`#014`](../014_bfbb_distribution/INDEX.md) | `#003`–`#013` as included | reproducible tracked artifacts + size report |
 | Docs, migration ledger, end-to-end closeout | planned | [`#015`](../015_docs_migration_closeout/INDEX.md) | all prior slices | examples/conformance/ownership handoff complete |
 
+## Autonomous checkpoint policy
+
+`koder/docs/EXECUTION.md` is the authority for how far an unattended agent may
+proceed. The currently authorized window is **A1 / Issue `#002` only**. It ends
+when the architecture and decision register are committed/pushed and marked
+`REVIEW_READY` or `BLOCKED`; Issue `#003` requires a new explicit approval.
+
+Cross-repository ownership and write policy are indexed in
+`koder/projects/INDEX.md`.
+
 ## Recommended execution order
 
 ```text

@@ -1,0 +1,42 @@
+---
+name: Holm SDK
+status: active
+role: portable-sdk-implementation
+updated: 2026-07-13
+local_path: ~/Projects/holmhq/sdk
+remote: git@github.com-holmhq:holmhq-admin/sdk.git
+branch: main
+bootstrap_commit: c681bb3513f739620fe9c6c4a856f0d3c4dd02c0
+write_policy: primary
+---
+
+# Project 002: SDK
+
+## Relationship
+
+This repository owns the future `@holmhq/sdk` TypeScript source, generated
+JavaScript/declarations, runtime adapters, reactive resources, framework
+bindings, extension contracts, conformance fixtures, and BFBB artifacts.
+
+## Current state
+
+- npm package remains private/unpublished.
+- MIT licensed.
+- Issue `#001` tracks 14 child slices.
+- Active autonomous window is recorded in `koder/docs/EXECUTION.md`.
+- Existing Holm SDK/state remain current behavior authorities during migration.
+
+## Agent policy
+
+- This is the primary write target.
+- Work serially on `main` unless worktrees are explicitly approved.
+- Use strict red → green → refactor for implementation.
+- Stop at the active execution-window gate and return for review.
+- Keep root and remote clean/synchronized at close when push is available.
+
+## Integration checkpoints
+
+- Architecture approval before toolchain/core implementation.
+- Core review before app/admin migration.
+- Capability-truth refresh before realtime/collaboration work.
+- BFBB artifact review before any publication discussion.

@@ -8,6 +8,7 @@ Session Closed: **<repository>**
 Git           `clean` or `BLOCKED — <count> path(s)`
 Commits       `<count>` this session
 State         `state: close - <semantic result>` (`<commit>`)
+Checkpoint    `<REVIEW_READY | BLOCKED | window remains active>`
 Checks        `✔ <commands>` or `✘ <failure>`
 Remote        `synced` or `<ahead/behind detail>` (reported, not implicitly pushed)
 
@@ -33,6 +34,7 @@ Remote        `synced` or `<ahead/behind detail>` (reported, not implicitly push
 - Use `━━━` as the separator; do not use `---`.
 - Use inline code for commits, paths, commands, and issue numbers.
 - Keep **This Session** and **Next Session** terse: one line per bullet, no sub-bullets.
+- **Checkpoint** reflects the active execution-window stop gate. When review is required, name that review in **Next Session** and do not suggest the next implementation window.
 - Omit **Notes** when the repository is clean, validation passed, and no follow-up warning exists.
 - `Git clean` is a factual claim, not an aspiration. Any output from `git status --porcelain=v1 --untracked-files=all` means `BLOCKED`.
 - If close is blocked, change the title to `Session Close Blocked: **<repository>**`, keep the same separators, list exact dirty paths in **Notes**, and make the parting note the required operator decision.

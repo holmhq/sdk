@@ -8,6 +8,7 @@ Use this skill at the end of a work session. A close is complete only when every
 
 ## Workflow
 
+0. Read `koder/STATE.md` and, when present, `koder/docs/EXECUTION.md`. Identify the active autonomous window and stop gate. A close may record that the gate is ready for review or blocked; it must not activate or begin the next window.
 1. Establish the repository root and inspect the complete delta, including staged, unstaged, and untracked work:
    ```bash
    git status --short --untracked-files=all
@@ -20,7 +21,7 @@ Use this skill at the end of a work session. A close is complete only when every
 2. Review every changed path before committing. Check implementation, docs, tests, deleted files, permissions, and untracked files. Inspect for secrets, credentials, private payloads, generated output, caches, and unrelated work. Never use `git add -A` blindly.
 3. Run the repository's relevant tests, linters, formatters, validators, and `git diff --check`. Record failures honestly. Do not commit code that is known incomplete or unreviewed merely to make the status green.
 4. Commit all reviewed, intentional work in logical commits. Stage selected paths only. If unrelated or unknown dirty work exists, stop and ask rather than absorbing it or deleting it. A successful close must not strand reviewed work.
-5. Refresh `koder/STATE.md` with the India-time timestamp:
+5. Refresh `koder/STATE.md` with the India-time timestamp. If the active stop gate was reached, set frontmatter `state: REVIEW_READY`, keep the current window/issue, and name the exact review required. If blocked, set `state: BLOCKED`. Never mark the next window active during close:
    ```bash
    TZ='Asia/Kolkata' date '+%d %b %Y | %I:%M %p IST'
    ```
@@ -47,4 +48,5 @@ Use this skill at the end of a work session. A close is complete only when every
 - Never commit secrets, credentials, caches, build outputs, or private data.
 - Do not commit failed or incomplete implementation work just to satisfy the clean-state invariant; ask for a decision when needed.
 - Every intentional `koder/` state transition gets a `state:` commit by default.
+- Honor `koder/docs/EXECUTION.md`: do not continue into a review-gated issue/window merely because time or context remains.
 - If a user explicitly says not to commit, report the resulting dirty paths and mark the close blocked rather than claiming a clean close.
