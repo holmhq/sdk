@@ -1,3 +1,4 @@
+import { copyWireValue, isReadonlyBytes } from "./wire-value.js";
 const errorKinds = [
     "capability",
     "transport",
@@ -116,8 +117,8 @@ function redactDetail(value, seen) {
     if (typeof value === "bigint" || typeof value === "function" || typeof value === "symbol") {
         return unserializable;
     }
-    if (isReadonlyBytesLike(value)) {
-        return value;
+    if (isReadonlyBytes(value)) {
+        return copyWireValue(value);
     }
     if (Array.isArray(value)) {
         if (seen.has(value)) {
@@ -129,14 +130,20 @@ function redactDetail(value, seen) {
             return redactedItem === undefined ? unserializable : redactedItem;
         }));
     }
-    if (typeof value !== "object" || value === null) {
+    const objectValue = value;
+    if (seen.has(objectValue)) {
         return unserializable;
     }
-    if (seen.has(value)) {
-        return unserializable;
+    seen.add(objectValue);
+    if (Object.hasOwn(objectValue, "$holm")) {
+        try {
+            return copyWireValue(value);
+        }
+        catch {
+            return unserializable;
+        }
     }
-    seen.add(value);
-    const prototype = Object.getPrototypeOf(value);
+    const prototype = Object.getPrototypeOf(objectValue);
     if (prototype !== Object.prototype && prototype !== null) {
         return unserializable;
     }
@@ -151,13 +158,6 @@ function redactDetail(value, seen) {
             output[key] = redactedValue === undefined ? unserializable : redactedValue;
         }
     }
-    return Object.freeze(output);
-}
-function isReadonlyBytesLike(value) {
-    return (typeof value === "object" &&
-        value !== null &&
-        value.$holm === "bytes" &&
-        typeof value.toUint8Array === "function" &&
-        typeof value.toJSON === "function");
+    return copyWireValue(Object.freeze(output));
 }
 //# sourceMappingURL=errors.js.map

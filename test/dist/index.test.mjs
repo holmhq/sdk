@@ -25,6 +25,6 @@ test("generated ESM artifact exposes S04 wire values and errors", () => {
     details: { token: "secret" },
   });
 
-  assert.equal(encoded, '{"bytes":{"$holm":"bytes","data":"AQID"},"ok":true}');
+  assert.equal(encoded, '{"bytes":{"$holm":"bytes","base64":"AQID"},"ok":true}');
   assert.equal(serializeHolmError(error).details.token, "[redacted]");
 });

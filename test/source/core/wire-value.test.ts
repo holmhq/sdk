@@ -28,10 +28,14 @@ test("wire-value rejects non-wire values with serialization errors", () => {
     new Error("bad"),
     new CustomValue(),
     { $holm: "not-bytes" },
-    { $holm: "bytes", data: "A" },
-    { $holm: "bytes", data: "AAB" },
-    { $holm: "bytes", data: "not base64?" },
-    { $holm: "bytes", data: "AA==", extra: true },
+    { $holm: "bytes", base64: "A" },
+    { $holm: "bytes", base64: "AAB" },
+    { $holm: "bytes", base64: "not base64?" },
+    { $holm: "bytes", base64: "AB==" },
+    { $holm: "bytes", base64: "AQ" },
+    { $holm: "bytes", base64: "AQI" },
+    { $holm: "bytes", base64: "AA==", extra: true },
+    { $holm: "bytes", data: "AA==" },
   ];
 
   for (const value of invalidValues) {
@@ -66,7 +70,7 @@ test("wire-value defensively copies objects, arrays, and bytes", () => {
 
   assert.deepEqual(input, { z: [bytes, { ok: true }], a: "first" });
   assert.notEqual(copied, input);
-  assert.equal(canonicalEncodeWireValue(copied), '{"a":"first","z":[{"$holm":"bytes","data":"AQID"},{"ok":true}]}');
+  assert.equal(canonicalEncodeWireValue(copied), '{"a":"first","z":[{"$holm":"bytes","base64":"AQID"},{"ok":true}]}');
 
   assert.equal(bytes.at(0), 1);
   const exported = bytes.toUint8Array();
@@ -83,10 +87,10 @@ test("wire-value canonical encoding sorts keys recursively", () => {
 });
 
 test("wire-value supports canonical $holm bytes tags", () => {
-  const copied = copyWireValue({ $holm: "bytes", data: "AP8B" });
+  const copied = copyWireValue({ $holm: "bytes", base64: "AP8B" });
 
   assert.equal(isReadonlyBytes(copied), true);
-  assert.equal(canonicalEncodeWireValue(copied), '{"$holm":"bytes","data":"AP8B"}');
+  assert.equal(canonicalEncodeWireValue(copied), '{"$holm":"bytes","base64":"AP8B"}');
 
   if (isReadonlyBytes(copied)) {
     assert.equal(copied.byteLength, 3);
@@ -108,11 +112,11 @@ test("wire-value supports predicates, assertions, iterable bytes, and short byte
   assert.equal(isWireValue(undefined), false);
   assert.doesNotThrow(() => assertWireValue(nullPrototype));
   assert.throws(() => assertWireValue({ bad: undefined }), HolmError);
-  assert.equal(canonicalEncodeWireValue(createReadonlyBytes([])), '{"$holm":"bytes","data":""}');
-  assert.equal(canonicalEncodeWireValue(createReadonlyBytes([1])), '{"$holm":"bytes","data":"AQ"}');
-  assert.equal(canonicalEncodeWireValue(createReadonlyBytes([1, 2])), '{"$holm":"bytes","data":"AQI"}');
-  assert.equal(canonicalEncodeWireValue({ $holm: "bytes", data: "AQ" }), '{"$holm":"bytes","data":"AQ"}');
-  assert.equal(canonicalEncodeWireValue({ $holm: "bytes", data: "AQI" }), '{"$holm":"bytes","data":"AQI"}');
+  assert.equal(canonicalEncodeWireValue(createReadonlyBytes([])), '{"$holm":"bytes","base64":""}');
+  assert.equal(canonicalEncodeWireValue(createReadonlyBytes([1])), '{"$holm":"bytes","base64":"AQ=="}');
+  assert.equal(canonicalEncodeWireValue(createReadonlyBytes([1, 2])), '{"$holm":"bytes","base64":"AQI="}');
+  assert.equal(canonicalEncodeWireValue({ $holm: "bytes", base64: "AQ==" }), '{"$holm":"bytes","base64":"AQ=="}');
+  assert.equal(canonicalEncodeWireValue({ $holm: "bytes", base64: "AQI=" }), '{"$holm":"bytes","base64":"AQI="}');
 });
 
 test("wire-value rejects invalid byte inputs", () => {

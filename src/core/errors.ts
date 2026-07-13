@@ -1,4 +1,4 @@
-import type { WireValue } from "./wire-value.js";
+import { copyWireValue, isReadonlyBytes, type WireValue } from "./wire-value.js";
 
 export type HolmErrorKind =
   | "capability"
@@ -169,8 +169,8 @@ function redactDetail(value: unknown, seen: WeakSet<object>): WireValue | undefi
   if (typeof value === "bigint" || typeof value === "function" || typeof value === "symbol") {
     return unserializable;
   }
-  if (isReadonlyBytesLike(value)) {
-    return value as WireValue;
+  if (isReadonlyBytes(value)) {
+    return copyWireValue(value);
   }
   if (Array.isArray(value)) {
     if (seen.has(value)) {
@@ -184,15 +184,21 @@ function redactDetail(value: unknown, seen: WeakSet<object>): WireValue | undefi
       }),
     );
   }
-  if (typeof value !== "object" || value === null) {
+  const objectValue = value as object;
+  if (seen.has(objectValue)) {
     return unserializable;
   }
-  if (seen.has(value)) {
-    return unserializable;
-  }
-  seen.add(value);
+  seen.add(objectValue);
 
-  const prototype = Object.getPrototypeOf(value);
+  if (Object.hasOwn(objectValue, "$holm")) {
+    try {
+      return copyWireValue(value);
+    } catch {
+      return unserializable;
+    }
+  }
+
+  const prototype = Object.getPrototypeOf(objectValue);
   if (prototype !== Object.prototype && prototype !== null) {
     return unserializable;
   }
@@ -207,15 +213,5 @@ function redactDetail(value: unknown, seen: WeakSet<object>): WireValue | undefi
       output[key] = redactedValue === undefined ? unserializable : redactedValue;
     }
   }
-  return Object.freeze(output);
-}
-
-function isReadonlyBytesLike(value: unknown): boolean {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    (value as { readonly $holm?: unknown }).$holm === "bytes" &&
-    typeof (value as { readonly toUint8Array?: unknown }).toUint8Array === "function" &&
-    typeof (value as { readonly toJSON?: unknown }).toJSON === "function"
-  );
+  return copyWireValue(Object.freeze(output));
 }

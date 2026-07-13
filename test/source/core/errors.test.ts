@@ -2,7 +2,7 @@ import { strict as assert } from "node:assert";
 import { test } from "node:test";
 
 import { HolmError, isHolmError, serializeHolmError, type HolmErrorOptions } from "../../../src/core/errors.js";
-import { canonicalEncodeWireValue, createReadonlyBytes } from "../../../src/core/wire-value.js";
+import { canonicalEncodeWireValue, createReadonlyBytes, isReadonlyBytes } from "../../../src/core/wire-value.js";
 
 test("errors serialize HolmError values without unsafe implementation detail", () => {
   const cause = new Error("local cause with token");
@@ -33,7 +33,45 @@ test("errors serialize HolmError values without unsafe implementation detail", (
   assert.equal(Object.hasOwn(serialized, "cause"), false);
   assert.equal(
     canonicalEncodeWireValue(serialized.details ?? null),
-    '{"bytes":{"$holm":"bytes","data":"BAUG"},"ok":"kept","payload":"[redacted]","token":"[redacted]"}',
+    '{"bytes":{"$holm":"bytes","base64":"BAUG"},"ok":"kept","payload":"[redacted]","token":"[redacted]"}',
+  );
+});
+
+test("errors copy byte details and reject forged byte-like objects", () => {
+  let exported = new Uint8Array([9, 9, 9]);
+  const forged = {
+    $holm: "bytes",
+    byteLength: 3,
+    toUint8Array() {
+      return exported;
+    },
+    toJSON() {
+      return { $holm: "bytes", base64: "CQkJ" };
+    },
+  };
+  const byteDetail = createReadonlyBytes([1, 2, 3]);
+  const serialized = new HolmError({
+    kind: "protocol",
+    code: "details",
+    message: "Details",
+    details: { byteDetail, forged },
+  }).toJSON();
+
+  assert.equal(
+    canonicalEncodeWireValue(serialized.details ?? null),
+    '{"byteDetail":{"$holm":"bytes","base64":"AQID"},"forged":"[unserializable]"}',
+  );
+
+  if (serialized.details && typeof serialized.details === "object" && !Array.isArray(serialized.details)) {
+    const details = serialized.details as { readonly byteDetail?: unknown };
+    assert.equal(isReadonlyBytes(details.byteDetail), true);
+    assert.notEqual(details.byteDetail, byteDetail);
+  }
+
+  exported = new Uint8Array([0, 0, 0]);
+  assert.equal(
+    canonicalEncodeWireValue(serialized.details ?? null),
+    '{"byteDetail":{"$holm":"bytes","base64":"AQID"},"forged":"[unserializable]"}',
   );
 });
 
@@ -96,6 +134,12 @@ test("errors normalize unknown thrown values to safe protocol errors", () => {
   assert.deepEqual(namelessError.details, { thrown: "error", name: "Error" });
   assert.equal(nativeError.message, "Unexpected error");
   assert.equal(Object.hasOwn(nativeError, "stack"), false);
+  assert.deepEqual(serializeHolmError(new HolmError({ kind: "protocol", code: "x", message: "X" })), {
+    $holm: "error",
+    kind: "protocol",
+    code: "x",
+    message: "X",
+  });
 });
 
 test("errors validate kind, code, status, and retryable inputs", () => {

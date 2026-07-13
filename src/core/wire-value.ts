@@ -15,7 +15,7 @@ export interface ReadonlyBytes extends Iterable<number> {
 
 export interface HolmBytesTag {
   readonly $holm: "bytes";
-  readonly data: string;
+  readonly base64: string;
 }
 
 const base64Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -46,7 +46,7 @@ class HolmReadonlyBytes implements ReadonlyBytes {
   }
 
   toJSON(): HolmBytesTag {
-    return { $holm: "bytes", data: encodeBase64(this.#bytes) };
+    return { $holm: "bytes", base64: encodeBase64(this.#bytes) };
   }
 
   [Symbol.iterator](): Iterator<number> {
@@ -109,7 +109,7 @@ function copyValidated(value: unknown, seen: WeakSet<object>, path: string): Wir
   }
   markSeen(value, seen, path);
   if (isHolmBytesTag(value)) {
-    return createReadonlyBytes(decodeBase64(value.data));
+    return createReadonlyBytes(decodeBase64(value.base64));
   }
 
   const prototype = Object.getPrototypeOf(value);
@@ -131,7 +131,7 @@ function copyValidated(value: unknown, seen: WeakSet<object>, path: string): Wir
 function isHolmBytesTag(value: object): value is HolmBytesTag {
   const input = value as Record<string, unknown>;
   const keys = Object.keys(input);
-  return keys.length === 2 && input.$holm === "bytes" && typeof input.data === "string";
+  return keys.length === 2 && input.$holm === "bytes" && typeof input.base64 === "string";
 }
 
 function markSeen(value: object, seen: WeakSet<object>, path: string): void {
@@ -146,7 +146,7 @@ function encodeCanonical(value: WireValue): string {
     return JSON.stringify(value);
   }
   if (isReadonlyBytes(value)) {
-    return `{"$holm":"bytes","data":${JSON.stringify(value.toJSON().data)}}`;
+    return `{"$holm":"bytes","base64":${JSON.stringify(value.toJSON().base64)}}`;
   }
   if (Array.isArray(value)) {
     return `[${value.map((item) => encodeCanonical(item)).join(",")}]`;
@@ -194,46 +194,48 @@ function encodeBase64(bytes: readonly number[]): string {
     output += base64Alphabet.charAt((bits >> 12) & 63);
     if (index + 1 < bytes.length) {
       output += base64Alphabet.charAt((bits >> 6) & 63);
+    } else {
+      output += "=";
     }
     if (index + 2 < bytes.length) {
       output += base64Alphabet.charAt(bits & 63);
+    } else {
+      output += "=";
     }
   }
   return output;
 }
 
 function decodeBase64(value: string): readonly number[] {
-  if (!/^[A-Za-z0-9+/]*$/.test(value) || value.length % 4 === 1) {
-    throw invalidWireValue("$.data", "bytes data must be canonical unpadded base64");
+  if (!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value)) {
+    throw invalidWireValue("$.base64", "bytes base64 must be canonical padded base64");
   }
 
   const bytes: number[] = [];
   for (let index = 0; index < value.length; index += 4) {
     const first = decodeBase64Char(value[index] ?? "A");
     const second = decodeBase64Char(value[index + 1] ?? "A");
-    const third = decodeBase64Char(value[index + 2] ?? "A");
-    const fourth = decodeBase64Char(value[index + 3] ?? "A");
+    const hasThird = value[index + 2] !== "=";
+    const hasFourth = value[index + 3] !== "=";
+    const third = hasThird ? decodeBase64Char(value[index + 2] as string) : 0;
+    const fourth = hasFourth ? decodeBase64Char(value[index + 3] as string) : 0;
     const bits = (first << 18) | (second << 12) | (third << 6) | fourth;
     bytes.push((bits >> 16) & 255);
-    if (index + 2 < value.length) {
+    if (hasThird) {
       bytes.push((bits >> 8) & 255);
     }
-    if (index + 3 < value.length) {
+    if (hasFourth) {
       bytes.push(bits & 255);
     }
   }
   if (encodeBase64(bytes) !== value) {
-    throw invalidWireValue("$.data", "bytes data must be canonical unpadded base64");
+    throw invalidWireValue("$.base64", "bytes base64 must be canonical padded base64");
   }
   return bytes;
 }
 
 function decodeBase64Char(value: string): number {
-  const decoded = base64Values.get(value);
-  if (decoded === undefined) {
-    throw invalidWireValue("$.data", "bytes data must be canonical unpadded base64");
-  }
-  return decoded;
+  return base64Values.get(value) as number;
 }
 
 function invalidWireValue(path: string, reason: string): HolmError {

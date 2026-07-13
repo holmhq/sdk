@@ -27,22 +27,22 @@
         "gzipBytes": 2048,
         "rawBytes": 6144
       },
-      "gzipBytes": 1262,
-      "minifiedBytes": 3684,
+      "gzipBytes": 1276,
+      "minifiedBytes": 3668,
       "path": "dist/core/errors.js",
-      "rawBytes": 5123,
-      "sha256": "52f2763972057e7db93a0b82967e7c3781b5b4833e3748f3360842e3bc98a937"
+      "rawBytes": 5112,
+      "sha256": "89b34f68ba2f57c9efd0701cf9adbde81ea7e85477d96daf7c72ec16463a0595"
     },
     {
       "budgets": {
         "gzipBytes": 2560,
         "rawBytes": 8192
       },
-      "gzipBytes": 1778,
-      "minifiedBytes": 5424,
+      "gzipBytes": 1805,
+      "minifiedBytes": 5438,
       "path": "dist/core/wire-value.js",
-      "rawBytes": 6971,
-      "sha256": "bb4c67defe953fc4b6e107a3c0c224c90cb657a4e101e6d4509f8adadb6a855b"
+      "rawBytes": 7042,
+      "sha256": "a79793c838c6848a7864c3bb1fe9d38d9c4ff43fb34954db25dfbffe231ea25a"
     }
   ],
   "package": {
@@ -52,8 +52,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 3351,
-    "minifiedBytes": 9557,
-    "rawBytes": 12652
+    "gzipBytes": 3392,
+    "minifiedBytes": 9555,
+    "rawBytes": 12712
   }
 }

@@ -1,4 +1,4 @@
-import type { WireValue } from "./wire-value.js";
+import { type WireValue } from "./wire-value.js";
 export type HolmErrorKind = "capability" | "transport" | "remote" | "protocol" | "serialization" | "cancellation" | "timeout" | "lifecycle" | "extension";
 export interface HolmErrorOptions {
     readonly kind: HolmErrorKind;

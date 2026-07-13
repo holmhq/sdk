@@ -13,7 +13,7 @@ export interface ReadonlyBytes extends Iterable<number> {
 }
 export interface HolmBytesTag {
     readonly $holm: "bytes";
-    readonly data: string;
+    readonly base64: string;
 }
 export declare function createReadonlyBytes(input: ArrayLike<number> | Iterable<number>): ReadonlyBytes;
 export declare function isReadonlyBytes(value: unknown): value is ReadonlyBytes;
