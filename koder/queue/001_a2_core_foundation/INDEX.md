@@ -73,7 +73,7 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 | ---: | --- | --- | --- | --- | --- | --- | --- | --- |
 | 01 | approved | [koder/plans/001_S01_toolchain_configs/INDEX.md](../../plans/001_S01_toolchain_configs/INDEX.md) | 90m | medium | low | harnex-light | `npm run typecheck:core`; `npm run test:source`; `npm run test:types` | stop on non-MIT tool or >120m split |
 | 02 | approved | [koder/plans/001_S02_build_declarations_artifact_smoke/INDEX.md](../../plans/001_S02_build_declarations_artifact_smoke/INDEX.md) | 105m | medium | medium | harnex-chain | `npm run build`; `npm run test:declarations`; `npm run test:dist` | stop if build output cannot be deterministic |
-| 03 | queued | [koder/plans/001_S03_repro_ci_size_license/INDEX.md](../../plans/001_S03_repro_ci_size_license/INDEX.md) | 90m | medium | low | harnex-light | `npm run ci`; `npm run check:repro`; `npm run check:licenses`; `npm run size` | stop on credential/release/cloud requirement |
+| 03 | approved | [koder/plans/001_S03_repro_ci_size_license/INDEX.md](../../plans/001_S03_repro_ci_size_license/INDEX.md) | 90m | medium | low | harnex-light | `npm run ci`; `npm run check:repro`; `npm run check:licenses`; `npm run size` | stop on credential/release/cloud requirement |
 | 04 | queued | [koder/plans/001_S04_wire_value_errors/INDEX.md](../../plans/001_S04_wire_value_errors/INDEX.md) | 100m | medium | low | harnex-chain | `npm run ci`; targeted wire/error tests; dist smoke | stop if D006/D011 need revision |
 | 05 | queued | [koder/plans/001_S05_capability_registry/INDEX.md](../../plans/001_S05_capability_registry/INDEX.md) | 90m | medium | low | harnex-light | `npm run ci`; targeted capability tests; type tests | stop if canonical Holm IDs are required |
 | 06 | queued | [koder/plans/001_S06_runtime_invocation_caller/INDEX.md](../../plans/001_S06_runtime_invocation_caller/INDEX.md) | 110m | medium-high | medium | harnex-chain | `npm run ci`; targeted runtime/caller tests; dist smoke | stop if auth semantics would be invented |
@@ -93,5 +93,6 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 - 2026-07-14: arithmetic reconciled; 16 rows sum to 1,700m (28h20m), 3.54x the 8h target window.
 - 2026-07-14: blind-orchestrator/context-rollover contract added and independently approved at `95ebc69` with no findings.
 - 2026-07-14: `S01` implemented at `1c450cf` and independently approved at `48a772e`; required validation passed.
-- 2026-07-14: `S02` implemented at `c1504a9` and independently approved at `a3e4296`; required validation passed and the next eligible row is `S03`.
-- pending: `S03` has not started.
+- 2026-07-14: `S02` implemented at `c1504a9` and independently approved at `a3e4296`; required validation passed.
+- 2026-07-14: `S03` implemented at `f48ea37` and independently approved at `c2ef6e0`; required validation passed, Issue `#003` is resolved, and the next eligible row is `S04`.
+- pending: `S04` has not started.

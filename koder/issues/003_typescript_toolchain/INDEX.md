@@ -1,5 +1,5 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
 updated: 2026-07-14
@@ -45,13 +45,14 @@ Create the minimal toolchain needed for strict TDD:
 - [x] Tests cover source ESM and at least one generated ESM artifact. (`S02`)
 - [x] Declaration output is generated and type-tested from a consumer fixture.
       (`S02`)
-- [ ] Build output is reproducible from a clean checkout.
-- [ ] Coverage and raw/minified/gzip size commands exist and fail clearly.
-- [ ] CI runs typecheck, tests, build, declaration consumer test, bundle smoke,
-      license checks, and diff/reproducibility checks.
+- [x] Build output is reproducible from a clean checkout. (`S03`)
+- [x] Coverage and raw/minified/gzip size commands exist and fail clearly.
+      (`S03`)
+- [x] CI runs typecheck, tests, build, declaration consumer test, bundle smoke,
+      license checks, and diff/reproducibility checks. (`S03`)
 - [x] `npm publish` remains blocked by `"private": true`; no registry setup is
       required. (`S01`)
-- [ ] README developer commands match the implemented scripts.
+- [x] README developer commands match the implemented scripts. (`S03`)
 
 ## Non-Goals
 
