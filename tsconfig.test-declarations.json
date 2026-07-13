@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["ES2022"],
     "types": [],
-    "rootDir": "."
+    "noEmit": true
   },
-  "include": ["src/**/*.ts", "test/types/core-ambient-boundary.test.ts"]
+  "include": ["test/declarations/**/*.ts"]
 }

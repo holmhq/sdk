@@ -3,7 +3,9 @@
   "compilerOptions": {
     "lib": ["ES2022"],
     "types": [],
-    "rootDir": "."
+    "rootDir": "src",
+    "outDir": "dist",
+    "sourceMap": true
   },
-  "include": ["src/**/*.ts", "test/types/core-ambient-boundary.test.ts"]
+  "include": ["src/**/*.ts"]
 }

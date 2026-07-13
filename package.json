@@ -6,6 +6,19 @@
   "description": "The universal TypeScript SDK for Holm apps and surfaces.",
   "license": "MIT",
   "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/holmhq/sdk.git"
@@ -18,7 +31,10 @@
     "node": ">=20"
   },
   "scripts": {
+    "build": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.build.json",
     "typecheck:core": "tsc -p tsconfig.core.json --noEmit",
+    "test:declarations": "tsc -p tsconfig.test-declarations.json --noEmit",
+    "test:dist": "node --test test/dist/index.test.mjs",
     "test:source": "tsc -p tsconfig.test-source.json && node --test .tmp/test-source/test/source/core/index.test.js",
     "test:types": "tsc -p tsconfig.test-types.core.json --noEmit && tsc -p tsconfig.test-types.web.json --noEmit && tsc -p tsconfig.test-types.node.json --noEmit"
   },
