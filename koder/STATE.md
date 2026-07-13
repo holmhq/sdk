@@ -1,9 +1,10 @@
 ---
-updated_at: "14 Jul 2026 | 01:11 AM IST"
-state: READY
+updated_at: "14 Jul 2026 | 01:19 AM IST"
+state: BLOCKED
 active_window: A2
 active_issue: 003
-stop_gate: "Complete and independently review Issues #003-#006 as one core API/conformance checkpoint; do not start Issue #007"
+orchestration_mode: blind
+stop_gate: "Review the new blind-orchestrator/context-rollover hard gate before Queue #001 launch; then stop before Issue #007"
 ---
 
 # Koder State
@@ -24,22 +25,22 @@ stop_gate: "Complete and independently review Issues #003-#006 as one core API/c
 
 ## Present
 
-- State is **READY** to run
-  `koder/queue/001_a2_core_foundation/INDEX.md`, beginning with Plan
-  `001_S01` for Issue `#003` strict TypeScript configs and the first observed
-  red ambient-boundary/type fixture.
-- The queue is packed to `3.54x` an eight-hour away window. Drain it serially;
-  reserve its final `45m` for validation and clean handoff if time expires.
-- Strict TDD, independent review, local validation, logical commits, and clean
-  pushed checkpoints are mandatory for every slice.
+- Queue `#001` is temporarily **BLOCKED** from launch while its new
+  `koder/docs/BLIND_ORCHESTRATION.md` hard gate receives focused review.
+- The primary must remain a routing-only coordinator: fresh workers own source,
+  tests, diffs, reviews, and fixes; primary sees compact summaries and process
+  state only. Direct mega-session implementation is forbidden.
+- Coordinators may route at most `4` completed implementation entries before a
+  clean durable handoff and fresh context. If unattended relaunch is unavailable,
+  stop at rollover rather than accumulate context.
 - npm publication, releases/tags, deploys, credentials, cross-repository edits,
   and Issue `#007+` implementation remain forbidden.
 
 ## Future
 
-1. Start Queue `#001` at `001_S01`; follow its completion contract and run log.
-2. Continue dependency-safe slices through `S16`, recording red/green evidence,
-   reviews, commits, issue movement, and queue actuals; stop cleanly at the
-   eight-hour timebox if the full `28h20m` nominal queue does not drain.
-3. If `S16` drains, run the final core API/conformance review and set
-   **REVIEW_READY**; never begin Issue `#007` automatically.
+1. Independently review the blind-orchestration hard gate and return Queue
+   `#001` to READY only if it prevents primary-context ingestion.
+2. Start at `001_S01` with one fresh implementation worker and one fresh reviewer;
+   do not preload later plans or read their work into primary context.
+3. Continue under the `8h`/`45m` closeout contract and mandatory four-entry
+   coordinator rollover; never begin Issue `#007` automatically.

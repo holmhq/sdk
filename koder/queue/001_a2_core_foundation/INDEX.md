@@ -1,8 +1,9 @@
 ---
-status: ready
+status: review
 target_window: 8h
 queued_effort_target: 28h20m
 autonomy_level: A2
+orchestration_mode: blind
 created: 2026-07-14
 updated: 2026-07-14
 issues: [003, 004, 005, 006]
@@ -21,8 +22,28 @@ Run the A2 implementation conveyor serially through Issues #003-#006, using the 
 - Work serially on SDK `main`; no parallel worktrees unless the owner changes the window.
 - Strict red -> green -> refactor is mandatory for every implementation entry.
 - Independent review is required per completed slice and again at the A2 gate.
+- `koder/docs/BLIND_ORCHESTRATION.md` is a hard launch gate: the primary
+  orchestrates fresh workers and must not implement or ingest worker detail.
 - Preserve `@holmhq/sdk/state` as canonical; do not create `@holmhq/sdk/resources`.
 - Stop before Issue #007 even if all entries drain early.
+
+## Blind Orchestrator Contract
+
+- The primary loads only this queue, the current row summary, compact worker
+  sidecars, changed paths, validation outcomes, commit refs, review verdict
+  summaries, blockers, and Git/process state.
+- It never preloads all plans or reads product source, tests, generated output,
+  full diffs, review bodies, worker transcripts, routine panes, or long logs.
+- Each row uses a fresh implementation worker followed by a fresh independent
+  reviewer. Fix workers read committed review findings directly; the primary
+  sees only verdict/count/path summaries.
+- One implementation worker may own SDK `main` at a time. Every worker gets a
+  bounded task file and work-level harnex completion fence.
+- After at most four completed implementation rows, the primary must commit a
+  clean handoff and resume in a fresh coordinator context. If unattended
+  relaunch is unavailable, stop cleanly at that rollover.
+- No harnex/equivalent isolation, compact summary sidecar, or independent
+  reviewer means **do not launch**; direct mega-session execution is forbidden.
 
 ## Progress Accounting
 
@@ -42,9 +63,9 @@ For an overnight run, stop starting implementation after 7h15m and reserve 45m f
 
 ## Continuation Policy
 
-Drain entries serially through S16. If an entry blocks, record the blocker and continue only to a dependency-independent eligible entry, normally none across issue boundaries. If all entries drain early, run final independent review and stop; never enter Issue #007.
+Drain entries serially through S16. If an entry blocks, record the blocker and continue only to a dependency-independent eligible entry, normally none across issue boundaries. After four completed implementation entries, hand off to a fresh blind coordinator and resume at the next eligible row. If all entries drain early, run final independent review and stop; never enter Issue #007.
 
-Early-stop consent is allowed only for a recorded blocker, no eligible dependency-safe entry, validation failure requiring owner judgment, or reaching the A2 review gate. Primary-entry drain alone is not a reason to skip final review/closeout.
+Early-stop consent is allowed only for a recorded blocker, no eligible dependency-safe entry, validation failure requiring owner judgment, reaching the A2 review gate, or a mandatory four-entry context rollover when no unattended fresh coordinator can relaunch. Primary-entry drain alone is not a reason to skip final review/closeout.
 
 ## Entries
 
@@ -70,4 +91,5 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 ## Run Log
 
 - 2026-07-14: arithmetic reconciled; 16 rows sum to 1,700m (28h20m), 3.54x the 8h target window.
+- 2026-07-14: blind-orchestrator/context-rollover contract added; launch awaits focused review.
 - pending: no implementation entries have started.

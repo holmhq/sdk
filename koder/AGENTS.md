@@ -59,4 +59,23 @@ This repo uses the koder pattern for durable agent handoff and project memory.
 - `dist/` is intentionally tracked once builds exist because BFBB apps vendor generated ESM artifacts. Commit generated output only when source tests, declaration checks, bundle smoke tests, and size reports pass.
 - MIT is the project license. New dependencies must be license-compatible and justified; avoid dependency-heavy convenience layers in the core.
 - Implementation is serial on `main` inside this repo unless the user explicitly authorizes parallel worktrees. A separate agent may work here concurrently with agents in other repositories.
+
+### Blind queue orchestration (hard rule)
+
+- Before running any queue or harnex chain, read
+  `koder/docs/BLIND_ORCHESTRATION.md` completely.
+- The primary queue agent is a **blind orchestrator only**. It dispatches fresh
+  implementation, review, fix, and re-review workers; it does not implement
+  product code or ingest their full diffs, source, tests, reviews, transcripts,
+  panes, or long logs into its own context.
+- The primary reads only queue/process metadata, the current row summary,
+  compact worker sidecars, changed paths, validation results, commit refs,
+  verdict summaries, blockers, and Git state. Workers read each other's
+  committed artifacts directly.
+- Never preload all queue plans. Route one current entry at a time. After at
+  most four completed implementation entries, commit a durable handoff and
+  resume with a fresh coordinator context. If unattended relaunch is
+  unavailable, stop cleanly rather than accumulating context.
+- If harnex or an explicitly equivalent isolated worker harness is unavailable,
+  the queue is blocked. Do not turn it into one giant direct-coding session.
 - Autonomous work is granted only by the active window in `koder/docs/EXECUTION.md`. At its stop gate, commit/push a clean checkpoint, set `koder/STATE.md` to `REVIEW_READY` or `BLOCKED`, run `close`, and return to the coordinating session rather than starting the next issue.

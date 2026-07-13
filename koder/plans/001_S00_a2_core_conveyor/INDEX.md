@@ -7,6 +7,7 @@ status: approved
 created: 2026-07-14
 updated: 2026-07-14
 autonomy_level: A2
+orchestration_mode: blind
 issues: [003, 004, 005, 006]
 implementation_slices: 16
 queue: 001_a2_core_foundation
@@ -37,6 +38,26 @@ A2 covers four issues and sixteen implementation slices:
 - Existing Holm SDK/state packages remain live and are migration evidence, not deletion targets.
 - Source and generated artifacts must both be tested once build output exists.
 - Every child issue completion requires local validation, review evidence, clean commit, and push.
+- The primary queue agent follows `koder/docs/BLIND_ORCHESTRATION.md`: it routes
+  fresh workers and must not implement product code or ingest worker detail.
+
+## Blind Orchestration And Context Budget
+
+- The primary consumes only queue/process state, compact sidecars, changed
+  paths, validation outcomes, commit refs, review verdict summaries, blockers,
+  and Git status.
+- Implementation workers read the current plan/source and perform TDD. Fresh
+  review workers read the resulting diff/tests and commit a verdict. Fix workers
+  consume review artifacts directly; findings are not re-digested by primary.
+- Never preload future plan bodies, full source/diffs/reviews, transcripts,
+  panes, generated output, or long logs into coordinator context.
+- One implementation worker owns SDK `main` at a time. Monitor harnex work-level
+  completion rather than pane progress.
+- A coordinator routes at most four completed implementation entries, then
+  commits a clean handoff and resumes in fresh context. If unattended relaunch
+  is unavailable, stopping at rollover is explicitly safe.
+- If isolated workers, compact summaries, and independent review cannot be
+  enforced, Queue `#001` is blocked; direct mega-session execution is forbidden.
 
 ## Issue To Slice Table
 

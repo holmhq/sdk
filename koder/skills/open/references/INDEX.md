@@ -10,7 +10,7 @@ Use this skill at the beginning of a work session in this repository. Opening is
 
 1. Locate the repository root from the current working directory.
 2. Read `koder/STATE.md` completely before making changes. Treat it as the durable narrative hand-off.
-3. When `koder/docs/EXECUTION.md` exists, read it completely and surface only the active autonomous window, its allowed scope, and its stop gate. Do not activate a future window or follow its linked source material during `open`.
+3. When `koder/docs/EXECUTION.md` exists, read it completely and surface only the active autonomous window, its allowed scope, stop gate, and any hard orchestration/context mode. If it names blind orchestration, report that the primary must route fresh workers and must not ingest implementation detail. Do not activate a future window or follow its linked source material during `open`.
 4. When `koder/projects/INDEX.md` exists, read that index only (not every project card) and report the registry as context when it affects the active window.
 5. Inspect live repository facts:
    ```bash
@@ -20,14 +20,14 @@ Use this skill at the beginning of a work session in this repository. Opening is
    git rev-list --left-right --count @{u}...HEAD 2>/dev/null || true
    ```
    If this is not a Git repository, say so clearly and continue with the file-based hand-off.
-6. Summarize the hand-off as **Past**, **Present**, and **Future**. Include dirty/staged/untracked paths, branch and upstream drift, when relevant. Render `state`, `active_window`, `active_issue`, and `stop_gate` from STATE frontmatter when present.
+6. Summarize the hand-off as **Past**, **Present**, and **Future**. Include dirty/staged/untracked paths, branch and upstream drift, when relevant. Render `state`, `active_window`, `active_issue`, `orchestration_mode`, and `stop_gate` from STATE frontmatter when present.
 7. Render the response using `FORMAT.md`:
    - use `━━━` separators, not Markdown horizontal rules;
    - keep the stat block compact;
    - omit **Notes** when there is nothing that needs attention;
    - use inline code for paths, commits, and issue numbers;
    - finish with one judgment line and one suggested next action.
-8. Ask what the user wants to do next unless they already gave a concrete task. When an active window exists, make the default suggestion the bounded window itself and explicitly include its stop condition.
+8. Ask what the user wants to do next unless they already gave a concrete task. When an active window exists, make the default suggestion the bounded window itself and explicitly include its stop condition. For a blind queue, say that "yes" starts routing fresh workers—not direct implementation in the primary context.
 
 ## Output contract
 

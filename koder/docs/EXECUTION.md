@@ -3,6 +3,7 @@ title: SDK Autonomous Execution Windows
 updated: 2026-07-14
 active_window: A2
 active_issue: 003
+orchestration_mode: blind
 requires_review_after: true
 ---
 
@@ -35,13 +36,15 @@ decision recorded here and in `koder/STATE.md`.
 ### Required reading
 
 1. `koder/STATE.md`
-2. `koder/issues/001_universal_sdk_foundation/INDEX.md`
-3. `koder/docs/{ARCHITECTURE,DECISIONS}.md`
-4. The active child issue, beginning with
+2. `koder/docs/BLIND_ORCHESTRATION.md`
+3. `koder/issues/001_universal_sdk_foundation/INDEX.md`
+4. `koder/docs/{ARCHITECTURE,DECISIONS}.md`
+5. The active child issue, beginning with
    `koder/issues/003_typescript_toolchain/INDEX.md`
-5. The active plan/queue artifact named by `koder/STATE.md`, when present
-6. `koder/docs/HOLM_SOURCE_MAP.md` only when a migration/conformance claim needs
-   source routing; read Holm source at the pinned commit rather than guessing
+6. The active queue row and current plan named by `koder/STATE.md`; do not load
+   future plan bodies
+7. `koder/docs/HOLM_SOURCE_MAP.md` only when a migration/conformance worker needs
+   source routing; the primary orchestrator must not absorb that source context
 
 ### Ordered outcomes
 
@@ -57,6 +60,15 @@ decision recorded here and in `koder/STATE.md`.
 
 ### Execution rules
 
+- Queue `#001` runs under the hard blind-orchestrator contract in
+  `koder/docs/BLIND_ORCHESTRATION.md`.
+- The primary agent routes only: it must dispatch fresh harnex implementation,
+  independent-review, fix, and re-review workers and consume compact summaries,
+  not product source, full diffs, worker transcripts, review bodies, or long
+  logs. If isolated dispatch is unavailable, stop; do not implement directly.
+- Never preload all plans. Read/route only the current row. After at most four
+  completed implementation entries, write a clean durable handoff and resume
+  with a fresh coordinator; if unattended relaunch is unavailable, stop there.
 - Work serially on `main`; do not overlap implementation agents or use
   worktrees unless the owner explicitly changes this rule.
 - Use strict red → green → refactor for every implementation slice. Preserve
