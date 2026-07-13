@@ -30,7 +30,7 @@ repository.
 
 ## SDK boundary
 
-- SDK jsDelivr URLs use `holmhq-admin/sdk`, not the CDN repository.
+- SDK jsDelivr URLs use `holmhq/sdk`, not the CDN repository.
 - A BFBB app vendors the SDK artifact locally for runtime sovereignty.
 - CDN may later host SDK-powered UI components, but framework/UI libraries must
   not become dependencies of SDK core.

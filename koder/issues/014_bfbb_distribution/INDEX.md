@@ -34,7 +34,7 @@ would undermine reproducibility.
   unless separately approved.
 
 Actual GitHub source for initial links:
-`https://github.com/holmhq-admin/sdk`.
+`https://github.com/holmhq/sdk`.
 
 ## Acceptance Criteria
 

@@ -4,7 +4,7 @@ status: active
 role: portable-sdk-implementation
 updated: 2026-07-13
 local_path: ~/Projects/holmhq/sdk
-remote: git@github.com-holmhq:holmhq-admin/sdk.git
+remote: git@github.com-holmhq:holmhq/sdk.git
 branch: main
 bootstrap_commit: c681bb3513f739620fe9c6c4a856f0d3c4dd02c0
 write_policy: primary

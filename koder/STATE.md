@@ -1,5 +1,5 @@
 ---
-updated_at: "13 Jul 2026 | 10:37 PM IST"
+updated_at: "13 Jul 2026 | 10:48 PM IST"
 state: READY
 active_window: A1
 active_issue: 002
@@ -18,6 +18,7 @@ stop_gate: "Decision-ready architecture committed and pushed; return for review 
 
 - State is **READY** for bounded autonomous window **A1** only: Issue `#002` architecture decision package.
 - The permitted workflow and hard stop are in `koder/docs/EXECUTION.md`.
+- Canonical origin is `git@github.com-holmhq:holmhq/sdk.git` (`https://github.com/holmhq/sdk`); the mistakenly targeted earlier repository is obsolete.
 - Cross-repository roles are tracked in `koder/projects/` (Holm, SDK, Sobek, CDN).
 - No SDK implementation, dependency install, npm publication, tag, or release has started.
 - Existing Holm `packages/holm-sdk` and `packages/holm-state` remain authoritative for current behavior.

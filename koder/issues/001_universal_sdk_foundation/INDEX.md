@@ -44,8 +44,8 @@ move one evidenced slice at a time.
 
 ## Locked product decisions
 
-1. Repository: `holmhq/sdk` product identity; current remote is
-   `git@github.com:holmhq-admin/sdk.git`.
+1. Repository and remote: `holmhq/sdk` at
+   `git@github.com:holmhq/sdk.git`.
 2. Package name: `@holmhq/sdk`.
 3. Source language: strict TypeScript; consumers receive generated ESM JS,
    declarations, and source maps.
