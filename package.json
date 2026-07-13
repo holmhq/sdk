@@ -41,7 +41,7 @@
     "typecheck:core": "tsc -p tsconfig.core.json --noEmit",
     "test:declarations": "tsc -p tsconfig.test-declarations.json --noEmit",
     "test:dist": "node --test test/dist/index.test.mjs",
-    "test:source": "tsc -p tsconfig.test-source.json && node --test .tmp/test-source/test/source/core/index.test.js",
+    "test:source": "node scripts/test-source.mjs",
     "test:types": "tsc -p tsconfig.test-types.core.json --noEmit && tsc -p tsconfig.test-types.web.json --noEmit && tsc -p tsconfig.test-types.node.json --noEmit"
   },
   "devDependencies": {

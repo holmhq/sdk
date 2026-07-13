@@ -32,6 +32,7 @@ if (compile.status !== 0) {
   process.exit(compile.status ?? 1);
 }
 
+const testFiles = listFiles(".tmp/test-source/test/source").filter((path) => path.endsWith(".test.js"));
 const args = [
   "--test",
   "--experimental-test-coverage",
@@ -39,7 +40,7 @@ const args = [
   `--test-coverage-lines=${thresholds.lines}`,
   `--test-coverage-functions=${thresholds.functions}`,
   `--test-coverage-branches=${thresholds.branches}`,
-  ".tmp/test-source/test/source/core/index.test.js",
+  ...testFiles,
 ];
 const coverage = spawnSync(process.execPath, args, {
   encoding: "utf8",
@@ -214,7 +215,11 @@ function isCoveredOffset(ranges, offset) {
   const containing = ranges
     .filter((range) => range.startOffset <= offset && offset < range.endOffset)
     .sort((a, b) => rangeSize(a) - rangeSize(b));
-  return containing.length > 0 && containing[0].count > 0;
+  if (containing.length === 0) {
+    return false;
+  }
+  const smallest = rangeSize(containing[0]);
+  return containing.some((range) => rangeSize(range) === smallest && range.count > 0);
 }
 
 function rangeSize(range) {

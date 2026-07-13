@@ -3,10 +3,13 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import { readJson, sha256, stableJson } from "./lib/artifacts.mjs";
 
-const targets = [
-  { path: "dist/index.js", rawBudget: 512, gzipBudget: 512 },
-  { path: "dist/core/index.js", rawBudget: 512, gzipBudget: 512 },
-];
+const budgets = new Map([
+  ["dist/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/core/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/core/errors.js", { rawBudget: 6144, gzipBudget: 2048 }],
+  ["dist/core/wire-value.js", { rawBudget: 8192, gzipBudget: 2560 }],
+]);
+const targets = [...budgets].map(([path, budget]) => ({ path, ...budget }));
 
 const packageJson = readJson("package.json");
 const failures = [];

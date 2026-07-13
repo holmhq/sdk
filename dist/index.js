@@ -1,2 +1,2 @@
-export { createCoreEnvironment } from "./core/index.js";
+export { assertWireValue, canonicalEncodeWireValue, copyWireValue, createCoreEnvironment, createReadonlyBytes, HolmError, isHolmError, isReadonlyBytes, isWireValue, serializeHolmError, } from "./core/index.js";
 //# sourceMappingURL=index.js.map
