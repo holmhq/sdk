@@ -101,12 +101,17 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 | --- | --- | --- | --- | --- |
 | Holm envelope/error/meta/header conformance and migration ledger | done | `P1-1` | implementation `a15b3df`, fix `da7cd8d`, rereview approve (`P1/P2/P3=0/0/0`) | complete |
 | Caller epoch, cache/query/mutation reset, and late-result fencing | done | `P1-2` | implementation `5d0df5d`, review approve (`P1/P2/P3=0/0/0`) | complete |
-| Read-only capabilities and narrow extension invocation | fixing at Queue #002 S03 | `P1-3` | implementation `206b0e8` + review `fe604d0` (`P1/P2/P3=0/2/0`) | canonical findings in `koder/reviews/028_a2r_s03_capability_extension_ownership/INDEX.md` |
+| Read-only capabilities and narrow extension invocation | fixing at Queue #002 S03 | `P1-3` | fix `4c2bff3` + rereview `2a06c0e` (`P1/P2/P3=0/1/0`) | canonical findings in `koder/reviews/029_a2r_s03_capability_extension_ownership_rereview/INDEX.md`; one fix cycle remains |
 | Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
 | Response correlation, artifact provenance, and final review | candidate | `P2-1` + note | mismatch tests + full clean validation + two reviews | SDK and Holm authority approve A2 |
 
 ## Queue #002 implementation checkpoint
 
+- 2026-07-15 02:10 IST: S03 fix attempt `05a` landed at `4c2bff3`
+  with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
+  (`P1/P2/P3=0/1/0`) at review commit `2a06c0e`, canonical findings
+  `koder/reviews/029_a2r_s03_capability_extension_ownership_rereview/INDEX.md`.
+  Coordinator `05` is opening S03 fix cycle `2` without ingesting findings.
 - 2026-07-15 01:45 IST: S03 implementation attempt `05a` landed at `206b0e8`
   with required validation exits `0`; fresh Pi review returned `needs_fixes`
   (`P1/P2/P3=0/2/0`) at review commit `fe604d0`, canonical findings
