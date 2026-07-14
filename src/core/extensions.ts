@@ -1,7 +1,10 @@
-import type {
-  CapabilityRegistry,
-  CapabilityRequirement,
-  CapabilityVersion,
+import {
+  createCapabilityView,
+  type CapabilityOffer,
+  type CapabilityRegistry,
+  type CapabilityRequirement,
+  type CapabilityVersion,
+  type CapabilityView,
 } from "./capabilities.js";
 import { HolmError } from "./errors.js";
 import {
@@ -9,6 +12,7 @@ import {
   type LifecycleController,
   type LifecycleSnapshot,
 } from "./lifecycle.js";
+import type { InvocationControl, OperationResponse } from "./runtime.js";
 
 export type ReadonlyDeep<T> = T extends (...args: infer Args) => infer Return
   ? (...args: Args) => Return
@@ -33,9 +37,27 @@ export interface ExtensionDescriptor {
   readonly conflicts: readonly string[];
 }
 
+interface ExtensionInvokeRequest {
+  readonly capability: CapabilityRequirement;
+  readonly operation: string;
+  readonly payload: unknown;
+  readonly requestId: string;
+  readonly reason?: string;
+  readonly control?: InvocationControl;
+}
+
+type ExtensionInvokeFunction = (request: ExtensionInvokeRequest) => Promise<OperationResponse>;
+
+interface ExtensionCapabilityOfferInput {
+  readonly id: string;
+  readonly version: CapabilityVersion;
+}
+
 export interface ExtensionSetupContext {
-  readonly capabilities: CapabilityRegistry;
+  readonly capabilities: CapabilityView;
   readonly extension: ExtensionDescriptor;
+  invoke: ExtensionInvokeFunction;
+  registerCapabilityOffer(offer: ExtensionCapabilityOfferInput): CapabilityOffer;
 }
 
 export interface ExtensionSetupResult<Api = unknown> {
@@ -98,6 +120,7 @@ export interface ExtensionLifecycle<Namespaces extends object = ExtensionNamespa
 export interface ExtensionLifecycleOptions {
   readonly capabilities: CapabilityRegistry;
   readonly validateCapabilities?: boolean;
+  readonly invoke?: ExtensionInvokeFunction;
 }
 
 export interface ExtensionErrorOptions {
@@ -423,14 +446,18 @@ function setupComponents(
 ): { readonly ordered: readonly ExtensionComponent[]; readonly namespaces: ExtensionNamespaceMap } {
   const ordered: ExtensionComponent[] = [];
   const namespaces: Record<string, unknown> = {};
+  const capabilities = createCapabilityView(options.capabilities);
+  const invoke = options.invoke ?? extensionInvokeUnavailable;
 
   for (const extension of extensions) {
     let result: ExtensionSetupResult;
     try {
       result = extension.source.setup(
         Object.freeze({
-          capabilities: options.capabilities,
+          capabilities,
           extension: extension.descriptor,
+          invoke,
+          registerCapabilityOffer: createCapabilityOfferRegistrar(options.capabilities, extension.descriptor.id),
         }),
       );
     } catch (error) {
@@ -460,6 +487,32 @@ function setupComponents(
     ordered: Object.freeze(ordered),
     namespaces: Object.freeze(namespaces),
   });
+}
+
+async function extensionInvokeUnavailable(): Promise<never> {
+  throw new ExtensionError({
+    code: "extension_invoke_unavailable",
+    message: "Extension invocation is not available outside a running Holm instance.",
+  });
+}
+
+function createCapabilityOfferRegistrar(
+  registry: CapabilityRegistry,
+  extensionId: string,
+): (offer: ExtensionCapabilityOfferInput) => CapabilityOffer {
+  return (offer) => {
+    try {
+      return registry.registerExtensionOffer({ id: offer.id, version: offer.version, origin: "extension" });
+    } catch (error) {
+      throw new ExtensionError({
+        code: "extension_capability_offer_forbidden",
+        message: `Extension "${extensionId}" attempted to register a forbidden capability offer.`,
+        extensionId,
+        cause: error,
+        details: { id: offer?.id },
+      });
+    }
+  };
 }
 
 function disposeSetupComponents(components: readonly ExtensionComponent[]): AggregateError | undefined {

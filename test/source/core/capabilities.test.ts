@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   CapabilityVersionError,
   createCapabilityRegistry,
+  createCapabilityView,
   DuplicateCapabilityOfferError,
   InvalidCapabilityRequirementError,
   negotiateCapability,
@@ -149,6 +150,50 @@ test("capabilities subscriptions receive replacement snapshots safely", () => {
 
   assert.deepEqual(seen, [[runtimeOffer("com.example.reports", 1, 1)]]);
   assert.equal(registry.getSnapshot().revision, 2);
+});
+
+test("capability view exposes read-only access and cannot replace or forge holm offers", () => {
+  const registry = createCapabilityRegistry([runtimeOffer("holm.core.session", 1, 0)]);
+  const view = createCapabilityView(registry);
+
+  assert.deepEqual(view.getSnapshot(), registry.getSnapshot());
+  assert.deepEqual(view.require({ id: "holm.core.session", major: 1 }), runtimeOffer("holm.core.session", 1, 0));
+  assert.equal((view as unknown as { replaceOffers?: unknown }).replaceOffers, undefined);
+  assert.throws(
+    () => (view as unknown as { replaceOffers(offers: readonly CapabilityOffer[]): unknown }).replaceOffers([]),
+    TypeError,
+  );
+
+  registry.replaceOffers([runtimeOffer("holm.core.session", 1, 1)]);
+  assert.deepEqual(view.getSnapshot().offers, [runtimeOffer("holm.core.session", 1, 1)]);
+});
+
+test("capabilities merge extension-registered sdk offers with runtime offers and enforce the sdk namespace", () => {
+  const registry = createCapabilityRegistry([runtimeOffer("holm.core.session", 1, 0)]);
+
+  assert.throws(
+    () =>
+      registry.registerExtensionOffer({ id: "holm.fake.offer", origin: "extension", version: { major: 1, minor: 0 } }),
+    InvalidCapabilityRequirementError,
+  );
+
+  const registered = registry.registerExtensionOffer({
+    id: "sdk.reports.export",
+    origin: "runtime",
+    version: { major: 1, minor: 0 },
+  });
+
+  assert.deepEqual(registered, { id: "sdk.reports.export", origin: "extension", version: { major: 1, minor: 0 } });
+  assert.deepEqual(registry.getSnapshot().offers, [
+    runtimeOffer("holm.core.session", 1, 0),
+    { id: "sdk.reports.export", origin: "extension", version: { major: 1, minor: 0 } },
+  ]);
+
+  registry.replaceOffers([runtimeOffer("holm.core.session", 1, 1)]);
+  assert.deepEqual(registry.getSnapshot().offers, [
+    runtimeOffer("holm.core.session", 1, 1),
+    { id: "sdk.reports.export", origin: "extension", version: { major: 1, minor: 0 } },
+  ]);
 });
 
 test("capabilities subscriptions isolate listener mutation and failures", () => {

@@ -586,6 +586,101 @@ test("extensions aggregate disposal failures while continuing reverse cleanup", 
   assert.deepEqual(effects, ["dispose:bravo", "dispose:alpha"]);
 });
 
+test("extensions restrict capability offer registration to the sdk namespace and hide the runtime updater", () => {
+  const capabilities = testCapabilities();
+  let capturedCapabilities!: ExtensionSetupContext["capabilities"];
+  let registerOffer!: ExtensionSetupContext["registerCapabilityOffer"];
+
+  createExtensionLifecycle(
+    [
+      extension({
+        id: "com.example.reports",
+        namespace: "reports",
+        setup: (context) => {
+          capturedCapabilities = context.capabilities;
+          registerOffer = context.registerCapabilityOffer;
+          return { api: { ok: true } };
+        },
+      }),
+    ],
+    { capabilities },
+  );
+
+  assert.equal((capturedCapabilities as unknown as { replaceOffers?: unknown }).replaceOffers, undefined);
+  assert.throws(
+    () => registerOffer({ id: "holm.fake.offer", version: { major: 1, minor: 0 } }),
+    (error: unknown) => error instanceof ExtensionError && error.code === "extension_capability_offer_forbidden",
+  );
+
+  const registered = registerOffer({ id: "sdk.reports.export", version: { major: 1, minor: 0 } });
+
+  assert.deepEqual(registered, { id: "sdk.reports.export", origin: "extension", version: { major: 1, minor: 0 } });
+  assert.deepEqual(
+    capabilities.getSnapshot().offers.find((offer) => offer.id === "sdk.reports.export"),
+    { id: "sdk.reports.export", origin: "extension", version: { major: 1, minor: 0 } },
+  );
+});
+
+test("extensions expose an invocation seam that is unavailable until a runtime wires it and forwards requests once wired", async () => {
+  let unwiredInvoke!: ExtensionSetupContext["invoke"];
+  createExtensionLifecycle(
+    [
+      extension({
+        id: "com.example.unwired",
+        namespace: "unwired",
+        setup: (context) => {
+          unwiredInvoke = context.invoke;
+          return { api: { ok: true } };
+        },
+      }),
+    ],
+    { capabilities: testCapabilities() },
+  );
+
+  await assert.rejects(
+    () =>
+      unwiredInvoke({
+        capability: { id: "com.example.reports", major: 1 },
+        operation: "list",
+        payload: null,
+        requestId: "req-unwired",
+      }),
+    (error: unknown) => error instanceof ExtensionError && error.code === "extension_invoke_unavailable",
+  );
+
+  const seen: unknown[] = [];
+  let wiredInvoke!: ExtensionSetupContext["invoke"];
+  createExtensionLifecycle(
+    [
+      extension({
+        id: "com.example.wired",
+        namespace: "wired",
+        setup: (context) => {
+          wiredInvoke = context.invoke;
+          return { api: { ok: true } };
+        },
+      }),
+    ],
+    {
+      capabilities: testCapabilities(),
+      invoke: async (request) => {
+        seen.push(request);
+        return { requestId: request.requestId, payload: { ok: true } };
+      },
+    },
+  );
+
+  const response = await wiredInvoke({
+    capability: { id: "com.example.reports", major: 1 },
+    operation: "list",
+    payload: null,
+    requestId: "req-wired",
+  });
+
+  assert.deepEqual(response, { requestId: "req-wired", payload: { ok: true } });
+  assert.equal(seen.length, 1);
+});
+
 test("extensions lifecycle controller shares startup and rejects invalid states", async () => {
   const effects: string[] = [];
   let releaseStart!: () => void;

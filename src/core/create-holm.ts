@@ -1,4 +1,9 @@
-import { type CapabilityRegistry, type CapabilityRequirement, createCapabilityRegistry } from "./capabilities.js";
+import {
+  type CapabilityRequirement,
+  type CapabilityView,
+  createCapabilityRegistry,
+  createCapabilityView,
+} from "./capabilities.js";
 import { createCancellationController, createCancellationScope } from "./cancellation.js";
 import type { CallerPartitionListener, CallerProvider } from "./caller.js";
 import {
@@ -33,7 +38,7 @@ export interface HolmInvokeOptions {
 
 export interface Holm<Extensions extends readonly HolmExtension[] = readonly HolmExtension[]> {
   readonly lifecycle: LifecycleSnapshot;
-  readonly capabilities: CapabilityRegistry;
+  readonly capabilities: CapabilityView;
   readonly extensions: ExtensionLifecycle<ExtensionNamespaces<Extensions>>;
   start(): Promise<void>;
   invoke(options: HolmInvokeOptions): Promise<OperationResponse>;
@@ -63,6 +68,7 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
     this.#extensionLifecycle = createExtensionLifecycle(options.extensions ?? ([] as unknown as Extensions), {
       capabilities: this.#capabilities,
       validateCapabilities: false,
+      invoke: (invokeOptions) => this.#invoke(invokeOptions),
     });
     this.#controller = createLifecycleController({
       start: () => this.#startComponents(),
@@ -76,7 +82,7 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
       get lifecycle(): LifecycleSnapshot {
         return instance.#controller.getSnapshot();
       },
-      capabilities: this.#capabilities,
+      capabilities: createCapabilityView(this.#capabilities),
       extensions: this.#extensionLifecycle,
       start(): Promise<void> {
         return instance.#controller.start();

@@ -56,12 +56,16 @@ export interface CapabilitySnapshot {
 
 export type CapabilitySnapshotListener = (snapshot: CapabilitySnapshot) => void;
 
-export interface CapabilityRegistry {
+export interface CapabilityView {
   getSnapshot(): CapabilitySnapshot;
   match(requirement: CapabilityRequirement): CapabilityOffer | undefined;
   require(requirement: CapabilityRequirement): CapabilityOffer;
-  replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot;
   subscribe(listener: CapabilitySnapshotListener): () => void;
+}
+
+export interface CapabilityRegistry extends CapabilityView {
+  replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot;
+  registerExtensionOffer(offer: CapabilityOffer): CapabilityOffer;
 }
 
 interface NormalizedRequirement {
@@ -130,6 +134,15 @@ export function createCapabilityRegistry(offers: readonly CapabilityOffer[] = []
   return new InstanceCapabilityRegistry(offers);
 }
 
+export function createCapabilityView(registry: CapabilityView): CapabilityView {
+  return Object.freeze({
+    getSnapshot: () => registry.getSnapshot(),
+    match: (requirement: CapabilityRequirement) => registry.match(requirement),
+    require: (requirement: CapabilityRequirement) => registry.require(requirement),
+    subscribe: (listener: CapabilitySnapshotListener) => registry.subscribe(listener),
+  });
+}
+
 export function negotiateCapability(
   offers: readonly CapabilityOffer[],
   requirement: CapabilityRequirement,
@@ -140,11 +153,14 @@ export function negotiateCapability(
 }
 
 class InstanceCapabilityRegistry implements CapabilityRegistry {
+  #baseOffers: readonly CapabilityOffer[];
+  #extensionOffers: readonly CapabilityOffer[] = [];
   #snapshot: CapabilitySnapshot;
   readonly #listeners = new Set<CapabilitySnapshotListener>();
 
   constructor(offers: readonly CapabilityOffer[]) {
-    this.#snapshot = createSnapshot(0, offers);
+    this.#baseOffers = normalizeOffers(offers);
+    this.#snapshot = createSnapshot(0, this.#baseOffers, this.#extensionOffers);
   }
 
   getSnapshot(): CapabilitySnapshot {
@@ -162,7 +178,19 @@ class InstanceCapabilityRegistry implements CapabilityRegistry {
   }
 
   replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot {
-    const next = createSnapshot(this.#snapshot.revision + 1, offers);
+    this.#baseOffers = normalizeOffers(offers);
+    return this.#commit();
+  }
+
+  registerExtensionOffer(offer: CapabilityOffer): CapabilityOffer {
+    const normalized = normalizeExtensionOffer(offer);
+    this.#extensionOffers = [...this.#extensionOffers, normalized];
+    this.#commit();
+    return normalized;
+  }
+
+  #commit(): CapabilitySnapshot {
+    const next = createSnapshot(this.#snapshot.revision + 1, this.#baseOffers, this.#extensionOffers);
     this.#snapshot = next;
     this.#notify(next);
     return next;
@@ -201,11 +229,26 @@ class InstanceCapabilityRegistry implements CapabilityRegistry {
   }
 }
 
-function createSnapshot(revision: number, offers: readonly CapabilityOffer[]): CapabilitySnapshot {
+function createSnapshot(
+  revision: number,
+  baseOffers: readonly CapabilityOffer[],
+  extensionOffers: readonly CapabilityOffer[],
+): CapabilitySnapshot {
   return Object.freeze({
     revision,
-    offers: Object.freeze(normalizeOffers(offers)),
+    offers: Object.freeze(normalizeOffers([...baseOffers, ...extensionOffers])),
   });
+}
+
+function normalizeExtensionOffer(offer: CapabilityOffer): CapabilityOffer {
+  const normalized = normalizeOffer({ ...offer, origin: "extension" });
+  if (!normalized.id.startsWith("sdk.")) {
+    throw new InvalidCapabilityRequirementError({
+      reason: "extension-registered capability offers must use the sdk. namespace",
+      requirement: normalized,
+    });
+  }
+  return normalized;
 }
 
 function normalizeOffers(offers: readonly CapabilityOffer[]): readonly CapabilityOffer[] {

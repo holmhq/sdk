@@ -50,6 +50,7 @@ export type {
 export {
   CapabilityVersionError,
   createCapabilityRegistry,
+  createCapabilityView,
   DuplicateCapabilityOfferError,
   InvalidCapabilityRequirementError,
   negotiateCapability,
@@ -64,6 +65,7 @@ export type {
   CapabilitySnapshotListener,
   CapabilityVersion,
   CapabilityVersionErrorOptions,
+  CapabilityView,
   DuplicateCapabilityOfferErrorOptions,
   InvalidCapabilityRequirementErrorOptions,
   UnsupportedCapabilityErrorOptions,

@@ -2,14 +2,19 @@ import { strict as assert } from "node:assert";
 import { test } from "node:test";
 
 import {
+  CancelledError,
   CapabilityVersionError,
+  createCancellationController,
   createCapabilityRegistry,
+  createHolm,
   createStaticCallerProvider,
   createCallerFingerprint,
   invokeRuntime,
+  LifecycleError,
   runtimeEnvelopeProtocol,
   UnsupportedCapabilityError,
   type CallerContext,
+  type ExtensionSetupContext,
   type InvocationControl,
   type OperationRequest,
   type OperationResponse,
@@ -237,6 +242,56 @@ test("static caller providers return isolated caller snapshots", async () => {
   });
   assert.notEqual(first, second);
   assert.notEqual(first.scope, second.scope);
+});
+
+test("extension invocation seam carries lifecycle readiness, cancellation, and caller context through the core seam", async () => {
+  const runtime = createRecordingRuntime();
+  const holm = createHolm({
+    runtime,
+    caller: createStaticCallerProvider({ surface: "test", principal: { kind: "service", id: "extension-caller" } }),
+    extensions: [
+      {
+        id: "sdk.diagnostics.probe",
+        namespace: "probe",
+        version: { major: 1, minor: 0 },
+        setup: (context: ExtensionSetupContext) => ({
+          api: {
+            call: (payload: unknown, control?: InvocationControl) =>
+              context.invoke({
+                capability,
+                operation: "list",
+                payload,
+                requestId: "extension-req",
+                ...(control === undefined ? {} : { control }),
+              }),
+          },
+        }),
+      },
+    ] as const,
+  });
+
+  await holm.start();
+  const response = await holm.probe.call({ ok: true });
+
+  assert.deepEqual(response.payload, { ok: true });
+  assert.equal(runtime.calls[0]?.caller.principal.kind, "service");
+  assert.equal(runtime.calls[0]?.caller.invocationId, "extension-req");
+  assert.equal(typeof runtime.calls[0]?.callerFingerprint, "string");
+
+  const cancellation = createCancellationController();
+  cancellation.cancel("extension-caller-left");
+  await assert.rejects(
+    () => holm.probe.call({ ok: true }, { cancellation: cancellation.signal }),
+    (error: unknown) =>
+      error instanceof CancelledError &&
+      (error.toJSON().details as { readonly reason?: unknown } | undefined)?.reason === "extension-caller-left",
+  );
+
+  await holm.dispose();
+  await assert.rejects(
+    () => holm.probe.call({ ok: true }),
+    (error: unknown) => error instanceof LifecycleError && error.code === "lifecycle_disposed",
+  );
 });
 
 test("runtime invocation fails capability checks before adapter invocation", async () => {
