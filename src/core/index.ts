@@ -50,7 +50,6 @@ export type {
 export {
   CapabilityVersionError,
   createCapabilityRegistry,
-  createCapabilityView,
   DuplicateCapabilityOfferError,
   InvalidCapabilityRequirementError,
   negotiateCapability,

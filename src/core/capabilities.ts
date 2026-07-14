@@ -65,6 +65,14 @@ export interface CapabilityView {
 
 export interface CapabilityRegistry extends CapabilityView {
   replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot;
+}
+
+/**
+ * Runtime-owned mutation seam. Deliberately not re-exported from the package
+ * barrels: it is wired internally by createHolm()/the extension registrar so
+ * standalone consumers cannot manufacture or forge holm.* capability offers.
+ */
+export interface CapabilityRuntimeUpdater extends CapabilityRegistry {
   registerExtensionOffer(offer: CapabilityOffer): CapabilityOffer;
 }
 
@@ -134,6 +142,12 @@ export function createCapabilityRegistry(offers: readonly CapabilityOffer[] = []
   return new InstanceCapabilityRegistry(offers);
 }
 
+export function createCapabilityRuntimeUpdater(
+  offers: readonly CapabilityOffer[] = [],
+): CapabilityRuntimeUpdater {
+  return new InstanceCapabilityRegistry(offers);
+}
+
 export function createCapabilityView(registry: CapabilityView): CapabilityView {
   return Object.freeze({
     getSnapshot: () => registry.getSnapshot(),
@@ -152,7 +166,7 @@ export function negotiateCapability(
   return findRequiredOffer(normalizedOffers, normalizedRequirement);
 }
 
-class InstanceCapabilityRegistry implements CapabilityRegistry {
+class InstanceCapabilityRegistry implements CapabilityRuntimeUpdater {
   #baseOffers: readonly CapabilityOffer[];
   #extensionOffers: readonly CapabilityOffer[] = [];
   #snapshot: CapabilitySnapshot;
@@ -178,19 +192,22 @@ class InstanceCapabilityRegistry implements CapabilityRegistry {
   }
 
   replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot {
-    this.#baseOffers = normalizeOffers(offers);
-    return this.#commit();
+    return this.#commitWith(normalizeOffers(offers), this.#extensionOffers);
   }
 
   registerExtensionOffer(offer: CapabilityOffer): CapabilityOffer {
     const normalized = normalizeExtensionOffer(offer);
-    this.#extensionOffers = [...this.#extensionOffers, normalized];
-    this.#commit();
+    this.#commitWith(this.#baseOffers, [...this.#extensionOffers, normalized]);
     return normalized;
   }
 
-  #commit(): CapabilitySnapshot {
-    const next = createSnapshot(this.#snapshot.revision + 1, this.#baseOffers, this.#extensionOffers);
+  #commitWith(
+    baseOffers: readonly CapabilityOffer[],
+    extensionOffers: readonly CapabilityOffer[],
+  ): CapabilitySnapshot {
+    const next = createSnapshot(this.#snapshot.revision + 1, baseOffers, extensionOffers);
+    this.#baseOffers = baseOffers;
+    this.#extensionOffers = extensionOffers;
     this.#snapshot = next;
     this.#notify(next);
     return next;

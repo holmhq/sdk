@@ -121,6 +121,7 @@ export interface ExtensionLifecycleOptions {
   readonly capabilities: CapabilityRegistry;
   readonly validateCapabilities?: boolean;
   readonly invoke?: ExtensionInvokeFunction;
+  readonly registerExtensionOffer?: (offer: CapabilityOffer) => CapabilityOffer;
 }
 
 export interface ExtensionErrorOptions {
@@ -448,6 +449,7 @@ function setupComponents(
   const namespaces: Record<string, unknown> = {};
   const capabilities = createCapabilityView(options.capabilities);
   const invoke = options.invoke ?? extensionInvokeUnavailable;
+  const registerOffer = options.registerExtensionOffer ?? extensionCapabilityOfferRegistrationUnavailable;
 
   for (const extension of extensions) {
     let result: ExtensionSetupResult;
@@ -457,7 +459,7 @@ function setupComponents(
           capabilities,
           extension: extension.descriptor,
           invoke,
-          registerCapabilityOffer: createCapabilityOfferRegistrar(options.capabilities, extension.descriptor.id),
+          registerCapabilityOffer: createCapabilityOfferRegistrar(registerOffer, extension.descriptor.id),
         }),
       );
     } catch (error) {
@@ -496,13 +498,20 @@ async function extensionInvokeUnavailable(): Promise<never> {
   });
 }
 
+function extensionCapabilityOfferRegistrationUnavailable(): never {
+  throw new ExtensionError({
+    code: "extension_capability_offer_registration_unavailable",
+    message: "Extension capability offer registration is not available outside a running Holm instance.",
+  });
+}
+
 function createCapabilityOfferRegistrar(
-  registry: CapabilityRegistry,
+  registerOffer: (offer: CapabilityOffer) => CapabilityOffer,
   extensionId: string,
 ): (offer: ExtensionCapabilityOfferInput) => CapabilityOffer {
   return (offer) => {
     try {
-      return registry.registerExtensionOffer({ id: offer.id, version: offer.version, origin: "extension" });
+      return registerOffer({ id: offer.id, version: offer.version, origin: "extension" });
     } catch (error) {
       throw new ExtensionError({
         code: "extension_capability_offer_forbidden",

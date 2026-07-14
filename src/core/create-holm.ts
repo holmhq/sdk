@@ -1,7 +1,8 @@
 import {
   type CapabilityRequirement,
+  type CapabilityRuntimeUpdater,
   type CapabilityView,
-  createCapabilityRegistry,
+  createCapabilityRuntimeUpdater,
   createCapabilityView,
 } from "./capabilities.js";
 import { createCancellationController, createCancellationScope } from "./cancellation.js";
@@ -55,7 +56,7 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
   readonly #runtime: RuntimeAdapter;
   readonly #caller: CallerProvider;
   readonly #onCallerPartition: CallerPartitionListener | undefined;
-  readonly #capabilities = createCapabilityRegistry([]);
+  readonly #capabilities: CapabilityRuntimeUpdater = createCapabilityRuntimeUpdater([]);
   readonly #extensionLifecycle: ExtensionLifecycle<ExtensionNamespaces<Extensions>>;
   readonly #ownedCancellation = createCancellationController();
   readonly #controller: LifecycleController;
@@ -69,6 +70,7 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
       capabilities: this.#capabilities,
       validateCapabilities: false,
       invoke: (invokeOptions) => this.#invoke(invokeOptions),
+      registerExtensionOffer: (offer) => this.#capabilities.registerExtensionOffer(offer),
     });
     this.#controller = createLifecycleController({
       start: () => this.#startComponents(),

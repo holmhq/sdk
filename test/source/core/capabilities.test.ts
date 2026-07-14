@@ -4,13 +4,13 @@ import { test } from "node:test";
 import {
   CapabilityVersionError,
   createCapabilityRegistry,
-  createCapabilityView,
   DuplicateCapabilityOfferError,
   InvalidCapabilityRequirementError,
   negotiateCapability,
   UnsupportedCapabilityError,
   type CapabilityOffer,
 } from "../../../src/core/index.js";
+import { createCapabilityRuntimeUpdater, createCapabilityView } from "../../../src/core/capabilities.js";
 
 const runtimeOffer = (id: string, major: number, minor: number): CapabilityOffer => ({
   id,
@@ -169,7 +169,7 @@ test("capability view exposes read-only access and cannot replace or forge holm 
 });
 
 test("capabilities merge extension-registered sdk offers with runtime offers and enforce the sdk namespace", () => {
-  const registry = createCapabilityRegistry([runtimeOffer("holm.core.session", 1, 0)]);
+  const registry = createCapabilityRuntimeUpdater([runtimeOffer("holm.core.session", 1, 0)]);
 
   assert.throws(
     () =>
@@ -194,6 +194,40 @@ test("capabilities merge extension-registered sdk offers with runtime offers and
     runtimeOffer("holm.core.session", 1, 1),
     { id: "sdk.reports.export", origin: "extension", version: { major: 1, minor: 0 } },
   ]);
+});
+
+test("capabilities roll back a failed duplicate extension offer registration so later runtime replacement succeeds", () => {
+  const registry = createCapabilityRuntimeUpdater([runtimeOffer("holm.core.session", 1, 0)]);
+  const sdkOffer = { id: "sdk.reports.export", origin: "extension" as const, version: { major: 1, minor: 0 } };
+
+  registry.registerExtensionOffer(sdkOffer);
+
+  assert.throws(() => registry.registerExtensionOffer(sdkOffer), DuplicateCapabilityOfferError);
+  assert.deepEqual(registry.getSnapshot().offers, [runtimeOffer("holm.core.session", 1, 0), sdkOffer]);
+
+  const snapshot = registry.replaceOffers([runtimeOffer("holm.core.session", 1, 1)]);
+
+  assert.deepEqual(snapshot.offers, [runtimeOffer("holm.core.session", 1, 1), sdkOffer]);
+});
+
+test("capabilities roll back a runtime replacement that conflicts with an existing extension offer", () => {
+  const registry = createCapabilityRuntimeUpdater([runtimeOffer("holm.core.session", 1, 0)]);
+  const sdkOffer = { id: "sdk.reports.export", origin: "extension" as const, version: { major: 1, minor: 0 } };
+  registry.registerExtensionOffer(sdkOffer);
+
+  assert.throws(
+    () =>
+      registry.replaceOffers([
+        runtimeOffer("holm.core.session", 1, 1),
+        { id: "sdk.reports.export", origin: "runtime", version: { major: 1, minor: 0 } },
+      ]),
+    DuplicateCapabilityOfferError,
+  );
+  assert.deepEqual(registry.getSnapshot().offers, [runtimeOffer("holm.core.session", 1, 0), sdkOffer]);
+
+  const snapshot = registry.replaceOffers([runtimeOffer("holm.core.session", 1, 2)]);
+
+  assert.deepEqual(snapshot.offers, [runtimeOffer("holm.core.session", 1, 2), sdkOffer]);
 });
 
 test("capabilities subscriptions isolate listener mutation and failures", () => {

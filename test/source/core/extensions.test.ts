@@ -12,6 +12,7 @@ import {
   type ExtensionSetupContext,
   type HolmExtension,
 } from "../../../src/core/index.js";
+import { createCapabilityRuntimeUpdater } from "../../../src/core/capabilities.js";
 
 interface ExtensionFixtureOptions<Api> {
   readonly id: string;
@@ -587,7 +588,9 @@ test("extensions aggregate disposal failures while continuing reverse cleanup", 
 });
 
 test("extensions restrict capability offer registration to the sdk namespace and hide the runtime updater", () => {
-  const capabilities = testCapabilities();
+  const capabilities = createCapabilityRuntimeUpdater([
+    { id: "com.example.runtime", origin: "runtime", version: { major: 1, minor: 2 } },
+  ]);
   let capturedCapabilities!: ExtensionSetupContext["capabilities"];
   let registerOffer!: ExtensionSetupContext["registerCapabilityOffer"];
 
@@ -603,7 +606,7 @@ test("extensions restrict capability offer registration to the sdk namespace and
         },
       }),
     ],
-    { capabilities },
+    { capabilities, registerExtensionOffer: (offer) => capabilities.registerExtensionOffer(offer) },
   );
 
   assert.equal((capturedCapabilities as unknown as { replaceOffers?: unknown }).replaceOffers, undefined);
@@ -618,6 +621,33 @@ test("extensions restrict capability offer registration to the sdk namespace and
   assert.deepEqual(
     capabilities.getSnapshot().offers.find((offer) => offer.id === "sdk.reports.export"),
     { id: "sdk.reports.export", origin: "extension", version: { major: 1, minor: 0 } },
+  );
+});
+
+test("extensions capability offer registration is unavailable until a runtime wires it, even with a capable registry", () => {
+  let unwiredRegisterOffer!: ExtensionSetupContext["registerCapabilityOffer"];
+
+  createExtensionLifecycle(
+    [
+      extension({
+        id: "com.example.unwired",
+        namespace: "unwired",
+        setup: (context) => {
+          unwiredRegisterOffer = context.registerCapabilityOffer;
+          return { api: { ok: true } };
+        },
+      }),
+    ],
+    { capabilities: createCapabilityRuntimeUpdater([]) },
+  );
+
+  assert.throws(
+    () => unwiredRegisterOffer({ id: "sdk.reports.export", version: { major: 1, minor: 0 } }),
+    (error: unknown) =>
+      error instanceof ExtensionError &&
+      error.code === "extension_capability_offer_forbidden" &&
+      error.cause instanceof ExtensionError &&
+      error.cause.code === "extension_capability_offer_registration_unavailable",
   );
 });
 
