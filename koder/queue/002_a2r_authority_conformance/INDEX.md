@@ -66,7 +66,7 @@ on 14 Jul 2026.
 | --- | --- | --- | --- | --- | --- | ---: | --- |
 | 1 | S01 | Holm envelope semantics and `/api/cmd` conformance | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` | none | done | 90 | Envelope/meta/error/header + `/api/cmd` tests pass with source-pinned evidence and Issue `#005` ledger update |
 | 2 | S02 | Caller transition safety and partition fencing | `koder/plans/002_S02_caller_transition_safety/INDEX.md` | S01 | done | 105 | Caller transition tests prove no old-principal cache/query/mutation survival and in-flight fencing |
-| 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | fixing | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
+| 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | blocked | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
 | 4 | S04 | Credential-safe diagnostics and cache identity | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` | S01 | queued | 120 | Secret leakage tests pass for diagnostics/cache keys/hooks with structural redaction |
 | 5 | S05 | Response correlation and provenance safeguards | `koder/plans/002_S05_response_correlation_provenance/INDEX.md` | S01,S02 | queued | 95 | Mismatched request/response IDs fail; duplicate/late responses ignored and diagnosed |
 | 6 | S06 | Integrated authority return and final gate | `koder/plans/002_S06_integrated_authority_return/INDEX.md` | S01,S02,S03,S04,S05 | queued | 120 | Full validation stack green; independent SDK review (0 P1/P2); fresh Holm authority acceptance at named current Holm commit; clean/synced git; return before Issue #007 |
@@ -102,6 +102,11 @@ Queue `#002` may be marked done only when all are true:
 
 ## Run log
 
+- 2026-07-15 02:35 IST: S03 fix attempt `05b` landed at `5596d0b`
+  with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
+  (`P1/P2/P3=0/1/0`) at review commit `4ed5d64`, canonical findings
+  `koder/reviews/030_a2r_s03_capability_extension_ownership_rereview_2/INDEX.md`.
+  S03 exhausted the max two fix cycles, so Queue `#002` is blocked at S03.
 - 2026-07-15 02:10 IST: S03 fix attempt `05a` landed at `4c2bff3`
   with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
   (`P1/P2/P3=0/1/0`) at review commit `2a06c0e`, canonical findings

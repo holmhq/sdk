@@ -1,5 +1,5 @@
 ---
-status: in_progress
+status: blocked
 priority: P1
 created: 2026-07-14
 updated: 2026-07-14
@@ -101,12 +101,17 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 | --- | --- | --- | --- | --- |
 | Holm envelope/error/meta/header conformance and migration ledger | done | `P1-1` | implementation `a15b3df`, fix `da7cd8d`, rereview approve (`P1/P2/P3=0/0/0`) | complete |
 | Caller epoch, cache/query/mutation reset, and late-result fencing | done | `P1-2` | implementation `5d0df5d`, review approve (`P1/P2/P3=0/0/0`) | complete |
-| Read-only capabilities and narrow extension invocation | fixing at Queue #002 S03 | `P1-3` | fix `4c2bff3` + rereview `2a06c0e` (`P1/P2/P3=0/1/0`) | canonical findings in `koder/reviews/029_a2r_s03_capability_extension_ownership_rereview/INDEX.md`; one fix cycle remains |
+| Read-only capabilities and narrow extension invocation | blocked at Queue #002 S03 | `P1-3` | fix `5596d0b` + rereview `4ed5d64` (`P1/P2/P3=0/1/0`) | canonical findings in `koder/reviews/030_a2r_s03_capability_extension_ownership_rereview_2/INDEX.md`; max two fix cycles exhausted |
 | Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
 | Response correlation, artifact provenance, and final review | candidate | `P2-1` + note | mismatch tests + full clean validation + two reviews | SDK and Holm authority approve A2 |
 
 ## Queue #002 implementation checkpoint
 
+- 2026-07-15 02:35 IST: S03 fix attempt `05b` landed at `5596d0b`
+  with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
+  (`P1/P2/P3=0/1/0`) at review commit `4ed5d64`, canonical findings
+  `koder/reviews/030_a2r_s03_capability_extension_ownership_rereview_2/INDEX.md`.
+  S03 exhausted the max two fix cycles, so Queue `#002` is blocked at S03.
 - 2026-07-15 02:10 IST: S03 fix attempt `05a` landed at `4c2bff3`
   with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
   (`P1/P2/P3=0/1/0`) at review commit `2a06c0e`, canonical findings
