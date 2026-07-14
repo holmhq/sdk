@@ -33,8 +33,8 @@ future window is active unless the owner records that decision here and in
   **BLOCK** with four P1 and one P2 findings.
 - **Remediation track:**
   [`Issue #016`](../issues/016_a2_authority_conformance_remediation/INDEX.md).
-- **Current autonomy:** A2R planning only, under the active window below. The
-  prior A2 implementation grant is exhausted.
+- **Current autonomy:** none. A2R planning completed at Review `#026`; both the
+  planning grant and prior A2 implementation grant are exhausted.
 - **A2 acceptance stop gate:** independent SDK re-review and fresh
   Holm-authority acceptance; do not begin Issue `#007`.
 
@@ -61,10 +61,10 @@ plans, or future Issue `#007+` bodies in the primary coordinator context.
 
 ### Allowed while blocked
 
-- Route fresh isolated workers to produce thin strict-TDD plans for Issue `#016`.
-- Route an independent worker to review those plans and Queue `#002` metadata.
-- Perform observational Git/process checks and maintain compact orchestration
-  state without changing product contracts.
+- Review the approved Plan family `002`, Review `#026`, and ready-but-not-
+  authorized Queue `#002`; ask the owner for a separate implementation grant.
+- Perform observational Git/process checks.
+- Preserve or clarify the authority handoff without changing product contracts.
 
 ### Forbidden while blocked
 
@@ -79,26 +79,26 @@ plans, or future Issue `#007+` bodies in the primary coordinator context.
 - No claim that action discovery, app scope, private realtime, presence,
   collaboration, desktop, or mobile capability ships.
 
-## Active window — A2R-P: authority conformance remediation planning
+## Completed window — A2R-P: authority conformance remediation planning
 
-The owner authorized **planning only** on 14 Jul 2026. A2R implementation is not
-authorized.
+The owner authorized **planning only** on 14 Jul 2026. The window is complete;
+A2R implementation is not authorized.
 
-### Planning contract
+### Result
 
-1. Fresh isolated planning workers map Issue `#016` into thin strict-TDD slices.
-2. An independent plan-review worker checks the slices, dependency order,
-   validation gates, stop rules, and new Queue `#002` metadata.
-3. The primary consumes only compact receipts, changed artifact paths, validation
-   results, commit refs, verdict counts, blockers, and Git state.
-4. Planning must not change approved decisions `D001`-`D015`, invent Holm
-   semantics, edit product source, or mutate another repository.
+1. Plan family `002` maps Issue `#016` into six thin strict-TDD slices.
+2. Review `#025` requested fixes; commit `68684ad` resolved them.
+3. Independent Review `#026` approved the fixed plans and Queue `#002` with
+   P1/P2/P3 all zero.
+4. Commit `85271ba` marked Queue `#002` ready while preserving
+   `execution_authorized: false`, serial `main`, blind routing, and the separate
+   owner launch gate.
 
-### A2R-P stop gate
+### A2R-P return gate
 
-After independent plan approval, commit and push a clean checkpoint, set
-`koder/STATE.md` to `REVIEW_READY`, run `close`, and return for separate owner
-authorization. Do not launch Queue `#002` and do not begin Issue `#007`.
+Reached. The clean checkpoint is `REVIEW_READY` and control has returned for
+separate owner authorization. Do not launch Queue `#002` and do not begin Issue
+`#007`.
 
 ## Future window — A2R implementation
 
@@ -107,9 +107,9 @@ A2R implementation remains **not authorized**.
 ### Entry gate
 
 1. Thin strict-TDD plans and Queue `#002` exist and have independent plan
-   approval.
+   approval. **Satisfied by Review `#026`.**
 2. The owner separately authorizes blind implementation routing in this file and
-   `koder/STATE.md`.
+   `koder/STATE.md`. **Pending.**
 
 ### Required outcomes
 
