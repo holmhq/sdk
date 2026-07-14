@@ -1,8 +1,8 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-14
 tags: transport, http, auth, cache, upload, errors
 parent: 001
 depends_on: [004]
@@ -42,26 +42,39 @@ Use current Holm client tests as evidence, not as an API-shape mandate.
 
 ## Acceptance Criteria
 
-- [ ] Tests are red first for cache, errors, aborts, mutation invalidation, and
-      upload adapter behavior.
-- [ ] TTL/SWR/dedup/LRU use a fake clock and deterministic transport.
-- [ ] Per-request policies can differ without creating separate client instances.
-- [ ] Invalidation tags support domain-aware updates; safe prefix invalidation
-      remains available.
-- [ ] Background SWR failures produce an observable event/hook and no unhandled
-      promise rejection.
-- [ ] Returned cached objects cannot mutate canonical cache state.
-- [ ] Web cookie/session auth and Node/token auth are adapters, not core globals.
-- [ ] Binary/raw and JSON envelopes are tested.
-- [ ] Existing Holm behavior is mapped as adopted, redesigned, or deferred with
-      source paths and conformance proof.
-- [ ] Source, declarations, web bundle, and Node bundle tests pass.
+- [x] Tests are red first for cache, errors, aborts, mutation invalidation, and
+      upload adapter behavior. (`S09`-`S12`; final Issue `#005` review
+      `75384d1`)
+- [x] TTL/SWR/dedup/LRU use a fake clock and deterministic transport. (`S10`:
+      `04cab72`, fix `02f0f63`, re-review `a0a4032`)
+- [x] Per-request policies can differ without creating separate client instances.
+      (`S10`: `04cab72`, fix `02f0f63`, re-review `a0a4032`)
+- [x] Invalidation tags support domain-aware updates; safe prefix invalidation
+      remains available. (`S11`: `6a8496e`, fix `eb88125`, re-review
+      `62810a5`)
+- [x] Background SWR failures produce an observable event/hook and no unhandled
+      promise rejection. (`S11`: `6a8496e`, fix `eb88125`, re-review
+      `62810a5`)
+- [x] Returned cached objects cannot mutate canonical cache state. (`S11`:
+      `6a8496e`, fix `eb88125`, re-review `62810a5`)
+- [x] Web cookie/session auth and Node/token auth are adapters, not core globals.
+      (`S09`: `ebbd434`, review `328140a`)
+- [x] Binary/raw and JSON envelopes are tested. (`S09`: `ebbd434`, review
+      `328140a`; `S12`: `f9f3cd5`, fix `9107bb1`, re-review `75384d1`)
+- [x] Existing Holm behavior is mapped as adopted, redesigned, or deferred with
+      source paths and conformance proof. (`S12`: ledger
+      `koder/evidence/001_issue005_transport_uploads/INDEX.md`, re-review
+      `75384d1`)
+- [x] Source, declarations, web bundle, and Node bundle tests pass. (`S12`
+      validation: `npm run ci`; `npm run test:declarations`;
+      `npm run test:dist`; `npm run size`)
 
 ## Slice Evidence
 
 - `S09` transport/auth/error contract passed at implementation `ebbd434` and independent review `328140a`; validation and coverage passed.
 - `S10` caller-partitioned cache passed at implementation `04cab72`, fix `02f0f63`, and independent re-review `a0a4032`; validation and coverage passed.
 - `S11` cache invalidation/diagnostics passed at implementation `6a8496e`, fix `eb88125`, and independent re-review `62810a5`; validation and coverage passed.
+- `S12` upload seam/migration ledger passed at implementation `f9f3cd5`, fix `9107bb1`, and independent re-review `75384d1`; validation and coverage passed, resolving Issue `#005`.
 
 ## Non-Goals
 
