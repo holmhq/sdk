@@ -24,76 +24,42 @@
 
 | Slice | Proposed Plan Path / Title | Capability focus | Primary source seam | Likely write ownership | Prerequisite | Strict-TDD red target | Full validation | Est (min) | Risk | Ambiguity | Stop rule |
 | --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- |
-| S01 | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` Envelope semantics parity | Align SDK envelope behavior with Holm authority response framing | Holm envelope handling seams cited by Review `#024` + `koder/docs/HOLM_SOURCE_MAP.md` | `src/core/protocol/*`, envelope tests under `test/protocol/*` | none | New/updated tests fail on mismatched success/error envelope normalization | `npm run test -- test/protocol`; `npm run typecheck`; `npm run ci` | 90 | medium | low | Stop if required envelope field semantics are absent from pinned Holm evidence |
-| S02 | `koder/plans/002_S02_caller_transition_safety/INDEX.md` Caller transition safety gates | Enforce caller identity transition invariants across transport/runtime boundaries | Caller identity seams from Review `#024`, architecture caller contract docs | `src/core/caller/*`, runtime adapter boundary tests | S01 | Red tests for invalid caller transition acceptance and missing guard propagation | `npm run test -- test/caller`; `npm run typecheck`; `npm run ci` | 105 | medium-high | medium | Stop if transition contract requires new decision outside `D001-D015` |
-| S03 | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` Capability/extension ownership boundaries | Ensure capability registration and extension lifecycle ownership is explicit and authority-aligned | Capability registry seams in architecture + review findings | `src/core/capabilities/*`, `src/core/extensions/*`, focused tests | S01 | Failing tests for ownership collisions/unauthorized extension attachment | `npm run test -- test/capabilities test/extensions`; `npm run typecheck`; `npm run ci` | 110 | high | medium | Stop if ownership graph crosses runtime layer boundaries not currently modeled |
-| S04 | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` Credential-safe diagnostics and cache identity | Remove credential leakage paths and align cache identity derivation with authority constraints | Diagnostics/cache seams in Review `#024`; DECISIONS + architecture observability constraints | `src/core/diagnostics/*`, `src/core/cache/*`, tests under `test/diagnostics`/`test/cache` | S01 | Red tests proving secret-bearing diagnostics or unstable cache identity keys | `npm run test -- test/diagnostics test/cache`; `npm run typecheck`; `npm run ci` | 120 | high | medium | Stop if remediation needs credential storage format change or secret management policy invention |
-| S05 | `koder/plans/002_S05_response_correlation_provenance/INDEX.md` Response correlation and provenance | Guarantee deterministic request/response correlation and provenance trail integrity | Response metadata seams documented in Review `#024` and source map | `src/core/transport/*`, `src/core/provenance/*`, protocol tests | S01,S02 | Failing tests on correlation ID mismatch, dropped provenance, or non-deterministic ordering | `npm run test -- test/transport test/provenance`; `npm run typecheck`; `npm run ci` | 95 | medium-high | low | Stop if Holm authority evidence does not define required provenance fields |
-| S06 | `koder/plans/002_S06_integrated_authority_return/INDEX.md` Integrated authority return path | Validate end-to-end authority-conformant return shape across composed slices | Integration seams across S01-S05 with Issue `#016` acceptance criteria | `src/core/integration/*`, end-to-end contract tests in `test/integration/*` | S01,S02,S03,S04,S05 | Red integration contract tests against approved A2 authority expectations | `npm run test -- test/integration`; `npm run typecheck`; `npm run ci`; bundle/declarations checks used in queue policy | 115 | high | medium | Stop if integration requires architecture-level API redesign or cross-repo protocol edits |
+| S01 | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` Holm envelope semantics and `/api/cmd` conformance | Resolve Review `#024` P1-1: success/error/meta/header and explicit `/api/cmd` handling | Review `#024` + `koder/docs/HOLM_SOURCE_MAP.md` pinned authority | `src/transports/index.ts`; `test/source/transport/transport-contract.test.ts`; `test/source/transport/upload.test.ts`; `test/source/core/runtime-invocation.test.ts`; `koder/issues/005_holm_packages_migration_provenance/INDEX.md` ledger-only | none | Add failing assertions for Holm `{data,meta}`, `{error:{...}}`, and HTTP-200 `/api/cmd` command envelope semantics | `npm run test:source -- test/source/transport/transport-contract.test.ts`; `npm run test:source -- test/source/transport/upload.test.ts`; `npm run test:source -- test/source/core/runtime-invocation.test.ts`; `npm run typecheck:core` | 90 | medium | low | Stop if pinned Holm authority evidence cannot justify required envelope semantics |
+| S02 | `koder/plans/002_S02_caller_transition_safety/INDEX.md` Caller transition safety and partition fencing | Resolve Review `#024` P1-2 caller partition transition/fencing defects | Review `#024` caller seams + architecture decisions | `src/core/caller.ts`; `src/state/query.ts`; `src/state/mutation.ts`; transition guard wiring in `src/transports/index.ts`; `test/source/state/caller-reset.test.ts`; `test/source/state/query.test.ts`; `test/source/state/mutation.test.ts`; `test/source/transport/cache-invalidation.test.ts` | S01 | Add failing tests that old-caller data and late completions cannot survive caller transition | `npm run test:source -- test/source/state/caller-reset.test.ts`; `npm run test:source -- test/source/state/query.test.ts`; `npm run test:source -- test/source/state/mutation.test.ts`; `npm run test:source -- test/source/transport/cache-invalidation.test.ts`; `npm run typecheck:core` | 105 | medium-high | medium | Stop if remediation requires new authorization semantics owned by Holm runtime |
+| S03 | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` Capability ownership and extension invocation seam | Resolve Review `#024` P1-3 control-plane ownership defect | Review `#024` + architecture/decisions for runtime ownership | `src/core/capabilities.ts`; `src/core/create-holm.ts`; `src/core/extensions.ts`; `test/source/core/capabilities.test.ts`; `test/source/core/extensions.test.ts`; `test/source/core/runtime-invocation.test.ts` | S01 | Add failing tests for public `holm.*` offer forging and missing narrow extension invocation seam | `npm run test:source -- test/source/core/capabilities.test.ts`; `npm run test:source -- test/source/core/extensions.test.ts`; `npm run test:source -- test/source/core/runtime-invocation.test.ts`; `npm run typecheck:core` | 110 | high | medium | Stop if required behavior would alter D001-D015 or invent protocol semantics |
+| S04 | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` Credential-safe diagnostics and cache identity | Resolve Review `#024` P1-4 secret leakage in diagnostics/cache identity | Review `#024` security findings + architecture/decisions | `src/transports/index.ts`; `src/core/cache-key.ts`; `src/transports/cache.ts`; `test/source/core/diagnostics.test.ts`; `test/source/transport/cache.test.ts`; `test/source/transport/cache-invalidation.test.ts` | S01 | Add failing tests that custom auth headers and sensitive query/path tokens leak into diagnostics/cache keys | `npm run test:source -- test/source/core/diagnostics.test.ts`; `npm run test:source -- test/source/transport/cache.test.ts`; `npm run test:source -- test/source/transport/cache-invalidation.test.ts`; `npm run typecheck:core` | 120 | high | medium | Stop if correction requires secret-management policy invention beyond approved scope |
+| S05 | `koder/plans/002_S05_response_correlation_provenance/INDEX.md` Response correlation and provenance safeguards | Resolve Review `#024` P2-1 request/response cross-wiring risk | Review `#024` + message-passing architecture constraints | `src/core/invoke.ts`; optional correlation plumbing in `src/transports/index.ts`; `test/source/core/runtime-invocation.test.ts`; optional `test/source/transport/transport-contract.test.ts` | S01,S02 | Add failing tests for mismatched response `requestId`, duplicate response, and late response behavior | `npm run test:source -- test/source/core/runtime-invocation.test.ts`; `npm run test:source -- test/source/transport/transport-contract.test.ts`; `npm run typecheck:core` | 95 | medium-high | low | Stop if required correlation semantics are absent from pinned authority evidence |
+| S06 | `koder/plans/002_S06_integrated_authority_return/INDEX.md` Integrated authority return and final gate | Integrated completion gate across S01-S05 with independent reviews + fresh Holm authority return | Issue `#016` acceptance + Queue `#002` done-state requirements | Integration metadata only: Issue/queue/review artifacts; no new product code ownership | S01,S02,S03,S04,S05 | First failing integrated gate command from clean checkout if any slice regressions remain | `npm run test:source`; `npm run test:types`; `npm run test:declarations`; `npm run test:dist`; `npm run test:coverage`; `npm run check:repro`; `npm run check:licenses`; `npm run size`; `npm run ci` | 115 | high | medium | Stop if fresh independent review or Holm authority acceptance is unavailable |
 
-## Dependency DAG
+## DAG lock and execution order
 
-- `S01` roots authority envelope normalization and is mandatory first.
-- `S02`, `S03`, and `S04` depend on `S01` and can be queued serially in any order
-  that preserves non-overlapping ownership; recommended order below minimizes overlap.
-- `S05` depends on `S01` and `S02` because correlation/provenance consumes caller-safe
-  transition context.
-- `S06` depends on completion of `S01-S05` and is the only integration row.
+- Hard ordering: `S01 -> S02/S03/S04`, `S02 -> S05`, and `S01..S05 -> S06`.
+- No row can start until all prerequisites are approved.
+- `S06` is integration-only and cannot absorb unresolved P1/P2 work from prior slices.
 
-DAG edges: `S01 -> {S02,S03,S04,S05}`; `S02 -> S05`; `{S01,S02,S03,S04,S05} -> S06`.
+## Queue and review gates
 
-## Serial ownership/overlap order for `main`
+- Queue `#002` remains `status: in_review` and `execution_authorized: false`.
+- Launch requires independent plan re-review approval plus separate explicit owner
+  authorization.
+- Every implementation row must produce strict red->green->refactor evidence with
+  independent review before dependent rows proceed.
 
-1. `S01` (protocol envelope seam).
-2. `S02` (caller transition seam).
-3. `S03` (capability/extension seam).
-4. `S04` (diagnostics/cache seam).
-5. `S05` (transport/provenance seam).
-6. `S06` (integration seam only after prior rows land).
+## Canonical validation contract (planning stage)
 
-Rationale: keeps per-row write sets narrow, reduces merge churn, and preserves
-coordinator blind operation with stable changed-path summaries.
+- Every slice plan contains: frontmatter, capability, evidence, prerequisites,
+  bounded ownership, strict TDD, first failing assertion, concrete commands,
+  diff budget, acceptance, verification evidence, non-goals, and stop rules.
+- All command names and paths referenced by plans/queue must exist now or be
+  explicitly marked as test-first file creation.
+- Planning artifacts only; no product implementation during this window.
 
-## Queue #002 packing guidance (blind orchestration)
+## Review #025 disposition ledger
 
-- Queue mode: blind orchestrator only; coordinator reads row metadata, changed paths,
-  compact sidecars, validation exits, and review verdicts only.
-- Coordinator cap: `<=3` active coordinators; each coordinator processes one current
-  row at a time.
-- Fix loops: max `2` review-fix cycles per row; unresolved P1/P2 after cycle 2 blocks
-  row and escalates to owner.
-- Every row requires fresh independent review worker separate from implementer.
-- Enforce serial `main` landing; do not parallel-merge rows with overlapping ownership.
-- After `S06`, run final integrated authority review for Issue `#016` before any
-  downstream issue activation.
-
-## Progress accounting and Issue #016 slice ledger tie-in
-
-- Add/maintain six ledger rows `S01-S06` under Issue `#016` with status fields:
-  `planned -> in_progress -> review -> fix(optional) -> approved -> done`.
-- Each row records: plan path, implementation commit, review commit/verdict,
-  validation summary, blocker (if any), and next eligible row.
-- Queue completion for Issue `#016` requires all six rows `done` plus final integrated
-  review approved.
-
-## Deferred/non-goals and hard stops
-
-- Non-goals: architecture rewrites, new Holm semantics, cross-repo edits, Issue `#007+`,
-  release/publish/deploy actions, credential rotation or secret policy expansion,
-  and executing Queue `#002` during mapping.
-- Hard stop immediately if: authority evidence conflicts, required behavior needs
-  decision beyond `D001-D015`, slice cannot be independently testable, or another
-  writer modifies `main` during active row handling.
-
-## Canonical paths uniqueness and dependency integrity check
-
-Proposed canonical paths are unique:
-
-- `koder/plans/002_S01_holm_envelope_semantics/INDEX.md`
-- `koder/plans/002_S02_caller_transition_safety/INDEX.md`
-- `koder/plans/002_S03_capability_extension_ownership/INDEX.md`
-- `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md`
-- `koder/plans/002_S05_response_correlation_provenance/INDEX.md`
-- `koder/plans/002_S06_integrated_authority_return/INDEX.md`
-
-All dependencies resolve within this set and no future issue is activated.
+| Finding | Disposition | Canonical correction |
+| --- | --- | --- |
+| P1-1 placeholder plan bodies | Resolved | S01-S06 plan files now contain full authored Markdown plans with strict-TDD, bounded ownership, acceptance/verification, and stop rules. |
+| P2-1 invalid conveyor commands | Resolved | Slice table validation commands now use real `package.json` scripts (`test:source`, `typecheck:core`, full-gate scripts) with concrete test paths. |
+| P2-2 non-existent ownership paths | Resolved | Slice table ownership now points to existing A2 seams/files identified in Review `#024` and present under `src/` and `test/source/`. |
+| P3-1 Issue #016 ledger count mismatch | Dispositioned (safe metadata correction) | `koder/issues/016_a2_authority_conformance_remediation/INDEX.md` updated `slice_count` to 6 to match S01-S06 plan family and queue rows. |
+| P3-2 `/api/cmd` not named | Resolved | S01 title/capability/first-failing assertions explicitly name `/api/cmd` HTTP-200 command envelope handling. |

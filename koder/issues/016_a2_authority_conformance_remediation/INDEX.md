@@ -8,7 +8,7 @@ parent: 001
 depends_on: [004, 005, 006]
 type: bug
 issue_kind: track
-slice_count: 5
+slice_count: 6
 slices_done: 0
 source_review: ../../reviews/024_a2_holm_authority_conformance/INDEX.md
 context: Holm's authority review found four P1 and one P2 foundation defects that block A2 acceptance and all formal A3 work.
