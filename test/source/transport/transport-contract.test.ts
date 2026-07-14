@@ -111,6 +111,58 @@ test("transport canonical keys and redaction cover raw and binary body modes", (
 });
 
 
+test("transport responses unwrap Holm success envelopes and preserve meta and headers", () => {
+  const decoded = decodeTransportResponse({
+    requestId: "req-envelope",
+    status: 200,
+    body: JSON.stringify({ data: { ok: true }, meta: { request_id: "r1" } }),
+    responseMode: "json",
+    headers: { "X-Request-Id": " r1 ", "X-Trace": " trace-1 " },
+  });
+
+  assert.deepEqual(decoded.payload, { ok: true });
+  assert.deepEqual(decoded.metadata, {
+    status: 200,
+    meta: { request_id: "r1" },
+    headers: { "x-request-id": "r1", "x-trace": "trace-1" },
+  });
+});
+
+test("transport responses map Holm error envelopes and /api/cmd command failures", () => {
+  assert.throws(
+    () =>
+      decodeTransportResponse({
+        requestId: "req-error-envelope",
+        status: 200,
+        body: JSON.stringify({
+          error: { code: "forbidden", message: "Denied", details: { scope: "x" } },
+        }),
+        responseMode: "json",
+      }),
+    (error: unknown) => {
+      if (!(error instanceof RemoteError)) {
+        return false;
+      }
+      return error.status === 200 && error.code === "forbidden" && error.message === "Denied" &&
+        canonicalEncodeWireValue(error.toJSON().details ?? null) === '{"scope":"x"}';
+    },
+  );
+
+  assert.throws(
+    () =>
+      decodeTransportResponse({
+        requestId: "req-cmd-error",
+        status: 200,
+        url: "/api/cmd",
+        body: JSON.stringify({
+          data: { ok: false, code: "COMMAND_DENIED", message: "Denied", details: { command: "secret" } },
+        }),
+        responseMode: "json",
+      }),
+    (error: unknown) => error instanceof RemoteError && error.status === 200 && error.code === "COMMAND_DENIED",
+  );
+});
+
 test("transport body codecs round-trip json raw and binary conformance fixtures", () => {
   const json = encodeTransportBody({ mode: "json", value: jsonTransportFixture.body });
   const raw = encodeTransportBody({ mode: "raw", value: rawTransportFixture.body });

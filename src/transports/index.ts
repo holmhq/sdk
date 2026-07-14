@@ -128,6 +128,7 @@ export interface TransportResponseInput {
   readonly body: unknown;
   readonly responseMode: TransportResponseMode;
   readonly headers?: TransportHeaders;
+  readonly url?: string;
 }
 
 export type TransportAuthProof = WebSessionTransportAuthProof | BearerTransportAuthProof | HeaderTransportAuthProof;
@@ -296,13 +297,17 @@ export function encodeTransportBody(body: TransportBodyInput): EncodedTransportB
 export function decodeTransportResponse(input: TransportResponseInput): OperationResponse {
   const status = normalizeStatus(input.status);
   const responseMode = normalizeResponseMode(input.responseMode);
+  const headers = normalizeHeaders(input.headers ?? {});
+  if (responseMode === "json") {
+    return decodeJsonTransportResponse(input, status, headers);
+  }
   if (status < 200 || status > 299) {
     throw createRemoteError(input, status);
   }
   return Object.freeze({
     requestId: input.requestId,
     payload: decodeResponsePayload(input.body, responseMode),
-    metadata: Object.freeze({ status }),
+    metadata: createResponseMetadata(status, headers),
   });
 }
 
@@ -466,6 +471,59 @@ function normalizeStatus(status: number): number {
   return status;
 }
 
+function decodeJsonTransportResponse(
+  input: TransportResponseInput,
+  status: number,
+  headers: TransportHeaders,
+): OperationResponse {
+  let decoded: WireValue;
+  try {
+    decoded = decodeResponsePayload(input.body, "json");
+  } catch (cause) {
+    if (status < 200 || status > 299) {
+      throw createRemoteError(input, status);
+    }
+    throw cause;
+  }
+  const errorEnvelope = extractRemoteErrorEnvelope(decoded, "holm.remote_error", "Remote operation failed.");
+  if (errorEnvelope !== undefined) {
+    throw remoteErrorFromEnvelope(status, errorEnvelope);
+  }
+  if (status < 200 || status > 299) {
+    throw createRemoteError(input, status, decoded);
+  }
+
+  // Holm branch: canonical JSON API responses wrap successful payloads in {data,meta};
+  // keep non-envelope JSON payloads intact for existing adapter compatibility.
+  const envelope = unwrapHolmSuccessEnvelope(decoded);
+  let payload = envelope.payload;
+  if (isCommandPath(input.url)) {
+    // Holm branch: /api/cmd can return HTTP 200 while the nested command envelope failed.
+    const commandError = extractCommandErrorEnvelope(payload);
+    if (commandError !== undefined) {
+      throw remoteErrorFromEnvelope(status, commandError);
+    }
+    payload = unwrapCommandSuccessEnvelope(payload);
+  }
+
+  return Object.freeze({
+    requestId: input.requestId,
+    payload,
+    metadata: createResponseMetadata(status, headers, envelope.meta),
+  });
+}
+
+function createResponseMetadata(status: number, headers: TransportHeaders, meta?: WireValue): WireObject {
+  const metadata: Record<string, WireValue> = { status };
+  if (meta !== undefined) {
+    metadata.meta = copyWireValue(meta);
+  }
+  if (Object.keys(headers).length > 0) {
+    metadata.headers = copyWireValue(headers);
+  }
+  return Object.freeze(metadata);
+}
+
 function decodeResponsePayload(body: unknown, mode: TransportResponseMode): WireValue {
   switch (mode) {
     case "json":
@@ -497,8 +555,18 @@ function parseJsonWireValue(body: string): WireValue {
   }
 }
 
-function createRemoteError(input: TransportResponseInput, status: number): RemoteError {
-  const envelope = parseRemoteEnvelope(input.body);
+function createRemoteError(input: TransportResponseInput, status: number, decoded?: WireValue): RemoteError {
+  return remoteErrorFromEnvelope(status, parseRemoteEnvelope(decoded ?? input.body));
+}
+
+interface RemoteEnvelope {
+  readonly code: string;
+  readonly message: string;
+  readonly details?: unknown;
+  readonly retryable?: boolean;
+}
+
+function remoteErrorFromEnvelope(status: number, envelope: RemoteEnvelope): RemoteError {
   return new RemoteError({
     status,
     code: envelope.code,
@@ -508,28 +576,105 @@ function createRemoteError(input: TransportResponseInput, status: number): Remot
   });
 }
 
-function parseRemoteEnvelope(body: unknown): {
-  readonly code: string;
-  readonly message: string;
-  readonly details?: unknown;
-  readonly retryable?: boolean;
-} {
-  if (typeof body !== "string" || body.trim() === "") {
-    return { code: "holm.remote_error", message: "Remote operation failed." };
+function parseRemoteEnvelope(body: unknown): RemoteEnvelope {
+  if (typeof body === "string") {
+    if (body.trim() === "") {
+      return { code: "holm.remote_error", message: "Remote operation failed." };
+    }
+    try {
+      return parseRemoteEnvelope(JSON.parse(body));
+    } catch {
+      return { code: "holm.remote_error", message: "Remote operation failed." };
+    }
   }
-  try {
-    const parsed = JSON.parse(body) as Record<string, unknown>;
-    const code = typeof parsed.code === "string" && parsed.code.trim() !== "" ? parsed.code : "holm.remote_error";
-    const message = typeof parsed.message === "string" && parsed.message.trim() !== "" ? parsed.message : "Remote operation failed.";
-    return {
-      code,
-      message,
-      ...(parsed.details === undefined ? {} : { details: parsed.details }),
-      ...(typeof parsed.retryable === "boolean" ? { retryable: parsed.retryable } : {}),
-    };
-  } catch {
-    return { code: "holm.remote_error", message: "Remote operation failed." };
+  return extractRemoteErrorEnvelope(body, "holm.remote_error", "Remote operation failed.") ??
+    parseFlatRemoteEnvelope(body, "holm.remote_error", "Remote operation failed.");
+}
+
+function unwrapHolmSuccessEnvelope(payload: WireValue): { readonly payload: WireValue; readonly meta?: WireValue } {
+  if (!isPlainObject(payload) || !Object.hasOwn(payload, "data")) {
+    return { payload };
   }
+  return {
+    payload: copyWireValue(payload.data),
+    ...(Object.hasOwn(payload, "meta") ? { meta: copyWireValue(payload.meta) } : {}),
+  };
+}
+
+function extractRemoteErrorEnvelope(
+  payload: unknown,
+  fallbackCode: string,
+  fallbackMessage: string,
+): RemoteEnvelope | undefined {
+  if (!isPlainObject(payload)) {
+    return undefined;
+  }
+  if (isPlainObject(payload.error)) {
+    return parseFlatRemoteEnvelope(payload.error, fallbackCode, fallbackMessage);
+  }
+  if (isPlainObject(payload.data) && payload.data.ok === false) {
+    return parseFlatRemoteEnvelope(payload.data, fallbackCode, fallbackMessage);
+  }
+  return undefined;
+}
+
+function extractCommandErrorEnvelope(payload: WireValue): RemoteEnvelope | undefined {
+  if (!isPlainObject(payload)) {
+    return undefined;
+  }
+  if (payload.ok === false) {
+    return parseFlatRemoteEnvelope(payload, "holm.command_failed", "Command failed.");
+  }
+  if (payload.success === false) {
+    const message = typeof payload.error === "string" && payload.error.trim() !== "" ? payload.error : undefined;
+    return parseFlatRemoteEnvelope(
+      { ...payload, ...(message === undefined ? {} : { message }) },
+      "holm.command_failed",
+      "Command failed.",
+    );
+  }
+  return undefined;
+}
+
+function unwrapCommandSuccessEnvelope(payload: WireValue): WireValue {
+  if (!isPlainObject(payload) || payload.success !== true || !Object.hasOwn(payload, "data")) {
+    return payload;
+  }
+  return copyWireValue(payload.data);
+}
+
+function parseFlatRemoteEnvelope(payload: unknown, fallbackCode: string, fallbackMessage: string): RemoteEnvelope {
+  if (!isPlainObject(payload)) {
+    return { code: fallbackCode, message: fallbackMessage };
+  }
+  const code = typeof payload.code === "string" && payload.code.trim() !== "" ? payload.code : fallbackCode;
+  const message = typeof payload.message === "string" && payload.message.trim() !== "" ? payload.message : fallbackMessage;
+  return {
+    code,
+    message,
+    ...(payload.details === undefined ? {} : { details: payload.details }),
+    ...(typeof payload.retryable === "boolean" ? { retryable: payload.retryable } : {}),
+  };
+}
+
+function isCommandPath(url: string | undefined): boolean {
+  if (url === undefined) {
+    return false;
+  }
+  const withoutQuery = url.split("?", 1)[0] ?? "";
+  const pathStart = withoutQuery.startsWith("http://") || withoutQuery.startsWith("https://")
+    ? withoutQuery.indexOf("/", withoutQuery.indexOf("://") + 3)
+    : 0;
+  const path = pathStart < 0 ? "/" : withoutQuery.slice(pathStart);
+  return path === "/api/cmd";
+}
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (typeof value !== "object" || value === null || Array.isArray(value) || isReadonlyBytes(value)) {
+    return false;
+  }
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
 }
 
 function isByteInput(value: unknown): value is ArrayLike<number> | Iterable<number> {
