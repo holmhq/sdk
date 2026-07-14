@@ -47,6 +47,11 @@ import {
 import { createNodeTokenAuth, createNodeUploadFile } from "@holmhq/sdk/node";
 import { createWebSessionAuth, createWebUploadFile, type WebUploadBlobLike } from "@holmhq/sdk/web";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
+import {
+  createResourceController,
+  type Resource,
+  type ResourceSnapshot,
+} from "@holmhq/sdk/state";
 
 const environment: CoreEnvironment = createCoreEnvironment();
 const bytes = createReadonlyBytes([1, 2, 3]);
@@ -96,6 +101,11 @@ const extensionLifecycle: ExtensionLifecycle = createExtensionLifecycle([reports
 const fake = createFakeClock();
 const testRuntime = createInMemoryRuntimeAdapter({ clock: fake.clock, scheduler: fake.scheduler });
 const holm = createHolm({ runtime: testRuntime, caller });
+const stateController = createResourceController<{ readonly count: number }>();
+const stateResource: Resource<{ readonly count: number }> = stateController.resource;
+const stateSnapshot: ResourceSnapshot<{ readonly count: number }> = stateController.setReady({ count: 1 });
+const stateUnsubscribe = stateResource.subscribe(() => undefined);
+stateUnsubscribe();
 const timeout = new TimeoutError({ timeoutMs: 1 });
 const responseMode: TransportResponseMode = "json";
 const transportRequest: TransportRequest = createTransportRequest({
@@ -154,6 +164,9 @@ const webUploadFile = createWebUploadFile({ field: "web", blob: blobLike, name: 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
 
+// @ts-expect-error Declaration state snapshots are immutable.
+stateSnapshot.data = { count: 2 };
+
 void environment;
 void encoded;
 void serialized;
@@ -165,6 +178,9 @@ void runtime;
 void runtimeEnvelopeProtocol;
 void extensionLifecycle;
 void holm;
+void stateController;
+void stateResource;
+void stateSnapshot;
 void timeout;
 void transportRequest;
 void cachePolicy;

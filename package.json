@@ -21,6 +21,10 @@
       "types": "./dist/transports/index.d.ts",
       "import": "./dist/transports/index.js"
     },
+    "./state": {
+      "types": "./dist/state/index.d.ts",
+      "import": "./dist/state/index.js"
+    },
     "./web": {
       "types": "./dist/web/index.d.ts",
       "import": "./dist/web/index.js"

@@ -321,6 +321,46 @@
       "sha256": "11920e767c471a1f11523fcb8fe6048ec76953ee7edeb4f72d05bd1bc36e5d5a"
     },
     {
+      "bytes": 358,
+      "path": "dist/state/index.d.ts",
+      "sha256": "1fbaad968bab5c9c7f1cb59929ab139d829fc4e02ac2d085d22046325ccc2a6a"
+    },
+    {
+      "bytes": 323,
+      "path": "dist/state/index.d.ts.map",
+      "sha256": "304e04ec0f32ffc0abed9372e1a0a064af4987f1eb75af56e2e2086c02a5aff4"
+    },
+    {
+      "bytes": 92,
+      "path": "dist/state/index.js",
+      "sha256": "3acb752972de1355921230dbc2cc65e0c023f898dcfe262ba4aedead82b57ca7"
+    },
+    {
+      "bytes": 153,
+      "path": "dist/state/index.js.map",
+      "sha256": "75fdff5963313a5b7cfaec49fab93ae9557344711e764943dbe3d3bbed84726a"
+    },
+    {
+      "bytes": 2089,
+      "path": "dist/state/resource.d.ts",
+      "sha256": "88ff52ce0c6aca7f36fb3c2741b66d6116d92a6ee4110722829f4aa6bed99c1d"
+    },
+    {
+      "bytes": 2343,
+      "path": "dist/state/resource.d.ts.map",
+      "sha256": "d1380a3a140dbfe37c48f68b48ba38f2bef02637a70b3aeb3581b12aa7d8d903"
+    },
+    {
+      "bytes": 6298,
+      "path": "dist/state/resource.js",
+      "sha256": "bc2e078a036f044e01df962ce330e6e9d8c9e305f464745170d6d4e4bec88ea2"
+    },
+    {
+      "bytes": 6177,
+      "path": "dist/state/resource.js.map",
+      "sha256": "e10217d8c6e647b1277c7b1f9c2c81bfea9fca6f63cf470fca75cf544aa57b82"
+    },
+    {
       "bytes": 1610,
       "path": "dist/test/index.d.ts",
       "sha256": "88af81f8af3a73770b89f13ee7d5ef75d13391b2ba4d1a4ed4e896bbabd6c0e2"

@@ -10,6 +10,7 @@
     "test/types/extensions.test.ts",
     "test/types/lifecycle.test.ts",
     "test/types/runtime-invocation.test.ts",
+    "test/types/state.test-d.ts",
     "test/types/transport-cache.test.ts",
     "test/types/wire-value-errors.test.ts"
   ]

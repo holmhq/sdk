@@ -32,6 +32,7 @@ import {
 import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index.js";
 import { createWebSessionAuth, createWebUploadFile } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
+import { createResourceController } from "../../dist/state/index.js";
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
   assert.equal(createCoreEnvironment(), "core");
@@ -199,6 +200,36 @@ test("generated ESM artifact exposes S11 cache invalidation and diagnostics", as
   assert.equal(invalidated.removed, 1);
   assert.equal(diagnostics.some((event) => event.code === "transport_cache_update"), true);
   assert.equal(diagnostics.some((event) => event.code === "transport_cache_invalidate"), true);
+});
+
+test("generated ESM artifact exposes S13 state resource lifecycle", () => {
+  const diagnostics = [];
+  const controller = createResourceController({
+    clock: { now: () => 77 },
+    diagnostics: createDiagnosticsSink((event) => diagnostics.push(event)),
+  });
+  const phases = [];
+  const unsubscribe = controller.resource.subscribe(() => {
+    phases.push(controller.resource.getSnapshot().phase);
+  });
+
+  const source = { count: 1, labels: ["dist"] };
+  const ready = controller.setReady(source);
+  source.labels.push("mutated");
+  controller.resource.subscribe(() => {
+    throw new Error("dist secret should be redacted");
+  });
+  controller.setLoading({ refreshing: true, stale: true });
+  controller.resource.dispose();
+  unsubscribe();
+
+  assert.equal(ready.phase, "ready");
+  assert.equal(ready.updatedAt, 77);
+  assert.deepEqual(ready.data, { count: 1, labels: ["dist"] });
+  assert.equal(Object.isFrozen(ready.data.labels), true);
+  assert.deepEqual(phases, ["ready", "loading", "disposed"]);
+  assert.equal(controller.resource.getSnapshot().phase, "disposed");
+  assert.equal(diagnostics[0].code, "state_resource_listener_error");
 });
 
 test("generated ESM artifact exposes S08 createHolm lifecycle fakes", async () => {
