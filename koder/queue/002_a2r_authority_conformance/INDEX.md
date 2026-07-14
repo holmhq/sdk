@@ -1,6 +1,6 @@
 ---
 title: Queue 002 - A2R authority conformance (Issue 016)
-status: in_review
+status: ready
 queue: 002
 issue: 016
 plan_family: 002
@@ -12,6 +12,8 @@ final_integrated_review_required: true
 max_fix_cycles_per_row: 2
 coordinator_entry_cap: 3
 updated: 2026-07-14
+plan_review_verdict: approve
+plan_review_ref: koder/reviews/026_a2r_remediation_plan_rereview/INDEX.md
 ---
 
 # Queue 002 - A2R authority conformance
@@ -67,6 +69,10 @@ Queue `#002` may be marked done only when all are true:
 | P2-2 non-existent write ownership paths | Resolved | Referenced plans now bind ownership to existing `src/*` and `test/source/*` seams from Review `#024`. |
 | P3-1 slice ledger mismatch | Dispositioned | Issue `#016` metadata corrected to six slices; queue row count already six and unchanged. |
 | P3-2 `/api/cmd` omission | Resolved | S01 row points to plan explicitly covering `/api/cmd` command-envelope handling. |
+
+## Run log
+
+- 2026-07-14: Review `#026` approved at commit `fc5c678` (`P1/P2/P3=0/0/0`); queue moved to `ready` with `execution_authorized: false`; next action: return for owner authorization.
 
 ## Safety constraints
 

@@ -1,11 +1,12 @@
 ---
 title: A2R S03 - Capability ownership and extension invocation seam
-status: in_review
+status: approved
 issue: 016
 plan: 002
 slice: S03
 finding: P1-3
 review: 025
+approval_review: 026
 owner: sdk-core
 depends_on: [S01]
 ---

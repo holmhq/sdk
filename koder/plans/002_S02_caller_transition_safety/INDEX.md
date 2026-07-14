@@ -1,11 +1,12 @@
 ---
 title: A2R S02 - Caller transition safety and partition fencing
-status: in_review
+status: approved
 issue: 016
 plan: 002
 slice: S02
 finding: P1-2
 review: 025
+approval_review: 026
 owner: sdk-core
 depends_on: [S01]
 ---

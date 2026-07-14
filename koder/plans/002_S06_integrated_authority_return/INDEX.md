@@ -1,11 +1,12 @@
 ---
 title: A2R S06 - Integrated authority return and final gate
-status: in_review
+status: approved
 issue: 016
 plan: 002
 slice: S06
 finding: integrated
 review: 025
+approval_review: 026
 owner: sdk-core
 depends_on: [S01, S02, S03, S04, S05]
 ---

@@ -1,11 +1,12 @@
 ---
 title: A2R S01 - Holm envelope semantics and /api/cmd conformance
-status: in_review
+status: approved
 issue: 016
 plan: 002
 slice: S01
 finding: P1-1
 review: 025
+approval_review: 026
 owner: sdk-core
 ---
 

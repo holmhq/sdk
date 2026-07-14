@@ -1,11 +1,12 @@
 ---
 title: A2R S05 - Response correlation and provenance safeguards
-status: in_review
+status: approved
 issue: 016
 plan: 002
 slice: S05
 finding: P2-1
 review: 025
+approval_review: 026
 owner: sdk-core
 depends_on: [S01, S02]
 ---
