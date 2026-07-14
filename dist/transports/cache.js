@@ -85,7 +85,7 @@ export function createTransportCache(options) {
                 inflight.delete(input.key);
             }
         });
-        inflight.set(input.key, Object.freeze({ promise: next, token, keyGeneration, clearGeneration: loadClearGeneration }));
+        inflight.set(input.key, Object.freeze({ promise: next, token, keyGeneration, clearGeneration: loadClearGeneration, input }));
         return next;
     }
     function storeIfCurrent(input, response, keyGeneration, loadClearGeneration) {
@@ -127,6 +127,11 @@ export function createTransportCache(options) {
         const keys = new Set(normalized.requestKeys);
         for (const [key, entry] of entries) {
             if (matchesInvalidation(entry, normalized)) {
+                keys.add(key);
+            }
+        }
+        for (const [key, load] of inflight) {
+            if (matchesInvalidation(load.input, normalized)) {
                 keys.add(key);
             }
         }

@@ -124,6 +124,7 @@ interface InflightLoad {
   readonly token: object;
   readonly keyGeneration: number;
   readonly clearGeneration: number;
+  readonly input: NormalizedGetInput;
 }
 
 interface ScheduledRefresh {
@@ -235,7 +236,7 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
           inflight.delete(input.key);
         }
       });
-    inflight.set(input.key, Object.freeze({ promise: next, token, keyGeneration, clearGeneration: loadClearGeneration }));
+    inflight.set(input.key, Object.freeze({ promise: next, token, keyGeneration, clearGeneration: loadClearGeneration, input }));
     return next;
   }
 
@@ -292,6 +293,11 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
         keys.add(key);
       }
     }
+    for (const [key, load] of inflight) {
+      if (matchesInvalidation(load.input, normalized)) {
+        keys.add(key);
+      }
+    }
 
     let removed = 0;
     for (const key of keys) {
@@ -313,7 +319,7 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
     return deleted;
   }
 
-  function matchesInvalidation(entry: CacheEntry, input: NormalizedInvalidationInput): boolean {
+  function matchesInvalidation(entry: CacheEntry | NormalizedGetInput, input: NormalizedInvalidationInput): boolean {
     if (input.partition !== undefined && !samePartition(entry.partition, input.partition)) {
       return false;
     }

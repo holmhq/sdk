@@ -89,6 +89,54 @@ test("transport cache invalidates by tags prefixes and explicit mutation declara
   assert.equal(JSON.stringify(diagnostics).includes("secret"), false);
 });
 
+test("transport cache fences in-flight fills matched by mutation tags and prefixes", async () => {
+  const fake = createFakeClock();
+  const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 4 });
+  let resolveTagged: ((value: OperationResponse) => void) | undefined;
+  let resolvePrefixed: ((value: OperationResponse) => void) | undefined;
+  const taggedRequest = request("/api/inflight/tagged");
+  const prefixedRequest = request("/api/inflight/prefixed");
+
+  const taggedLoad = cache.getOrLoad(
+    { partition, request: taggedRequest, policy, tags: ["reports"] },
+    () => new Promise<OperationResponse>((resolve) => {
+      resolveTagged = resolve;
+    }),
+  );
+  const prefixedLoad = cache.getOrLoad(
+    { partition, request: prefixedRequest, policy, tags: ["other"] },
+    () => new Promise<OperationResponse>((resolve) => {
+      resolvePrefixed = resolve;
+    }),
+  );
+
+  const invalidated = cache.invalidateForMutation({ partition, tags: ["reports"], prefixes: ["/api/inflight/prefix"] });
+
+  assert.equal(invalidated.removed, 0);
+  assert.equal(invalidated.keys.length, 2);
+  resolveTagged?.(response("req-tagged-old", { version: "old-tagged" }));
+  resolvePrefixed?.(response("req-prefixed-old", { version: "old-prefixed" }));
+  assert.deepEqual((await taggedLoad).payload, { version: "old-tagged" });
+  assert.deepEqual((await prefixedLoad).payload, { version: "old-prefixed" });
+  assert.equal(cache.read({ partition, request: taggedRequest }), undefined);
+  assert.equal(cache.read({ partition, request: prefixedRequest }), undefined);
+
+  assert.deepEqual(
+    (await cache.getOrLoad(
+      { partition, request: taggedRequest, policy, tags: ["reports"] },
+      async () => response("req-tagged-new", { version: "new-tagged" }),
+    )).payload,
+    { version: "new-tagged" },
+  );
+  assert.deepEqual(
+    (await cache.getOrLoad(
+      { partition, request: prefixedRequest, policy, tags: ["other"] },
+      async () => response("req-prefixed-new", { version: "new-prefixed" }),
+    )).payload,
+    { version: "new-prefixed" },
+  );
+});
+
 test("transport cache returns immutable public copies without exposing canonical state", async () => {
   const fake = createFakeClock();
   const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 4 });
