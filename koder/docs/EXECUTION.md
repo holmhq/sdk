@@ -1,9 +1,11 @@
 ---
 title: SDK Autonomous Execution Windows
 updated: 2026-07-14
-active_window: A2R-planning
+active_window: none
+pending_window: A2R-implementation
 active_issue: 016
-orchestration_mode: blind
+orchestration_mode: direct
+pending_queue_mode: blind-strict
 requires_review_after: true
 ---
 
@@ -124,12 +126,13 @@ A2R implementation remains **not authorized**.
 
 - Strict red -> green -> refactor is mandatory for every code change.
 - Planning is complete. Do not launch more mapping, plan, plan-review, or
-  metadata-finalizer workers; the coordinator owns queue/run-log/Issue/STATE
-  transitions directly.
+  metadata-finalizer workers; the coordinator batches queue/run-log/Issue
+  transitions directly and updates `STATE.md` only at the owner stop gate.
 - Queue `#002` is blind-strict because it changes protocol, caller/auth,
   capability ownership, credential handling, and response correlation. The
   primary routes fresh implementation/review/fix workers without ingesting
-  implementation detail.
+  implementation detail. Clean row approvals use typed compact proof; canonical
+  review artifacts are required only for findings and final authority gates.
 - For owner-present execution, the interactive primary is the bounded
   coordinator; add no governor layer unless unattended relaunch is explicitly
   required. Roll over after at most three completed implementation rows.

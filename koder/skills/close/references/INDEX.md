@@ -4,7 +4,7 @@ Use this index as the first loaded reference for this skill. Render the final ha
 
 # Close Session
 
-Use this skill at the end of a work session. A close is complete only when every intentional change is committed and the working tree plus index are clean. Do not claim success while `git status --porcelain=v1 --untracked-files=all` prints anything.
+Use this skill at the end of a real owner-facing work session or explicit durable handoff. Internal phase workers and coordinator rollovers use compact proof and batched checkpoints, not this close workflow. A close is complete only when every intentional change is committed and the working tree plus index are clean. Do not claim success while `git status --porcelain=v1 --untracked-files=all` prints anything.
 
 ## Workflow
 
@@ -47,6 +47,6 @@ Use this skill at the end of a work session. A close is complete only when every
 - Preserve unrelated dirty/staged work; never reset, discard, force-push, or overwrite it to manufacture cleanliness.
 - Never commit secrets, credentials, caches, build outputs, or private data.
 - Do not commit failed or incomplete implementation work just to satisfy the clean-state invariant; ask for a decision when needed.
-- Every intentional `koder/` state transition gets a `state:` commit by default.
+- Routine artifact/status changes belong in logical work commits or batched checkpoints; do not create standalone `state:` commits merely to prepare close.
 - Honor `koder/docs/EXECUTION.md`: do not continue into a review-gated issue/window merely because time or context remains.
 - If a user explicitly says not to commit, report the resulting dirty paths and mark the close blocked rather than claiming a clean close.

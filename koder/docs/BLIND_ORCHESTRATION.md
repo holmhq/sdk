@@ -15,7 +15,8 @@ Use the koder-pattern delivery-first mode gate before adding orchestration.
 Direct owner-present work is the default for:
 
 - planning, docs, artifact review, and research;
-- queue/frontmatter/run-log/Issue/STATE metadata;
+- queue/frontmatter/run-log/Issue metadata, batched at resumable checkpoints;
+- `STATE.md` updates only at a real owner handoff/stop gate;
 - one bounded capability when repo policy does not require isolation.
 
 Do not dispatch planning or metadata-finalizer workers. Before planning-only or
@@ -46,9 +47,9 @@ The coordinator owns:
 
 - authorization, eligibility, dependencies, locks, caps, and stop rules;
 - bounded worker briefs and lifecycle;
-- compact semantic reports, Harnex terminal telemetry, validation exits,
-  canonical review verdict/counts/path, blockers, and Git checks;
-- queue/run-log/Issue/STATE metadata directly.
+- compact semantic reports, Harnex terminal telemetry, validation exits, typed
+  review verdict/counts with an optional canonical path, blockers, and Git checks;
+- batched queue/run-log/Issue metadata directly; `STATE.md` only at the owner stop gate.
 
 Fresh workers own:
 
@@ -89,12 +90,14 @@ For each eligible row:
 3. Fence on work completion and verify the canonical commit/artifact, changed
    paths, validation exits, and Git state without reading the diff.
 4. Dispatch one fresh independent reviewer over the row.
-5. Consume only review path, normalized verdict/counts, validation, blocker, and
-   Git evidence.
-6. On `needs_fixes`, dispatch a fresh fixer that reads the review directly,
-   followed by a fresh re-reviewer. Never relay finding prose through the
-   coordinator.
-7. On approval, update queue/run-log/Issue metadata directly and advance.
+5. Consume only normalized verdict/counts, validation, reviewed ref, optional
+   review path, blocker, and Git evidence. A clean approval uses typed compact
+   proof and needs no Markdown review artifact.
+6. On `needs_fixes`, require a canonical finding review, then dispatch a fresh
+   fixer that reads it directly followed by a fresh re-reviewer. Never relay
+   finding prose through the coordinator.
+7. On approval, retain compact row proof and batch queue/run-log/Issue metadata
+   at the next resumable checkpoint; do not create an approval-only commit.
 8. Stop completed sessions promptly; never overlap SDK implementation workers
    on `main`.
 
@@ -122,7 +125,7 @@ Prefer Harnex native proof:
 
 - `harnex.artifact_report.v1` carries semantic status, canonical refs,
   validation commands/exits, typed gate/review/blocker summaries, and confidence;
-- normalized review frontmatter carries verdict and P1/P2/P3 counts;
+- typed reports always carry review verdict and P1/P2/P3 counts; normalized review frontmatter is required only for findings and integrated authority gates;
 - Harnex terminal telemetry plus live Git carry observed commit identity,
   changed paths, and clean/sync state.
 
@@ -140,9 +143,12 @@ Queue `#002` declares a coordinator cap of three completed implementation rows.
 Roll over earlier after complex fix loops, at a natural boundary, near a
 deadline, or under context pressure.
 
-Before rollover: stop children, update metadata directly, commit/push, verify
-clean synchronization, and run `close`. A fresh coordinator resumes from
-canonical state and the first unproven phase without replaying prior output.
+Before rollover: stop children, batch one resumable metadata checkpoint,
+commit/push only what policy requires, verify clean synchronization, and write
+the compact coordinator handoff. Internal rollover does not run `close` or
+rewrite `STATE.md`; the owner-facing primary closes once at the real stop gate.
+A fresh coordinator resumes from canonical state and the first unproven phase
+without replaying prior output.
 
 ## Launch blockers
 
@@ -153,8 +159,8 @@ Do not start or continue Queue `#002` when:
 - fresh implementation/review isolation is unavailable;
 - another writer owns `main`, or Git is unexpectedly dirty/ahead/behind;
 - the current row lacks its approved plan, exact validation, wall cap, or stop;
-- semantic artifact reports, normalized review verdicts, or Git verification
-  cannot be enforced;
+- semantic artifact reports, typed review verdict/counts, required finding/gate
+  artifacts, or Git verification cannot be enforced;
 - the circuit breaker, coordinator cap, owner gate, or A2 stop rule is reached.
 
 Record the shortest actionable blocker and stop. Do not compensate by adding

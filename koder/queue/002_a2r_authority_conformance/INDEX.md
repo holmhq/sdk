@@ -9,6 +9,8 @@ owner_launch_gate: plan_approval_plus_separate_owner_authorization_required
 orchestration_mode: blind
 assurance_profile: strict
 review_granularity: entry
+clean_row_review_artifact: optional
+finding_and_final_review_artifact: required
 planning_mode: direct
 metadata_owner: coordinator
 max_noop_attempts_per_phase: 2
@@ -39,10 +41,12 @@ authorization.
 - Serial execution on `main`; one current row at a time.
 - When implementation is separately authorized, use blind-strict isolation with
   independent review per row because the seams are protocol/auth/security
-  sensitive.
+  sensitive. Clean approvals use typed compact proof; findings and final gates
+  use canonical review artifacts.
 - For owner-present execution, the interactive primary is the bounded
   coordinator; no governor layer is required.
-- The coordinator directly updates queue/run-log/Issue/STATE metadata.
+- The coordinator batches queue/run-log/Issue metadata at resumable checkpoints;
+  `STATE.md` moves only at the real owner stop gate.
 - Max two fix cycles per row and two no-op/boot/permission attempts per phase
   before block/escalation.
 - Row estimates are caps, not time to consume deliberately. Use short first
@@ -94,8 +98,9 @@ Queue `#002` may be marked done only when all are true:
 - 2026-07-14: Review `#026` approved at commit `fc5c678` (`P1/P2/P3=0/0/0`); queue moved to `ready` with `execution_authorized: false`; next action: return for owner authorization.
 - 2026-07-14: owner requested delivery-first orchestration. Planning/metadata
   moved to direct mode; Queue `#002` remains blind-strict only for separately
-  authorized implementation, with coordinator-owned metadata, short monitor
-  fences, and a two-attempt circuit breaker.
+  authorized implementation, with batched coordinator metadata, compact clean
+  review proof, no internal close commits, short monitor fences, and a
+  two-attempt circuit breaker.
 
 ## Safety constraints
 

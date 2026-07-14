@@ -17,15 +17,12 @@ This repo uses the koder pattern for durable agent handoff and project memory.
 - Keep `koder/STATE.md` short and current; update it at init, close, explicit handoff requests, or external-origin filings into this repo.
 - Do not put secrets, private payloads, full prompts, credentials, or large copied source/output into `koder/`.
 
-## State commits
+## Commits and state
 
-- Every intentional `koder/` state transition gets a `state:` commit by default.
-- Use subjects like `state: init - koder pattern scaffold`, `state: close - <result>`, `state: file #NNN from <origin> - <reason>`, or `state: update #NNN - <reason>`.
-- `state:` commits are the semantic movement ledger; `koder/STATE.md` is the session handoff, not a commit-by-commit changelog.
-- Do not edit `koder/STATE.md` solely because a local in-session artifact state commit happened; summarize at close if it matters.
-- Do not force ordinary code-only commits to use `state:`; the ledger tracks semantic operator/repo-state movement.
-- In dirty repos, commit only the intended state paths and preserve unrelated dirty/staged work.
-- If the user explicitly says not to commit, leave state uncommitted and report the dirty paths.
+- Routine artifact/status changes ride with logical product/review commits or one batched resumable checkpoint; do not create one commit per row, approval, or frontmatter edit.
+- Use standalone `state:` commits only for scaffold init, a real owner-facing handoff, external filing, owner authorization/block/acceptance, or another process-only milestone.
+- `koder/STATE.md` is the compact session handoff. Internal phase workers and coordinator rollovers do not rewrite it or run `close` merely to rotate context.
+- In dirty repos, commit selected intended paths and preserve unrelated dirty/staged work. If the user says not to commit, report the remaining paths.
 
 ## Koder artifacts
 
@@ -75,12 +72,14 @@ This repo uses the koder pattern for durable agent handoff and project memory.
   correlation. During that implementation run the primary is a blind bounded
   coordinator: it routes fresh implementation/review/fix workers and does not
   ingest product source, full diffs, tests, finding prose, transcripts, routine
-  panes, or long logs.
+  panes, or long logs. Clean row approvals use typed compact proof; canonical
+  review artifacts are required for findings and integrated authority gates.
 - For owner-present Queue `#002` work, the interactive primary is the coordinator;
   do not add a governor layer unless unattended relaunch is explicitly required.
   Route only the current row and roll over at the queue-declared cap.
-- The coordinator directly owns queue/run-log/Issue/STATE metadata. Never launch
-  planning, status, or metadata-finalizer workers after approval.
+- The coordinator directly owns and batches queue/run-log/Issue metadata at
+  resumable checkpoints. `STATE.md` moves only at the real owner stop gate.
+  Never launch planning, status, or metadata-finalizer workers after approval.
 - Two no-op, boot, permission, or receipt-free attempts for one phase open a
   circuit breaker. Use short first monitor fences, reconcile artifact/Git/
   receipt/process facts before extending, and treat live Git/Harnex—not
