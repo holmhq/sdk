@@ -321,24 +321,44 @@
       "sha256": "11920e767c471a1f11523fcb8fe6048ec76953ee7edeb4f72d05bd1bc36e5d5a"
     },
     {
-      "bytes": 562,
+      "bytes": 925,
       "path": "dist/state/index.d.ts",
-      "sha256": "d927b2e0b6c87e7c96bcd7766b487e97683010a6ea6d6fd3187993c7e816b488"
+      "sha256": "8d6e472155019aa6cbe6d97c8b5d343e3ef9b07fe6e22156160b20d5e9949ad6"
     },
     {
-      "bytes": 480,
+      "bytes": 698,
       "path": "dist/state/index.d.ts.map",
-      "sha256": "3fc627130cafbed22c113725cb6abefe52b513eee12b1a18042877536edef538"
+      "sha256": "48b38a9bca83064ccbc9850842ffb3884e390490007cf433f59bd2d2205d151e"
     },
     {
-      "bytes": 143,
+      "bytes": 200,
       "path": "dist/state/index.js",
-      "sha256": "c577110cf00d31e12b404d6d6deb3e276f273fcc99f30d43f6c69b6862682879"
+      "sha256": "137affe4f255fa3209c596f702514bcac79ed9c7c4a7271ab72e4d71baeb9626"
     },
     {
-      "bytes": 197,
+      "bytes": 241,
       "path": "dist/state/index.js.map",
-      "sha256": "08f822be47920e1eaa5cb15dcacc41b43edd5ddaeca9854642a96f3b9e528584"
+      "sha256": "e466677404f5ee6b0a5d04df1f66a585e4f898c9a7d4461641e56ca82aeb9bca"
+    },
+    {
+      "bytes": 3375,
+      "path": "dist/state/mutation.d.ts",
+      "sha256": "c14f2410c08828aaee484aba87f68a1136923d0da54e015d219dea058a8233e3"
+    },
+    {
+      "bytes": 3330,
+      "path": "dist/state/mutation.d.ts.map",
+      "sha256": "5ab4efd4709d8e0807866ad16348ccdccd41903dce52432f453841850fe31296"
+    },
+    {
+      "bytes": 11089,
+      "path": "dist/state/mutation.js",
+      "sha256": "46f5be2e4a63080e4a2afb852e89a50cf4f6c32aeead02c4eacffea331ad3c63"
+    },
+    {
+      "bytes": 10615,
+      "path": "dist/state/mutation.js.map",
+      "sha256": "6af6434847344d4afeb111e0954fd4a386d7b43f8b6a0784b52dfe90f3bfbaf6"
     },
     {
       "bytes": 1929,

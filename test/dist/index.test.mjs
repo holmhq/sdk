@@ -32,7 +32,7 @@ import {
 import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index.js";
 import { createWebSessionAuth, createWebUploadFile } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
-import { createQueryResource, createResourceController } from "../../dist/state/index.js";
+import { createMutationResource, createQueryResource, createResourceController } from "../../dist/state/index.js";
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
   assert.equal(createCoreEnvironment(), "core");
@@ -229,6 +229,24 @@ test("generated ESM artifact exposes S14 state query refresh and reset", async (
   assert.deepEqual((await query.currentLoad()).data, { owner: "beta", source: "runtime-a" });
   assert.deepEqual((await query.reset({ source: { id: "runtime-b", surface: "test" } }).phase), "loading");
   assert.deepEqual((await query.currentLoad()).data, { owner: "beta", source: "runtime-b" });
+});
+
+test("generated ESM artifact exposes S15 state mutation optimistic invalidation", async () => {
+  const invalidations = [];
+  const mutation = createMutationResource({
+    source: { id: "runtime-a", surface: "test" },
+    caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+    optimistic: (payload) => ({ version: 0, label: payload.label }),
+    execute: () => ({ version: 1, label: "server" }),
+    invalidates: [{ tags: ["dist-mutation"] }],
+    onInvalidate: (event) => invalidations.push(event),
+  });
+
+  const ready = await mutation.execute({ label: "draft" });
+
+  assert.equal(ready.phase, "ready");
+  assert.deepEqual(ready.data, { version: 1, label: "server" });
+  assert.deepEqual(invalidations[0].invalidations, [{ tags: ["dist-mutation"] }]);
 });
 
 test("generated ESM artifact exposes S13 state resource lifecycle", () => {
