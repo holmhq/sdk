@@ -7,6 +7,8 @@ phase: final_review
 entry: A2-final-core-api-conformance
 implementation_range: 0d443cf..56a81d118e99afe239b8453b74add6607bc0e4c4
 reviewed_at: 2026-07-14
+authority_follow_up: ../024_a2_holm_authority_conformance/INDEX.md
+owner_acceptance: blocked
 ---
 
 # A2 Final Core API Conformance Review
@@ -15,6 +17,12 @@ reviewed_at: 2026-07-14
 
 APPROVE — no P1/P2 findings. A2 core foundation is ready for owner review and
 must still stop before Issue `#007`.
+
+> **Later authority gate:**
+> [`Review #024`](../024_a2_holm_authority_conformance/INDEX.md) found four P1
+> and one P2 conformance defects and **BLOCKS A2 owner acceptance**. This file
+> remains historical SDK-side review evidence; Review `#024` governs the current
+> checkpoint.
 
 ## Scope reviewed
 

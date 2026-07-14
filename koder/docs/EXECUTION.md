@@ -2,7 +2,7 @@
 title: SDK Autonomous Execution Windows
 updated: 2026-07-14
 active_window: A2
-active_issue: 003
+active_issue: 016
 orchestration_mode: blind
 requires_review_after: true
 ---
@@ -10,9 +10,9 @@ requires_review_after: true
 # Autonomous Execution Windows
 
 This document grants bounded autonomy without silently crossing product-design
-checkpoints. `koder/STATE.md` names the active window. Stop early on a genuine
-blocker, but never continue beyond the named stop gate without a new owner
-decision recorded here and in `koder/STATE.md`.
+or authority checkpoints. `koder/STATE.md` names the current checkpoint. No
+future window is active unless the owner records that decision here and in
+`koder/STATE.md`.
 
 ## Completed window — A1: architecture decision package
 
@@ -20,120 +20,112 @@ decision recorded here and in `koder/STATE.md`.
 - **Issue:** [`#002`](../issues/002_architecture_contract/INDEX.md).
 - **Review:** [`01_codex.md`](../reviews/001_architecture_contract/01_codex.md)
   plus [`02_owner.md`](../reviews/001_architecture_contract/02_owner.md).
-- **Decision:** `D001`–`D015` approved; `/state` is canonical and is not a
+- **Decision:** `D001`-`D015` approved; `/state` is canonical and is not a
   legacy compatibility alias.
 
-## Current window — A2: toolchain through framework-neutral state
+## Blocked checkpoint — A2: core foundation authority return
 
-- **Status:** ready
-- **Issues:** `#003` → `#004` → `#005` → `#006`, serially
-- **Autonomy:** plan, install repository-local development dependencies,
-  implement with strict TDD, validate, review, commit, push, and maintain queue
-  evidence
-- **Stop gate:** core API/conformance package is decision-ready after `#006`;
-  do not start Issue `#007`
+- **Implementation result:** Queue `#001` completed Issues `#003`-`#006` at SDK
+  checkpoint `fe37f85`.
+- **SDK-side review:** Review `#023` approved the implementation checkpoint.
+- **Authority result:**
+  [`Review #024`](../reviews/024_a2_holm_authority_conformance/INDEX.md) returned
+  **BLOCK** with four P1 and one P2 findings.
+- **Remediation track:**
+  [`Issue #016`](../issues/016_a2_authority_conformance_remediation/INDEX.md).
+- **Current autonomy:** none. The prior A2 implementation grant is exhausted.
+- **Stop gate:** independent SDK re-review and fresh Holm-authority acceptance;
+  do not begin Issue `#007`.
 
-### Required reading
+### Authority facts
+
+- SDK reviewed: `fe37f8528eeca38007f575307e7f3e26f642b615`.
+- Holm baseline: `11ceae0d88e9c800eb77916e3244fbd231ad81bb`.
+- Holm HEAD reviewed: `bdcc8cc51eccef9d9f195a2d35d5db1af39b1655`.
+- Material Holm drift affecting A2/A3 assumptions: none.
+- Blocking seams: Holm response envelopes, caller partition lifecycle,
+  capability/extension ownership, credential-safe observability/cache identity,
+  and response correlation.
+
+### Required reading for the next coordinator
 
 1. `koder/STATE.md`
 2. `koder/docs/BLIND_ORCHESTRATION.md`
-3. `koder/issues/001_universal_sdk_foundation/INDEX.md`
-4. `koder/docs/{ARCHITECTURE,DECISIONS}.md`
-5. The active child issue, beginning with
-   `koder/issues/003_typescript_toolchain/INDEX.md`
-6. The active queue row and current plan named by `koder/STATE.md`; do not load
-   future plan bodies
-7. `koder/docs/HOLM_SOURCE_MAP.md` only when a migration/conformance worker needs
-   source routing; the primary orchestrator must not absorb that source context
+3. `koder/reviews/024_a2_holm_authority_conformance/INDEX.md`
+4. `koder/issues/016_a2_authority_conformance_remediation/INDEX.md`
+5. `koder/docs/{ARCHITECTURE,DECISIONS,HOLM_SOURCE_MAP}.md`
 
-### Ordered outcomes
+Do not preload product source, tests, prior worker transcripts, Queue `#001`
+plans, or future Issue `#007+` bodies in the primary coordinator context.
 
-1. **Issue `#003`:** strict TypeScript, test, declaration, generated-artifact,
-   reproducibility, license, size, and CI harness.
-2. **Issue `#004`:** environment-neutral core, capabilities, adapters, caller
-   boundary, serialization, extensions, lifecycle, cancellation, and fakes.
-3. **Issue `#005`:** transport, auth proof adapters, errors, deterministic cache,
-   invalidation, uploads, diagnostics, and source-pinned migration evidence.
-4. **Issue `#006`:** canonical `@holmhq/sdk/state` query/mutation/derived-resource
-   API with immutable snapshots, subscriptions, optimistic rollback, and caller
-   partitioning.
+### Allowed while blocked
 
-### Execution rules
+- Read this checkpoint and ask the owner to authorize a bounded A2R planning
+  window.
+- Perform observational Git/process checks.
+- Preserve or clarify the authority handoff without changing product contracts.
 
-- Queue `#001` runs under the hard blind-orchestrator contract in
-  `koder/docs/BLIND_ORCHESTRATION.md`.
-- The primary agent routes only: it must dispatch fresh harnex implementation,
-  independent-review, fix, and re-review workers and consume compact summaries,
-  not product source, full diffs, worker transcripts, review bodies, or long
-  logs. If isolated dispatch is unavailable, stop; do not implement directly.
-- Never preload all plans. Read/route only the current row. After at most four
-  completed implementation entries, write a clean durable handoff and resume
-  with a fresh coordinator; if unattended relaunch is unavailable, stop there.
-- Work serially on `main`; do not overlap implementation agents or use
-  worktrees unless the owner explicitly changes this rule.
-- Use strict red → green → refactor for every implementation slice. Preserve
-  evidence that the defining test/type fixture failed before production code.
-- Keep slices queueable and independently validated; split work expected to
-  exceed two hours rather than hiding it in one queue row.
-- Review each completed implementation slice before advancing its dependent
-  slice. A blocked entry must leave a clean committed checkpoint or no WIP.
-- Resolve each child issue only after its acceptance criteria and source plus
-  generated-artifact checks pass.
-- Commit and push logical green checkpoints. Keep queue/run evidence concise and
-  secret-free.
+### Forbidden while blocked
 
-### Allowed in A2
-
-- Add strict TypeScript source, tests, fixtures, declarations, tracked generated
-  artifacts, build manifests, CI, and a lockfile.
-- Select a minimal MIT-compatible local toolchain under Issue `#003` evidence.
-- Read the existing Holm SDK/state source at a named commit for conformance.
-- Update SDK issues, plans, reviews, queue state, README, and architecture
-  clarifications that do not change an approved load-bearing decision.
-
-### Forbidden in A2
-
-- No npm publication, package release, Git tag, deploy, cloud spend, credentials,
-  or registry token/workflow.
-- No edits to Holm, Sobek, CDN, or another repository.
+- No implementation, dependency installation, generated artifact rebuild, or
+  Queue `#002` launch.
+- No Issue `#007+` planning or implementation.
+- No npm publication, package release, Git tag, deploy, cloud spend,
+  credentials, or registry setup.
+- No edit to Holm, Sobek, CDN, or another repository.
 - No deletion, redirect, alias, or deprecation of Holm's existing SDK/state
   packages.
-- No production app/admin endpoint migration (`#007`/`#008`), runtime-surface
-  rollout (`#009`), actions (`#010`), realtime/collaboration/framework work
-  (`#011`–`#013`), or final distribution work (`#014`/`#015`).
-- No claim that unavailable Holm action, scope, private realtime, collaboration,
-  desktop, or mobile capabilities ship.
+- No claim that action discovery, app scope, private realtime, presence,
+  collaboration, desktop, or mobile capability ships.
 
-### Validation before stopping
+## Future window — A2R: authority conformance remediation
 
-- All acceptance criteria for completed A2 issues are evidenced.
-- Core and `/state` compile without DOM, Node, or framework ambient leakage.
-- Source, type, declaration-consumer, conformance, generated-bundle,
-  reproducibility, license, and size checks pass as applicable.
-- A final independent review covers public API coherence, security boundaries,
-  generated artifacts, and migration evidence.
-- Working tree/index are clean and `main` is synchronized after close.
+A2R is defined but **not authorized**.
 
-### Review return
+### Entry gate
 
-Return at the earliest of:
+1. Owner explicitly authorizes A2R planning in this file and `koder/STATE.md`.
+2. Fresh isolated planning workers map Issue `#016` into thin strict-TDD slices.
+3. Independent plan review approves those slices and a new Queue `#002`.
+4. Only then may the owner authorize blind implementation routing.
 
-1. all A2 queue entries through Issue `#006` pass and the core/state contract is
-   ready for owner review;
-2. a product or architecture decision would change `D001`–`D015`;
-3. a required dependency/license, Holm source contradiction, or repeatable
-   validation failure blocks safe progress.
+### Required outcomes
 
-Report commits, tests/checks, issue and slice delta, queue state, API/bundle-size
-summary, blockers, and a recommendation. **Do not begin Issue `#007`.**
+1. Holm envelope/error/meta/header conformance and expanded migration evidence.
+2. Caller epoch plus cache/query/mutation transition safety.
+3. Read-only capability view plus narrow extension invocation.
+4. Structural credential redaction plus opaque cache identity.
+5. Response correlation, artifact provenance, complete validation, independent
+   SDK review, and Holm-authority return.
 
-## Future windows (not yet authorized)
+### Execution rules when authorized
+
+- Strict red -> green -> refactor is mandatory for every code change.
+- The primary remains a blind orchestrator and routes fresh implementation,
+  review, fix, and re-review workers through harnex or an equivalent isolated
+  harness.
+- Work remains serial on `main`; no overlapping implementation ownership.
+- Queue `#001` stays done and historical. A2R uses a separately reviewed Queue
+  `#002`.
+- Stop immediately if a finding requires changing approved decisions
+  `D001`-`D015`, inventing Holm semantics, or editing another repository.
+- Commit and push logical green checkpoints; keep sidecars compact and
+  secret-free.
+
+### A2R stop gate
+
+Return after all Issue `#016` slices pass, the complete validation suite is
+green, an independent SDK review has no P1/P2 findings, and a fresh Holm
+read-only authority review accepts A2. Never roll directly into A3.
+
+## Later windows — not authorized
 
 | Window | Scope | Entry gate | Stop gate |
 | --- | --- | --- | --- |
-| A3 | Issues `#007`–`#010`: app/admin migration and surface/action adapters | A2 approved | migration/API review |
-| A4 | Issues `#011`–`#013`: realtime, collaboration seam, frameworks | A3 approved + relevant Holm capability truth refreshed | extension/framework review |
-| A5 | Issues `#014`–`#015`: BFBB artifacts, docs, closeout | A4 approved | release-readiness decision; npm still blocked |
+| A3 | Issues `#007`-`#010`: app/admin migration and surface/action adapters | A2R accepted by SDK and Holm authority | migration/API review |
+| A4 | Issues `#011`-`#013`: realtime, collaboration seam, frameworks | A3 approved + relevant Holm capability truth refreshed | extension/framework review |
+| A5 | Issues `#014`-`#015`: BFBB artifacts, docs, closeout | A4 approved | release-readiness decision; npm still blocked |
 
-These rows are planning boundaries, not permission to execute. Activate one by
-updating this file and `koder/STATE.md` in a reviewed `state:` commit.
+These rows are planning boundaries, not permission to execute. Activate one only
+through an explicit reviewed state transition in this file and
+`koder/STATE.md`.

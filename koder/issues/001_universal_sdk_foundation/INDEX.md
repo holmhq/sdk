@@ -11,8 +11,8 @@ source:
   issue: koder/issues/486_universal_app_runtime_extraction_map/INDEX.md
 type: design
 issue_kind: track
-slice_count: 14
-slices_done: 1
+slice_count: 15
+slices_done: 5
 context: Build a new universal TypeScript SDK without deleting the existing Holm SDK/state packages, then migrate capabilities only with conformance evidence.
 ---
 
@@ -183,14 +183,15 @@ Highest-value sources at Holm commit
 | Slice | Status | Ref | Depends on | Closure gate |
 | --- | --- | --- | --- | --- |
 | Architecture charter and contract vocabulary | done | [`#002`](../002_architecture_contract/INDEX.md) | — | reviewed architecture + API invariants |
-| Strict TypeScript toolchain and conformance harness | planned | [`#003`](../003_typescript_toolchain/INDEX.md) | `#002` | source/dist/type tests green |
-| Universal core, capabilities, adapters, extensions | planned | [`#004`](../004_universal_core/INDEX.md) | `#002`, `#003` | no DOM/Node ambient leakage |
-| Transport, auth, cache, uploads, errors | planned | [`#005`](../005_transport_cache_auth/INDEX.md) | `#004` | transport conformance + parity fixtures |
-| Framework-neutral reactive resources | planned | [`#006`](../006_reactive_resources/INDEX.md) | `#004`, `#005` | immutable snapshot/subscription tests |
-| Web/app client migration | planned | [`#007`](../007_web_app_client/INDEX.md) | `#005`, `#006` | adopted app methods + browser tests |
-| Admin/operator client migration | planned | [`#008`](../008_admin_client/INDEX.md) | `#005` | audited namespace parity report |
-| Runtime/surface adapter contracts | planned | [`#009`](../009_runtime_surface_adapters/INDEX.md) | `#004`, `#005` | web/node/test adapters; reserved bridge contracts |
-| Action/schema and CLI surface helpers | planned | [`#010`](../010_actions_cli_surface/INDEX.md) | `#004`, `#009` | JSON Schema fixture discovery/invocation |
+| Strict TypeScript toolchain and conformance harness | done | [`#003`](../003_typescript_toolchain/INDEX.md) | `#002` | source/dist/type tests green |
+| Universal core, capabilities, adapters, extensions | done | [`#004`](../004_universal_core/INDEX.md) | `#002`, `#003` | no DOM/Node ambient leakage |
+| Transport, auth, cache, uploads, errors | done | [`#005`](../005_transport_cache_auth/INDEX.md) | `#004` | transport conformance + parity fixtures |
+| Framework-neutral reactive resources | done | [`#006`](../006_reactive_resources/INDEX.md) | `#004`, `#005` | immutable snapshot/subscription tests |
+| A2 Holm-authority conformance remediation | blocked | [`#016`](../016_a2_authority_conformance_remediation/INDEX.md) | `#004`, `#005`, `#006` | SDK re-review + Holm authority acceptance |
+| Web/app client migration | planned | [`#007`](../007_web_app_client/INDEX.md) | `#005`, `#006`, `#016` | adopted app methods + browser tests |
+| Admin/operator client migration | planned | [`#008`](../008_admin_client/INDEX.md) | `#005`, `#016` | audited namespace parity report |
+| Runtime/surface adapter contracts | planned | [`#009`](../009_runtime_surface_adapters/INDEX.md) | `#004`, `#005`, `#016` | web/node/test adapters; reserved bridge contracts |
+| Action/schema and CLI surface helpers | planned | [`#010`](../010_actions_cli_surface/INDEX.md) | `#004`, `#009`, `#016` | JSON Schema fixture discovery/invocation |
 | Realtime extension and future presence seam | planned | [`#011`](../011_realtime_extension/INDEX.md) | `#004`, `#006`, `#009` | current channel proof + future capability gates |
 | Collaboration/oplog/CRDT extension seam | planned | [`#012`](../012_collaboration_extension/INDEX.md) | `#006`, `#011` | codec/provider contract + opaque binary fixtures |
 | React/Angular/Svelte/Vue bindings | planned | [`#013`](../013_framework_bindings/INDEX.md) | `#006` | framework-native subscription examples/tests |
@@ -200,9 +201,10 @@ Highest-value sources at Holm commit
 ## Autonomous checkpoint policy
 
 `koder/docs/EXECUTION.md` is the authority for how far an unattended agent may
-proceed. The currently authorized window is **A1 / Issue `#002` only**. It ends
-when the architecture and decision register are committed/pushed and marked
-`REVIEW_READY` or `BLOCKED`; Issue `#003` requires a new explicit approval.
+proceed. A1 and the A2 implementation conveyor are complete, but A2 owner
+acceptance is blocked by Holm-authority Review `#024` and Issue `#016`. No A2R
+or A3 work is authorized from this state; a fresh owner decision must activate a
+bounded window.
 
 Cross-repository ownership and write policy are indexed in
 `koder/projects/INDEX.md`.
@@ -210,10 +212,10 @@ Cross-repository ownership and write policy are indexed in
 ## Recommended execution order
 
 ```text
-002 → 003 → 004 → 005 → 006
-                    ├→ 007
-                    ├→ 008
-004 + 005 → 009 → 010
+002 → 003 → 004 → 005 → 006 → 016
+                          ├→ 007
+                          ├→ 008
+004 + 005 + 016 → 009 → 010
 006 + 009 → 011 → 012
 006 → 013
 all included capability slices → 014 → 015

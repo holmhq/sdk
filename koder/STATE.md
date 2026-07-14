@@ -1,44 +1,45 @@
 ---
-updated_at: "14 Jul 2026 | 08:05 AM IST"
-state: REVIEW_READY
+updated_at: "14 Jul 2026 | 11:00 AM IST"
+state: BLOCKED
 active_window: A2
-active_issue: 006
+active_issue: 016
 orchestration_mode: blind
-stop_gate: "A2 final core API/conformance review approved; owner decision required before any Issue #007 work"
+stop_gate: "Review #024 blocks A2 acceptance; remediate #016, obtain independent SDK re-review and Holm authority acceptance, and do not begin #007"
 ---
 
 # Koder State
 
 ## Past
 
-- Repository, MIT/package identity, canonical remote `main`, and cross-harness
-  koder-pattern scaffold are initialized.
-- Issue `#001` defines `16` dependency-ordered A2 queue slices against Holm
-  baseline `11ceae0d88e9c800eb77916e3244fbd231ad81bb`; A1 decisions `D001`-`D015`
-  are approved, with `@holmhq/sdk/state` as canonical.
-- Issues `#003`, `#004`, `#005`, and `#006` are resolved with reviewed strict
-  TypeScript/toolchain, universal core, transport/auth/cache/upload, generated
-  artifact, coverage, license, size, migration, and framework-neutral state
-  evidence.
-- Queue `#001` rows `S01`-`S16` are approved; the final A2 core
-  API/conformance review is approved at `9a0128c` with zero P1/P2/P3 findings
-  and full validation/coverage gates passing.
+- Repository identity, MIT/private package state, A1 decisions `D001`-`D015`,
+  and canonical `@holmhq/sdk/state` are approved.
+- Blind Queue `#001` completed all `16` A2 implementation rows for Issues
+  `#003`-`#006`; SDK-side Review `#023` approved checkpoint `fe37f85` with the
+  full validation and coverage gates green.
+- A read-only Holm authority review compared the SDK checkpoint with Holm
+  baseline `11ceae0d` and current Holm HEAD `bdcc8cc5`; no material authority
+  drift was found.
 
 ## Present
 
-- Queue `#001` is **done** in `blind` mode after the final independent A2 review.
-- A2 is `REVIEW_READY` for owner decision; `koder/reviews/023_a2_final_core_api_conformance/INDEX.md`
-  is the final review artifact.
-- Coverage reported by the final review sidecar: 98.11% statements, 99.03%
-  lines, 99.43% functions, 96.35% branches, and 100% changed reachable paths.
-- npm publication, releases/tags, deploys, credentials, cross-repository edits,
-  and Issue `#007+` implementation remain forbidden until explicitly authorized.
+- A2 owner acceptance is **BLOCKED** by
+  `koder/reviews/024_a2_holm_authority_conformance/INDEX.md`: four P1 and one P2
+  findings cover Holm envelopes, caller transitions, capability/extension
+  ownership, credential-safe observability/cache identity, and response
+  correlation.
+- Issue `#016` is the canonical cross-cutting remediation track. It is filed but
+  blocked pending explicit owner authorization of a bounded A2R planning window.
+- Queue `#001` remains done and historical. No Queue `#002`, A2R implementation,
+  A3 planning, Issue `#007+` work, publication, release, tag, deploy,
+  credentials, or cross-repository mutation is authorized.
 
 ## Future
 
-1. Owner/coordinating session: review A2 evidence and decide whether to authorize
-   a future A3/Issue `#007` window.
-2. Do not start Issue `#007` from this state; update `koder/docs/EXECUTION.md`
-   and `koder/STATE.md` through a reviewed state transition first if A3 is approved.
-3. Preserve the blind-orchestrator boundary for any future queue work: fresh
-   workers read source and reviews; the primary consumes compact sidecars only.
+1. Fresh coordinator: run `/open`, verify `BLOCKED`, Review `#024`, Issue `#016`,
+   blind mode, and the hard stop before Issue `#007`.
+2. Owner may then authorize **A2R planning only**. Route fresh isolated workers
+   to produce thin strict-TDD plans and independent plan review; the primary
+   consumes compact sidecars only.
+3. Do not implement until reviewed Queue `#002` is separately authorized. Stop
+   after fixes, full validation, independent SDK review, and fresh Holm
+   authority acceptance; never roll directly into A3.
