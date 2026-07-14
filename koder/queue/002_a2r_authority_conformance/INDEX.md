@@ -64,7 +64,7 @@ on 14 Jul 2026.
 
 | Row | Slice | Capability | Plan Ref | Depends on | Status | Est (min) | Completion gate |
 | --- | --- | --- | --- | --- | --- | ---: | --- |
-| 1 | S01 | Holm envelope semantics and `/api/cmd` conformance | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` | none | queued | 90 | Envelope/meta/error/header + `/api/cmd` tests pass with source-pinned evidence and Issue `#005` ledger update |
+| 1 | S01 | Holm envelope semantics and `/api/cmd` conformance | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` | none | blocked | 90 | Envelope/meta/error/header + `/api/cmd` tests pass with source-pinned evidence and Issue `#005` ledger update |
 | 2 | S02 | Caller transition safety and partition fencing | `koder/plans/002_S02_caller_transition_safety/INDEX.md` | S01 | queued | 105 | Caller transition tests prove no old-principal cache/query/mutation survival and in-flight fencing |
 | 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | queued | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
 | 4 | S04 | Credential-safe diagnostics and cache identity | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` | S01 | queued | 120 | Secret leakage tests pass for diagnostics/cache keys/hooks with structural redaction |
@@ -102,6 +102,20 @@ Queue `#002` may be marked done only when all are true:
 
 ## Run log
 
+- 2026-07-14 23:24 IST: S01 fix attempts `1` and `2` were receipt-free
+  no-op/model-refusal attempts with no commits, opening the phase circuit
+  breaker. Row is blocked at `fix` pending adapter/config/brief change; findings
+  remain canonical only in `koder/reviews/027_a2r_s01_envelope_implementation/INDEX.md`.
+- 2026-07-14 23:22 IST: S01 review attempt `1` returned `needs_fixes`
+  (`P1/P2/P3=1/0/0`) at review commit `aa56435` with canonical findings in
+  `koder/reviews/027_a2r_s01_envelope_implementation/INDEX.md`; coordinator
+  dispatched fix attempt `1` without ingesting finding prose.
+- 2026-07-14 23:17 IST: S01 implementation attempt `1` completed at `a15b3df`
+  with required validation exits `0`; changed paths recorded in Harnex proof;
+  coordinator dispatched independent review attempt `1`.
+- 2026-07-14 23:08 IST: coordinator `01` opened S01 implementation attempt `1`
+  (`sdk-q002-S01-implement-a1`) from `ca368d6`; active process state only, no
+  phase-only metadata commit.
 - 2026-07-14 22:59 IST: owner authorized Queue `#002` for an unattended bounded
   eight-hour blind-strict implementation window; stop at complete A2R acceptance,
   timebox closeout, or a real blocker, and never begin Issue `#007`.

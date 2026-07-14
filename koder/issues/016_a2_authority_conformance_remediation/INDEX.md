@@ -99,11 +99,21 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 
 | Slice | Status | Finding | Expected proof | Closure gate |
 | --- | --- | --- | --- | --- |
-| Holm envelope/error/meta/header conformance and migration ledger | candidate | `P1-1` | source-pinned fixtures + strict-TDD tests | actual Holm envelopes decode correctly |
+| Holm envelope/error/meta/header conformance and migration ledger | blocked at Queue #002 S01 fix | `P1-1` | implementation `a15b3df` + review `aa56435` (`P1/P2/P3=1/0/0`) | fix phase circuit breaker after two receipt-free no-op attempts |
 | Caller epoch, cache/query/mutation reset, and late-result fencing | candidate | `P1-2` | cross-principal transition tests | no old-caller data survives a transition |
 | Read-only capabilities and narrow extension invocation | candidate | `P1-3` | negative capability-forging tests + extension invocation conformance | only runtime can offer `holm.*` |
 | Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
 | Response correlation, artifact provenance, and final review | candidate | `P2-1` + note | mismatch tests + full clean validation + two reviews | SDK and Holm authority approve A2 |
+
+## Queue #002 implementation checkpoint
+
+- 2026-07-14 23:24 IST: S01 reached implementation commit `a15b3df`
+  with row validation passing, then independent review commit `aa56435` returned
+  `needs_fixes` (`P1/P2/P3=1/0/0`) at
+  `koder/reviews/027_a2r_s01_envelope_implementation/INDEX.md`. The coordinator
+  did not ingest finding prose. Two subsequent fix phase attempts produced no
+  receipt and no commit due model/transport refusal, opening the phase circuit
+  breaker. Next phase is S01 `fix` after adapter/config/brief change.
 
 ## Acceptance Criteria
 
