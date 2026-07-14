@@ -345,10 +345,13 @@ export async function composeResumableUpload<
     handoff: Object.freeze(handoff),
   });
 
+  throwIfCancelled(request.signal);
   if (adapter.finalize === undefined) {
     return finalized.handoff as Result;
   }
-  return await adapter.finalize(finalized, control);
+  const result = await adapter.finalize(finalized, control);
+  throwIfCancelled(request.signal);
+  return result;
 }
 
 function normalizeUploadRequest<Body extends UploadChunkBody>(input: UploadRequest<Body>): NormalizedUploadRequest<Body> {

@@ -134,10 +134,13 @@ export async function composeResumableUpload(input, adapter) {
         files: request.files,
         handoff: Object.freeze(handoff),
     });
+    throwIfCancelled(request.signal);
     if (adapter.finalize === undefined) {
         return finalized.handoff;
     }
-    return await adapter.finalize(finalized, control);
+    const result = await adapter.finalize(finalized, control);
+    throwIfCancelled(request.signal);
+    return result;
 }
 function normalizeUploadRequest(input) {
     const files = input.files.map((file) => normalizeUploadFile(file));

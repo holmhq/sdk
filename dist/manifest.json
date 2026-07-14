@@ -388,17 +388,17 @@
     {
       "bytes": 5988,
       "path": "dist/transports/upload.d.ts.map",
-      "sha256": "dba22aabf4af94c10ac3d7c213758c281389e159418a23297247f80187225926"
+      "sha256": "d2f99fcc2a08d1453fc41a053196cb410a675b01537e7a235fa8ccacea316ada"
     },
     {
-      "bytes": 11528,
+      "bytes": 11631,
       "path": "dist/transports/upload.js",
-      "sha256": "532f721bbcbb94deb39974477e7322ecb7f4be6518655071c650dafb8adb71ec"
+      "sha256": "549f20f9105d0c1e760ede4d0f11522cc70e80f33ff342d2f94a0a9304545949"
     },
     {
-      "bytes": 11659,
+      "bytes": 11776,
       "path": "dist/transports/upload.js.map",
-      "sha256": "df14472bd6198164c27d7f15f6cd164f0127fce96b714af32852eeba57d3f36f"
+      "sha256": "7f67bcbba431c247076876c9bb052d42d190b5f6687674af0485ab90882f423c"
     },
     {
       "bytes": 566,

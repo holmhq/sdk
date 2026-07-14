@@ -144,6 +144,47 @@ test("upload composition maps duplicate fields and caller aborts into typed fail
   );
 });
 
+test("upload composition fences caller aborts before and after final handoff", async () => {
+  const source = createReadonlyBytesUploadSource([1]);
+  const file = createUploadFile({ field: "file", name: "file.bin", source });
+
+  const beforeFinalize = createCancellationController();
+  await assert.rejects(
+    () => composeResumableUpload({
+      path: "/api/upload",
+      files: [file],
+      signal: beforeFinalize.signal,
+      onProgress(event) {
+        if (event.loaded === event.total) {
+          beforeFinalize.cancel("cancelled before finalize");
+        }
+      },
+    }, {
+      createSession: () => ({ id: "upl_before_finalize" }),
+      uploadChunk: (input) => ({ nextOffset: input.offset + input.chunk.byteLength }),
+      completeSession: () => ({}),
+      finalize: () => {
+        throw new Error("should not finalize after caller cancellation");
+      },
+    }),
+    (error: unknown) => error instanceof CancelledError && error.code === "operation_cancelled",
+  );
+
+  const duringFinalize = createCancellationController();
+  await assert.rejects(
+    () => composeResumableUpload({ path: "/api/upload", files: [file], signal: duringFinalize.signal }, {
+      createSession: () => ({ id: "upl_during_finalize" }),
+      uploadChunk: (input) => ({ nextOffset: input.offset + input.chunk.byteLength }),
+      completeSession: () => ({}),
+      finalize: () => {
+        duringFinalize.cancel("cancelled during finalize");
+        return { committed: true };
+      },
+    }),
+    (error: unknown) => error instanceof CancelledError && error.code === "operation_cancelled",
+  );
+});
+
 test("upload web and node helper adapters are structural and avoid core ambient types", async () => {
   const blobSlices: Array<readonly [number, number, string | undefined]> = [];
   const blobLike: WebUploadBlobLike = {
