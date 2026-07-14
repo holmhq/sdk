@@ -321,24 +321,64 @@
       "sha256": "11920e767c471a1f11523fcb8fe6048ec76953ee7edeb4f72d05bd1bc36e5d5a"
     },
     {
-      "bytes": 925,
+      "bytes": 1457,
+      "path": "dist/state/derived.d.ts",
+      "sha256": "9c258ed6cd9befdf5b208ea537952a75a66206c06fbdc83a2b794c5ca342cbcb"
+    },
+    {
+      "bytes": 1471,
+      "path": "dist/state/derived.d.ts.map",
+      "sha256": "16c723d96e78df10666292d1b4fb6b0c69c3fa0aeed52db5e31ccba830455dc7"
+    },
+    {
+      "bytes": 5101,
+      "path": "dist/state/derived.js",
+      "sha256": "567b78ba119b36077ba0133d03c92092b651ffa5978f7a4ee98476fe553cdbee"
+    },
+    {
+      "bytes": 4800,
+      "path": "dist/state/derived.js.map",
+      "sha256": "d4d31693525383abc2ee1ca8b127c6c4d569e2dc599734b862375d8fb9ee3c3a"
+    },
+    {
+      "bytes": 1026,
+      "path": "dist/state/diagnostics.d.ts",
+      "sha256": "42326e3babdd4967f9d270cc06ce1bb15ca89ccbb9339d6f7e0678eb9651be7e"
+    },
+    {
+      "bytes": 1117,
+      "path": "dist/state/diagnostics.d.ts.map",
+      "sha256": "8a42d7d02e894ac01f9ec740ffaf356ad6b8c57224c32771a0f18a611def9d9c"
+    },
+    {
+      "bytes": 2920,
+      "path": "dist/state/diagnostics.js",
+      "sha256": "9c89ec307ab9bda8b8df09575991c4901109047f0dce713c0a4c1e06ed7ea1ab"
+    },
+    {
+      "bytes": 2929,
+      "path": "dist/state/diagnostics.js.map",
+      "sha256": "37e85fb8b8bab20e196465fb18e790b51f0e860e6fdcc67d5d010f70835e55b6"
+    },
+    {
+      "bytes": 1622,
       "path": "dist/state/index.d.ts",
-      "sha256": "8d6e472155019aa6cbe6d97c8b5d343e3ef9b07fe6e22156160b20d5e9949ad6"
+      "sha256": "e1a5fcc9f2d314a29306f04e5efc8d784d3caae49f201468a725b510f3609972"
     },
     {
-      "bytes": 698,
+      "bytes": 1133,
       "path": "dist/state/index.d.ts.map",
-      "sha256": "48b38a9bca83064ccbc9850842ffb3884e390490007cf433f59bd2d2205d151e"
+      "sha256": "b5a2d6caa7d0ccf15f93165c71b8cf126c0b8b5f42adb839b214db21ef7eb4ce"
     },
     {
-      "bytes": 200,
+      "bytes": 415,
       "path": "dist/state/index.js",
-      "sha256": "137affe4f255fa3209c596f702514bcac79ed9c7c4a7271ab72e4d71baeb9626"
+      "sha256": "7f3b3756bc742b298ed32b8b9a0b82d4eb8fe69c5c18537885050d23b2811b9c"
     },
     {
-      "bytes": 241,
+      "bytes": 390,
       "path": "dist/state/index.js.map",
-      "sha256": "e466677404f5ee6b0a5d04df1f66a585e4f898c9a7d4461641e56ca82aeb9bca"
+      "sha256": "2c509302e8388a056b5863ad3c519ae845d128a193b0d6f3ab15126d611d5058"
     },
     {
       "bytes": 3375,
@@ -361,24 +401,44 @@
       "sha256": "ca9abefa87520d80d55f6417be64da9e798f2c310d0ce6f1bd718668072c3c22"
     },
     {
-      "bytes": 1929,
+      "bytes": 2148,
       "path": "dist/state/query.d.ts",
-      "sha256": "ec1d9765909227c5f266cc83b0ce90c814cc80a82a1fd8811c35cb0d3e6eb8ea"
+      "sha256": "4d7b742a4880966eeed5888d7599d5dfbfa45fbfb00137f3686dfe7cd888680f"
     },
     {
-      "bytes": 2123,
+      "bytes": 2374,
       "path": "dist/state/query.d.ts.map",
-      "sha256": "0b4591f9b646f21c4daac6f3409fe481be2ddf8719ac94d20b59d96f8270199d"
+      "sha256": "c1ef44ac892bab0c28b04e1975336ef8df9a5f74d9830101672a92d6f0d17941"
     },
     {
-      "bytes": 8539,
+      "bytes": 9759,
       "path": "dist/state/query.js",
-      "sha256": "e8ad537ff233e19f3a62484beef45cb6451012912093b7f38417d86ca5b9e604"
+      "sha256": "f2b91428a34fc59a1d71bf202ca9cb519f650eec0a7fdc303d269f71d3f54323"
     },
     {
-      "bytes": 8358,
+      "bytes": 9299,
       "path": "dist/state/query.js.map",
-      "sha256": "eef250480ef9040236278b406879dc8f1fb392376bd2c2a9c73a9ce5bfe911a4"
+      "sha256": "ebaa06b09a53a90fcad2de22a9283e8794e23ea31d3cb7fa823994045aa40695"
+    },
+    {
+      "bytes": 2178,
+      "path": "dist/state/reconcile.d.ts",
+      "sha256": "c10150d681a15f2bc42d8c0fdd119285f3930135866bfdfece9fc451b0374b6c"
+    },
+    {
+      "bytes": 1956,
+      "path": "dist/state/reconcile.d.ts.map",
+      "sha256": "1ab79432217d8385c0138d498b78fca507974e03a0ed2326a16fe2305dd6b1fc"
+    },
+    {
+      "bytes": 3470,
+      "path": "dist/state/reconcile.js",
+      "sha256": "1081de26cca259b2077964e50496d78561466480844a0bc6a371c704f8724185"
+    },
+    {
+      "bytes": 3056,
+      "path": "dist/state/reconcile.js.map",
+      "sha256": "a0de4d0cdbf9eba743f6a15c80dc0a3f7cc19a5bf2cd1af61e0ddfd7ded4154f"
     },
     {
       "bytes": 2183,

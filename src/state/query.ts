@@ -52,6 +52,12 @@ export interface QueryResetOptions {
   readonly reason?: string;
 }
 
+export interface QueryReconcileOptions {
+  readonly reason?: string;
+  readonly stale?: boolean;
+  readonly refreshing?: boolean;
+}
+
 export interface QueryResourceOptions<T> {
   readonly key: QueryKey;
   readonly source: CacheSourceIdentity;
@@ -67,6 +73,7 @@ export interface QueryResource<T, E extends HolmError = HolmError> extends Resou
   refresh(options?: QueryRefreshOptions): Promise<ResourceSnapshot<T, E>>;
   currentLoad(): Promise<ResourceSnapshot<T, E>>;
   markStale(): ResourceSnapshot<T, E>;
+  reconcile(data: T, options?: QueryReconcileOptions): ResourceSnapshot<T, E>;
   reset(options?: QueryResetOptions): ResourceSnapshot<T, E>;
   dispose(): void;
 }
@@ -108,7 +115,11 @@ export function createQueryResource<T, E extends HolmError = HolmError>(
       return active?.promise ?? Promise.resolve(controller.getSnapshot());
     },
     markStale(): ResourceSnapshot<T, E> {
+      assertNotDisposed();
       return controller.setStale(true);
+    },
+    reconcile(data: T, input: QueryReconcileOptions = {}): ResourceSnapshot<T, E> {
+      return reconcile(data, input);
     },
     reset(input: QueryResetOptions = {}): ResourceSnapshot<T, E> {
       return reset(input);
@@ -193,6 +204,16 @@ export function createQueryResource<T, E extends HolmError = HolmError>(
     }
   }
 
+  function reconcile(data: T, input: QueryReconcileOptions): ResourceSnapshot<T, E> {
+    assertNotDisposed();
+    const snapshot = controller.setReady(data, {
+      stale: input.stale ?? false,
+      refreshing: input.refreshing ?? false,
+    });
+    reportReconcile(input.reason, snapshot);
+    return snapshot;
+  }
+
   function reset(input: QueryResetOptions = {}): ResourceSnapshot<T, E> {
     assertNotDisposed();
     const shouldReload = controller.getSnapshot().phase !== "idle";
@@ -249,6 +270,28 @@ export function createQueryResource<T, E extends HolmError = HolmError>(
 
   function isActive(token: object): boolean {
     return !disposed && active?.token === token;
+  }
+
+  function reportReconcile(reason: string | undefined, snapshot: ResourceSnapshot<T, E>): void {
+    if (options.diagnostics === undefined) {
+      return;
+    }
+    try {
+      options.diagnostics.emit({
+        channel: "state.query",
+        code: "state_query_reconciled",
+        severity: "debug",
+        message: "State query resource reconciled with an authoritative payload.",
+        details: {
+          resourceId: options.id ?? "query",
+          revision: snapshot.revision,
+          phase: snapshot.phase,
+          ...(reason === undefined ? {} : { reason }),
+        },
+      });
+    } catch {
+      // Diagnostics are observational and must not alter reconciliation.
+    }
   }
 
   function assertNotDisposed(): void {

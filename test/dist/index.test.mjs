@@ -33,7 +33,15 @@ import {
 import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index.js";
 import { createWebSessionAuth, createWebUploadFile } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
-import { createMutationResource, createQueryResource, createResourceController } from "../../dist/state/index.js";
+import {
+  createDerivedResource,
+  createMutationResource,
+  createQueryResource,
+  createRealtimeReconcileHook,
+  createResourceController,
+  createResourceHistory,
+  REALTIME_PUBLIC_SUBSCRIBE_CAPABILITY,
+} from "../../dist/state/index.js";
 
 function deferred() {
   let resolve;
@@ -238,6 +246,41 @@ test("generated ESM artifact exposes S14 state query refresh and reset", async (
   assert.deepEqual((await query.currentLoad()).data, { owner: "beta", source: "runtime-a" });
   assert.deepEqual((await query.reset({ source: { id: "runtime-b", surface: "test" } }).phase), "loading");
   assert.deepEqual((await query.currentLoad()).data, { owner: "beta", source: "runtime-b" });
+});
+
+test("generated ESM artifact exposes S16 derived resources and realtime reconcile hooks", async () => {
+  const left = createResourceController();
+  const right = createResourceController();
+  left.setReady({ count: 1 });
+  right.setReady({ count: 2 });
+  const derived = createDerivedResource({
+    dependencies: [left.resource, right.resource],
+    derive: ([leftSnapshot, rightSnapshot]) => ({
+      total: leftSnapshot.data.count + rightSnapshot.data.count,
+    }),
+  });
+  const history = createResourceHistory(derived, { id: "dist-derived" });
+  left.setReady({ count: 4 });
+
+  const capabilities = createCapabilityRegistry([
+    { id: REALTIME_PUBLIC_SUBSCRIBE_CAPABILITY.id, version: { major: 1, minor: 0 }, origin: "runtime" },
+  ]);
+  const query = createQueryResource({
+    key: ["dist-realtime"],
+    source: { id: "runtime-a", surface: "test" },
+    caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+    load: () => ({ version: 1, labels: ["load"] }),
+  });
+  const hook = createRealtimeReconcileHook({ query, capabilities });
+  const reconciled = hook.handle({ kind: "reconcile", data: { version: 2, labels: ["event"] } });
+  const invalidated = hook.handle({ kind: "invalidate", reason: "dist-broadcast" });
+
+  assert.deepEqual(derived.getSnapshot().data, { total: 6 });
+  assert.equal(history.getEntries().length, 1);
+  assert.equal(hook.durable, false);
+  assert.equal(hook.supports.privateChannels, false);
+  assert.deepEqual(reconciled.data, { version: 2, labels: ["event"] });
+  assert.equal(invalidated.stale, true);
 });
 
 test("generated ESM artifact exposes S15 state mutation optimistic invalidation", async () => {

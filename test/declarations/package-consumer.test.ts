@@ -48,8 +48,15 @@ import { createNodeTokenAuth, createNodeUploadFile } from "@holmhq/sdk/node";
 import { createWebSessionAuth, createWebUploadFile, type WebUploadBlobLike } from "@holmhq/sdk/web";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 import {
+  createDerivedResource,
+  createQueryResource,
+  createRealtimeReconcileHook,
   createResourceController,
+  createResourceHistory,
+  REALTIME_PUBLIC_SUBSCRIBE_CAPABILITY,
+  type DerivedResource,
   type Resource,
+  type ResourceHistoryEntry,
   type ResourceSnapshot,
 } from "@holmhq/sdk/state";
 
@@ -106,6 +113,27 @@ const stateResource: Resource<{ readonly count: number }> = stateController.reso
 const stateSnapshot: ResourceSnapshot<{ readonly count: number }> = stateController.setReady({ count: 1 });
 const stateUnsubscribe = stateResource.subscribe(() => undefined);
 stateUnsubscribe();
+const derivedState = createDerivedResource({
+  dependencies: [stateResource] as const,
+  derive(snapshots) {
+    return { doubled: (snapshots[0].data?.count ?? 0) * 2 };
+  },
+});
+const typedDerivedState: DerivedResource<{ readonly doubled: number }> = derivedState;
+const stateHistory = createResourceHistory(derivedState, { id: "decl-derived" });
+const stateHistoryEntries: readonly ResourceHistoryEntry[] = stateHistory.getEntries();
+const stateRealtimeCapabilities = createCapabilityRegistry([
+  { id: REALTIME_PUBLIC_SUBSCRIBE_CAPABILITY.id, origin: "runtime", version: { major: 1, minor: 0 } },
+]);
+const stateQuery = createQueryResource({
+  key: ["decl-realtime"],
+  source: { id: "runtime-test", surface: "test" },
+  caller,
+  load: () => ({ count: 1 }),
+});
+const stateRealtimeHook = createRealtimeReconcileHook({ query: stateQuery, capabilities: stateRealtimeCapabilities });
+stateRealtimeHook.supports.presence satisfies false;
+const stateRealtimeSnapshot = stateRealtimeHook.handle({ kind: "reconcile", data: { count: 2 } });
 const timeout = new TimeoutError({ timeoutMs: 1 });
 const responseMode: TransportResponseMode = "json";
 const transportRequest: TransportRequest = createTransportRequest({
@@ -181,6 +209,10 @@ void holm;
 void stateController;
 void stateResource;
 void stateSnapshot;
+void typedDerivedState;
+void stateHistoryEntries;
+void stateRealtimeHook;
+void stateRealtimeSnapshot;
 void timeout;
 void transportRequest;
 void cachePolicy;

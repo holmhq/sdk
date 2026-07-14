@@ -28,7 +28,11 @@ export function createQueryResource(options) {
             return active?.promise ?? Promise.resolve(controller.getSnapshot());
         },
         markStale() {
+            assertNotDisposed();
             return controller.setStale(true);
+        },
+        reconcile(data, input = {}) {
+            return reconcile(data, input);
         },
         reset(input = {}) {
             return reset(input);
@@ -105,6 +109,15 @@ export function createQueryResource(options) {
             });
         }
     }
+    function reconcile(data, input) {
+        assertNotDisposed();
+        const snapshot = controller.setReady(data, {
+            stale: input.stale ?? false,
+            refreshing: input.refreshing ?? false,
+        });
+        reportReconcile(input.reason, snapshot);
+        return snapshot;
+    }
     function reset(input = {}) {
         assertNotDisposed();
         const shouldReload = controller.getSnapshot().phase !== "idle";
@@ -157,6 +170,28 @@ export function createQueryResource(options) {
     }
     function isActive(token) {
         return !disposed && active?.token === token;
+    }
+    function reportReconcile(reason, snapshot) {
+        if (options.diagnostics === undefined) {
+            return;
+        }
+        try {
+            options.diagnostics.emit({
+                channel: "state.query",
+                code: "state_query_reconciled",
+                severity: "debug",
+                message: "State query resource reconciled with an authoritative payload.",
+                details: {
+                    resourceId: options.id ?? "query",
+                    revision: snapshot.revision,
+                    phase: snapshot.phase,
+                    ...(reason === undefined ? {} : { reason }),
+                },
+            });
+        }
+        catch {
+            // Diagnostics are observational and must not alter reconciliation.
+        }
     }
     function assertNotDisposed() {
         if (!disposed && controller.getSnapshot().phase !== "disposed") {

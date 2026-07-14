@@ -23,6 +23,11 @@ export interface QueryResetOptions {
     readonly caller?: CallerProvider;
     readonly reason?: string;
 }
+export interface QueryReconcileOptions {
+    readonly reason?: string;
+    readonly stale?: boolean;
+    readonly refreshing?: boolean;
+}
 export interface QueryResourceOptions<T> {
     readonly key: QueryKey;
     readonly source: CacheSourceIdentity;
@@ -37,6 +42,7 @@ export interface QueryResource<T, E extends HolmError = HolmError> extends Resou
     refresh(options?: QueryRefreshOptions): Promise<ResourceSnapshot<T, E>>;
     currentLoad(): Promise<ResourceSnapshot<T, E>>;
     markStale(): ResourceSnapshot<T, E>;
+    reconcile(data: T, options?: QueryReconcileOptions): ResourceSnapshot<T, E>;
     reset(options?: QueryResetOptions): ResourceSnapshot<T, E>;
     dispose(): void;
 }
