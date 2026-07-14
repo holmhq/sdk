@@ -1,4 +1,4 @@
-import type { OperationResponse } from "../../src/core/index.js";
+import { createDiagnosticsSink, type OperationResponse } from "../../src/core/index.js";
 import { createFakeClock } from "../../src/test/index.js";
 import {
   createTransportCache,
@@ -15,16 +15,26 @@ const partition: TransportCachePartition = {
 };
 const policy: TransportCachePolicy = { ttlMs: 100, swrMs: 25, mode: "default" };
 const request = createTransportRequest({ method: "GET", url: "/api/types" });
-const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 1 });
+const cache = createTransportCache({
+  clock: fake.clock,
+  scheduler: fake.scheduler,
+  maxEntries: 1,
+  diagnostics: createDiagnosticsSink(),
+});
 const key: string = createTransportCacheKey({ partition, request });
 const loaded: Promise<OperationResponse> = cache.getOrLoad(
-  { partition, request, policy },
+  { partition, request, policy, tags: ["types"] },
   () => ({ requestId: "req-types", payload: { ok: true } }),
 );
+
+const invalidated = cache.invalidate({ partition, tags: ["types"] });
+const mutationInvalidated = cache.invalidateForMutation({ partition, prefixes: ["/api"] });
 
 // @ts-expect-error transport cache modes are closed and per-request.
 const invalidPolicy: TransportCachePolicy = { ttlMs: 1, mode: "cache-all" };
 
 void key;
 void loaded;
+void invalidated;
+void mutationInvalidated;
 void invalidPolicy;

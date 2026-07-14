@@ -6,6 +6,7 @@ import {
   createCallerFingerprint,
   createCapabilityRegistry,
   createCoreEnvironment,
+  createDiagnosticsSink,
   createExtensionLifecycle,
   createHolm,
   createStaticCallerProvider,
@@ -125,26 +126,38 @@ test("generated ESM artifact exposes S09 transport auth and error contracts", as
   assert.deepEqual(decoded.payload, { ok: true });
 });
 
-test("generated ESM artifact exposes S10 caller-partitioned transport cache", async () => {
+test("generated ESM artifact exposes S11 cache invalidation and diagnostics", async () => {
   const fake = createFakeClock();
-  const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 2 });
+  const diagnostics = [];
+  const cache = createTransportCache({
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    maxEntries: 2,
+    diagnostics: createDiagnosticsSink((event) => {
+      diagnostics.push(event);
+    }),
+  });
   const request = createTransportRequest({ method: "GET", url: "/api/cache", responseMode: "json" });
   const partition = { source: { id: "runtime-test", surface: "test" }, callerFingerprint: "caller:v1:dist" };
   let loads = 0;
 
   const key = createTransportCacheKey({ partition, request });
   const first = await cache.getOrLoad(
-    { partition, request, policy: { ttlMs: 100, swrMs: 25 } },
+    { partition, request, policy: { ttlMs: 100, swrMs: 25 }, tags: ["dist"] },
     () => ({ requestId: "req-cache", payload: { loads: (loads += 1) } }),
   );
   const second = await cache.getOrLoad(
-    { partition, request, policy: { ttlMs: 100, swrMs: 25 } },
+    { partition, request, policy: { ttlMs: 100, swrMs: 25 }, tags: ["dist"] },
     () => ({ requestId: "req-cache-2", payload: { loads: (loads += 1) } }),
   );
+  const invalidated = cache.invalidateForMutation({ partition, tags: ["dist"] });
 
   assert.equal(key.startsWith("cache:v1:"), true);
   assert.deepEqual(first.payload, { loads: 1 });
   assert.deepEqual(second.payload, { loads: 1 });
+  assert.equal(invalidated.removed, 1);
+  assert.equal(diagnostics.some((event) => event.code === "transport_cache_update"), true);
+  assert.equal(diagnostics.some((event) => event.code === "transport_cache_invalidate"), true);
 });
 
 test("generated ESM artifact exposes S08 createHolm lifecycle fakes", async () => {

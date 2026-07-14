@@ -6,12 +6,18 @@ export type {
   TransportCache,
   TransportCacheBackgroundErrorEvent,
   TransportCacheGetInput,
+  TransportCacheInvalidationEvent,
+  TransportCacheInvalidationInput,
+  TransportCacheInvalidationReason,
+  TransportCacheInvalidationResult,
   TransportCacheKeyInput,
   TransportCacheLoader,
   TransportCacheMode,
+  TransportCacheMutationInvalidation,
   TransportCacheOptions,
   TransportCachePartition,
   TransportCachePolicy,
+  TransportCacheUpdateEvent,
 } from "./cache.js";
 
 import { CancelledError } from "../core/cancellation.js";

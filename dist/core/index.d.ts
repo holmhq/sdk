@@ -6,6 +6,8 @@ export { assertWireValue, canonicalEncodeWireValue, copyWireValue, createReadonl
 export type { HolmBytesTag, ReadonlyBytes, WireArray, WireObject, WireScalar, WireValue } from "./wire-value.js";
 export { HolmError, isHolmError, serializeHolmError, } from "./errors.js";
 export type { HolmErrorKind, HolmErrorOptions, SerializedHolmError, } from "./errors.js";
+export { createDiagnosticsSink, createHolmDiagnosticEvent, } from "./diagnostics.js";
+export type { DiagnosticsSinkOptions, HolmDiagnosticEvent, HolmDiagnosticEventInput, HolmDiagnosticsHandler, HolmDiagnosticsSink, HolmDiagnosticSeverity, } from "./diagnostics.js";
 export { CapabilityVersionError, createCapabilityRegistry, DuplicateCapabilityOfferError, InvalidCapabilityRequirementError, negotiateCapability, UnsupportedCapabilityError, } from "./capabilities.js";
 export type { CapabilityOffer, CapabilityOrigin, CapabilityRegistry, CapabilityRequirement, CapabilitySnapshot, CapabilitySnapshotListener, CapabilityVersion, CapabilityVersionErrorOptions, DuplicateCapabilityOfferErrorOptions, InvalidCapabilityRequirementErrorOptions, UnsupportedCapabilityErrorOptions, } from "./capabilities.js";
 export { createCallerFingerprint, createInvocationContext, createStaticCallerProvider, normalizeCallerContext, resolveCallerContext, } from "./caller.js";

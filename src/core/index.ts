@@ -35,6 +35,19 @@ export type {
 } from "./errors.js";
 
 export {
+  createDiagnosticsSink,
+  createHolmDiagnosticEvent,
+} from "./diagnostics.js";
+export type {
+  DiagnosticsSinkOptions,
+  HolmDiagnosticEvent,
+  HolmDiagnosticEventInput,
+  HolmDiagnosticsHandler,
+  HolmDiagnosticsSink,
+  HolmDiagnosticSeverity,
+} from "./diagnostics.js";
+
+export {
   CapabilityVersionError,
   createCapabilityRegistry,
   DuplicateCapabilityOfferError,

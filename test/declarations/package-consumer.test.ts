@@ -3,6 +3,7 @@ import {
   createCapabilityRegistry,
   createCallerFingerprint,
   createCoreEnvironment,
+  createDiagnosticsSink,
   createExtensionLifecycle,
   createHolm,
   createReadonlyBytes,
@@ -18,6 +19,7 @@ import {
   type RuntimeAdapter,
   type Scheduler,
   type CoreEnvironment,
+  type HolmDiagnosticEvent,
   type SerializedHolmError,
   type WireValue,
 } from "@holmhq/sdk";
@@ -27,6 +29,7 @@ import {
   createTransportCacheKey,
   createTransportRequest,
   decodeTransportResponse,
+  type TransportCacheInvalidationResult,
   type TransportCachePolicy,
   type TransportCachePartition,
   type TransportRequest,
@@ -97,11 +100,18 @@ const cachePartition: TransportCachePartition = {
   callerFingerprint: fingerprint,
 };
 const transportCacheKey = createTransportCacheKey({ partition: cachePartition, request: transportRequest });
-const transportCache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 2 });
+const diagnostics = createDiagnosticsSink((event: HolmDiagnosticEvent) => {
+  void event.code;
+});
+const transportCache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 2, diagnostics });
 const cachedTransport = transportCache.getOrLoad(
-  { partition: cachePartition, request: transportRequest, policy: cachePolicy },
+  { partition: cachePartition, request: transportRequest, policy: cachePolicy, tags: ["reports"] },
   () => ({ requestId: "req-cache", payload: { ok: true } }),
 );
+const cacheInvalidation: TransportCacheInvalidationResult = transportCache.invalidateForMutation({
+  partition: cachePartition,
+  tags: ["reports"],
+});
 const webAuth = createWebSessionAuth({ credentials: "same-origin" });
 const nodeAuth = createNodeTokenAuth({ token: "test-token" });
 const decoded = decodeTransportResponse({ requestId: "req-decl", status: 200, body: "{\"ok\":true}", responseMode });
@@ -128,6 +138,8 @@ void cachePartition;
 void transportCacheKey;
 void transportCache;
 void cachedTransport;
+void cacheInvalidation;
+void diagnostics;
 void webAuth;
 void nodeAuth;
 void decoded;

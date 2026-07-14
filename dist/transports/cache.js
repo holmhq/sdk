@@ -40,11 +40,13 @@ export function createTransportCache(options) {
     }
     function deleteEntry(input) {
         const key = createTransportCacheKey(input);
-        const deleted = entries.delete(key);
-        cancelScheduledRefresh(key);
-        inflight.delete(key);
-        advanceKeyGeneration(key);
-        return deleted;
+        return removeCacheKey(key);
+    }
+    function invalidate(input) {
+        return invalidateEntries(input, "explicit");
+    }
+    function invalidateForMutation(input) {
+        return invalidateEntries(input, "mutation");
     }
     function clear() {
         entries.clear();
@@ -61,6 +63,7 @@ export function createTransportCache(options) {
             partition: normalizePartition(input.partition),
             request: input.request,
             policy: normalizePolicy(input.policy),
+            tags: normalizeTags(input.tags ?? []),
             key: createTransportCacheKey(input),
         });
     }
@@ -73,7 +76,7 @@ export function createTransportCache(options) {
         const keyGeneration = currentKeyGeneration(input.key);
         const loadClearGeneration = clearGeneration;
         const next = invokeLoader(loader)
-            .then((response) => storeIfCurrent(input.key, response, input.policy, keyGeneration, loadClearGeneration), (error) => {
+            .then((response) => storeIfCurrent(input, response, keyGeneration, loadClearGeneration), (error) => {
             onError?.(error);
             throw error;
         })
@@ -85,21 +88,25 @@ export function createTransportCache(options) {
         inflight.set(input.key, Object.freeze({ promise: next, token, keyGeneration, clearGeneration: loadClearGeneration }));
         return next;
     }
-    function storeIfCurrent(key, response, policy, keyGeneration, loadClearGeneration) {
+    function storeIfCurrent(input, response, keyGeneration, loadClearGeneration) {
         const stored = copyOperationResponse(response);
-        if (!isCurrentGeneration(key, keyGeneration, loadClearGeneration)) {
+        if (!isCurrentGeneration(input.key, keyGeneration, loadClearGeneration)) {
             return stored;
         }
         const storedAt = clock.now();
         const entry = Object.freeze({
             response: stored,
+            partition: input.partition,
+            request: input.request,
+            tags: input.tags,
             storedAt,
-            expiresAt: storedAt + policy.ttlMs,
-            staleUntil: storedAt + policy.ttlMs + policy.swrMs,
+            expiresAt: storedAt + input.policy.ttlMs,
+            staleUntil: storedAt + input.policy.ttlMs + input.policy.swrMs,
         });
-        entries.delete(key);
-        entries.set(key, entry);
+        entries.delete(input.key);
+        entries.set(input.key, entry);
         evictLeastRecentlyUsed();
+        emitUpdate(input.key, entry);
         return stored;
     }
     function touch(key, entry) {
@@ -114,6 +121,43 @@ export function createTransportCache(options) {
             }
             entries.delete(oldest);
         }
+    }
+    function invalidateEntries(input, reason) {
+        const normalized = normalizeInvalidationInput(input);
+        const keys = new Set(normalized.requestKeys);
+        for (const [key, entry] of entries) {
+            if (matchesInvalidation(entry, normalized)) {
+                keys.add(key);
+            }
+        }
+        let removed = 0;
+        for (const key of keys) {
+            if (removeCacheKey(key)) {
+                removed += 1;
+            }
+        }
+        const result = Object.freeze({ removed, keys: Object.freeze([...keys].sort()) });
+        emitInvalidation(reason, normalized, result);
+        return result;
+    }
+    function removeCacheKey(key) {
+        const deleted = entries.delete(key);
+        cancelScheduledRefresh(key);
+        inflight.delete(key);
+        advanceKeyGeneration(key);
+        return deleted;
+    }
+    function matchesInvalidation(entry, input) {
+        if (input.partition !== undefined && !samePartition(entry.partition, input.partition)) {
+            return false;
+        }
+        if (input.tags.length > 0 && intersects(entry.tags, input.tags)) {
+            return true;
+        }
+        if (input.prefixes.length > 0 && input.prefixes.some((prefix) => entry.request.url.startsWith(prefix))) {
+            return true;
+        }
+        return false;
     }
     function scheduleBackgroundRefresh(input, loader) {
         if (inflight.has(input.key) || scheduledRefreshes.has(input.key)) {
@@ -132,12 +176,7 @@ export function createTransportCache(options) {
                 return;
             }
             void loadShared(input, loader, (error) => {
-                options.onBackgroundError?.(Object.freeze({
-                    key: input.key,
-                    partition: input.partition,
-                    request: input.request,
-                    error,
-                }));
+                emitBackgroundError(input, error);
             }).catch(() => undefined);
         });
         scheduledRefreshes.set(input.key, Object.freeze({ task, token, keyGeneration, clearGeneration: refreshClearGeneration }));
@@ -159,6 +198,84 @@ export function createTransportCache(options) {
     function isCurrentGeneration(key, keyGeneration, loadClearGeneration) {
         return clearGeneration === loadClearGeneration && currentKeyGeneration(key) === keyGeneration;
     }
+    function emitUpdate(key, entry) {
+        const event = Object.freeze({
+            key,
+            partition: entry.partition,
+            request: entry.request,
+            tags: entry.tags,
+            storedAt: entry.storedAt,
+            expiresAt: entry.expiresAt,
+            staleUntil: entry.staleUntil,
+        });
+        notifyHook("transport_cache_update_hook_error", () => options.onUpdate?.(event));
+        options.diagnostics?.emit({
+            channel: "transport.cache",
+            code: "transport_cache_update",
+            severity: "debug",
+            message: "Transport cache entry updated.",
+            at: entry.storedAt,
+            details: diagnosticDetailsForEntry(key, entry),
+        });
+    }
+    function emitInvalidation(reason, input, result) {
+        const event = Object.freeze({
+            reason,
+            removed: result.removed,
+            keys: result.keys,
+            tags: input.tags,
+            prefixes: input.prefixes,
+            ...(input.partition === undefined ? {} : { partition: input.partition }),
+        });
+        notifyHook("transport_cache_invalidate_hook_error", () => options.onInvalidate?.(event));
+        options.diagnostics?.emit({
+            channel: "transport.cache",
+            code: "transport_cache_invalidate",
+            severity: "info",
+            message: "Transport cache entries invalidated.",
+            at: clock.now(),
+            details: event,
+        });
+    }
+    function emitBackgroundError(input, error) {
+        const event = Object.freeze({
+            key: input.key,
+            partition: input.partition,
+            request: input.request,
+            tags: input.tags,
+            error,
+        });
+        notifyHook("transport_cache_background_error_hook_error", () => options.onBackgroundError?.(event));
+        options.diagnostics?.emit({
+            channel: "transport.cache",
+            code: "transport_cache_background_error",
+            severity: "error",
+            message: "Transport cache background refresh failed.",
+            at: clock.now(),
+            details: {
+                key: input.key,
+                partition: input.partition,
+                request: redactCacheDiagnosticRequest(input.request),
+                tags: input.tags,
+            },
+            error,
+        });
+    }
+    function notifyHook(code, run) {
+        try {
+            run();
+        }
+        catch (error) {
+            options.diagnostics?.emit({
+                channel: "transport.cache",
+                code,
+                severity: "error",
+                message: "Transport cache hook failed.",
+                at: clock.now(),
+                error,
+            });
+        }
+    }
     return Object.freeze({
         get size() {
             return entries.size;
@@ -166,6 +283,8 @@ export function createTransportCache(options) {
         getOrLoad,
         read,
         delete: deleteEntry,
+        invalidate,
+        invalidateForMutation,
         clear,
     });
 }
@@ -204,6 +323,31 @@ function normalizeMode(mode) {
     }
     return mode;
 }
+function normalizeInvalidationInput(input) {
+    const partition = input.partition === undefined ? undefined : normalizePartition(input.partition);
+    const tags = normalizeTags(input.tags ?? []);
+    const prefixes = normalizePrefixes(input.prefixes ?? []);
+    const requestKeys = Object.freeze([...(input.requests ?? []).map((item) => createTransportCacheKey(item))].sort());
+    if (tags.length === 0 && prefixes.length === 0 && requestKeys.length === 0) {
+        throw new TypeError("Transport cache invalidation requires a tag, prefix, or request key.");
+    }
+    return Object.freeze({
+        ...(partition === undefined ? {} : { partition }),
+        tags,
+        prefixes,
+        requestKeys,
+    });
+}
+function normalizeTags(tags) {
+    return normalizeUniqueStrings(tags, "tag");
+}
+function normalizePrefixes(prefixes) {
+    return normalizeUniqueStrings(prefixes, "prefix");
+}
+function normalizeUniqueStrings(values, label) {
+    const normalized = [...new Set(values.map((value) => normalizeNonEmpty(value, label)))].sort();
+    return Object.freeze(normalized);
+}
 function normalizeDuration(value, name) {
     if (!Number.isFinite(value) || value < 0) {
         throw new TypeError(`Transport cache ${name} must be a non-negative finite number.`);
@@ -232,6 +376,12 @@ function normalizeNonEmpty(value, label) {
     }
     return normalized;
 }
+function samePartition(left, right) {
+    return left.callerFingerprint === right.callerFingerprint && left.source.id === right.source.id && left.source.surface === right.source.surface;
+}
+function intersects(left, right) {
+    return left.some((item) => right.includes(item));
+}
 function invokeLoader(loader) {
     try {
         return Promise.resolve(loader());
@@ -246,5 +396,36 @@ function copyOperationResponse(response) {
         payload: copyWireValue(response.payload),
         ...(response.metadata === undefined ? {} : { metadata: copyWireValue(response.metadata) }),
     });
+}
+function diagnosticDetailsForEntry(key, entry) {
+    return Object.freeze({
+        key,
+        partition: entry.partition,
+        request: redactCacheDiagnosticRequest(entry.request),
+        tags: entry.tags,
+        storedAt: entry.storedAt,
+        expiresAt: entry.expiresAt,
+        staleUntil: entry.staleUntil,
+    });
+}
+function redactCacheDiagnosticRequest(request) {
+    return Object.freeze({
+        method: request.method,
+        url: request.url,
+        params: request.params,
+        headers: redactHeaders(request.headers),
+        responseMode: request.responseMode,
+        ...(request.timeoutMs === undefined ? {} : { timeoutMs: request.timeoutMs }),
+    });
+}
+function redactHeaders(headers) {
+    const output = {};
+    for (const key of Object.keys(headers).sort()) {
+        output[key] = isSensitiveHeader(key) ? "[redacted]" : headers[key];
+    }
+    return Object.freeze(output);
+}
+function isSensitiveHeader(name) {
+    return /authorization|cookie|credential|password|secret|token|x-api-key/i.test(name);
 }
 //# sourceMappingURL=cache.js.map
