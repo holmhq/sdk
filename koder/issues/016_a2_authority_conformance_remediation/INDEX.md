@@ -1,5 +1,5 @@
 ---
-status: blocked
+status: in_progress
 priority: P1
 created: 2026-07-14
 updated: 2026-07-14
@@ -9,7 +9,7 @@ depends_on: [004, 005, 006]
 type: bug
 issue_kind: track
 slice_count: 6
-slices_done: 0
+slices_done: 1
 source_review: ../../reviews/024_a2_holm_authority_conformance/INDEX.md
 context: Holm's authority review found four P1 and one P2 foundation defects that block A2 acceptance and all formal A3 work.
 ---
@@ -99,14 +99,21 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 
 | Slice | Status | Finding | Expected proof | Closure gate |
 | --- | --- | --- | --- | --- |
-| Holm envelope/error/meta/header conformance and migration ledger | blocked at Queue #002 S01 fix | `P1-1` | implementation `a15b3df` + review `aa56435` (`P1/P2/P3=1/0/0`) | coordinator `04` writable Codex legacy-PTY attempts produced no task receipt/report/commit; fix circuit breaker remains open |
-| Caller epoch, cache/query/mutation reset, and late-result fencing | candidate | `P1-2` | cross-principal transition tests | no old-caller data survives a transition |
+| Holm envelope/error/meta/header conformance and migration ledger | done | `P1-1` | implementation `a15b3df`, fix `da7cd8d`, rereview approve (`P1/P2/P3=0/0/0`) | complete |
+| Caller epoch, cache/query/mutation reset, and late-result fencing | implementing at Queue #002 S02 | `P1-2` | cross-principal transition tests | no old-caller data survives a transition |
 | Read-only capabilities and narrow extension invocation | candidate | `P1-3` | negative capability-forging tests + extension invocation conformance | only runtime can offer `holm.*` |
 | Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
 | Response correlation, artifact provenance, and final review | candidate | `P2-1` + note | mismatch tests + full clean validation + two reviews | SDK and Holm authority approve A2 |
 
 ## Queue #002 implementation checkpoint
 
+- 2026-07-15 00:50 IST: S01 fix attempt `05b` landed at `da7cd8d` with
+  required validation exits `0`; fresh Pi rereview approved (`P1/P2/P3=0/0/0`)
+  with no canonical finding artifact. S01 is done; coordinator `05` is opening
+  S02 implementation.
+- 2026-07-15 00:23 IST: Recovery coordinator `05` resumed first unproven
+  phase S01 `fix` after adapter/config change to Claude (`sonnet`) via Harnex;
+  no phase-only commit.
 - 2026-07-15 00:16 IST: Recovery coordinator `04` attempted S01 `fix` routing
   twice through writable Codex legacy PTY with `--timeout 30`. Attempt `04`
   stopped at a CLI trust-prompt boot, and attempt `04b` disconnected before task
