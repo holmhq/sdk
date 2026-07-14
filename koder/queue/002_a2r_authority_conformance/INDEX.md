@@ -65,8 +65,8 @@ on 14 Jul 2026.
 | Row | Slice | Capability | Plan Ref | Depends on | Status | Est (min) | Completion gate |
 | --- | --- | --- | --- | --- | --- | ---: | --- |
 | 1 | S01 | Holm envelope semantics and `/api/cmd` conformance | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` | none | done | 90 | Envelope/meta/error/header + `/api/cmd` tests pass with source-pinned evidence and Issue `#005` ledger update |
-| 2 | S02 | Caller transition safety and partition fencing | `koder/plans/002_S02_caller_transition_safety/INDEX.md` | S01 | implementing | 105 | Caller transition tests prove no old-principal cache/query/mutation survival and in-flight fencing |
-| 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | queued | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
+| 2 | S02 | Caller transition safety and partition fencing | `koder/plans/002_S02_caller_transition_safety/INDEX.md` | S01 | done | 105 | Caller transition tests prove no old-principal cache/query/mutation survival and in-flight fencing |
+| 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | implementing | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
 | 4 | S04 | Credential-safe diagnostics and cache identity | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` | S01 | queued | 120 | Secret leakage tests pass for diagnostics/cache keys/hooks with structural redaction |
 | 5 | S05 | Response correlation and provenance safeguards | `koder/plans/002_S05_response_correlation_provenance/INDEX.md` | S01,S02 | queued | 95 | Mismatched request/response IDs fail; duplicate/late responses ignored and diagnosed |
 | 6 | S06 | Integrated authority return and final gate | `koder/plans/002_S06_integrated_authority_return/INDEX.md` | S01,S02,S03,S04,S05 | queued | 120 | Full validation stack green; independent SDK review (0 P1/P2); fresh Holm authority acceptance at named current Holm commit; clean/synced git; return before Issue #007 |
@@ -102,6 +102,10 @@ Queue `#002` may be marked done only when all are true:
 
 ## Run log
 
+- 2026-07-15 01:14 IST: S02 implementation attempt `05a` landed at `5d0df5d`
+  with required validation exits `0`; fresh Pi review approved
+  (`P1/P2/P3=0/0/0`) with no canonical finding artifact. S02 is done;
+  coordinator `05` is opening S03 implementation.
 - 2026-07-15 00:50 IST: S01 fix attempt `05b` landed at `da7cd8d` with
   required validation exits `0`; Harnex missed the task signal but ingested the
   report after stop. Fresh Pi rereview approved (`P1/P2/P3=0/0/0`) with no

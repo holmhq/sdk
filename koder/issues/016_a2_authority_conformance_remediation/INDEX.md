@@ -9,7 +9,7 @@ depends_on: [004, 005, 006]
 type: bug
 issue_kind: track
 slice_count: 6
-slices_done: 1
+slices_done: 2
 source_review: ../../reviews/024_a2_holm_authority_conformance/INDEX.md
 context: Holm's authority review found four P1 and one P2 foundation defects that block A2 acceptance and all formal A3 work.
 ---
@@ -100,13 +100,17 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 | Slice | Status | Finding | Expected proof | Closure gate |
 | --- | --- | --- | --- | --- |
 | Holm envelope/error/meta/header conformance and migration ledger | done | `P1-1` | implementation `a15b3df`, fix `da7cd8d`, rereview approve (`P1/P2/P3=0/0/0`) | complete |
-| Caller epoch, cache/query/mutation reset, and late-result fencing | implementing at Queue #002 S02 | `P1-2` | cross-principal transition tests | no old-caller data survives a transition |
-| Read-only capabilities and narrow extension invocation | candidate | `P1-3` | negative capability-forging tests + extension invocation conformance | only runtime can offer `holm.*` |
+| Caller epoch, cache/query/mutation reset, and late-result fencing | done | `P1-2` | implementation `5d0df5d`, review approve (`P1/P2/P3=0/0/0`) | complete |
+| Read-only capabilities and narrow extension invocation | implementing at Queue #002 S03 | `P1-3` | negative capability-forging tests + extension invocation conformance | only runtime can offer `holm.*` |
 | Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
 | Response correlation, artifact provenance, and final review | candidate | `P2-1` + note | mismatch tests + full clean validation + two reviews | SDK and Holm authority approve A2 |
 
 ## Queue #002 implementation checkpoint
 
+- 2026-07-15 01:14 IST: S02 implementation attempt `05a` landed at `5d0df5d`
+  with required validation exits `0`; fresh Pi review approved
+  (`P1/P2/P3=0/0/0`) with no canonical finding artifact. S02 is done;
+  coordinator `05` is opening S03 implementation.
 - 2026-07-15 00:50 IST: S01 fix attempt `05b` landed at `da7cd8d` with
   required validation exits `0`; fresh Pi rereview approved (`P1/P2/P3=0/0/0`)
   with no canonical finding artifact. S01 is done; coordinator `05` is opening
