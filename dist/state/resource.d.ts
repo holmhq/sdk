@@ -43,9 +43,11 @@ export interface ResourceErrorOptions {
 export interface ResourceController<T, E = HolmError> {
     readonly resource: Resource<T, E>;
     getSnapshot(): ResourceSnapshot<T, E>;
+    setIdle(): ResourceSnapshot<T, E>;
     setLoading(options?: ResourceLoadingOptions): ResourceSnapshot<T, E>;
     setReady(data: T, options?: ResourceReadyOptions): ResourceSnapshot<T, E>;
     setError(error: E, options?: ResourceErrorOptions): ResourceSnapshot<T, E>;
+    setStale(stale?: boolean): ResourceSnapshot<T, E>;
     dispose(): ResourceSnapshot<T, E>;
 }
 export declare function createResourceController<T, E = HolmError>(options?: ResourceControllerOptions<T>): ResourceController<T, E>;

@@ -1,5 +1,7 @@
 import {
+  createQueryResource,
   createResourceController,
+  type QueryResource,
   type Resource,
   type ResourcePhase,
   type ResourceSnapshot,
@@ -37,6 +39,42 @@ resource.subscribe("not a listener");
 // @ts-expect-error Resource values preserve their declared payload shape.
 controller.setReady({ title: "wrong", tags: [1] });
 
+const query = createQueryResource<ReportData>({
+  key: ["reports"],
+  source: { id: "runtime-test", surface: "test" },
+  caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+  load(context) {
+    const firstKeyItem = context.key[0];
+    const fingerprint: string = context.callerFingerprint;
+    const cacheKey: string = context.cacheKey;
+    void firstKeyItem;
+    void fingerprint;
+    void cacheKey;
+    return { title: "query", tags: ["state"] };
+  },
+});
+const queryResource: QueryResource<ReportData> = query;
+
+async function readQuery(): Promise<void> {
+  const loaded = await query.refresh();
+  if (loaded.data !== undefined) {
+    const title: string = loaded.data.title;
+    // @ts-expect-error Query resource data is deeply readonly.
+    loaded.data.tags.push("mutated");
+    void title;
+  }
+}
+
+createQueryResource<ReportData>({
+  // @ts-expect-error Query keys must be canonical tuple arrays.
+  key: "reports",
+  source: { id: "runtime-test", surface: "test" },
+  caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+  load: () => ({ title: "query", tags: [] }),
+});
+
 unsubscribe();
 void phase;
 void snapshot;
+void queryResource;
+void readQuery;

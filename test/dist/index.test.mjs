@@ -32,7 +32,7 @@ import {
 import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index.js";
 import { createWebSessionAuth, createWebUploadFile } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
-import { createResourceController } from "../../dist/state/index.js";
+import { createQueryResource, createResourceController } from "../../dist/state/index.js";
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
   assert.equal(createCoreEnvironment(), "core");
@@ -200,6 +200,35 @@ test("generated ESM artifact exposes S11 cache invalidation and diagnostics", as
   assert.equal(invalidated.removed, 1);
   assert.equal(diagnostics.some((event) => event.code === "transport_cache_update"), true);
   assert.equal(diagnostics.some((event) => event.code === "transport_cache_invalidate"), true);
+});
+
+test("generated ESM artifact exposes S14 state query refresh and reset", async () => {
+  let caller = { surface: "test", principal: { kind: "member", id: "alpha" } };
+  const listeners = new Set();
+  const query = createQueryResource({
+    key: ["dist-query"],
+    source: { id: "runtime-a", surface: "test" },
+    caller: {
+      current: () => caller,
+      subscribe(listener) {
+        listeners.add(listener);
+        return () => listeners.delete(listener);
+      },
+    },
+    load: (context) => ({ owner: context.caller.principal.id, source: context.source.id }),
+  });
+
+  assert.deepEqual((await query.refresh()).data, { owner: "alpha", source: "runtime-a" });
+  const stale = query.markStale();
+  caller = { surface: "test", principal: { kind: "member", id: "beta" } };
+  for (const listener of listeners) listener();
+  const reset = query.getSnapshot();
+  assert.equal(stale.stale, true);
+  assert.equal(reset.phase, "loading");
+  assert.equal("data" in reset, false);
+  assert.deepEqual((await query.currentLoad()).data, { owner: "beta", source: "runtime-a" });
+  assert.deepEqual((await query.reset({ source: { id: "runtime-b", surface: "test" } }).phase), "loading");
+  assert.deepEqual((await query.currentLoad()).data, { owner: "beta", source: "runtime-b" });
 });
 
 test("generated ESM artifact exposes S13 state resource lifecycle", () => {

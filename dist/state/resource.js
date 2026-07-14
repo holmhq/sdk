@@ -30,6 +30,14 @@ export function createResourceController(options = {}) {
     function getSnapshot() {
         return snapshot;
     }
+    function setIdle() {
+        assertActive(snapshot);
+        return install({
+            phase: "idle",
+            stale: false,
+            refreshing: false,
+        });
+    }
     function setLoading(input = {}) {
         assertActive(snapshot);
         const retainData = input.retainData ?? input.refreshing === true;
@@ -62,6 +70,17 @@ export function createResourceController(options = {}) {
             refreshing: input.refreshing ?? false,
             ...(updatedAt === undefined ? {} : { updatedAt }),
             ...(retainData && snapshot.data !== undefined ? { data: copyResourceValue(snapshot.data, options.copy) } : {}),
+        });
+    }
+    function setStale(stale = true) {
+        assertActive(snapshot);
+        return install({
+            phase: snapshot.phase,
+            stale,
+            refreshing: false,
+            ...(snapshot.data === undefined ? {} : { data: copyResourceValue(snapshot.data, options.copy) }),
+            ...(snapshot.error === undefined ? {} : { error: snapshot.error }),
+            ...(snapshot.updatedAt === undefined ? {} : { updatedAt: snapshot.updatedAt }),
         });
     }
     function dispose() {
@@ -101,9 +120,11 @@ export function createResourceController(options = {}) {
     return Object.freeze({
         resource,
         getSnapshot,
+        setIdle,
         setLoading,
         setReady,
         setError,
+        setStale,
         dispose,
     });
 }

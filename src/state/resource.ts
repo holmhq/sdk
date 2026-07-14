@@ -57,9 +57,11 @@ export interface ResourceErrorOptions {
 export interface ResourceController<T, E = HolmError> {
   readonly resource: Resource<T, E>;
   getSnapshot(): ResourceSnapshot<T, E>;
+  setIdle(): ResourceSnapshot<T, E>;
   setLoading(options?: ResourceLoadingOptions): ResourceSnapshot<T, E>;
   setReady(data: T, options?: ResourceReadyOptions): ResourceSnapshot<T, E>;
   setError(error: E, options?: ResourceErrorOptions): ResourceSnapshot<T, E>;
+  setStale(stale?: boolean): ResourceSnapshot<T, E>;
   dispose(): ResourceSnapshot<T, E>;
 }
 
@@ -108,6 +110,15 @@ export function createResourceController<T, E = HolmError>(
     return snapshot;
   }
 
+  function setIdle(): ResourceSnapshot<T, E> {
+    assertActive(snapshot);
+    return install({
+      phase: "idle",
+      stale: false,
+      refreshing: false,
+    });
+  }
+
   function setLoading(input: ResourceLoadingOptions = {}): ResourceSnapshot<T, E> {
     assertActive(snapshot);
     const retainData = input.retainData ?? input.refreshing === true;
@@ -142,6 +153,18 @@ export function createResourceController<T, E = HolmError>(
       refreshing: input.refreshing ?? false,
       ...(updatedAt === undefined ? {} : { updatedAt }),
       ...(retainData && snapshot.data !== undefined ? { data: copyResourceValue(snapshot.data as T, options.copy) } : {}),
+    });
+  }
+
+  function setStale(stale = true): ResourceSnapshot<T, E> {
+    assertActive(snapshot);
+    return install({
+      phase: snapshot.phase,
+      stale,
+      refreshing: false,
+      ...(snapshot.data === undefined ? {} : { data: copyResourceValue(snapshot.data as T, options.copy) }),
+      ...(snapshot.error === undefined ? {} : { error: snapshot.error }),
+      ...(snapshot.updatedAt === undefined ? {} : { updatedAt: snapshot.updatedAt }),
     });
   }
 
@@ -184,9 +207,11 @@ export function createResourceController<T, E = HolmError>(
   return Object.freeze({
     resource,
     getSnapshot,
+    setIdle,
     setLoading,
     setReady,
     setError,
+    setStale,
     dispose,
   });
 }
