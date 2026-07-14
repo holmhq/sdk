@@ -1,10 +1,10 @@
 ---
-updated_at: "14 Jul 2026 | 11:00 AM IST"
-state: BLOCKED
-active_window: A2
+updated_at: "14 Jul 2026 | 12:25 PM IST"
+state: IN_PROGRESS
+active_window: A2R-planning
 active_issue: 016
 orchestration_mode: blind
-stop_gate: "Review #024 blocks A2 acceptance; remediate #016, obtain independent SDK re-review and Holm authority acceptance, and do not begin #007"
+stop_gate: "Stop after thin strict-TDD plans and Queue #002 receive independent plan approval; implementation requires separate owner authorization, and Issue #007 must not begin"
 ---
 
 # Koder State
@@ -16,30 +16,25 @@ stop_gate: "Review #024 blocks A2 acceptance; remediate #016, obtain independent
 - Blind Queue `#001` completed all `16` A2 implementation rows for Issues
   `#003`-`#006`; SDK-side Review `#023` approved checkpoint `fe37f85` with the
   full validation and coverage gates green.
-- A read-only Holm authority review compared the SDK checkpoint with Holm
-  baseline `11ceae0d` and current Holm HEAD `bdcc8cc5`; no material authority
-  drift was found.
+- Holm authority Review `#024` found no material source drift but blocked A2
+  acceptance with four P1 and one P2 conformance findings. Issue `#016` is the
+  canonical remediation track.
 
 ## Present
 
-- A2 owner acceptance is **BLOCKED** by
-  `koder/reviews/024_a2_holm_authority_conformance/INDEX.md`: four P1 and one P2
-  findings cover Holm envelopes, caller transitions, capability/extension
-  ownership, credential-safe observability/cache identity, and response
-  correlation.
-- Issue `#016` is the canonical cross-cutting remediation track. It is filed but
-  blocked pending explicit owner authorization of a bounded A2R planning window.
-- Queue `#001` remains done and historical. No Queue `#002`, A2R implementation,
-  A3 planning, Issue `#007+` work, publication, release, tag, deploy,
-  credentials, or cross-repository mutation is authorized.
+- On 14 Jul 2026 the owner authorized **A2R planning only**. Product
+  implementation and Queue `#002` execution remain unauthorized.
+- The primary is a blind orchestrator: it routes fresh isolated planning and
+  independent plan-review workers and consumes compact process receipts only.
+- Queue `#001` remains done and historical. A3 planning, Issue `#007+` work,
+  publication, release, tag, deploy, credentials, and cross-repository mutation
+  remain forbidden.
 
 ## Future
 
-1. Fresh coordinator: run `/open`, verify `BLOCKED`, Review `#024`, Issue `#016`,
-   blind mode, and the hard stop before Issue `#007`.
-2. Owner may then authorize **A2R planning only**. Route fresh isolated workers
-   to produce thin strict-TDD plans and independent plan review; the primary
-   consumes compact sidecars only.
-3. Do not implement until reviewed Queue `#002` is separately authorized. Stop
-   after fixes, full validation, independent SDK review, and fresh Holm
-   authority acceptance; never roll directly into A3.
+1. Verify the isolated harness and route fresh planning workers to map Issue
+   `#016` into thin strict-TDD plans without changing approved decisions.
+2. Route independent plan review, then assemble reviewed Queue `#002` metadata.
+3. At plan approval, commit and push a clean `REVIEW_READY` checkpoint, run
+   `close`, and return for separate implementation authorization. Do not launch
+   Queue `#002` or begin Issue `#007`.
