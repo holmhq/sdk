@@ -63,16 +63,13 @@ export interface CapabilityView {
   subscribe(listener: CapabilitySnapshotListener): () => void;
 }
 
-export interface CapabilityRegistry extends CapabilityView {
-  replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot;
-}
-
 /**
  * Runtime-owned mutation seam. Deliberately not re-exported from the package
  * barrels: it is wired internally by createHolm()/the extension registrar so
  * standalone consumers cannot manufacture or forge holm.* capability offers.
  */
-export interface CapabilityRuntimeUpdater extends CapabilityRegistry {
+export interface CapabilityRuntimeUpdater extends CapabilityView {
+  replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot;
   registerExtensionOffer(offer: CapabilityOffer): CapabilityOffer;
 }
 
@@ -138,8 +135,8 @@ export class DuplicateCapabilityOfferError extends HolmError {
   }
 }
 
-export function createCapabilityRegistry(offers: readonly CapabilityOffer[] = []): CapabilityRegistry {
-  return new InstanceCapabilityRegistry(offers);
+export function createCapabilityRegistry(offers: readonly CapabilityOffer[] = []): CapabilityView {
+  return createCapabilityView(new InstanceCapabilityRegistry(offers));
 }
 
 export function createCapabilityRuntimeUpdater(

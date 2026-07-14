@@ -58,7 +58,6 @@ export {
 export type {
   CapabilityOffer,
   CapabilityOrigin,
-  CapabilityRegistry,
   CapabilityRequirement,
   CapabilitySnapshot,
   CapabilitySnapshotListener,

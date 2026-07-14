@@ -1,7 +1,7 @@
 import {
   LifecycleError,
-  type CapabilityRegistry,
   type CapabilityRequirement,
+  type CapabilityView,
   type HolmDiagnosticsSink,
 } from "../core/index.js";
 import type { HolmError } from "../core/errors.js";
@@ -57,7 +57,7 @@ export interface RealtimeReconcileHook<TData, E extends HolmError = HolmError> {
 
 export interface RealtimeReconcileHookOptions<TData, E extends HolmError = HolmError> {
   readonly query: QueryResource<TData, E>;
-  readonly capabilities: CapabilityRegistry;
+  readonly capabilities: CapabilityView;
   readonly requirement?: RealtimePublicSubscribeRequirement;
   readonly diagnostics?: HolmDiagnosticsSink;
   readonly id?: string;

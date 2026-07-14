@@ -9,6 +9,7 @@ import {
   UnsupportedCapabilityError,
   type HolmDiagnosticEvent,
 } from "../../../src/core/index.js";
+import { createCapabilityRuntimeUpdater } from "../../../src/core/capabilities.js";
 import { createFakeClock } from "../../../src/test/index.js";
 import {
   createDerivedResource,
@@ -338,7 +339,7 @@ test("derived, history, query reconcile, and realtime seams cover validation bra
 
 test("realtime reconcile hooks are public-capability gated and non-durable", async () => {
   let version = 1;
-  const capabilities = createCapabilityRegistry([]);
+  const capabilities = createCapabilityRuntimeUpdater([]);
   const query = createQueryResource<ReportData>({
     key: ["reports"],
     source: { id: "runtime-a", surface: "test" },

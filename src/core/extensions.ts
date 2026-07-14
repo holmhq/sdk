@@ -1,7 +1,6 @@
 import {
   createCapabilityView,
   type CapabilityOffer,
-  type CapabilityRegistry,
   type CapabilityRequirement,
   type CapabilityVersion,
   type CapabilityView,
@@ -118,7 +117,7 @@ export interface ExtensionLifecycle<Namespaces extends object = ExtensionNamespa
 }
 
 export interface ExtensionLifecycleOptions {
-  readonly capabilities: CapabilityRegistry;
+  readonly capabilities: CapabilityView;
   readonly validateCapabilities?: boolean;
   readonly invoke?: ExtensionInvokeFunction;
   readonly registerExtensionOffer?: (offer: CapabilityOffer) => CapabilityOffer;
@@ -432,7 +431,7 @@ function orderExtensions(
 
 function validateCapabilityRequirements(
   extensions: readonly NormalizedExtension[],
-  capabilities: CapabilityRegistry,
+  capabilities: CapabilityView,
 ): void {
   for (const extension of extensions) {
     for (const requirement of extension.descriptor.requiresCapabilities) {

@@ -46,7 +46,6 @@ export type {
   CacheSourceIdentity,
   CapabilityOffer,
   CapabilityOrigin,
-  CapabilityRegistry,
   CapabilityRequirement,
   CapabilitySnapshot,
   CapabilitySnapshotListener,

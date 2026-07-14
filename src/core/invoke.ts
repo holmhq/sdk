@@ -1,7 +1,7 @@
 import {
   CapabilityVersionError,
-  type CapabilityRegistry,
   type CapabilityRequirement,
+  type CapabilityView,
   UnsupportedCapabilityError,
 } from "./capabilities.js";
 import {
@@ -16,7 +16,7 @@ import { copyWireValue } from "./wire-value.js";
 
 export interface InvokeRuntimeOptions {
   readonly runtime: RuntimeAdapter;
-  readonly capabilities: CapabilityRegistry;
+  readonly capabilities: CapabilityView;
   readonly caller: CallerProvider;
   readonly capability: CapabilityRequirement;
   readonly operation: string;

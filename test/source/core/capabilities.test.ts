@@ -136,7 +136,7 @@ test("capabilities expose snapshots and offers as immutable copies", () => {
 });
 
 test("capabilities subscriptions receive replacement snapshots safely", () => {
-  const registry = createCapabilityRegistry([runtimeOffer("com.example.reports", 1, 0)]);
+  const registry = createCapabilityRuntimeUpdater([runtimeOffer("com.example.reports", 1, 0)]);
   const seen: (readonly CapabilityOffer[])[] = [];
   let unsubscribe = (): void => {};
   unsubscribe = registry.subscribe((snapshot) => {
@@ -152,8 +152,19 @@ test("capabilities subscriptions receive replacement snapshots safely", () => {
   assert.equal(registry.getSnapshot().revision, 2);
 });
 
+test("public capability registry factory returns a read-only view with no runtime mutation seam", () => {
+  const registry = createCapabilityRegistry([runtimeOffer("com.example.reports", 1, 0)]);
+
+  assert.deepEqual(registry.require({ id: "com.example.reports", major: 1 }), runtimeOffer("com.example.reports", 1, 0));
+  assert.equal((registry as unknown as { replaceOffers?: unknown }).replaceOffers, undefined);
+  assert.throws(
+    () => (registry as unknown as { replaceOffers(offers: readonly CapabilityOffer[]): unknown }).replaceOffers([]),
+    TypeError,
+  );
+});
+
 test("capability view exposes read-only access and cannot replace or forge holm offers", () => {
-  const registry = createCapabilityRegistry([runtimeOffer("holm.core.session", 1, 0)]);
+  const registry = createCapabilityRuntimeUpdater([runtimeOffer("holm.core.session", 1, 0)]);
   const view = createCapabilityView(registry);
 
   assert.deepEqual(view.getSnapshot(), registry.getSnapshot());
@@ -231,7 +242,7 @@ test("capabilities roll back a runtime replacement that conflicts with an existi
 });
 
 test("capabilities subscriptions isolate listener mutation and failures", () => {
-  const registry = createCapabilityRegistry([runtimeOffer("com.example.reports", 1, 0)]);
+  const registry = createCapabilityRuntimeUpdater([runtimeOffer("com.example.reports", 1, 0)]);
   const seen: number[] = [];
   let first = (): void => {};
   first = registry.subscribe(() => {
