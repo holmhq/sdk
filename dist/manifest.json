@@ -348,17 +348,17 @@
     {
       "bytes": 3330,
       "path": "dist/state/mutation.d.ts.map",
-      "sha256": "5ab4efd4709d8e0807866ad16348ccdccd41903dce52432f453841850fe31296"
+      "sha256": "0cab85771f4c18072369d0017bbea7b973eca7f2bcc60259225fa97cbf6ebb75"
     },
     {
-      "bytes": 11089,
+      "bytes": 11243,
       "path": "dist/state/mutation.js",
-      "sha256": "46f5be2e4a63080e4a2afb852e89a50cf4f6c32aeead02c4eacffea331ad3c63"
+      "sha256": "05db8c24f49108da6351f60ee1c96d2f9e3d68cf09a3b68e469243a04a20c95e"
     },
     {
-      "bytes": 10615,
+      "bytes": 10755,
       "path": "dist/state/mutation.js.map",
-      "sha256": "6af6434847344d4afeb111e0954fd4a386d7b43f8b6a0784b52dfe90f3bfbaf6"
+      "sha256": "ca9abefa87520d80d55f6417be64da9e798f2c310d0ce6f1bd718668072c3c22"
     },
     {
       "bytes": 1929,

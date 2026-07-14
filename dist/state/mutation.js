@@ -90,6 +90,9 @@ export function createMutationResource(options) {
             }
             const ready = controller.setReady(result);
             await emitInvalidation(ready, payload, context);
+            if (!isActive(token)) {
+                throw new CancelledError({ reason: signal.reason ?? "mutation execution superseded" });
+            }
             return ready;
         }
         catch (error) {

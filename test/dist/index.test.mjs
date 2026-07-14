@@ -11,6 +11,7 @@ import {
   createHolm,
   createStaticCallerProvider,
   createReadonlyBytes,
+  CancelledError,
   CapabilityVersionError,
   HolmError,
   TimeoutError,
@@ -33,6 +34,14 @@ import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index
 import { createWebSessionAuth, createWebUploadFile } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
 import { createMutationResource, createQueryResource, createResourceController } from "../../dist/state/index.js";
+
+function deferred() {
+  let resolve;
+  const promise = new Promise((innerResolve) => {
+    resolve = innerResolve;
+  });
+  return { promise, resolve };
+}
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
   assert.equal(createCoreEnvironment(), "core");
@@ -247,6 +256,25 @@ test("generated ESM artifact exposes S15 state mutation optimistic invalidation"
   assert.equal(ready.phase, "ready");
   assert.deepEqual(ready.data, { version: 1, label: "server" });
   assert.deepEqual(invalidations[0].invalidations, [{ tags: ["dist-mutation"] }]);
+
+  const invalidationStarted = deferred();
+  const invalidation = deferred();
+  const cancellable = createMutationResource({
+    source: { id: "runtime-a", surface: "test" },
+    caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+    execute: () => ({ version: 2, label: "server" }),
+    invalidates: [{ tags: ["dist-mutation"] }],
+    onInvalidate: () => {
+      invalidationStarted.resolve();
+      return invalidation.promise;
+    },
+  });
+  const pending = cancellable.execute({ label: "reset" });
+  await invalidationStarted.promise;
+  assert.equal(cancellable.reset().phase, "idle");
+  invalidation.resolve();
+  await assert.rejects(pending, CancelledError);
+  assert.equal(cancellable.getSnapshot().phase, "idle");
 });
 
 test("generated ESM artifact exposes S13 state resource lifecycle", () => {

@@ -212,6 +212,9 @@ export function createMutationResource<TPayload, TResult, E extends HolmError = 
       }
       const ready = controller.setReady(result);
       await emitInvalidation(ready, payload, context);
+      if (!isActive(token)) {
+        throw new CancelledError({ reason: signal.reason ?? "mutation execution superseded" });
+      }
       return ready;
     } catch (error) {
       const normalized = normalizeMutationError(error, context, payload) as E;

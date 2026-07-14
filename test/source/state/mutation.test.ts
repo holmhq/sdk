@@ -220,6 +220,51 @@ test("state mutation resources normalize errors, cancellation, invalidation hook
   assert.throws(() => mutation.execute({ id: "disposed", labels: [] }), LifecycleError);
 });
 
+test("state mutation resources reject executions reset or disposed during async invalidation", async () => {
+  const resetInvalidationStarted = deferred<void>();
+  const resetInvalidation = deferred<void>();
+  const resetMutation = createMutationResource<ReportPayload, ReportResult>({
+    source: { id: "runtime-a", surface: "test" },
+    caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+    execute: () => ({ version: 3, labels: ["server"] }),
+    invalidates: [{ tags: ["reports"] }],
+    onInvalidate() {
+      resetInvalidationStarted.resolve(undefined);
+      return resetInvalidation.promise;
+    },
+  });
+
+  const resetPending = resetMutation.execute({ id: "reset", labels: [] });
+  await resetInvalidationStarted.promise;
+  assert.equal(resetMutation.getSnapshot().phase, "ready");
+  assert.equal(resetMutation.reset().phase, "idle");
+  resetInvalidation.resolve(undefined);
+  await assert.rejects(resetPending, CancelledError);
+  assert.equal(resetMutation.getSnapshot().phase, "idle");
+
+  const disposeInvalidationStarted = deferred<void>();
+  const disposeInvalidation = deferred<void>();
+  const disposeMutation = createMutationResource<ReportPayload, ReportResult>({
+    source: { id: "runtime-a", surface: "test" },
+    caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
+    execute: () => ({ version: 4, labels: ["server"] }),
+    invalidates: [{ tags: ["reports"] }],
+    onInvalidate() {
+      disposeInvalidationStarted.resolve(undefined);
+      return disposeInvalidation.promise;
+    },
+  });
+
+  const disposePending = disposeMutation.execute({ id: "dispose", labels: [] });
+  await disposeInvalidationStarted.promise;
+  assert.equal(disposeMutation.getSnapshot().phase, "ready");
+  disposeMutation.dispose();
+  assert.equal(disposeMutation.getSnapshot().phase, "disposed");
+  disposeInvalidation.resolve(undefined);
+  await assert.rejects(disposePending, CancelledError);
+  assert.equal(disposeMutation.getSnapshot().phase, "disposed");
+});
+
 test("state mutation resources cover reset, custom errors, invalidation validation, and optional lifecycle branches", async () => {
   class SaveError extends HolmError {
     readonly retryAfterMs = 1000;
