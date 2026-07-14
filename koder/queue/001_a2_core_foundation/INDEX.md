@@ -1,5 +1,5 @@
 ---
-status: ready
+status: review_ready
 target_window: 8h
 queued_effort_target: 28h20m
 autonomy_level: A2
@@ -109,3 +109,4 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 - 2026-07-14: `S13` implemented at `59223bc` and independently approved at `465ccb6`; required validation and coverage passed; next eligible row is `S14`.
 - 2026-07-14: `S14` implemented at `42bd0b8` and independently approved at `a225277`; required validation and coverage passed; next eligible row is `S15`.
 - 2026-07-14: `S15` implemented at `470b489`, received a P2 fix at `b4cfcac`, and was independently approved at `7f143b1`; required validation and coverage passed; next eligible row is `S16`.
+- 2026-07-14: `S16` implemented at `8ff1990`, received a P2 fix at `bfe3fae`, and was independently approved at `8bc3060`; required validation and coverage passed, resolving Issue `#006` and draining A2 implementation rows. Coordinator `05` stops at the four-entry/final-child boundary; final A2 core API/conformance review is pending for a fresh coordinator.

@@ -1,8 +1,8 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-14
 tags: state, reactivity, queries, mutations, optimistic
 parent: 001
 depends_on: [004, 005]
@@ -48,21 +48,32 @@ Support:
 
 ## Acceptance Criteria
 
-- [ ] Strict TDD covers subscription lifecycle, immutable snapshots, stale
+- [x] Strict TDD covers subscription lifecycle, immutable snapshots, stale
       refresh, errors, cancellation, disposal, deduplication, derived resources,
       optimistic updates, rollback, and invalidation.
-- [ ] Core resources have no Vue, React, Angular, Svelte, DOM, or Node runtime
+- [x] Core resources have no Vue, React, Angular, Svelte, DOM, or Node runtime
       dependency.
-- [ ] The subscribe/getSnapshot contract can be consumed without adapters by
+- [x] The subscribe/getSnapshot contract can be consumed without adapters by
       vanilla JS and Svelte-style stores.
-- [ ] Multiple subscribers share work and cleanup correctly.
-- [ ] Caller/auth/source changes cannot leak prior principal data.
-- [ ] Realtime hints can invalidate/reconcile authoritative query state without
+- [x] Multiple subscribers share work and cleanup correctly.
+- [x] Caller/auth/source changes cannot leak prior principal data.
+- [x] Realtime hints can invalidate/reconcile authoritative query state without
       making events the durable source of truth.
-- [ ] Existing `holm-state` primitives/tests are mapped as adopted, redesigned,
+- [x] Existing `holm-state` primitives/tests are mapped as adopted, redesigned,
       extension-owned, or deferred.
-- [ ] Type tests preserve payload/error inference through query and mutation.
-- [ ] Generated artifacts and size report pass.
+- [x] Type tests preserve payload/error inference through query and mutation.
+- [x] Generated artifacts and size report pass.
+
+## Resolution Evidence
+
+- Queue `#001` rows `S13`-`S16` passed implementation plus independent review:
+  `59223bc`/`465ccb6`, `42bd0b8`/`a225277`, `470b489`/`7f143b1`, and
+  `8ff1990`/`8bc3060`.
+- Required validation and coverage passed for each row; final S16 coverage was
+  statements `98.11`, lines `99.03`, functions `99.43`, branches `96.35`, and
+  changed reachable `100`.
+- Final A2 core API/conformance review remains pending and is intentionally not
+  part of this issue implementation slice.
 
 ## Non-Goals
 
