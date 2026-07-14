@@ -101,12 +101,17 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 | --- | --- | --- | --- | --- |
 | Holm envelope/error/meta/header conformance and migration ledger | done | `P1-1` | implementation `a15b3df`, fix `da7cd8d`, rereview approve (`P1/P2/P3=0/0/0`) | complete |
 | Caller epoch, cache/query/mutation reset, and late-result fencing | done | `P1-2` | implementation `5d0df5d`, review approve (`P1/P2/P3=0/0/0`) | complete |
-| Read-only capabilities and narrow extension invocation | implementing at Queue #002 S03 | `P1-3` | negative capability-forging tests + extension invocation conformance | only runtime can offer `holm.*` |
+| Read-only capabilities and narrow extension invocation | fixing at Queue #002 S03 | `P1-3` | implementation `206b0e8` + review `fe604d0` (`P1/P2/P3=0/2/0`) | canonical findings in `koder/reviews/028_a2r_s03_capability_extension_ownership/INDEX.md` |
 | Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
 | Response correlation, artifact provenance, and final review | candidate | `P2-1` + note | mismatch tests + full clean validation + two reviews | SDK and Holm authority approve A2 |
 
 ## Queue #002 implementation checkpoint
 
+- 2026-07-15 01:45 IST: S03 implementation attempt `05a` landed at `206b0e8`
+  with required validation exits `0`; fresh Pi review returned `needs_fixes`
+  (`P1/P2/P3=0/2/0`) at review commit `fe604d0`, canonical findings
+  `koder/reviews/028_a2r_s03_capability_extension_ownership/INDEX.md`.
+  Coordinator `05` is opening S03 fix attempt `05a` without ingesting findings.
 - 2026-07-15 01:14 IST: S02 implementation attempt `05a` landed at `5d0df5d`
   with required validation exits `0`; fresh Pi review approved
   (`P1/P2/P3=0/0/0`) with no canonical finding artifact. S02 is done;
