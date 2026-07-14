@@ -102,6 +102,14 @@ Queue `#002` may be marked done only when all are true:
 
 ## Run log
 
+- 2026-07-14 23:49 IST: S01 reconfigured writable Codex legacy-PTY fix launch
+  attempts `3a` and `3b` failed to register within Harnex timeouts (`5s`, then
+  `30s` with `--tmux`); no session, receipt, commit, or product WIP exists.
+  Reconfigured phase circuit breaker is open; row remains blocked at S01 `fix`.
+- 2026-07-14 23:46 IST: Recovery coordinator `03` moved S01 from blocked to
+  fixing after adapter/config/brief change to writable Codex legacy PTY; no
+  phase-only commit. Next proof required: S01 fix receipt/commit, then fresh
+  re-review.
 - 2026-07-14 23:24 IST: S01 fix attempts `1` and `2` were receipt-free
   no-op/model-refusal attempts with no commits, opening the phase circuit
   breaker. Row is blocked at `fix` pending adapter/config/brief change; findings

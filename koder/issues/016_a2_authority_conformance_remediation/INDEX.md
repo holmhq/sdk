@@ -99,7 +99,7 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 
 | Slice | Status | Finding | Expected proof | Closure gate |
 | --- | --- | --- | --- | --- |
-| Holm envelope/error/meta/header conformance and migration ledger | blocked at Queue #002 S01 fix | `P1-1` | implementation `a15b3df` + review `aa56435` (`P1/P2/P3=1/0/0`) | fix phase circuit breaker after two receipt-free no-op attempts |
+| Holm envelope/error/meta/header conformance and migration ledger | blocked at Queue #002 S01 fix | `P1-1` | implementation `a15b3df` + review `aa56435` (`P1/P2/P3=1/0/0`) | reconfigured writable Codex legacy-PTY launch circuit breaker; no fix receipt/commit |
 | Caller epoch, cache/query/mutation reset, and late-result fencing | candidate | `P1-2` | cross-principal transition tests | no old-caller data survives a transition |
 | Read-only capabilities and narrow extension invocation | candidate | `P1-3` | negative capability-forging tests + extension invocation conformance | only runtime can offer `holm.*` |
 | Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
@@ -107,6 +107,13 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 
 ## Queue #002 implementation checkpoint
 
+- 2026-07-14 23:49 IST: Recovery coordinator `03` attempted reconfigured S01
+  `fix` routing through writable Codex legacy PTY twice. Both launches failed
+  to register with Harnex before worker ownership began; no session, receipt,
+  commit, or product WIP exists. The reconfigured phase circuit breaker is open.
+- 2026-07-14 23:46 IST: Recovery coordinator `03` resumed at first unproven
+  phase S01 `fix` after changing worker adapter/config/brief to writable Codex
+  legacy PTY. No phase-only metadata commit was created.
 - 2026-07-14 23:24 IST: S01 reached implementation commit `a15b3df`
   with row validation passing, then independent review commit `aa56435` returned
   `needs_fixes` (`P1/P2/P3=1/0/0`) at
