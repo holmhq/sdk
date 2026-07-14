@@ -106,7 +106,7 @@ function normalizeDependencies(dependencies) {
             throw new TypeError("Derived resource dependencies must be state resources.");
         }
     }
-    return dependencies;
+    return Object.freeze([...dependencies]);
 }
 function normalizeDerivedError(error, resourceId) {
     if (error instanceof HolmError) {

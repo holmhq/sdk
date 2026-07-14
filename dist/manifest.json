@@ -331,14 +331,14 @@
       "sha256": "16c723d96e78df10666292d1b4fb6b0c69c3fa0aeed52db5e31ccba830455dc7"
     },
     {
-      "bytes": 5101,
+      "bytes": 5121,
       "path": "dist/state/derived.js",
-      "sha256": "567b78ba119b36077ba0133d03c92092b651ffa5978f7a4ee98476fe553cdbee"
+      "sha256": "be2a81a580a3d42c2a0be46a0a93e8bc501fd5053fe1c286f0bdecf4968b5516"
     },
     {
-      "bytes": 4800,
+      "bytes": 4841,
       "path": "dist/state/derived.js.map",
-      "sha256": "d4d31693525383abc2ee1ca8b127c6c4d569e2dc599734b862375d8fb9ee3c3a"
+      "sha256": "fa9fb83113b82479f945f1d95dcd61ab86f18fd81d530f0a762b893416f2358d"
     },
     {
       "bytes": 1026,

@@ -156,7 +156,7 @@ function normalizeDependencies<const TDependencies extends readonly AnyResource[
       throw new TypeError("Derived resource dependencies must be state resources.");
     }
   }
-  return dependencies;
+  return Object.freeze([...dependencies]) as unknown as TDependencies;
 }
 
 function normalizeDerivedError(error: unknown, resourceId: string): HolmError {

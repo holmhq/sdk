@@ -88,6 +88,43 @@ test("derived resources recompute from dependency snapshots and dispose subscrip
   assert.throws(() => derived.refresh(), LifecycleError);
 });
 
+test("state derived resources defensively capture dependency arrays", () => {
+  const left = createResourceController<CountData>();
+  const right = createResourceController<CountData>();
+  const replacement = createResourceController<CountData>();
+  left.setReady({ count: 1 });
+  right.setReady({ count: 2 });
+  replacement.setReady({ count: 100 });
+
+  const dependencies = [left.resource, right.resource];
+  const derived = createDerivedResource({
+    dependencies,
+    derive(snapshots) {
+      return {
+        total: snapshots.reduce((sum, snapshot) => sum + (snapshot.data?.count ?? 0), 0),
+        labels: [`captured:${snapshots.length}`],
+      };
+    },
+  });
+  const notifications: SummaryData[] = [];
+  derived.subscribe(() => {
+    const data = derived.getSnapshot().data;
+    if (data !== undefined) {
+      notifications.push(data);
+    }
+  });
+
+  assert.deepEqual(derived.getSnapshot().data, { total: 3, labels: ["captured:2"] });
+  dependencies[0] = replacement.resource;
+  dependencies.push(replacement.resource);
+  replacement.setReady({ count: 200 });
+  assert.deepEqual(notifications, []);
+
+  left.setReady({ count: 4 });
+  assert.deepEqual(derived.getSnapshot().data, { total: 6, labels: ["captured:2"] });
+  assert.deepEqual(notifications, [{ total: 6, labels: ["captured:2"] }]);
+});
+
 test("derived resources surface dependency errors and pending dependencies without framework runtime", () => {
   const ready = createResourceController<CountData>();
   const pending = createResourceController<CountData>();
