@@ -128,6 +128,17 @@ test("transport responses unwrap Holm success envelopes and preserve meta and he
   });
 });
 
+test("transport responses preserve non-command success envelopes with nested ok:false payloads", () => {
+  const decoded = decodeTransportResponse({
+    requestId: "req-nested-ok-false",
+    status: 200,
+    body: JSON.stringify({ data: { ok: false, reason: "state" } }),
+    responseMode: "json",
+  });
+
+  assert.deepEqual(decoded.payload, { ok: false, reason: "state" });
+});
+
 test("transport responses map Holm error envelopes and /api/cmd command failures", () => {
   assert.throws(
     () =>

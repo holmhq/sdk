@@ -612,9 +612,8 @@ function extractRemoteErrorEnvelope(
   if (isPlainObject(payload.error)) {
     return parseFlatRemoteEnvelope(payload.error, fallbackCode, fallbackMessage);
   }
-  if (isPlainObject(payload.data) && payload.data.ok === false) {
-    return parseFlatRemoteEnvelope(payload.data, fallbackCode, fallbackMessage);
-  }
+  // Holm branch: generic {data,...} success envelopes may carry arbitrary payload,
+  // including nested ok:false; command-failure interpretation is /api/cmd-only (see extractCommandErrorEnvelope).
   return undefined;
 }
 
