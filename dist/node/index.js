@@ -1,3 +1,4 @@
+export { createNodeUploadFile } from "./upload.js";
 export function createNodeTokenAuth(options) {
     const scheme = normalizePart(options.scheme ?? "Bearer", "scheme");
     validateTokenSource(options.token);

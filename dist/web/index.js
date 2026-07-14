@@ -1,3 +1,4 @@
+export { createWebUploadFile, createWebUploadSource, } from "./upload.js";
 export function createWebSessionAuth(options = {}) {
     const credentials = normalizeCredentials(options.credentials ?? "same-origin");
     const proof = Object.freeze({ kind: "web-session", credentials });

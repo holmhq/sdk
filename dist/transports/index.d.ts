@@ -1,4 +1,6 @@
 export { createTransportCache, createTransportCacheKey, } from "./cache.js";
+export { UploadError, composeResumableUpload, createReadonlyBytesUploadSource, createUploadFile, redactUploadChunk, redactUploadRequest, } from "./upload.js";
+export type { RedactedUploadChunkDiagnostic, RedactedUploadDiagnostic, RedactedUploadFieldDiagnostic, RedactedUploadFileDiagnostic, ResumableUploadAdapter, UploadChunk, UploadChunkAck, UploadChunkBody, UploadChunkInput, UploadCompletion, UploadControl, UploadErrorOptions, UploadField, UploadFieldInput, UploadFile, UploadFileInput, UploadFinalizeInput, UploadHandoff, UploadHandoffEntry, UploadProgressEvent, UploadProgressListener, UploadRequest, UploadSession, UploadSource, UploadStatus, UploadStatusInput, UploadUnavailableSession, } from "./upload.js";
 export type { TransportCache, TransportCacheBackgroundErrorEvent, TransportCacheGetInput, TransportCacheInvalidationEvent, TransportCacheInvalidationInput, TransportCacheInvalidationReason, TransportCacheInvalidationResult, TransportCacheKeyInput, TransportCacheLoader, TransportCacheMode, TransportCacheMutationInvalidation, TransportCacheOptions, TransportCachePartition, TransportCachePolicy, TransportCacheUpdateEvent, } from "./cache.js";
 import { HolmError } from "../core/errors.js";
 import type { CancellationSignal, OperationResponse } from "../core/runtime.js";

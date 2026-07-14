@@ -22,11 +22,15 @@ import {
   createTransportCache,
   createTransportCacheKey,
   createTransportRequest,
+  composeResumableUpload,
+  createReadonlyBytesUploadSource,
+  createUploadFile,
   decodeTransportResponse,
   redactAuthenticatedTransport,
+  redactUploadRequest,
 } from "../../dist/transports/index.js";
-import { createNodeTokenAuth } from "../../dist/node/index.js";
-import { createWebSessionAuth } from "../../dist/web/index.js";
+import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index.js";
+import { createWebSessionAuth, createWebUploadFile } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
@@ -124,6 +128,43 @@ test("generated ESM artifact exposes S09 transport auth and error contracts", as
   assert.equal(JSON.stringify(redactAuthenticatedTransport(authenticated)).includes("dist-secret"), false);
   assert.equal(webAuthenticated.privateProof.credentials, "include");
   assert.deepEqual(decoded.payload, { ok: true });
+});
+
+test("generated ESM artifact exposes S12 upload seam helpers", async () => {
+  const progress = [];
+  const file = createUploadFile({
+    field: "file",
+    name: "dist.txt",
+    type: "text/plain",
+    source: createReadonlyBytesUploadSource(createReadonlyBytes([1, 2, 3])),
+  });
+  const adapter = {
+    createSession() {
+      return { id: "upl_dist", chunkSize: 2 };
+    },
+    uploadChunk(input) {
+      return { nextOffset: input.offset + input.chunk.byteLength };
+    },
+    completeSession() {
+      return { id: "upl_dist", tempRef: "tmp_dist", name: "dist.txt", type: "text/plain", size: 3 };
+    },
+  };
+  const handoff = await composeResumableUpload(
+    { path: "/api/upload", files: [file], onProgress: (event) => progress.push(event.loaded) },
+    adapter,
+  );
+  const nodeUpload = createNodeUploadFile({ field: "node", name: "node.bin", bytes: [4, 5] });
+  const webUpload = createWebUploadFile({
+    field: "web",
+    name: "web.bin",
+    blob: { size: 2, type: "application/octet-stream", slice: (start, end, type) => ({ size: end - start, type }) },
+  });
+
+  assert.equal(handoff.file.upload_id, "upl_dist");
+  assert.deepEqual(progress, [0, 2, 3]);
+  assert.equal(redactUploadRequest({ path: "/api/upload", fields: [{ name: "caption", value: "secret" }], files: [file] }).fields[0].value, "[redacted]");
+  assert.equal(nodeUpload.size, 2);
+  assert.equal(webUpload.size, 2);
 });
 
 test("generated ESM artifact exposes S11 cache invalidation and diagnostics", async () => {

@@ -28,15 +28,24 @@ import {
   createTransportCache,
   createTransportCacheKey,
   createTransportRequest,
+  createReadonlyBytesUploadSource,
+  createUploadFile,
+  composeResumableUpload,
   decodeTransportResponse,
+  redactUploadRequest,
+  type ResumableUploadAdapter,
   type TransportCacheInvalidationResult,
   type TransportCachePolicy,
   type TransportCachePartition,
   type TransportRequest,
   type TransportResponseMode,
+  type UploadCompletion,
+  type UploadHandoff,
+  type UploadProgressEvent,
+  type UploadSession,
 } from "@holmhq/sdk/transports";
-import { createNodeTokenAuth } from "@holmhq/sdk/node";
-import { createWebSessionAuth } from "@holmhq/sdk/web";
+import { createNodeTokenAuth, createNodeUploadFile } from "@holmhq/sdk/node";
+import { createWebSessionAuth, createWebUploadFile, type WebUploadBlobLike } from "@holmhq/sdk/web";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 
 const environment: CoreEnvironment = createCoreEnvironment();
@@ -116,6 +125,31 @@ const webAuth = createWebSessionAuth({ credentials: "same-origin" });
 const nodeAuth = createNodeTokenAuth({ token: "test-token" });
 const decoded = decodeTransportResponse({ requestId: "req-decl", status: 200, body: "{\"ok\":true}", responseMode });
 const appliedTransport = applyTransportAuth(transportRequest, nodeAuth);
+const uploadSource = createReadonlyBytesUploadSource(bytes);
+const uploadFile = createUploadFile({ field: "file", name: "decl.bin", source: uploadSource });
+const uploadProgress: UploadProgressEvent = { loaded: 1, total: 2, percent: 50 };
+const uploadAdapter: ResumableUploadAdapter<UploadHandoff> = {
+  createSession(): UploadSession {
+    return { id: "upl_decl", chunkSize: 2 };
+  },
+  uploadChunk(input) {
+    return { nextOffset: input.offset + input.chunk.byteLength };
+  },
+  completeSession(): UploadCompletion {
+    return { id: "upl_decl", name: "decl.bin", type: "application/octet-stream", size: 3 };
+  },
+};
+const uploaded = composeResumableUpload({ path: "/api/upload", files: [uploadFile] }, uploadAdapter);
+const uploadDiagnostic = redactUploadRequest({ path: "/api/upload", files: [uploadFile] });
+const nodeUploadFile = createNodeUploadFile({ field: "node", name: "node.bin", bytes: [1, 2, 3] });
+const blobLike: WebUploadBlobLike = {
+  size: 3,
+  type: "application/octet-stream",
+  slice(start, end, type) {
+    return type === undefined ? { size: end - start } : { size: end - start, type };
+  },
+};
+const webUploadFile = createWebUploadFile({ field: "web", blob: blobLike, name: "web.bin" });
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -144,4 +178,9 @@ void webAuth;
 void nodeAuth;
 void decoded;
 void appliedTransport;
+void uploadProgress;
+void uploaded;
+void uploadDiagnostic;
+void nodeUploadFile;
+void webUploadFile;
 void invalidEnvironment;

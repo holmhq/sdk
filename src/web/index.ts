@@ -1,3 +1,14 @@
+export {
+  createWebUploadFile,
+  createWebUploadSource,
+} from "./upload.js";
+export type {
+  WebUploadBlobLike,
+  WebUploadBlobPartLike,
+  WebUploadChunkBody,
+  WebUploadFileOptions,
+} from "./upload.js";
+
 import type { TransportAuthProvider, WebSessionTransportAuthProof } from "../transports/index.js";
 
 export type WebSessionCredentials = "same-origin" | "include" | "omit";

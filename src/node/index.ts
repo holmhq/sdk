@@ -1,3 +1,6 @@
+export { createNodeUploadFile } from "./upload.js";
+export type { NodeUploadFileOptions } from "./upload.js";
+
 import type { BearerTransportAuthProof, TransportAuthProvider } from "../transports/index.js";
 
 export interface NodeTokenAuthOptions {
