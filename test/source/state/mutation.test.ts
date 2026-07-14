@@ -365,3 +365,40 @@ test("state mutation resources cover reset, custom errors, invalidation validati
   resetMutation.dispose();
   assert.throws(() => resetMutation.reset(), LifecycleError);
 });
+
+test("state mutation resources fence stale completions and invalidation hooks after caller transitions", async () => {
+  let currentCaller = { surface: "test" as const, principal: { kind: "member" as const, id: "alpha" } };
+  const callerListeners: Array<() => void> = [];
+  const invalidations: MutationInvalidationEvent<ReportPayload, ReportResult>[] = [];
+  const pendingExecute = deferred<ReportResult>();
+  const mutation = createMutationResource<ReportPayload, ReportResult>({
+    source: { id: "runtime-a", surface: "test" },
+    caller: {
+      current: () => currentCaller,
+      subscribe(listener) {
+        callerListeners.push(listener);
+        return () => undefined;
+      },
+    },
+    invalidates: [{ tags: ["reports"] }],
+    execute: () => pendingExecute.promise,
+    onInvalidate(event) {
+      invalidations.push(event);
+    },
+  });
+
+  const pending = mutation.execute({ id: "report-1", labels: ["draft"] });
+  await flushMutationWork();
+  assert.equal(mutation.getSnapshot().phase, "loading");
+
+  currentCaller = { surface: "test", principal: { kind: "member", id: "beta" } };
+  for (const listener of [...callerListeners]) {
+    listener();
+  }
+  assert.equal(mutation.getSnapshot().phase, "idle");
+
+  pendingExecute.resolve({ version: 1, labels: ["alpha-server"] });
+  await assert.rejects(pending, CancelledError);
+  assert.equal(mutation.getSnapshot().phase, "idle");
+  assert.equal(invalidations.length, 0);
+});

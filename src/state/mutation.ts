@@ -5,6 +5,7 @@ import {
   HolmError,
   LifecycleError,
   normalizeCacheSourceIdentity,
+  onCallerTransition,
   resolveCallerContext,
   type CacheSourceIdentity,
   type CallerContext,
@@ -121,6 +122,7 @@ export function createMutationResource<TPayload, TResult, E extends HolmError = 
   const source = normalizeCacheSourceIdentity(options.source);
   let active: ActiveMutation<TResult, E> | undefined;
   let disposed = false;
+  const callerUnsubscribe = subscribeToCaller();
 
   const mutation: MutationResource<TPayload, TResult, E> = Object.freeze({
     getSnapshot(): ResourceSnapshot<TResult, E> {
@@ -283,8 +285,19 @@ export function createMutationResource<TPayload, TResult, E extends HolmError = 
       return;
     }
     disposed = true;
+    callerUnsubscribe();
     cancelActive("mutation disposed");
     controller.dispose();
+  }
+
+  function subscribeToCaller(): () => void {
+    return onCallerTransition(options.caller, () => {
+      if (disposed) {
+        return;
+      }
+      cancelActive("caller changed");
+      controller.setIdle();
+    });
   }
 
   function cancelActive(reason: string): void {

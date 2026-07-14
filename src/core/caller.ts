@@ -54,6 +54,18 @@ export interface CallerPartition {
 
 export type CallerPartitionListener = (partition: CallerPartition) => void;
 
+export type CallerTransitionListener = () => void;
+
+export function onCallerTransition(
+  provider: CallerProvider,
+  listener: CallerTransitionListener,
+): () => void {
+  if (provider.subscribe === undefined) {
+    return () => undefined;
+  }
+  return provider.subscribe(listener);
+}
+
 export function createStaticCallerProvider(context: CallerContext): CallerProvider {
   const normalized = normalizeCallerContext(context);
   return Object.freeze({

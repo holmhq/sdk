@@ -6,6 +6,7 @@ import {
   HolmError,
   LifecycleError,
   normalizeCacheSourceIdentity,
+  onCallerTransition,
   resolveCallerContext,
   type CacheSourceIdentity,
   type CallerContext,
@@ -254,10 +255,7 @@ export function createQueryResource<T, E extends HolmError = HolmError>(
   }
 
   function subscribeToCaller(provider: CallerProvider): () => void {
-    if (provider.subscribe === undefined) {
-      return noop;
-    }
-    return provider.subscribe(() => {
+    return onCallerTransition(provider, () => {
       if (disposed) {
         return;
       }

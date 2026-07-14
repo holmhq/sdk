@@ -74,6 +74,7 @@ export {
   createInvocationContext,
   createStaticCallerProvider,
   normalizeCallerContext,
+  onCallerTransition,
   resolveCallerContext,
 } from "./caller.js";
 export type {
@@ -83,6 +84,7 @@ export type {
   CallerPartitionListener,
   CallerProvider,
   CallerScopeContext,
+  CallerTransitionListener,
   InvocationContext,
   PrincipalRef,
 } from "./caller.js";
