@@ -1,11 +1,18 @@
 ---
 title: Queue 002 - A2R authority conformance (Issue 016)
-status: ready
+status: active
 queue: 002
 issue: 016
 plan_family: 002
-execution_authorized: false
-owner_launch_gate: plan_approval_plus_separate_owner_authorization_required
+execution_authorized: true
+owner_launch_gate: satisfied_2026_07_14
+target_window: "8h unattended from launch with 45m closeout reserve"
+window_deadline: "2026-07-15T06:59:49+05:30"
+no_new_work_after: "2026-07-15T06:14:49+05:30"
+done_state: "All S01-S06 approved; full validation green; independent SDK review has zero P1/P2; fresh read-only Holm authority review accepts A2"
+timebox_gate: "Stop at queue completion, a real blocker, or eight hours from launch"
+continuation_policy: "Stop after Queue #002; never begin Issue #007"
+early_stop_consent: "Allowed only on queue drain, real blocker, or timebox closeout"
 orchestration_mode: blind
 assurance_profile: strict
 review_granularity: entry
@@ -30,9 +37,9 @@ plan_review_ref: koder/reviews/026_a2r_remediation_plan_rereview/INDEX.md
 ## Scope
 
 This queue maps Issue `#016` remediation slices to executable plan refs under a
-blind-orchestrator workflow. Queue `#002` is planning-approved only after fresh
-independent re-review. Implementation remains blocked until separate owner
-authorization.
+blind-orchestrator workflow. Queue `#002` is planning-approved after fresh
+independent re-review, and the owner authorized bounded unattended implementation
+on 14 Jul 2026.
 
 ## Ordering and gates
 
@@ -95,6 +102,9 @@ Queue `#002` may be marked done only when all are true:
 
 ## Run log
 
+- 2026-07-14 22:59 IST: owner authorized Queue `#002` for an unattended bounded
+  eight-hour blind-strict implementation window; stop at complete A2R acceptance,
+  timebox closeout, or a real blocker, and never begin Issue `#007`.
 - 2026-07-14: Review `#026` approved at commit `fc5c678` (`P1/P2/P3=0/0/0`); queue moved to `ready` with `execution_authorized: false`; next action: return for owner authorization.
 - 2026-07-14: owner requested delivery-first orchestration. Planning/metadata
   moved to direct mode; Queue `#002` remains blind-strict only for separately

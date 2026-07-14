@@ -1,12 +1,12 @@
 ---
-updated_at: "14 Jul 2026 | 09:23 PM IST"
-state: REVIEW_READY
-active_window: none
-pending_window: A2R-implementation
+updated_at: "14 Jul 2026 | 10:59 PM IST"
+state: IN_PROGRESS
+active_window: A2R-implementation
+pending_window: none
 active_issue: 016
-orchestration_mode: direct
-pending_queue_mode: blind-strict
-stop_gate: "A2R planning is complete at Review #026 and Queue #002 is ready but execution_authorized=false; owner must separately authorize implementation, and Issue #007 must not begin"
+orchestration_mode: blind-strict
+pending_queue_mode: none
+stop_gate: "Drain authorized Queue #002 through independent SDK review and fresh Holm-authority acceptance, or stop cleanly at the 8h timebox or a real blocker; never begin Issue #007"
 ---
 
 # Koder State
@@ -24,25 +24,19 @@ stop_gate: "A2R planning is complete at Review #026 and Queue #002 is ready but 
 
 ## Present
 
-- The A2R planning grant is exhausted and the checkpoint is **REVIEW_READY**.
-  No product source, tests, dependencies, generated artifacts, or other
-  repository were changed during planning.
-- Queue `#002` has six strict-TDD rows and remains blocked from execution until
-  the owner separately authorizes an A2R implementation window.
-- At owner request, the repo now uses delivery-first orchestration: this blocked
-  review checkpoint is direct; Queue `#002` becomes blind-strict only if its code
-  window is authorized. Clean row approvals use compact proof, coordinator
-  metadata is batched, and internal rollover does not run `close`.
-- A2 owner acceptance remains blocked by Review `#024` until future remediation,
-  full validation, independent SDK review, and fresh Holm authority acceptance.
+- The owner authorized Queue `#002` on 14 Jul 2026 for an unattended bounded
+  A2R implementation window. It has six serial strict-TDD rows and runs
+  blind-strict on `main` through fresh implementation/review/fix workers.
+- Delivery-first rules apply: planning is complete, clean row approvals use
+  compact proof, coordinator metadata is batched, and internal rollover does
+  not run `close`.
+- A2 owner acceptance remains blocked by Review `#024` until remediation, full
+  validation, independent SDK review, and fresh Holm authority acceptance pass.
 
 ## Future
 
-1. Owner reviews `koder/reviews/026_a2r_remediation_plan_rereview/INDEX.md` and
-   `koder/queue/002_a2r_authority_conformance/INDEX.md`.
-2. If accepted, explicitly activate A2R implementation in `EXECUTION.md` and
-   this handoff; then execute the existing queued rows without more planning,
-   using fresh blind workers only at code/review boundaries on `main`.
-3. Return after the complete A2R acceptance gate. Do not launch Queue `#002`,
-   begin Issue `#007`, publish, release, deploy, use credentials, or mutate
-   another repository without the required authorization.
+1. Drain Queue `#002` in order and preserve clean synchronized checkpoints.
+2. Return after complete A2R acceptance, the eight-hour timebox, or a real
+   blocker; run `close` once at that owner stop gate.
+3. Do not begin Issue `#007`, publish, release, deploy, use credentials, or
+   mutate another repository.

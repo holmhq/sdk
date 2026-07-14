@@ -1,11 +1,11 @@
 ---
 title: SDK Autonomous Execution Windows
 updated: 2026-07-14
-active_window: none
-pending_window: A2R-implementation
+active_window: A2R-implementation
+pending_window: none
 active_issue: 016
-orchestration_mode: direct
-pending_queue_mode: blind-strict
+orchestration_mode: blind-strict
+pending_queue_mode: none
 requires_review_after: true
 ---
 
@@ -25,7 +25,7 @@ future window is active unless the owner records that decision here and in
 - **Decision:** `D001`-`D015` approved; `/state` is canonical and is not a
   legacy compatibility alias.
 
-## Blocked checkpoint — A2: core foundation authority return
+## Active checkpoint — A2: core foundation authority return
 
 - **Implementation result:** Queue `#001` completed Issues `#003`-`#006` at SDK
   checkpoint `fe37f85`.
@@ -35,8 +35,8 @@ future window is active unless the owner records that decision here and in
   **BLOCK** with four P1 and one P2 findings.
 - **Remediation track:**
   [`Issue #016`](../issues/016_a2_authority_conformance_remediation/INDEX.md).
-- **Current autonomy:** none. A2R planning completed at Review `#026`; both the
-  planning grant and prior A2 implementation grant are exhausted.
+- **Current autonomy:** Queue `#002` only. The owner authorized an unattended
+  bounded A2R implementation window on 14 Jul 2026; no A3 work is authorized.
 - **A2 acceptance stop gate:** independent SDK re-review and fresh
   Holm-authority acceptance; do not begin Issue `#007`.
 
@@ -61,17 +61,18 @@ future window is active unless the owner records that decision here and in
 Do not preload product source, tests, prior worker transcripts, Queue `#001`
 plans, or future Issue `#007+` bodies in the primary coordinator context.
 
-### Allowed while blocked
+### Allowed during active remediation
 
-- Review the approved Plan family `002`, Review `#026`, and ready-but-not-
-  authorized Queue `#002`; ask the owner for a separate implementation grant.
-- Perform observational Git/process checks.
-- Preserve or clarify the authority handoff without changing product contracts.
+- Execute approved Queue `#002` serially on `main` through its blind-strict
+  implementation/review/fix boundaries.
+- Change Issue `#016` source, tests, and required generated artifacts within the
+  approved plans; commit and push logical green checkpoints.
+- Perform observational Git/process checks and required read-only Holm authority
+  review.
 
-### Forbidden while blocked
+### Forbidden during active remediation
 
-- No implementation, dependency installation, generated artifact rebuild, or
-  Queue `#002` launch.
+- No implementation outside Queue `#002` or Issue `#016`.
 - No Issue `#007+` planning or implementation.
 - No npm publication, package release, Git tag, deploy, cloud spend,
   credentials, or registry setup.
@@ -98,20 +99,20 @@ A2R implementation is not authorized.
 
 ### A2R-P return gate
 
-Reached. The clean checkpoint is `REVIEW_READY` and control has returned for
-separate owner authorization. Do not launch Queue `#002` and do not begin Issue
-`#007`.
+Reached at the planning checkpoint. Control returned for separate owner
+authorization, which was granted on 14 Jul 2026 for the active Queue `#002`
+window. Issue `#007` remains forbidden.
 
-## Future window — A2R implementation
+## Active window — A2R implementation
 
-A2R implementation remains **not authorized**.
+A2R implementation is **authorized for Queue `#002` only**.
 
 ### Entry gate
 
 1. Thin strict-TDD plans and Queue `#002` exist and have independent plan
    approval. **Satisfied by Review `#026`.**
 2. The owner separately authorizes blind implementation routing in this file and
-   `koder/STATE.md`. **Pending.**
+   `koder/STATE.md`. **Satisfied on 14 Jul 2026.**
 
 ### Required outcomes
 
