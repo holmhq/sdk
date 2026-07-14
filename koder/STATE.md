@@ -1,10 +1,10 @@
 ---
-updated_at: "14 Jul 2026 | 04:39 AM IST"
+updated_at: "14 Jul 2026 | 06:13 AM IST"
 state: IN_PROGRESS
 active_window: A2
-active_issue: 005
+active_issue: 006
 orchestration_mode: blind
-stop_gate: "Coordinator 03b stopped at the Issue #004 boundary; fresh coordinator resumes Queue #001 at S09; do not start Issue #007"
+stop_gate: "Coordinator 04 stopped at the Issue #005/four-entry boundary; fresh coordinator resumes Queue #001 at S13; do not start Issue #007"
 ---
 
 # Koder State
@@ -19,15 +19,18 @@ stop_gate: "Coordinator 03b stopped at the Issue #004 boundary; fresh coordinato
 - Issue `#003` is resolved: strict TS/toolchain, ambient-boundary fixtures,
   declarations/dist smoke, reproducibility, CI, size, license, and README proof.
 - Issue `#004` is resolved: Queue `#001` rows `S04`-`S08` are approved with
-  validation and coverage; coordinator `03b` recovered `S07` review/fixes and
-  completed `S08` through independent re-review.
+  validation and coverage.
+- Issue `#005` is resolved: Queue `#001` rows `S09`-`S12` are approved with
+  validation and coverage; coordinator `04` routed transport/auth/errors, cache,
+  invalidation/diagnostics, and upload/migration-ledger work through independent
+  review/fix/re-review where required.
 
 ## Present
 
 - Queue `#001` remains **IN_PROGRESS** in `blind` mode; the next eligible row is
-  `S09` in Issue `#005`.
-- Coordinator `03b` is stopping at the practical Issue `#004` child-boundary
-  rollover, before starting transport/cache/auth work.
+  `S13` in Issue `#006`.
+- Coordinator `04` is stopping at the required four-entry and practical child
+  issue boundary after resolving Issue `#005`.
 - The primary remains routing-only: fresh workers own source, tests, diffs,
   implementation, review, fixes, and re-review; primary consumes compact
   sidecars, validation outcomes, commit refs, verdict/counts, blockers, and Git
@@ -38,9 +41,9 @@ stop_gate: "Coordinator 03b stopped at the Issue #004 boundary; fresh coordinato
 ## Future
 
 1. Fresh coordinator: run `/open`, confirm `Mode: blind orchestrator`, read only
-   Queue `#001` metadata and current row `S09`, then route a fresh `S09`
+   Queue `#001` metadata and current row `S13`, then route a fresh `S13`
    implementation worker followed by independent review.
-2. Continue Issue `#005` rows `S09`-`S12` under the sidecar, TDD, coverage,
+2. Continue Issue `#006` rows `S13`-`S16` under the sidecar, TDD, coverage,
    validation, and review gates; do not preload later plans.
-3. Continue through Issue `#006` only within A2; stop before Issue `#007` and
-   final core API/conformance review gate.
+3. Stop before Issue `#007`; if `S16` drains, leave final A2 core API/conformance
+   review to a separate fresh coordinator rather than absorbing another phase.
