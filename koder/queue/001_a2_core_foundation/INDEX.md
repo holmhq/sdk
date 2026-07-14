@@ -104,3 +104,4 @@ Early-stop consent is allowed only for a recorded blocker, no eligible dependenc
 - rollover: coordinator `03b` stopped at the Issue `#004` boundary; next eligible row is `S09` for a fresh blind coordinator.
 - 2026-07-14: `S09` implemented at `ebbd434` and independently approved at `328140a`; required validation and coverage passed; next eligible row is `S10`.
 - 2026-07-14: `S10` implemented at `04cab72`, received a P2 fix at `02f0f63`, and was independently approved at `a0a4032`; required validation and coverage passed; next eligible row is `S11`.
+- 2026-07-14: `S11` implemented at `6a8496e`, received a P2 fix at `eb88125`, and was independently approved at `62810a5`; required validation and coverage passed; next eligible row is `S12`.

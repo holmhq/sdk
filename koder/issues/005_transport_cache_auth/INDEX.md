@@ -61,6 +61,7 @@ Use current Holm client tests as evidence, not as an API-shape mandate.
 
 - `S09` transport/auth/error contract passed at implementation `ebbd434` and independent review `328140a`; validation and coverage passed.
 - `S10` caller-partitioned cache passed at implementation `04cab72`, fix `02f0f63`, and independent re-review `a0a4032`; validation and coverage passed.
+- `S11` cache invalidation/diagnostics passed at implementation `6a8496e`, fix `eb88125`, and independent re-review `62810a5`; validation and coverage passed.
 
 ## Non-Goals
 
