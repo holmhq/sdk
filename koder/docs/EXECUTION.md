@@ -123,15 +123,28 @@ A2R implementation remains **not authorized**.
 ### Execution rules when authorized
 
 - Strict red -> green -> refactor is mandatory for every code change.
-- The primary remains a blind orchestrator and routes fresh implementation,
-  review, fix, and re-review workers through harnex or an equivalent isolated
-  harness.
+- Planning is complete. Do not launch more mapping, plan, plan-review, or
+  metadata-finalizer workers; the coordinator owns queue/run-log/Issue/STATE
+  transitions directly.
+- Queue `#002` is blind-strict because it changes protocol, caller/auth,
+  capability ownership, credential handling, and response correlation. The
+  primary routes fresh implementation/review/fix workers without ingesting
+  implementation detail.
+- For owner-present execution, the interactive primary is the bounded
+  coordinator; add no governor layer unless unattended relaunch is explicitly
+  required. Roll over after at most three completed implementation rows.
 - Work remains serial on `main`; no overlapping implementation ownership.
-- Queue `#001` stays done and historical. A2R uses a separately reviewed Queue
-  `#002`.
-- Stop immediately if a finding requires changing approved decisions
-  `D001`-`D015`, inventing Holm semantics, or editing another repository.
-- Commit and push logical green checkpoints; keep sidecars compact and
+- Use short first monitor fences (`10m` review, `20m` implementation), then
+  reconcile canonical artifact, Git, semantic report, and process facts before
+  extension. Two no-op/boot/permission attempts for one phase block retries
+  until the adapter/config/brief changes.
+- Queue estimates are caps, not time to consume deliberately. Report product,
+  quality, and process-only deltas separately.
+- Harnex terminal telemetry plus live Git own commit/path/clean-state evidence;
+  workers must not invent expanded SHAs in summary prose.
+- Queue `#001` stays done and historical. Stop immediately if a finding requires
+  changing `D001`-`D015`, inventing Holm semantics, or editing another repo.
+- Commit and push logical green checkpoints; keep reports compact and
   secret-free.
 
 ### A2R stop gate

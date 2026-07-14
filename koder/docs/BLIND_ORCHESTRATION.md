@@ -1,152 +1,161 @@
 ---
-title: Blind Queue Orchestration Contract
+title: SDK Blind Queue Orchestration Contract
 status: active
 updated: 2026-07-14
-applies_to: [A2, queue-001]
+applies_to: [queue-001-history, queue-002-when-authorized]
 ---
 
-# Blind Queue Orchestration Contract
+# SDK Blind Queue Orchestration Contract
 
-## Hard rule
+## Applicability
 
-During a queue run, the primary agent is an **orchestrator, not an
-implementer or reviewer**. It routes bounded work to fresh worker sessions and
-manages durable process state. It must not absorb implementation context merely
-to feel informed.
+A queue does not imply blind mode, and Harnex does not imply a worker chain.
+Use the koder-pattern delivery-first mode gate before adding orchestration.
 
-If a runner cannot dispatch fresh implementation and review workers through
-harnex (or an explicitly equivalent isolated harness), Queue `#001` is not
-launchable. Stop cleanly and ask for an execution harness; never collapse the
-queue into one giant direct-coding session.
+Direct owner-present work is the default for:
 
-## Ownership boundary
+- planning, docs, artifact review, and research;
+- queue/frontmatter/run-log/Issue/STATE metadata;
+- one bounded capability when repo policy does not require isolation.
 
-The orchestrator owns only:
+Do not dispatch planning or metadata-finalizer workers. Before planning-only or
+blind authorization, disclose whether product code changes, expected workers,
+artifact count, wall budget, and stop gate. Planning stops after two dispatches
+or 30 minutes without explicit re-authorization.
 
-- queue status, eligibility, dependency order, locks, timebox, and stop rules;
-- bounded dispatch briefs and worker lifecycle;
-- work-level completion state, compact sidecars, validation status, commit refs,
-  review verdicts, blockers, and clean/synchronized Git checks;
-- concise queue run-log, issue/slice accounting, and handoff updates.
+Queue `#001` is complete and historical. Queue `#002`, if separately authorized,
+is **blind-strict** because its rows change Holm protocol handling, caller/auth
+transitions, capability ownership, credential safety, and response correlation.
+Its independent per-row review remains risk-justified.
+
+## Hard rule during an authorized blind run
+
+The primary is a blind bounded coordinator, not an implementer or reviewer. It
+routes fresh implementation, review, fix, and re-review workers and manages
+process state without absorbing product implementation context.
+
+For owner-present Queue `#002` work, the interactive primary is the coordinator.
+Do not add a governor layer unless unattended relaunch is explicitly required.
+If Harnex or an explicitly equivalent isolated harness cannot enforce the
+queue's declared implementation/review boundaries, stop rather than weakening
+the mode.
+
+## Ownership
+
+The coordinator owns:
+
+- authorization, eligibility, dependencies, locks, caps, and stop rules;
+- bounded worker briefs and lifecycle;
+- compact semantic reports, Harnex terminal telemetry, validation exits,
+  canonical review verdict/counts/path, blockers, and Git checks;
+- queue/run-log/Issue/STATE metadata directly.
 
 Fresh workers own:
 
 - source/test/generated-file reads and edits;
-- red → green → refactor execution;
+- strict red -> green -> refactor execution;
 - implementation reasoning and full diffs;
-- independent code review and finding details;
-- targeted fixes and re-review.
+- independent review findings;
+- finding-scoped fixes and re-review.
 
-The primary may directly edit queue/run-log/handoff metadata. It must not edit
-product source, tests, build configuration, generated artifacts, or review
-findings during an active queue run.
+The coordinator must not edit product source, tests, build configuration,
+generated artifacts, or review findings during a blind run.
 
-## Context read budget
+## Context firewall
 
-The orchestrator may read:
+The coordinator may read:
 
-- `koder/STATE.md`, `koder/docs/EXECUTION.md`, and this contract;
-- Queue `#001` metadata and its concise run log;
-- only the **current row's** plan path, capability/validation/stop summary, when
-  needed to construct a brief;
-- harnex `status`/`watch` results and compact worker summary sidecars;
-- changed-path lists, commit hashes, validation command outcomes, finding
-  counts, review verdict summaries, and blockers;
-- Git status, branch/upstream state, and concise commit stats.
+- `koder/STATE.md`, `koder/docs/EXECUTION.md`, this contract, Queue `#002`, and
+  its concise run log;
+- only the current row's plan path and capability/validation/stop summary;
+- compact semantic artifact reports and normalized review frontmatter;
+- changed-path lists, command exits, canonical refs, blockers, and Git state;
+- bounded diagnostic tails only after a stall, disconnect, malformed proof, or
+  terminal disagreement.
 
-The orchestrator must not read into its conversation context:
+It must not ingest product source, test bodies, generated bundles, full diffs,
+review finding prose, future plan bodies, worker reasoning/transcripts, routine
+panes, or long logs.
 
-- product source, test implementations, generated bundles, or full diffs;
-- full worker transcripts, prompts, reasoning, or routine pane output;
-- full implementation reviews or finding prose when a fix worker can consume
-  the review artifact directly;
-- future plan bodies or all sixteen plans up front;
-- long test/build logs when exit status plus a compact failure excerpt/sidecar is
-  sufficient.
+## Queue 002 strict loop
 
-Pane/log reads are diagnostic exceptions only. Use a bounded tail after harnex
-reports a stall, disconnect, or terminal failure; never poll panes for progress.
-If the primary feels it must inspect a full diff to judge safety, the entry is
-too risky for blind execution: dispatch a reviewer or stop.
+For each eligible row:
 
-## Per-entry dispatch loop
+1. Verify authorization, clean/synced `main`, row dependency, worker ownership,
+   and exact validation.
+2. Dispatch one fresh implementation worker. The worker reads the canonical
+   plan/source, demonstrates red evidence, implements/refactors, validates,
+   commits/pushes, and writes a compact semantic artifact report.
+3. Fence on work completion and verify the canonical commit/artifact, changed
+   paths, validation exits, and Git state without reading the diff.
+4. Dispatch one fresh independent reviewer over the row.
+5. Consume only review path, normalized verdict/counts, validation, blocker, and
+   Git evidence.
+6. On `needs_fixes`, dispatch a fresh fixer that reads the review directly,
+   followed by a fresh re-reviewer. Never relay finding prose through the
+   coordinator.
+7. On approval, update queue/run-log/Issue metadata directly and advance.
+8. Stop completed sessions promptly; never overlap SDK implementation workers
+   on `main`.
 
-For each eligible queue row:
+S06 remains the separate integrated validation/SDK review/Holm authority return
+gate. Never continue into Issue `#007`.
 
-1. Read queue metadata and identify the current plan path; do not preload later
-   plans.
-2. Dispatch one fresh implementation worker with a self-contained task file.
-   The worker reads the plan/source, runs strict TDD, validates, commits, pushes,
-   and writes a compact summary sidecar.
-3. Fence on harnex work-level `done`; process/pane state is diagnostic only.
-4. Verify only the summary, changed paths, commit, validation outcomes, clean
-   status, and synchronization.
-5. Dispatch a **fresh independent review worker**. That worker reads the plan,
-   implementation diff/source/tests, writes and commits the review, and emits a
-   compact verdict summary.
-6. The orchestrator consumes only verdict, finding counts, review path, and
-   next action. It does not read the review body.
-7. On `NEEDS_FIXES`, dispatch a fresh fix worker that reads the review directly,
-   then a fresh re-review worker. Do not translate the findings through primary
-   context.
-8. On `PASS`/`APPROVE`, update queue/issue/run-log metadata and advance one row.
-9. Stop completed sessions promptly. Never overlap implementation workers on
-   SDK `main`.
+## Process budget and circuit breaker
 
-Every worker brief must include prior digestion, a numeric read budget, an
-output ceiling, an override/block path, exact validation, forbidden actions,
-queue/entry metadata, commit/push policy, and a wall-clock cap.
+- Queue row estimates are caps, not time to consume deliberately. Finish early
+  when acceptance is proven.
+- Use a short first monitor fence: normally <=10 minutes for review and <=20
+  minutes for implementation. On timeout, reconcile bounded process, canonical
+  artifact, Git, and report facts before one extension.
+- One acknowledgment/progress-only completion may receive one continuation. A
+  second is a failed attempt.
+- Two no-op, boot, registration, permission, or receipt-free attempts for one
+  phase open the circuit breaker. Change adapter/config/brief or stop.
+- Do not wait the full wall cap when the canonical artifact and verified clean
+  commit already exist.
+- Report product delta, quality delta, and process-only delta separately.
 
-## Compact worker return contract
+## Proof contract
 
-Each worker writes one machine-readable summary (or equivalent harnex artifact
-sidecar) containing only:
+Prefer Harnex native proof:
 
-```json
-{
-  "status": "completed|blocked|failed",
-  "queue": "001",
-  "entry": "SNN",
-  "phase": "implement|review|fix|rereview",
-  "commit": "<sha-or-null>",
-  "changed_paths": ["path"],
-  "red_evidence": {"command": "...", "observed": true},
-  "validation": [{"command": "...", "exit": 0}],
-  "review": {"path": "...", "verdict": "approve", "p1": 0, "p2": 0},
-  "clean_synced": true,
-  "blocker": null
-}
-```
+- `harnex.artifact_report.v1` carries semantic status, canonical refs,
+  validation commands/exits, typed gate/review/blocker summaries, and confidence;
+- normalized review frontmatter carries verdict and P1/P2/P3 counts;
+- Harnex terminal telemetry plus live Git carry observed commit identity,
+  changed paths, and clean/sync state.
 
-Omit fields that do not apply. Do not include code excerpts, full diffs,
-transcripts, prompts, secrets, payloads, or long command output. Canonical
-plans/reviews remain committed artifacts for workers to read directly.
+Workers must not invent or expand commit SHAs in prose. If a report includes a
+ref, obtain it with `git rev-parse HEAD`; the coordinator independently verifies
+it. A malformed report does not erase a valid commit—reconcile once from the
+first unproven phase rather than replaying valid work.
+
+Proof order is: canonical artifact -> validation -> commit/push -> Git check ->
+atomic report -> work-complete signal.
 
 ## Context rollover
 
-- One primary coordinator may route at most **four completed implementation
-  entries** before a mandatory durable handoff and fresh coordinator context.
-- Rollover earlier at a child-issue boundary when practical or whenever the
-  harness reports high context pressure.
-- Before rollover: stop workers, update queue/run log and issue evidence, commit
-  and push, verify clean synchronization, then run `close`.
-- A fresh coordinator resumes via `open`, Queue `#001`, and the first eligible
-  row. It does not replay prior worker output.
-- If an unattended harness cannot start/resume a fresh coordinator, stopping at
-  the rollover boundary is explicitly permitted and safer than context
-  accumulation.
+Queue `#002` declares a coordinator cap of three completed implementation rows.
+Roll over earlier after complex fix loops, at a natural boundary, near a
+deadline, or under context pressure.
+
+Before rollover: stop children, update metadata directly, commit/push, verify
+clean synchronization, and run `close`. A fresh coordinator resumes from
+canonical state and the first unproven phase without replaying prior output.
 
 ## Launch blockers
 
-Do not start or continue Queue `#001` when:
+Do not start or continue Queue `#002` when:
 
-- harnex/equivalent fresh worker isolation is unavailable;
-- another implementation worker owns SDK `main`;
-- the repo is dirty, ahead/behind unexpectedly, or the current row lacks a
-  reviewed plan;
-- compact summary and independent review return contracts cannot be enforced;
-- the four-entry context rollover is due and no fresh coordinator can resume;
-- queue, A2, or owner stop rules would be crossed.
+- `execution_authorized` is not explicitly true in Queue `#002`, `EXECUTION.md`,
+  and `STATE.md`;
+- fresh implementation/review isolation is unavailable;
+- another writer owns `main`, or Git is unexpectedly dirty/ahead/behind;
+- the current row lacks its approved plan, exact validation, wall cap, or stop;
+- semantic artifact reports, normalized review verdicts, or Git verification
+  cannot be enforced;
+- the circuit breaker, coordinator cap, owner gate, or A2 stop rule is reached.
 
-A blocked coordinator records the shortest actionable reason and closes cleanly.
-It does not compensate by reading or implementing more.
+Record the shortest actionable blocker and stop. Do not compensate by adding
+more planning artifacts or reading implementation detail.

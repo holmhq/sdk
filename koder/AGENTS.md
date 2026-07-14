@@ -60,22 +60,33 @@ This repo uses the koder pattern for durable agent handoff and project memory.
 - MIT is the project license. New dependencies must be license-compatible and justified; avoid dependency-heavy convenience layers in the core.
 - Implementation is serial on `main` inside this repo unless the user explicitly authorizes parallel worktrees. A separate agent may work here concurrently with agents in other repositories.
 
-### Blind queue orchestration (hard rule)
+### Delivery-first queue orchestration
 
-- Before running any queue or harnex chain, read
-  `koder/docs/BLIND_ORCHESTRATION.md` completely.
-- The primary queue agent is a **blind orchestrator only**. It dispatches fresh
-  implementation, review, fix, and re-review workers; it does not implement
-  product code or ingest their full diffs, source, tests, reviews, transcripts,
-  panes, or long logs into its own context.
-- The primary reads only queue/process metadata, the current row summary,
-  compact worker sidecars, changed paths, validation results, commit refs,
-  verdict summaries, blockers, and Git state. Workers read each other's
-  committed artifacts directly.
-- Never preload all queue plans. Route one current entry at a time. After at
-  most four completed implementation entries, commit a durable handoff and
-  resume with a fresh coordinator context. If unattended relaunch is
-  unavailable, stop cleanly rather than accumulating context.
-- If harnex or an explicitly equivalent isolated worker harness is unavailable,
-  the queue is blocked. Do not turn it into one giant direct-coding session.
-- Autonomous work is granted only by the active window in `koder/docs/EXECUTION.md`. At its stop gate, commit/push a clean checkpoint, set `koder/STATE.md` to `REVIEW_READY` or `BLOCKED`, run `close`, and return to the coordinating session rather than starting the next issue.
+- A queue does not imply blind mode, and Harnex does not imply a worker chain.
+  Owner-present planning, docs, reviews of artifacts, queue accounting, and
+  frontmatter/handoff updates are direct work by default.
+- Before any planning-only or queue run, disclose whether product code changes,
+  expected phases/workers, artifact count, wall budget, and stop gate. Planning
+  may not exceed two dispatches or 30 minutes without explicit re-authorization.
+- Read `koder/docs/BLIND_ORCHESTRATION.md` completely only before a queue that
+  explicitly declares `orchestration_mode: blind` or before a Harnex chain.
+- Queue `#002`, if separately authorized, is **blind-strict** because it changes
+  protocol, caller/auth, capability ownership, credential handling, and response
+  correlation. During that implementation run the primary is a blind bounded
+  coordinator: it routes fresh implementation/review/fix workers and does not
+  ingest product source, full diffs, tests, finding prose, transcripts, routine
+  panes, or long logs.
+- For owner-present Queue `#002` work, the interactive primary is the coordinator;
+  do not add a governor layer unless unattended relaunch is explicitly required.
+  Route only the current row and roll over at the queue-declared cap.
+- The coordinator directly owns queue/run-log/Issue/STATE metadata. Never launch
+  planning, status, or metadata-finalizer workers after approval.
+- Two no-op, boot, permission, or receipt-free attempts for one phase open a
+  circuit breaker. Use short first monitor fences, reconcile artifact/Git/
+  receipt/process facts before extending, and treat live Git/Harnex—not
+  model-written prose—as commit identity authority.
+- If a declared blind implementation/review boundary cannot be isolated through
+  Harnex or an explicitly equivalent harness, stop; do not silently weaken it.
+- Autonomous work is granted only by `koder/docs/EXECUTION.md`. At its stop gate,
+  commit/push a clean checkpoint, set `koder/STATE.md` to `REVIEW_READY` or
+  `BLOCKED`, run `close`, and return rather than starting the next issue.

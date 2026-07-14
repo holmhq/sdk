@@ -6,6 +6,13 @@ issue: 016
 plan_family: 002
 execution_authorized: false
 owner_launch_gate: plan_approval_plus_separate_owner_authorization_required
+orchestration_mode: blind
+assurance_profile: strict
+review_granularity: entry
+planning_mode: direct
+metadata_owner: coordinator
+max_noop_attempts_per_phase: 2
+initial_monitor_fence: "10m review; 20m implementation"
 serial_branch: main
 independent_review_required: true
 final_integrated_review_required: true
@@ -27,27 +34,39 @@ authorization.
 
 ## Ordering and gates
 
-- Serial execution on `main`.
-- One current row at a time.
-- Independent review required per row.
-- Max two fix cycles per row before block/escalation.
-- S06 is final integration gate and requires all prior rows done.
+- Planning is complete. Do not dispatch more mapping, plan, plan-review, or
+  metadata-finalizer workers.
+- Serial execution on `main`; one current row at a time.
+- When implementation is separately authorized, use blind-strict isolation with
+  independent review per row because the seams are protocol/auth/security
+  sensitive.
+- For owner-present execution, the interactive primary is the bounded
+  coordinator; no governor layer is required.
+- The coordinator directly updates queue/run-log/Issue/STATE metadata.
+- Max two fix cycles per row and two no-op/boot/permission attempts per phase
+  before block/escalation.
+- Row estimates are caps, not time to consume deliberately. Use short first
+  monitor fences and reconcile durable proof before extension.
+- S06 is the final integration gate and requires all prior rows done.
 
 ## Queue rows
 
 | Row | Slice | Capability | Plan Ref | Depends on | Status | Est (min) | Completion gate |
 | --- | --- | --- | --- | --- | --- | ---: | --- |
-| 1 | S01 | Holm envelope semantics and `/api/cmd` conformance | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` | none | in_review | 90 | Envelope/meta/error/header + `/api/cmd` tests pass with source-pinned evidence and Issue `#005` ledger update |
-| 2 | S02 | Caller transition safety and partition fencing | `koder/plans/002_S02_caller_transition_safety/INDEX.md` | S01 | in_review | 105 | Caller transition tests prove no old-principal cache/query/mutation survival and in-flight fencing |
-| 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | in_review | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
-| 4 | S04 | Credential-safe diagnostics and cache identity | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` | S01 | in_review | 120 | Secret leakage tests pass for diagnostics/cache keys/hooks with structural redaction |
-| 5 | S05 | Response correlation and provenance safeguards | `koder/plans/002_S05_response_correlation_provenance/INDEX.md` | S01,S02 | in_review | 95 | Mismatched request/response IDs fail; duplicate/late responses ignored and diagnosed |
-| 6 | S06 | Integrated authority return and final gate | `koder/plans/002_S06_integrated_authority_return/INDEX.md` | S01,S02,S03,S04,S05 | in_review | 120 | Full validation stack green; independent SDK review (0 P1/P2); fresh Holm authority acceptance at named current Holm commit; clean/synced git; return before Issue #007 |
+| 1 | S01 | Holm envelope semantics and `/api/cmd` conformance | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` | none | queued | 90 | Envelope/meta/error/header + `/api/cmd` tests pass with source-pinned evidence and Issue `#005` ledger update |
+| 2 | S02 | Caller transition safety and partition fencing | `koder/plans/002_S02_caller_transition_safety/INDEX.md` | S01 | queued | 105 | Caller transition tests prove no old-principal cache/query/mutation survival and in-flight fencing |
+| 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | queued | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
+| 4 | S04 | Credential-safe diagnostics and cache identity | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` | S01 | queued | 120 | Secret leakage tests pass for diagnostics/cache keys/hooks with structural redaction |
+| 5 | S05 | Response correlation and provenance safeguards | `koder/plans/002_S05_response_correlation_provenance/INDEX.md` | S01,S02 | queued | 95 | Mismatched request/response IDs fail; duplicate/late responses ignored and diagnosed |
+| 6 | S06 | Integrated authority return and final gate | `koder/plans/002_S06_integrated_authority_return/INDEX.md` | S01,S02,S03,S04,S05 | queued | 120 | Full validation stack green; independent SDK review (0 P1/P2); fresh Holm authority acceptance at named current Holm commit; clean/synced git; return before Issue #007 |
 
 ## Validation routing
 
 Row-level validation commands are defined in each canonical slice plan and must
 use live scripts/paths from `package.json` and existing source/test trees.
+Harnex semantic reports carry commands/exits and canonical refs; terminal
+telemetry plus live Git—not model-written SHA prose—carry commit/path/clean-state
+proof.
 
 ## Done-state requirements
 
@@ -73,6 +92,10 @@ Queue `#002` may be marked done only when all are true:
 ## Run log
 
 - 2026-07-14: Review `#026` approved at commit `fc5c678` (`P1/P2/P3=0/0/0`); queue moved to `ready` with `execution_authorized: false`; next action: return for owner authorization.
+- 2026-07-14: owner requested delivery-first orchestration. Planning/metadata
+  moved to direct mode; Queue `#002` remains blind-strict only for separately
+  authorized implementation, with coordinator-owned metadata, short monitor
+  fences, and a two-attempt circuit breaker.
 
 ## Safety constraints
 

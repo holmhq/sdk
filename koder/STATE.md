@@ -1,5 +1,5 @@
 ---
-updated_at: "14 Jul 2026 | 04:01 PM IST"
+updated_at: "14 Jul 2026 | 08:17 PM IST"
 state: REVIEW_READY
 active_window: A2R-planning
 active_issue: 016
@@ -27,6 +27,9 @@ stop_gate: "A2R planning is complete at Review #026 and Queue #002 is ready but 
   repository were changed during planning.
 - Queue `#002` has six strict-TDD rows and remains blocked from execution until
   the owner separately authorizes an A2R implementation window.
+- At owner request, the repo now uses delivery-first orchestration: planning and
+  metadata are direct; Queue `#002` is blind-strict only for authorized code and
+  review boundaries, with no governor layer for owner-present work.
 - A2 owner acceptance remains blocked by Review `#024` until future remediation,
   full validation, independent SDK review, and fresh Holm authority acceptance.
 
@@ -35,7 +38,8 @@ stop_gate: "A2R planning is complete at Review #026 and Queue #002 is ready but 
 1. Owner reviews `koder/reviews/026_a2r_remediation_plan_rereview/INDEX.md` and
    `koder/queue/002_a2r_authority_conformance/INDEX.md`.
 2. If accepted, explicitly activate A2R implementation in `EXECUTION.md` and
-   this handoff; then route Queue `#002` through fresh blind workers on `main`.
+   this handoff; then execute the existing queued rows without more planning,
+   using fresh blind workers only at code/review boundaries on `main`.
 3. Return after the complete A2R acceptance gate. Do not launch Queue `#002`,
    begin Issue `#007`, publish, release, deploy, use credentials, or mutate
    another repository without the required authorization.
