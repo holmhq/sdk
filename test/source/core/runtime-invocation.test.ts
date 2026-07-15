@@ -6,20 +6,24 @@ import {
   CapabilityVersionError,
   createCancellationController,
   createCapabilityRegistry,
+  createDiagnosticsSink,
   createHolm,
   createStaticCallerProvider,
   createCallerFingerprint,
   invokeRuntime,
   LifecycleError,
+  ProtocolError,
   runtimeEnvelopeProtocol,
   UnsupportedCapabilityError,
   type CallerContext,
   type ExtensionSetupContext,
+  type HolmDiagnosticEvent,
   type InvocationControl,
   type OperationRequest,
   type OperationResponse,
   type RuntimeAdapter,
 } from "../../../src/core/index.js";
+import { createInvocationResponseTracker } from "../../../src/core/invoke.js";
 
 type RecordingRuntime = RuntimeAdapter & {
   readonly calls: OperationRequest[];
@@ -156,6 +160,116 @@ test("runtime invocation copies request payload, caller context, and response va
   });
   assert.notEqual(response.payload, responsePayload);
   assert.equal(Object.isFrozen(response.payload), true);
+});
+
+test("runtime invocation rejects responses that do not correlate to the request id", async () => {
+  const runtime = createRecordingRuntime(() => ({ requestId: "req-other", payload: { crossed: true } }));
+
+  await assert.rejects(
+    () =>
+      invokeRuntime({
+        runtime,
+        capabilities: createCapabilityRegistry([matchingOffer]),
+        caller: createStaticCallerProvider({ surface: "test", principal: { kind: "anonymous" } }),
+        capability,
+        operation: "list",
+        payload: null,
+        requestId: "req-expected",
+      }),
+    (error: unknown) => error instanceof ProtocolError && error.code === "runtime_response_mismatch",
+  );
+});
+
+test("runtime response tracking ignores and diagnoses duplicate and late responses deterministically", () => {
+  const events: HolmDiagnosticEvent[] = [];
+  const tracker = createInvocationResponseTracker({
+    clock: { now: () => 42 },
+    diagnostics: createDiagnosticsSink((event) => {
+      events.push(event);
+    }),
+    maxTerminalRequests: 2,
+  });
+  const accepted = tracker.begin("req-tracked");
+
+  assert.equal(accepted.accept({ requestId: "req-tracked", payload: { version: 1 } }), "accepted");
+  assert.equal(accepted.accept({ requestId: "req-tracked", payload: { version: 2 } }), "duplicate");
+  assert.throws(
+    () => tracker.begin("req-tracked"),
+    (error: unknown) => error instanceof ProtocolError && error.code === "runtime_request_duplicate",
+  );
+
+  const cancelled = tracker.begin("req-cancelled");
+  cancelled.cancel();
+  assert.equal(cancelled.accept({ requestId: "req-cancelled", payload: { late: true } }), "late");
+
+  const mismatched = tracker.begin("req-mismatch-diagnostic");
+  assert.throws(
+    () => mismatched.accept({ requestId: "req-other-diagnostic", payload: null }),
+    (error: unknown) => error instanceof ProtocolError && error.code === "runtime_response_mismatch",
+  );
+  assert.deepEqual(
+    events.map((event) => event.code),
+    [
+      "runtime_response_duplicate",
+      "runtime_request_duplicate",
+      "runtime_response_late",
+      "runtime_response_mismatch",
+    ],
+  );
+
+  const third = tracker.begin("req-third");
+  assert.equal(third.accept({ requestId: "req-third", payload: null }), "accepted");
+  assert.doesNotThrow(() => tracker.begin("req-tracked"));
+
+  const cleared = tracker.begin("req-cleared");
+  tracker.clear();
+  assert.equal(cleared.accept({ requestId: "req-cleared", payload: null }), "late");
+  assert.equal(events.at(-1)?.code, "runtime_response_late");
+  assert.throws(
+    () => createInvocationResponseTracker({ clock: { now: () => 0 }, maxTerminalRequests: 0 }),
+    /positive integer/,
+  );
+  assert.throws(
+    () => tracker.begin(" "),
+    (error: unknown) => error instanceof ProtocolError && error.code === "runtime_request_id_invalid",
+  );
+});
+
+test("runtime invocation diagnoses adapter responses that arrive after caller cancellation", async () => {
+  const events: HolmDiagnosticEvent[] = [];
+  let resolveResponse: ((response: OperationResponse) => void) | undefined;
+  const runtime = createRecordingRuntime(
+    () =>
+      new Promise<OperationResponse>((resolve) => {
+        resolveResponse = resolve;
+      }),
+  );
+  const holm = createHolm({
+    runtime,
+    caller: createStaticCallerProvider({ surface: "test", principal: { kind: "anonymous" } }),
+    diagnostics: createDiagnosticsSink((event) => {
+      events.push(event);
+    }),
+  });
+  const cancellation = createCancellationController();
+
+  await holm.start();
+  const pending = holm.invoke({
+    capability,
+    operation: "list",
+    payload: null,
+    requestId: "req-late",
+    control: { cancellation: cancellation.signal },
+  });
+  await Promise.resolve();
+  cancellation.cancel("caller-left");
+  await assert.rejects(pending, CancelledError);
+  resolveResponse?.({ requestId: "req-late", payload: { late: true } });
+  await Promise.resolve();
+  await Promise.resolve();
+
+  assert.equal(events.some((event) => event.code === "runtime_response_late"), true);
+  await holm.dispose();
 });
 
 test("runtime caller fingerprints are deterministic, partition-safe, and do not include ambient auth fields", () => {

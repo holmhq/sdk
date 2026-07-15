@@ -8,6 +8,7 @@ const budgets = new Map([
   ["dist/core/index.js", { rawBudget: 2048, gzipBudget: 768 }],
   ["dist/core/caller.js", { rawBudget: 6144, gzipBudget: 2048 }],
   ["dist/core/capabilities.js", { rawBudget: 10240, gzipBudget: 3072 }],
+  ["dist/core/correlation.js", { rawBudget: 8192, gzipBudget: 2560 }],
   ["dist/core/errors.js", { rawBudget: 6144, gzipBudget: 2048 }],
   ["dist/core/extensions.js", { rawBudget: 18432, gzipBudget: 4096 }],
   ["dist/core/invoke.js", { rawBudget: 6144, gzipBudget: 2048 }],

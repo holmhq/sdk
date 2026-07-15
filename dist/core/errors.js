@@ -63,6 +63,18 @@ export class HolmError extends Error {
         return serialized;
     }
 }
+export class ProtocolError extends HolmError {
+    constructor(options = {}) {
+        super({
+            kind: "protocol",
+            code: options.code ?? "invalid_transport_response",
+            message: options.message ?? "Invalid transport response.",
+            details: options.details,
+            cause: options.cause,
+        });
+        this.name = "ProtocolError";
+    }
+}
 export function isHolmError(value) {
     return value instanceof HolmError;
 }

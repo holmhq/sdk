@@ -14,6 +14,7 @@ import {
   type ExtensionLifecycle,
   type HolmExtension,
   HolmError,
+  ProtocolError,
   TimeoutError,
   runtimeEnvelopeProtocol,
   type RuntimeAdapter,
@@ -108,7 +109,7 @@ const extensionLifecycle: ExtensionLifecycle = createExtensionLifecycle([reports
 });
 const fake = createFakeClock();
 const testRuntime = createInMemoryRuntimeAdapter({ clock: fake.clock, scheduler: fake.scheduler });
-const holm = createHolm({ runtime: testRuntime, caller });
+const holm = createHolm({ runtime: testRuntime, caller, diagnostics: createDiagnosticsSink() });
 const stateController = createResourceController<{ readonly count: number }>();
 const stateResource: Resource<{ readonly count: number }> = stateController.resource;
 const stateSnapshot: ResourceSnapshot<{ readonly count: number }> = stateController.setReady({ count: 1 });
@@ -136,6 +137,7 @@ const stateRealtimeHook = createRealtimeReconcileHook({ query: stateQuery, capab
 stateRealtimeHook.supports.presence satisfies false;
 const stateRealtimeSnapshot = stateRealtimeHook.handle({ kind: "reconcile", data: { count: 2 } });
 const timeout = new TimeoutError({ timeoutMs: 1 });
+const protocolError = new ProtocolError({ code: "decl_protocol", message: "Declaration protocol error." });
 const responseMode: TransportResponseMode = "json";
 const transportSensitivity: TransportSensitivityInput = { url: true, params: ["access"], headers: ["x-proof"] };
 const transportRequest: TransportRequest = createTransportRequest({
@@ -217,6 +219,7 @@ void stateHistoryEntries;
 void stateRealtimeHook;
 void stateRealtimeSnapshot;
 void timeout;
+void protocolError;
 void transportRequest;
 void cachePolicy;
 void cachePartition;

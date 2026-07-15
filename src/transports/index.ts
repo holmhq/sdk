@@ -3,6 +3,7 @@ export {
   createTransportCacheKey,
 } from "./cache.js";
 export { decodeTransportResponse, ProtocolError, RemoteError } from "./response.js";
+export type { ProtocolErrorOptions } from "../core/errors.js";
 export {
   UploadError,
   composeResumableUpload,
@@ -212,13 +213,6 @@ export interface RemoteErrorOptions {
   readonly status: number;
   readonly details?: unknown;
   readonly retryable?: boolean;
-  readonly cause?: unknown;
-}
-
-export interface ProtocolErrorOptions {
-  readonly code?: string;
-  readonly message?: string;
-  readonly details?: unknown;
   readonly cause?: unknown;
 }
 

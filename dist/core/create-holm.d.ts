@@ -1,4 +1,5 @@
 import { type CapabilityRequirement, type CapabilityView } from "./capabilities.js";
+import type { HolmDiagnosticsSink } from "./diagnostics.js";
 import type { CallerPartitionListener, CallerProvider } from "./caller.js";
 import { type ExtensionLifecycle, type ExtensionNamespaces, type HolmExtension } from "./extensions.js";
 import { type LifecycleSnapshot } from "./lifecycle.js";
@@ -7,6 +8,7 @@ export interface HolmOptions<Extensions extends readonly HolmExtension[] = reado
     readonly runtime: RuntimeAdapter;
     readonly caller: CallerProvider;
     readonly extensions?: Extensions;
+    readonly diagnostics?: HolmDiagnosticsSink;
     readonly onCallerPartition?: CallerPartitionListener;
 }
 export interface HolmInvokeOptions {

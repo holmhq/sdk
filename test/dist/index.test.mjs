@@ -14,6 +14,7 @@ import {
   CancelledError,
   CapabilityVersionError,
   HolmError,
+  ProtocolError,
   TimeoutError,
   runtimeEnvelopeProtocol,
   serializeHolmError,
@@ -374,4 +375,20 @@ test("generated ESM artifact exposes S08 createHolm lifecycle fakes", async () =
   assert.deepEqual(response.payload, { ok: true });
   assert.equal(runtime.requests[0].caller.startedAt, 7);
   assert.equal(new TimeoutError({ timeoutMs: 1 }).code, "operation_timeout");
+
+  runtime.setHandler("com.example.reports:mismatch", () => ({
+    requestId: "req-dist-other",
+    payload: { crossed: true },
+  }));
+  await assert.rejects(
+    () =>
+      holm.invoke({
+        capability: { id: "com.example.reports", major: 1 },
+        operation: "mismatch",
+        payload: null,
+        requestId: "req-dist-expected",
+      }),
+    (error) => error instanceof ProtocolError && error.code === "runtime_response_mismatch",
+  );
+  await holm.dispose();
 });

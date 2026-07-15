@@ -1,5 +1,6 @@
 export { createTransportCache, createTransportCacheKey, } from "./cache.js";
 export { decodeTransportResponse, ProtocolError, RemoteError } from "./response.js";
+export type { ProtocolErrorOptions } from "../core/errors.js";
 export { UploadError, composeResumableUpload, createReadonlyBytesUploadSource, createUploadFile, redactUploadChunk, redactUploadRequest, } from "./upload.js";
 export type { RedactedUploadChunkDiagnostic, RedactedUploadDiagnostic, RedactedUploadFieldDiagnostic, RedactedUploadFileDiagnostic, ResumableUploadAdapter, UploadChunk, UploadChunkAck, UploadChunkBody, UploadChunkInput, UploadCompletion, UploadControl, UploadErrorOptions, UploadField, UploadFieldInput, UploadFile, UploadFileInput, UploadFinalizeInput, UploadHandoff, UploadHandoffEntry, UploadProgressEvent, UploadProgressListener, UploadRequest, UploadSession, UploadSource, UploadStatus, UploadStatusInput, UploadUnavailableSession, } from "./upload.js";
 export type { TransportCache, TransportCacheBackgroundErrorEvent, TransportCacheGetInput, TransportCacheInvalidationEvent, TransportCacheInvalidationInput, TransportCacheInvalidationReason, TransportCacheInvalidationResult, TransportCacheKeyInput, TransportCacheLoader, TransportCacheMode, TransportCacheMutationInvalidation, TransportCacheOptions, TransportCachePartition, TransportCachePolicy, TransportCacheUpdateEvent, } from "./cache.js";
@@ -131,12 +132,6 @@ export interface RemoteErrorOptions {
     readonly status: number;
     readonly details?: unknown;
     readonly retryable?: boolean;
-    readonly cause?: unknown;
-}
-export interface ProtocolErrorOptions {
-    readonly code?: string;
-    readonly message?: string;
-    readonly details?: unknown;
     readonly cause?: unknown;
 }
 export interface NormalizeTransportErrorContext {

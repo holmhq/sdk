@@ -11,8 +11,22 @@ import {
   type CallerPartitionListener,
   type CallerProvider,
 } from "./caller.js";
+import {
+  createInvocationResponseTracker,
+  normalizeInvocationRequestId,
+  type InvocationResponseTracker,
+} from "./correlation.js";
+import { ProtocolError } from "./errors.js";
 import type { InvocationControl, OperationRequest, OperationResponse, RuntimeAdapter } from "./runtime.js";
 import { copyWireValue } from "./wire-value.js";
+
+export { createInvocationResponseTracker } from "./correlation.js";
+export type {
+  InvocationResponseHandle,
+  InvocationResponseOutcome,
+  InvocationResponseTracker,
+  InvocationResponseTrackerOptions,
+} from "./correlation.js";
 
 export interface InvokeRuntimeOptions {
   readonly runtime: RuntimeAdapter;
@@ -27,15 +41,19 @@ export interface InvokeRuntimeOptions {
   readonly onCallerPartition?: CallerPartitionListener;
 }
 
-export async function invokeRuntime(options: InvokeRuntimeOptions): Promise<OperationResponse> {
+export async function invokeRuntime(
+  options: InvokeRuntimeOptions,
+  responses: InvocationResponseTracker = createInvocationResponseTracker({ clock: options.runtime.clock }),
+): Promise<OperationResponse> {
   const capability = requireRuntimeCapability(options);
+  const requestId = normalizeInvocationRequestId(options.requestId);
   const caller = await resolveCallerContext(options.caller);
   const callerFingerprint = createCallerFingerprint(caller);
   const request = Object.freeze({
-    requestId: options.requestId,
+    requestId,
     capability,
     operation: options.operation,
-    caller: createInvocationContext(caller, options.requestId, options.runtime.clock.now(), options.reason),
+    caller: createInvocationContext(caller, requestId, options.runtime.clock.now(), options.reason),
     callerFingerprint,
     payload: copyWireValue(options.payload),
   }) satisfies OperationRequest;
@@ -51,7 +69,24 @@ export async function invokeRuntime(options: InvokeRuntimeOptions): Promise<Oper
     }),
   );
 
-  return copyOperationResponse(await options.runtime.invoke(request, control));
+  const responseHandle = responses.begin(request.requestId);
+  const unsubscribe = control.cancellation?.onCancel(() => responseHandle.cancel());
+  try {
+    const response = await options.runtime.invoke(request, control);
+    const outcome = responseHandle.accept(response);
+    if (outcome !== "accepted") {
+      throw new ProtocolError({
+        code: outcome === "duplicate" ? "runtime_response_duplicate" : "runtime_response_late",
+        message: `${outcome === "duplicate" ? "Duplicate" : "Late"} runtime response was ignored.`,
+      });
+    }
+    return copyOperationResponse(response);
+  } catch (error) {
+    responseHandle.fail();
+    throw error;
+  } finally {
+    unsubscribe?.();
+  }
 }
 
 function requireRuntimeCapability(options: InvokeRuntimeOptions): CapabilityRequirement {

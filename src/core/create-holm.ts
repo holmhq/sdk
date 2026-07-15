@@ -6,6 +6,7 @@ import {
   createCapabilityView,
 } from "./capabilities.js";
 import { createCancellationController, createCancellationScope } from "./cancellation.js";
+import type { HolmDiagnosticsSink } from "./diagnostics.js";
 import type { CallerPartitionListener, CallerProvider } from "./caller.js";
 import {
   createExtensionLifecycle,
@@ -13,7 +14,11 @@ import {
   type ExtensionNamespaces,
   type HolmExtension,
 } from "./extensions.js";
-import { invokeRuntime } from "./invoke.js";
+import {
+  createInvocationResponseTracker,
+  invokeRuntime,
+  type InvocationResponseTracker,
+} from "./invoke.js";
 import {
   createLifecycleController,
   type LifecycleController,
@@ -25,6 +30,7 @@ export interface HolmOptions<Extensions extends readonly HolmExtension[] = reado
   readonly runtime: RuntimeAdapter;
   readonly caller: CallerProvider;
   readonly extensions?: Extensions;
+  readonly diagnostics?: HolmDiagnosticsSink;
   readonly onCallerPartition?: CallerPartitionListener;
 }
 
@@ -59,6 +65,7 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
   readonly #capabilities: CapabilityRuntimeUpdater = createCapabilityRuntimeUpdater([]);
   readonly #extensionLifecycle: ExtensionLifecycle<ExtensionNamespaces<Extensions>>;
   readonly #ownedCancellation = createCancellationController();
+  readonly #responses: InvocationResponseTracker;
   readonly #controller: LifecycleController;
   #runtimeStarted = false;
 
@@ -66,6 +73,10 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
     this.#runtime = options.runtime;
     this.#caller = options.caller;
     this.#onCallerPartition = options.onCallerPartition;
+    this.#responses = createInvocationResponseTracker({
+      clock: options.runtime.clock,
+      ...(options.diagnostics === undefined ? {} : { diagnostics: options.diagnostics }),
+    });
     this.#extensionLifecycle = createExtensionLifecycle(options.extensions ?? ([] as unknown as Extensions), {
       capabilities: this.#capabilities,
       validateCapabilities: false,
@@ -153,6 +164,7 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
         errors.push(error);
       }
     }
+    this.#responses.clear();
     if (errors.length === 1) {
       throw errors[0];
     }
@@ -172,18 +184,21 @@ class HolmInstance<const Extensions extends readonly HolmExtension[]> {
     });
     try {
       return await scope.race(
-        invokeRuntime({
-          runtime: this.#runtime,
-          capabilities: this.#capabilities,
-          caller: this.#caller,
-          capability: options.capability,
-          operation: options.operation,
-          payload: options.payload,
-          requestId: options.requestId,
-          ...(options.reason === undefined ? {} : { reason: options.reason }),
-          control: Object.freeze({ ...options.control, cancellation: scope.signal }),
-          ...(this.#onCallerPartition === undefined ? {} : { onCallerPartition: this.#onCallerPartition }),
-        }),
+        invokeRuntime(
+          {
+            runtime: this.#runtime,
+            capabilities: this.#capabilities,
+            caller: this.#caller,
+            capability: options.capability,
+            operation: options.operation,
+            payload: options.payload,
+            requestId: options.requestId,
+            ...(options.reason === undefined ? {} : { reason: options.reason }),
+            control: Object.freeze({ ...options.control, cancellation: scope.signal }),
+            ...(this.#onCallerPartition === undefined ? {} : { onCallerPartition: this.#onCallerPartition }),
+          },
+          this.#responses,
+        ),
       );
     } finally {
       scope.cleanup();

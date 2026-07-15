@@ -26,11 +26,13 @@ export type { HolmBytesTag, ReadonlyBytes, WireArray, WireObject, WireScalar, Wi
 export {
   HolmError,
   isHolmError,
+  ProtocolError,
   serializeHolmError,
 } from "./errors.js";
 export type {
   HolmErrorKind,
   HolmErrorOptions,
+  ProtocolErrorOptions,
   SerializedHolmError,
 } from "./errors.js";
 

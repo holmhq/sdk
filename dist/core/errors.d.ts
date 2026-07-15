@@ -9,6 +9,12 @@ export interface HolmErrorOptions {
     readonly retryable?: boolean;
     readonly cause?: unknown;
 }
+export interface ProtocolErrorOptions {
+    readonly code?: string;
+    readonly message?: string;
+    readonly details?: unknown;
+    readonly cause?: unknown;
+}
 export interface SerializedHolmError {
     readonly $holm: "error";
     readonly kind: HolmErrorKind;
@@ -26,6 +32,9 @@ export declare class HolmError extends Error {
     readonly retryable?: boolean;
     constructor(options: HolmErrorOptions);
     toJSON(): SerializedHolmError;
+}
+export declare class ProtocolError extends HolmError {
+    constructor(options?: ProtocolErrorOptions);
 }
 export declare function isHolmError(value: unknown): value is HolmError;
 export declare function serializeHolmError(value: unknown): SerializedHolmError;

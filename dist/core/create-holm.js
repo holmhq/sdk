@@ -1,7 +1,7 @@
 import { createCapabilityRuntimeUpdater, createCapabilityView, } from "./capabilities.js";
 import { createCancellationController, createCancellationScope } from "./cancellation.js";
 import { createExtensionLifecycle, } from "./extensions.js";
-import { invokeRuntime } from "./invoke.js";
+import { createInvocationResponseTracker, invokeRuntime, } from "./invoke.js";
 import { createLifecycleController, } from "./lifecycle.js";
 export function createHolm(options) {
     return new HolmInstance(options).api();
@@ -13,12 +13,17 @@ class HolmInstance {
     #capabilities = createCapabilityRuntimeUpdater([]);
     #extensionLifecycle;
     #ownedCancellation = createCancellationController();
+    #responses;
     #controller;
     #runtimeStarted = false;
     constructor(options) {
         this.#runtime = options.runtime;
         this.#caller = options.caller;
         this.#onCallerPartition = options.onCallerPartition;
+        this.#responses = createInvocationResponseTracker({
+            clock: options.runtime.clock,
+            ...(options.diagnostics === undefined ? {} : { diagnostics: options.diagnostics }),
+        });
         this.#extensionLifecycle = createExtensionLifecycle(options.extensions ?? [], {
             capabilities: this.#capabilities,
             validateCapabilities: false,
@@ -105,6 +110,7 @@ class HolmInstance {
                 errors.push(error);
             }
         }
+        this.#responses.clear();
         if (errors.length === 1) {
             throw errors[0];
         }
@@ -133,7 +139,7 @@ class HolmInstance {
                 ...(options.reason === undefined ? {} : { reason: options.reason }),
                 control: Object.freeze({ ...options.control, cancellation: scope.signal }),
                 ...(this.#onCallerPartition === undefined ? {} : { onCallerPartition: this.#onCallerPartition }),
-            }));
+            }, this.#responses));
         }
         finally {
             scope.cleanup();

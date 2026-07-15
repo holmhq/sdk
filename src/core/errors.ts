@@ -21,6 +21,13 @@ export interface HolmErrorOptions {
   readonly cause?: unknown;
 }
 
+export interface ProtocolErrorOptions {
+  readonly code?: string;
+  readonly message?: string;
+  readonly details?: unknown;
+  readonly cause?: unknown;
+}
+
 export interface SerializedHolmError {
   readonly $holm: "error";
   readonly kind: HolmErrorKind;
@@ -106,6 +113,19 @@ export class HolmError extends Error {
       serialized.retryable = this.retryable;
     }
     return serialized;
+  }
+}
+
+export class ProtocolError extends HolmError {
+  constructor(options: ProtocolErrorOptions = {}) {
+    super({
+      kind: "protocol",
+      code: options.code ?? "invalid_transport_response",
+      message: options.message ?? "Invalid transport response.",
+      details: options.details,
+      cause: options.cause,
+    });
+    this.name = "ProtocolError";
   }
 }
 

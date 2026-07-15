@@ -5,22 +5,22 @@
         "gzipBytes": 512,
         "rawBytes": 1024
       },
-      "gzipBytes": 377,
-      "minifiedBytes": 791,
+      "gzipBytes": 383,
+      "minifiedBytes": 805,
       "path": "dist/index.js",
-      "rawBytes": 865,
-      "sha256": "651b8dd82fa057bf81c32940e83f7b6fdad7741e1d660b7f76eff27823cf42fe"
+      "rawBytes": 880,
+      "sha256": "1a6b6205a4325f1acd6da641d763b79cc6e6b35fc86e268c35e7b1eb5cceda46"
     },
     {
       "budgets": {
         "gzipBytes": 768,
         "rawBytes": 2048
       },
-      "gzipBytes": 481,
-      "minifiedBytes": 1159,
+      "gzipBytes": 486,
+      "minifiedBytes": 1173,
       "path": "dist/core/index.js",
-      "rawBytes": 1297,
-      "sha256": "ca794417b8eaca07d8db6c7e8964a6f0f6e7a86d99892cd2a970605800682c4f"
+      "rawBytes": 1312,
+      "sha256": "63a07dc0dfc36fcf5257571838b82d4efdf53a007a42c4040edf98ea5fcb45fc"
     },
     {
       "budgets": {
@@ -46,14 +46,25 @@
     },
     {
       "budgets": {
+        "gzipBytes": 2560,
+        "rawBytes": 8192
+      },
+      "gzipBytes": 954,
+      "minifiedBytes": 2861,
+      "path": "dist/core/correlation.js",
+      "rawBytes": 4387,
+      "sha256": "2f9c7f7d0bccb59f3ab555cb8de7bcc0223b66736e040da11638182ec40c64af"
+    },
+    {
+      "budgets": {
         "gzipBytes": 2048,
         "rawBytes": 6144
       },
-      "gzipBytes": 1276,
-      "minifiedBytes": 3668,
+      "gzipBytes": 1349,
+      "minifiedBytes": 3938,
       "path": "dist/core/errors.js",
-      "rawBytes": 5112,
-      "sha256": "89b34f68ba2f57c9efd0701cf9adbde81ea7e85477d96daf7c72ec16463a0595"
+      "rawBytes": 5501,
+      "sha256": "30ace674ed79486921eb1fe0f55b6e8f288350b96c6a22fecd83293f5fe0d02b"
     },
     {
       "budgets": {
@@ -71,11 +82,11 @@
         "gzipBytes": 2048,
         "rawBytes": 6144
       },
-      "gzipBytes": 645,
-      "minifiedBytes": 2080,
+      "gzipBytes": 910,
+      "minifiedBytes": 2890,
       "path": "dist/core/invoke.js",
-      "rawBytes": 2753,
-      "sha256": "77577b55bd81c195e5ad01dc79dc006e780518c0f7cc4ea7bae0b26ad96bf743"
+      "rawBytes": 3787,
+      "sha256": "754b899b0d1f4183783014bc2aaaffe9fec45640067eb81a2ddfc0a676854502"
     },
     {
       "budgets": {
@@ -148,11 +159,11 @@
         "gzipBytes": 3584,
         "rawBytes": 12288
       },
-      "gzipBytes": 1948,
-      "minifiedBytes": 7139,
+      "gzipBytes": 1911,
+      "minifiedBytes": 6905,
       "path": "dist/transports/response.js",
-      "rawBytes": 9807,
-      "sha256": "0ab6b17c96bcdada9ad862c4f76d4b2da6085eee1f938230977fec41ad99986c"
+      "rawBytes": 9459,
+      "sha256": "b75732f061d899e9a3efc1523d1a5794aaf542d563dc0705bcdabbce92836658"
     },
     {
       "budgets": {
@@ -195,8 +206,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 18600,
-    "minifiedBytes": 63031,
-    "rawBytes": 84902
+    "gzipBytes": 19866,
+    "minifiedBytes": 66766,
+    "rawBytes": 90394
   }
 }

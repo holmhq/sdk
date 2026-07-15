@@ -4,8 +4,8 @@ export { createCallerPartitionedCacheKey, normalizeCacheSourceIdentity, } from "
 export type { CacheSourceIdentity, CallerPartitionedCacheKeyInput, } from "./cache-key.js";
 export { assertWireValue, canonicalEncodeWireValue, copyWireValue, createReadonlyBytes, isReadonlyBytes, isWireValue, } from "./wire-value.js";
 export type { HolmBytesTag, ReadonlyBytes, WireArray, WireObject, WireScalar, WireValue } from "./wire-value.js";
-export { HolmError, isHolmError, serializeHolmError, } from "./errors.js";
-export type { HolmErrorKind, HolmErrorOptions, SerializedHolmError, } from "./errors.js";
+export { HolmError, isHolmError, ProtocolError, serializeHolmError, } from "./errors.js";
+export type { HolmErrorKind, HolmErrorOptions, ProtocolErrorOptions, SerializedHolmError, } from "./errors.js";
 export { createDiagnosticsSink, createHolmDiagnosticEvent, } from "./diagnostics.js";
 export type { DiagnosticsSinkOptions, HolmDiagnosticEvent, HolmDiagnosticEventInput, HolmDiagnosticsHandler, HolmDiagnosticsSink, HolmDiagnosticSeverity, } from "./diagnostics.js";
 export { CapabilityVersionError, createCapabilityRegistry, DuplicateCapabilityOfferError, InvalidCapabilityRequirementError, negotiateCapability, UnsupportedCapabilityError, } from "./capabilities.js";
