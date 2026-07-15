@@ -1,12 +1,13 @@
 ---
 title: A2R S04 - Credential-safe diagnostics and cache identity
-status: approved
+status: implemented
 issue: 016
 plan: 002
 slice: S04
 finding: P1-4
 review: 025
 approval_review: 026
+implementation_commit: ca5e895f8ad7e701a463e0c4006aa35886982859
 owner: sdk-core
 depends_on: [S01]
 ---
@@ -33,6 +34,7 @@ Eliminate credential leakage to diagnostics/observability/cache identity by stru
 - `src/transports/index.ts`
 - `src/core/cache-key.ts`
 - `src/transports/cache.ts`
+- `src/transports/sensitivity.ts` (shared structural marker/redaction implementation)
 - affected generated JavaScript, declarations, and maps under `dist/`
 - `test/source/core/diagnostics.test.ts`
 - `test/source/transport/cache.test.ts`

@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-07-14
-updated: 2026-07-15
+updated: 2026-07-16
 tags: a2, authority, conformance, security, transport, caller, capabilities
 parent: 001
 depends_on: [004, 005, 006]
@@ -45,16 +45,16 @@ from this repository.
 
 - S01 envelope conformance and S02 caller-transition safety are complete and
   independently approved.
-- S03 semantic source findings are resolved at `5596d0b`. Review `#030` found
-  that tracked package artifacts were not regenerated, so S03 is
-  **implementation incomplete**, not semantically blocked.
-- The last closeout source run passed `133/133` tests. Full CI then exposed
-  `dist/transports/index.js` at `19,342` bytes against its `16,384`-byte budget.
-  That size regression must be diagnosed, reduced, or resolved by an explicit
-  evidence-backed budget decision.
-- Queue `#002` is a closed historical record of the exhausted unattended run;
-  it does not govern recovery. Owner-present continuation is direct and needs
-  no second blind-window authorization.
+- S03-S05 product remediation is implemented at `a962301`, `ca5e895`, and
+  `af846d7`. Generated JavaScript/declarations/maps now match source; transport
+  response code was split into measured modules and all size gates pass.
+- Independent Reviews `#031` and `#032` found no additional S03-S05 semantic
+  defect but exposed coverage-report parsing under color/TAP reporters. Fixes
+  `a1ac154` and `69095cb` now make normal and TAP+color full CI green. A fresh
+  independent rereview of `69095cb` is still required before Holm return.
+- Queue `#002` is a closed historical record and does not govern recovery. Two
+  unattended review attempts exhausted their process/report retry budget, so
+  do not auto-dispatch another reviewer without a fresh owner-present run.
 
 ## Execution approach
 
@@ -76,10 +76,10 @@ chain. Update their assumptions when live source or validation proves them stale
 | --- | --- | --- |
 | S01 | done | Holm `{data,meta}` / `{error}` / headers / `/api/cmd` conformance; approved at `da7cd8d` |
 | S02 | done | caller epoch plus cache/query/mutation/in-flight fencing; approved at `5d0df5d` |
-| S03 | implementation incomplete | regenerate package artifacts, verify read-only public capability surface, resolve size gate |
-| S04 | ready | structural credential redaction and opaque non-secret cache identity |
-| S05 | ready | request/response correlation plus explicit duplicate/late handling |
-| S06 | pending | full clean validation, integrated SDK review, fresh Holm-authority acceptance |
+| S03 | implemented | generated package surface is read-only and measured; integrated rereview pending |
+| S04 | implemented | structural redaction, opaque identity, and redacted observer events are green |
+| S05 | implemented | mismatch rejection plus bounded duplicate/late tracking and diagnostics are green |
+| S06 | review pending | validation is green at `69095cb`; fresh SDK rereview and Holm-authority acceptance remain |
 
 ## Required behavior
 
@@ -114,16 +114,16 @@ source and expose the same public contract.
 
 ## Acceptance criteria
 
-- [ ] S03 package JavaScript, declarations, maps, and exports match corrected source.
-- [ ] Transport artifact size gate passes, or an explicit reviewed budget change is justified.
-- [ ] Credential leakage tests cover arbitrary auth headers and sensitive query/path material.
-- [ ] Cache and public observability surfaces contain no raw credentials.
-- [ ] Mismatched response IDs fail; duplicate/late response behavior is deterministic and tested.
-- [ ] `npm run build` and `npm run ci` pass from a clean checkout.
+- [x] S03 package JavaScript, declarations, maps, and exports match corrected source.
+- [x] Transport artifact size gate passes, or an explicit reviewed budget change is justified.
+- [x] Credential leakage tests cover arbitrary auth headers and sensitive query/path material.
+- [x] Cache and public observability surfaces contain no raw credentials.
+- [x] Mismatched response IDs fail; duplicate/late response behavior is deterministic and tested.
+- [x] `npm run build` and `npm run ci` pass from a clean checkout.
 - [ ] One fresh independent SDK review reports no P1/P2 findings.
 - [ ] A fresh read-only Holm authority review accepts A2 at a named current commit.
 - [ ] Existing Holm SDK/state packages remain operational and npm remains private.
-- [ ] Issue `#007` has not begun under this issue.
+- [x] Issue `#007` has not begun under this issue.
 
 ## Non-goals
 

@@ -1,12 +1,13 @@
 ---
 title: A2R S03 - Capability ownership and extension invocation seam
-status: implementation-incomplete
+status: implemented
 issue: 016
 plan: 002
 slice: S03
 finding: P1-3
 review: 025
 approval_review: 026
+implementation_commit: a9623012835ee17b47fb6acdbd2d9eb555e01c7c
 owner: sdk-core
 depends_on: [S01]
 ---
@@ -34,6 +35,8 @@ Separate public read-only capability visibility from private runtime offer mutat
 - `src/core/create-holm.ts`
 - `src/core/extensions.ts`
 - affected public barrel files under `src/`
+- `src/transports/response.ts` and `scripts/size.mjs` for the measured
+  response-module split required by the live size gate
 - affected generated JavaScript, declarations, and maps under `dist/`
 - `test/source/core/capabilities.test.ts`
 - `test/source/core/extensions.test.ts`

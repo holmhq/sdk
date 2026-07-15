@@ -1,12 +1,14 @@
 ---
 title: A2R S06 - Integrated authority return and final gate
-status: approved
+status: review-pending
 issue: 016
 plan: 002
 slice: S06
 finding: integrated
 review: 025
 approval_review: 026
+latest_review: 032
+pending_review_commit: 69095cb9ce4e4edf8a09917fcc10500721b1ee3e
 owner: sdk-core
 depends_on: [S01, S02, S03, S04, S05]
 ---

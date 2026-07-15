@@ -1,12 +1,13 @@
 ---
 title: A2R S05 - Response correlation and provenance safeguards
-status: approved
+status: implemented
 issue: 016
 plan: 002
 slice: S05
 finding: P2-1
 review: 025
 approval_review: 026
+implementation_commit: af846d708c35f04e542f10026a642621a1f79d22
 owner: sdk-core
 depends_on: [S01, S02]
 ---
@@ -29,7 +30,11 @@ Enforce strict request-response correlation (`requestId`) with explicit handling
 ## Write ownership (bounded)
 
 - `src/core/invoke.ts`
-- `src/transports/index.ts` (only if correlation plumbing requires adapter-facing metadata thread-through)
+- `src/core/correlation.ts`, `src/core/create-holm.ts`, and
+  `src/core/errors.ts` for instance-owned bounded tracking and the canonical
+  `ProtocolError`
+- affected core/root barrels for the canonical error export
+- `src/transports/index.ts` / `src/transports/response.ts` for the shared error binding
 - affected generated JavaScript, declarations, and maps under `dist/`
 - `test/source/core/runtime-invocation.test.ts`
 - `test/source/transport/transport-contract.test.ts` (only if adapter contract assertion belongs there)
