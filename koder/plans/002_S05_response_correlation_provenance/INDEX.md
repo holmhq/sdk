@@ -30,6 +30,7 @@ Enforce strict request-response correlation (`requestId`) with explicit handling
 
 - `src/core/invoke.ts`
 - `src/transports/index.ts` (only if correlation plumbing requires adapter-facing metadata thread-through)
+- affected generated JavaScript, declarations, and maps under `dist/`
 - `test/source/core/runtime-invocation.test.ts`
 - `test/source/transport/transport-contract.test.ts` (only if adapter contract assertion belongs there)
 
@@ -52,13 +53,17 @@ Enforce strict request-response correlation (`requestId`) with explicit handling
 3. Emit deterministic diagnostics for mismatch/late/duplicate without exposing secrets.
 4. Preserve existing adapter API shape unless tests prove contract expansion is required.
 
-## Validation commands (real scripts/files only)
+## Validation commands
 
-- `npm run test:source -- test/source/core/runtime-invocation.test.ts`
-- `npm run test:source -- test/source/transport/transport-contract.test.ts`
+The source runner does not currently narrow by forwarded file path, so run it
+once, then validate the distributable surface in the same implementation.
+
+- `npm run test:source`
 - `npm run typecheck:core`
-
-Fallback: `npm run test:source`.
+- `npm run build`
+- `npm run test:declarations`
+- `npm run test:dist`
+- `npm run size`
 
 ## Diff budget
 
@@ -70,6 +75,7 @@ Fallback: `npm run test:source`.
 - Correlation mismatch fails with `ProtocolError` in tests.
 - Duplicate and late responses are ignored and diagnosed deterministically.
 - No cross-operation response leakage remains in invocation path.
+- Generated package output matches source and the affected size gate passes.
 
 ## Verification evidence to attach in implementation review
 

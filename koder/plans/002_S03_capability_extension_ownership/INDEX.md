@@ -1,6 +1,6 @@
 ---
 title: A2R S03 - Capability ownership and extension invocation seam
-status: approved
+status: implementation-incomplete
 issue: 016
 plan: 002
 slice: S03
@@ -33,6 +33,8 @@ Separate public read-only capability visibility from private runtime offer mutat
 - `src/core/capabilities.ts`
 - `src/core/create-holm.ts`
 - `src/core/extensions.ts`
+- affected public barrel files under `src/`
+- affected generated JavaScript, declarations, and maps under `dist/`
 - `test/source/core/capabilities.test.ts`
 - `test/source/core/extensions.test.ts`
 - `test/source/core/runtime-invocation.test.ts` (only if seam assertions belong there)
@@ -58,19 +60,26 @@ Separate public read-only capability visibility from private runtime offer mutat
 3. Add/repair narrow invocation function exposed to extensions that routes through core lifecycle/cancellation/caller context.
 4. Ensure runtime remains sole authority for `holm.*` offers.
 
-## Validation commands (real scripts/files only)
+## Validation commands
 
-- `npm run test:source -- test/source/core/capabilities.test.ts`
-- `npm run test:source -- test/source/core/extensions.test.ts`
-- `npm run test:source -- test/source/core/runtime-invocation.test.ts`
+The source runner does not currently narrow by forwarded file path, so run it
+once rather than repeating nominally targeted commands.
+
+- `npm run test:source`
 - `npm run typecheck:core`
+- `npm run build`
+- `npm run test:declarations`
+- `npm run test:dist`
+- `npm run size`
 
-Fallback: `npm run test:source` if path forwarding unsupported.
+S03 is not implementation-complete until generated package output matches the
+source API and all commands above pass.
 
-## Diff budget
+## Change discipline
 
-- Target <= 260 changed lines.
-- No new package exports without explicit approval from independent reviewer.
+- Keep the correction scoped to the capability/extension contract and its
+  generated package surface.
+- No new package exports without contract evidence.
 
 ## Acceptance criteria
 
@@ -78,6 +87,9 @@ Fallback: `npm run test:source` if path forwarding unsupported.
 - Public interface is read-only for capability view.
 - Runtime-only updater ownership is explicit and non-exported.
 - Extension invocation seam is lifecycle/cancellation/caller-aware and tested.
+- Tracked package JavaScript, declarations, maps, and public barrels expose the
+  same read-only contract as source.
+- The affected artifact size gate passes.
 
 ## Verification evidence to attach in implementation review
 

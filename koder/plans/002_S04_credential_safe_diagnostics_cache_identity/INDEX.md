@@ -33,6 +33,7 @@ Eliminate credential leakage to diagnostics/observability/cache identity by stru
 - `src/transports/index.ts`
 - `src/core/cache-key.ts`
 - `src/transports/cache.ts`
+- affected generated JavaScript, declarations, and maps under `dist/`
 - `test/source/core/diagnostics.test.ts`
 - `test/source/transport/cache.test.ts`
 - `test/source/transport/cache-invalidation.test.ts` (only if identity partition assertions belong there)
@@ -56,14 +57,17 @@ Eliminate credential leakage to diagnostics/observability/cache identity by stru
 3. Replace raw canonical-operation embedding in cache key derivation with sanitized/hashed identity components.
 4. Ensure transport cache update hooks receive redacted request metadata only.
 
-## Validation commands (real scripts/files only)
+## Validation commands
 
-- `npm run test:source -- test/source/core/diagnostics.test.ts`
-- `npm run test:source -- test/source/transport/cache.test.ts`
-- `npm run test:source -- test/source/transport/cache-invalidation.test.ts`
+The source runner does not currently narrow by forwarded file path, so run it
+once, then validate the distributable surface in the same implementation.
+
+- `npm run test:source`
 - `npm run typecheck:core`
-
-Fallback: `npm run test:source`.
+- `npm run build`
+- `npm run test:declarations`
+- `npm run test:dist`
+- `npm run size`
 
 ## Diff budget
 
@@ -75,6 +79,7 @@ Fallback: `npm run test:source`.
 - Failing leakage tests pass with structural redaction in place.
 - Cache keys and observability outputs exclude raw credentials/secrets.
 - Deterministic partition behavior remains, using non-secret identity material.
+- Generated package output matches source and the affected size gate passes.
 
 ## Verification evidence to attach in implementation review
 

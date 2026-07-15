@@ -23,7 +23,7 @@ bindings, extension contracts, conformance fixtures, and BFBB artifacts.
 - npm package remains private/unpublished.
 - MIT licensed.
 - Issue `#001` tracks 14 child slices.
-- Active autonomous window is recorded in `koder/docs/EXECUTION.md`.
+- Current work and stop gate are recorded in `koder/STATE.md` and the active issue.
 - Existing Holm SDK/state remain current behavior authorities during migration.
 
 ## Agent policy
@@ -31,7 +31,7 @@ bindings, extension contracts, conformance fixtures, and BFBB artifacts.
 - This is the primary write target.
 - Work serially on `main` unless worktrees are explicitly approved.
 - Use strict red → green → refactor for implementation.
-- Stop at the active execution-window gate and return for review.
+- Follow the active issue's product gate; unattended windows require an explicit queue-local scope and stop.
 - Keep root and remote clean/synchronized at close when push is available.
 
 ## Integration checkpoints

@@ -187,7 +187,7 @@ Highest-value sources at Holm commit
 | Universal core, capabilities, adapters, extensions | done | [`#004`](../004_universal_core/INDEX.md) | `#002`, `#003` | no DOM/Node ambient leakage |
 | Transport, auth, cache, uploads, errors | done | [`#005`](../005_transport_cache_auth/INDEX.md) | `#004` | transport conformance + parity fixtures |
 | Framework-neutral reactive resources | done | [`#006`](../006_reactive_resources/INDEX.md) | `#004`, `#005` | immutable snapshot/subscription tests |
-| A2 Holm-authority conformance remediation | blocked | [`#016`](../016_a2_authority_conformance_remediation/INDEX.md) | `#004`, `#005`, `#006` | SDK re-review + Holm authority acceptance |
+| A2 Holm-authority conformance remediation | in progress | [`#016`](../016_a2_authority_conformance_remediation/INDEX.md) | `#004`, `#005`, `#006` | SDK re-review + Holm authority acceptance |
 | Web/app client migration | planned | [`#007`](../007_web_app_client/INDEX.md) | `#005`, `#006`, `#016` | adopted app methods + browser tests |
 | Admin/operator client migration | planned | [`#008`](../008_admin_client/INDEX.md) | `#005`, `#016` | audited namespace parity report |
 | Runtime/surface adapter contracts | planned | [`#009`](../009_runtime_surface_adapters/INDEX.md) | `#004`, `#005`, `#016` | web/node/test adapters; reserved bridge contracts |
@@ -198,15 +198,16 @@ Highest-value sources at Holm commit
 | BFBB bundles and jsDelivr vendoring | planned | [`#014`](../014_bfbb_distribution/INDEX.md) | `#003`–`#013` as included | reproducible tracked artifacts + size report |
 | Docs, migration ledger, end-to-end closeout | planned | [`#015`](../015_docs_migration_closeout/INDEX.md) | all prior slices | examples/conformance/ownership handoff complete |
 
-## Autonomous checkpoint policy
+## Execution boundary
 
-`koder/docs/EXECUTION.md` is the authority for how far an unattended agent may
-proceed. A1 and the A2 implementation conveyor are complete, but A2 owner
-acceptance is blocked by Holm-authority Review `#024` and Issue `#016`. No A2R
-or A3 work is authorized from this state; a fresh owner decision must activate a
-bounded window.
+Owner-present work follows the user's explicit task and the active child issue;
+it does not require a second execution-window artifact. Any future unattended
+queue must declare its own bounded authorization and stop gate using the live
+koder-pattern mode-selection rules.
 
-Cross-repository ownership and write policy are indexed in
+A2 acceptance still depends on Issue `#016`, independent SDK review, and fresh
+Holm-authority acceptance. Do not begin A3 / Issue `#007` before that product
+gate. Cross-repository ownership and write policy are indexed in
 `koder/projects/INDEX.md`.
 
 ## Recommended execution order

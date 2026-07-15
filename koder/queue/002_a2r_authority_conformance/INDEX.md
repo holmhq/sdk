@@ -1,180 +1,69 @@
 ---
-title: Queue 002 - A2R authority conformance (Issue 016)
-status: blocked
+title: Queue 002 - A2R authority conformance (historical unattended run)
+status: closed
+result: partial
 queue: 002
 issue: 016
 plan_family: 002
-execution_authorized: false
-owner_launch_gate: recovery_requires_separate_owner_authorization
-target_window: "8h unattended from launch with 45m closeout reserve"
-window_deadline: "2026-07-15T06:59:49+05:30"
-no_new_work_after: "2026-07-15T06:14:49+05:30"
-done_state: "All S01-S06 approved; full validation green; independent SDK review has zero P1/P2; fresh read-only Holm authority review accepts A2"
-timebox_gate: "Stop at queue completion, a real blocker, or eight hours from launch"
-continuation_policy: "Stop after Queue #002; never begin Issue #007"
-early_stop_consent: "Allowed only on queue drain, real blocker, or timebox closeout"
 orchestration_mode: blind
-assurance_profile: strict
 review_granularity: entry
-clean_row_review_artifact: optional
-finding_and_final_review_artifact: required
-planning_mode: direct
-metadata_owner: coordinator
-max_noop_attempts_per_phase: 2
-initial_monitor_fence: "10m review; 20m implementation"
-serial_branch: main
-independent_review_required: true
-final_integrated_review_required: true
-max_fix_cycles_per_row: 2
-coordinator_entry_cap: 3
+implementation_ownership: serial
+started: 2026-07-14
+closed: 2026-07-15
 updated: 2026-07-15
-plan_review_verdict: approve
-plan_review_ref: koder/reviews/026_a2r_remediation_plan_rereview/INDEX.md
 ---
 
-# Queue 002 - A2R authority conformance
+# Queue 002: A2R Authority Conformance — Historical Run
 
-## Scope
+## Purpose and authority
 
-This queue maps Issue `#016` remediation slices to executable plan refs under a
-blind-orchestrator workflow. Queue `#002` is planning-approved after fresh
-independent re-review, and the owner authorized bounded unattended implementation
-on 14 Jul 2026.
+This file records the bounded unattended Queue `#002` run. Its authorization
+expired when the run stopped; it is **not** the execution policy for future
+Issue `#016` work.
 
-## Ordering and gates
+Current work resumes from
+`koder/issues/016_a2_authority_conformance_remediation/INDEX.md` using the live
+koder-pattern mode-selection gate. Owner-present continuation defaults to
+direct execution.
 
-- Planning is complete. Do not dispatch more mapping, plan, plan-review, or
-  metadata-finalizer workers.
-- Serial execution on `main`; one current row at a time.
-- When implementation is separately authorized, use blind-strict isolation with
-  independent review per row because the seams are protocol/auth/security
-  sensitive. Clean approvals use typed compact proof; findings and final gates
-  use canonical review artifacts.
-- For owner-present execution, the interactive primary is the bounded
-  coordinator; no governor layer is required.
-- The coordinator batches queue/run-log/Issue metadata at resumable checkpoints;
-  `STATE.md` moves only at the real owner stop gate.
-- Max two fix cycles per row and two no-op/boot/permission attempts per phase
-  before block/escalation.
-- Row estimates are caps, not time to consume deliberately. Use short first
-  monitor fences and reconcile durable proof before extension.
-- S06 is the final integration gate and requires all prior rows done.
+## Outcome
 
-## Queue rows
-
-| Row | Slice | Capability | Plan Ref | Depends on | Status | Est (min) | Completion gate |
-| --- | --- | --- | --- | --- | --- | ---: | --- |
-| 1 | S01 | Holm envelope semantics and `/api/cmd` conformance | `koder/plans/002_S01_holm_envelope_semantics/INDEX.md` | none | done | 90 | Envelope/meta/error/header + `/api/cmd` tests pass with source-pinned evidence and Issue `#005` ledger update |
-| 2 | S02 | Caller transition safety and partition fencing | `koder/plans/002_S02_caller_transition_safety/INDEX.md` | S01 | done | 105 | Caller transition tests prove no old-principal cache/query/mutation survival and in-flight fencing |
-| 3 | S03 | Capability ownership and extension invocation seam | `koder/plans/002_S03_capability_extension_ownership/INDEX.md` | S01 | blocked | 110 | Public `holm.*` forging blocked; runtime-only updater and narrow `sdk.*` extension seam validated |
-| 4 | S04 | Credential-safe diagnostics and cache identity | `koder/plans/002_S04_credential_safe_diagnostics_cache_identity/INDEX.md` | S01 | queued | 120 | Secret leakage tests pass for diagnostics/cache keys/hooks with structural redaction |
-| 5 | S05 | Response correlation and provenance safeguards | `koder/plans/002_S05_response_correlation_provenance/INDEX.md` | S01,S02 | queued | 95 | Mismatched request/response IDs fail; duplicate/late responses ignored and diagnosed |
-| 6 | S06 | Integrated authority return and final gate | `koder/plans/002_S06_integrated_authority_return/INDEX.md` | S01,S02,S03,S04,S05 | queued | 120 | Full validation stack green; independent SDK review (0 P1/P2); fresh Holm authority acceptance at named current Holm commit; clean/synced git; return before Issue #007 |
-
-## Validation routing
-
-Row-level validation commands are defined in each canonical slice plan and must
-use live scripts/paths from `package.json` and existing source/test trees.
-Harnex semantic reports carry commands/exits and canonical refs; terminal
-telemetry plus live Git—not model-written SHA prose—carry commit/path/clean-state
-proof.
-
-## Done-state requirements
-
-Queue `#002` may be marked done only when all are true:
-
-- rows S01-S06 are done with independent reviews and no open P1/P2 blockers;
-- full repository validation passes from clean checkout;
-- fresh independent SDK remediation review reports zero P1/P2 findings;
-- fresh read-only Holm authority review accepts A2 at named current Holm commit;
-- `main` is clean/synced;
-- workflow stops before any Issue `#007` implementation.
-
-## Review #025 disposition ledger
-
-| Finding | Disposition | Canonical section |
+| Slice | Result | Durable evidence |
 | --- | --- | --- |
-| P1-1 placeholder plan bodies | Resolved | Rows 1-6 now reference authored S01-S06 plans with executable strict-TDD instructions. |
-| P2-1 invalid validation command names | Resolved | Referenced plans use actual `package.json` scripts; queue remains thin and points to those canonical plans. |
-| P2-2 non-existent write ownership paths | Resolved | Referenced plans now bind ownership to existing `src/*` and `test/source/*` seams from Review `#024`. |
-| P3-1 slice ledger mismatch | Dispositioned | Issue `#016` metadata corrected to six slices; queue row count already six and unchanged. |
-| P3-2 `/api/cmd` omission | Resolved | S01 row points to plan explicitly covering `/api/cmd` command-envelope handling. |
+| S01 | done | implementation `a15b3df`, fix `da7cd8d`, independent approval |
+| S02 | done | implementation `5d0df5d`, independent approval |
+| S03 | source corrected; package implementation incomplete | source fix `5596d0b`; Review `#030` found stale tracked `dist/` |
+| S04 | not started | active Issue `#016` |
+| S05 | not started | active Issue `#016` |
+| S06 | not started | active Issue `#016` |
 
-## Run log
+The source suite passed `133/133`. Closeout exposed a separate size failure:
+`dist/transports/index.js` was `19,342` bytes against a `16,384`-byte budget.
 
-- 2026-07-15 06:18 IST: owner-facing closeout confirmed Queue `#002` remains
-  blocked at S03 after max fix cycles. `npm run ci` passed `133/133` source tests
-  and the license check but failed the size gate because
-  `dist/transports/index.js` is `19342` bytes against a `16384`-byte budget.
-  The implementation grant is exhausted; recovery requires separate owner
-  authorization and Issue `#007` remains forbidden.
-- 2026-07-15 02:35 IST: S03 fix attempt `05b` landed at `5596d0b`
-  with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
-  (`P1/P2/P3=0/1/0`) at review commit `4ed5d64`, canonical findings
-  `koder/reviews/030_a2r_s03_capability_extension_ownership_rereview_2/INDEX.md`.
-  S03 exhausted the max two fix cycles, so Queue `#002` is blocked at S03.
-- 2026-07-15 02:10 IST: S03 fix attempt `05a` landed at `4c2bff3`
-  with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
-  (`P1/P2/P3=0/1/0`) at review commit `2a06c0e`, canonical findings
-  `koder/reviews/029_a2r_s03_capability_extension_ownership_rereview/INDEX.md`.
-  Coordinator `05` is opening S03 fix cycle `2` without ingesting findings.
-- 2026-07-15 01:45 IST: S03 implementation attempt `05a` landed at `206b0e8`
-  with required validation exits `0`; fresh Pi review returned `needs_fixes`
-  (`P1/P2/P3=0/2/0`) at review commit `fe604d0`, canonical findings
-  `koder/reviews/028_a2r_s03_capability_extension_ownership/INDEX.md`.
-  Coordinator `05` is opening S03 fix attempt `05a` without ingesting findings.
-- 2026-07-15 01:14 IST: S02 implementation attempt `05a` landed at `5d0df5d`
-  with required validation exits `0`; fresh Pi review approved
-  (`P1/P2/P3=0/0/0`) with no canonical finding artifact. S02 is done;
-  coordinator `05` is opening S03 implementation.
-- 2026-07-15 00:50 IST: S01 fix attempt `05b` landed at `da7cd8d` with
-  required validation exits `0`; Harnex missed the task signal but ingested the
-  report after stop. Fresh Pi rereview approved (`P1/P2/P3=0/0/0`) with no
-  canonical finding artifact. S01 is done; coordinator `05` is opening S02
-  implementation.
-- 2026-07-15 00:23 IST: Recovery coordinator `05` resumed first unproven
-  phase S01 `fix` after adapter/config change to Claude (`sonnet`) via Harnex;
-  no phase-only commit.
-- 2026-07-15 00:16 IST: Recovery coordinator `04` retried S01 `fix` through
-  writable Codex legacy PTY with `--timeout 30`. Attempt `04` stopped at Codex
-  trust-prompt boot with no report/commit; attempt `04b` used hook-trust bypass
-  and YOLO mode but disconnected before task receipt with no report/commit. No
-  product WIP exists; the S01 `fix` phase circuit breaker remains open.
-- 2026-07-14 23:49 IST: S01 reconfigured writable Codex legacy-PTY fix launch
-  attempts `3a` and `3b` failed to register within Harnex timeouts (`5s`, then
-  `30s` with `--tmux`); no session, receipt, commit, or product WIP exists.
-  Reconfigured phase circuit breaker is open; row remains blocked at S01 `fix`.
-- 2026-07-14 23:46 IST: Recovery coordinator `03` moved S01 from blocked to
-  fixing after adapter/config/brief change to writable Codex legacy PTY; no
-  phase-only commit. Next proof required: S01 fix receipt/commit, then fresh
-  re-review.
-- 2026-07-14 23:24 IST: S01 fix attempts `1` and `2` were receipt-free
-  no-op/model-refusal attempts with no commits, opening the phase circuit
-  breaker. Row is blocked at `fix` pending adapter/config/brief change; findings
-  remain canonical only in `koder/reviews/027_a2r_s01_envelope_implementation/INDEX.md`.
-- 2026-07-14 23:22 IST: S01 review attempt `1` returned `needs_fixes`
-  (`P1/P2/P3=1/0/0`) at review commit `aa56435` with canonical findings in
-  `koder/reviews/027_a2r_s01_envelope_implementation/INDEX.md`; coordinator
-  dispatched fix attempt `1` without ingesting finding prose.
-- 2026-07-14 23:17 IST: S01 implementation attempt `1` completed at `a15b3df`
-  with required validation exits `0`; changed paths recorded in Harnex proof;
-  coordinator dispatched independent review attempt `1`.
-- 2026-07-14 23:08 IST: coordinator `01` opened S01 implementation attempt `1`
-  (`sdk-q002-S01-implement-a1`) from `ca368d6`; active process state only, no
-  phase-only metadata commit.
-- 2026-07-14 22:59 IST: owner authorized Queue `#002` for an unattended bounded
-  eight-hour blind-strict implementation window; stop at complete A2R acceptance,
-  timebox closeout, or a real blocker, and never begin Issue `#007`.
-- 2026-07-14: Review `#026` approved at commit `fc5c678` (`P1/P2/P3=0/0/0`); queue moved to `ready` with `execution_authorized: false`; next action: return for owner authorization.
-- 2026-07-14: owner requested delivery-first orchestration. Planning/metadata
-  moved to direct mode; Queue `#002` remains blind-strict only for separately
-  authorized implementation, with batched coordinator metadata, compact clean
-  review proof, no internal close commits, short monitor fences, and a
-  two-attempt circuit breaker.
+## Why the run stopped
 
-## Safety constraints
+The old queue contract capped each row at two semantic fix cycles. S03's final
+review reported stale generated output only, but the old contract counted that
+as another review failure and forced an owner return.
 
-- No release/publish/tag/deploy/cloud operations.
-- No Holm repo edits.
-- No Queue `#001` mutation.
-- No automatic continuation into A3.
+The upgraded koder-pattern now classifies missing generated artifacts,
+declarations, or size proof as **implementation incomplete**. Such omissions
+return to implementation and do not consume a semantic fix cycle. Future work
+must follow that rule rather than replay this queue's obsolete stop behavior.
+
+## Process disposition
+
+- Generic blind-orchestration law now lives only in the shared koder-pattern
+  skill at `~/Projects/pi/.pi/skills/koder-pattern/`.
+- SDK commit evidence and Reviews `#027`-`#030` remain historical truth.
+- `koder/analysis/001_q002_orchestration_efficiency/INDEX.md` records the run's
+  dispatch, token, adapter, commit, and plan-gate observations.
+- No future worker should replay S01/S02, reconstruct the old coordinator chain,
+  or require Queue `#002` authorization before continuing Issue `#016`.
+
+## Remaining product gate
+
+Issue `#016` remains complete only after S03-S05 product work, green full
+validation, one fresh integrated SDK review with no P1/P2 findings, and fresh
+read-only Holm-authority acceptance. Issue `#007` remains downstream of that
+product gate.

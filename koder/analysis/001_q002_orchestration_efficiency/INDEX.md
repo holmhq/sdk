@@ -1,5 +1,6 @@
 ---
 status: complete
+disposition: incorporated
 priority: P1
 issue: 016
 type: analysis
@@ -24,8 +25,23 @@ Provide a self-contained evidence package for an independent model to assess:
    SDK repository's queue/plan overlay;
 4. what should change before Queue `#002` recovery or a future unattended run.
 
-This is analysis, not authorization or an implementation plan. Queue `#002`
-remains blocked and no recovery window is active.
+This is analysis, not authorization or an implementation plan.
+
+## Disposition — 16 Jul 2026
+
+The owner reviewed this evidence and the main process corrections landed:
+
+- koder-pattern commit `b1b892f` consolidated delivery-first mode selection,
+  classified missing generated artifacts as implementation incomplete, added a
+  run-global process budget, and removed duplicated blind protocol;
+- koder-pattern commit `f60d64a` added the explicit automatic-dispatch model
+  policy;
+- the SDK removed its duplicate global execution/blind documents, retired Queue
+  `#002` as historical, and made Issue `#016` the direct active source.
+
+The metrics and hypotheses below remain historical evidence. Their original
+request for another process-review phase is superseded; the next action is
+product delivery under the simplified Issue `#016` contract.
 
 ## Repositories and immutable context
 
@@ -37,8 +53,10 @@ remains blocked and no recovery window is active.
   `d381613c65a6307adae56515f08ef650fb22dcb0`
 - Active issue: `koder/issues/016_a2_authority_conformance_remediation/INDEX.md`
 - Queue: `koder/queue/002_a2r_authority_conformance/INDEX.md`
-- Execution boundary: `koder/docs/EXECUTION.md`
-- Repo blind overlay: `koder/docs/BLIND_ORCHESTRATION.md`
+- Historical execution boundary at the SDK baseline: `koder/docs/EXECUTION.md`
+  (removed from current HEAD during disposition)
+- Historical repo blind overlay at the SDK baseline:
+  `koder/docs/BLIND_ORCHESTRATION.md` (removed from current HEAD during disposition)
 
 ### Koder-pattern source repository
 
@@ -473,16 +491,8 @@ semantic outcomes remain in Git.
 - No independent model has yet reviewed these observations or proposed the
   actual koder-pattern patch.
 
-## Recommended next action
+## Dispositioned next action
 
-Ask a fresh powerful model to review this artifact together with the referenced
-SDK and `~/Projects/pi` skill files, then produce a separate proposal or review
-that clearly divides:
-
-1. shared koder-pattern changes;
-2. SDK-specific overlay/plan corrections;
-3. Harnex adapter fixes;
-4. model-role recommendations supported by a small preflight benchmark.
-
-Do not restart Queue `#002` or edit the Pi repository solely from this analysis;
-those require explicit authorization and their own reviewed change scope.
+The process review is complete. Continue product work from Issue `#016` using
+direct owner-present execution; retain this artifact only as evidence for future
+koder-pattern or Harnex reliability work.

@@ -1,5 +1,5 @@
 ---
-status: blocked
+status: open
 priority: P1
 created: 2026-07-14
 updated: 2026-07-15
@@ -11,193 +11,125 @@ issue_kind: track
 slice_count: 6
 slices_done: 2
 source_review: ../../reviews/024_a2_holm_authority_conformance/INDEX.md
-context: Holm's authority review found four P1 and one P2 foundation defects that block A2 acceptance and all formal A3 work.
+context: Holm's authority review found four P1 and one P2 foundation defects that block A2 acceptance and formal A3 work.
 ---
 
 # Issue 016: A2 Authority and Conformance Remediation
 
 ## Problem
 
-SDK-side implementation and review completed A2, but the read-only Holm
-authority review at Review `#024` found protocol and security contradictions in
-the foundation:
+Review `#024` found five SDK/authority gaps beneath the planned app-facing API:
 
-- the transport layer does not decode Holm's canonical response envelopes;
-- caller partitions do not survive browser-session/token transitions safely,
-  and mutations do not react to caller changes;
-- public and extension code can replace runtime capability offers, while
-  extensions lack the narrow core invocation seam they need;
-- credentials can enter diagnostics and cache keys;
-- adapter response IDs are not correlated with requests.
+- canonical Holm success/error envelopes and response metadata were not decoded;
+- caller/session/token transitions could retain stale cache, query, mutation, or
+  in-flight results;
+- public and extension code could mutate runtime-owned capability offers;
+- credentials could enter diagnostics or cache identity;
+- adapter responses were not strictly correlated to requests.
 
-These are implementation/conformance gaps under approved decisions
-`D003`-`D006`, `D008`, `D011`, and `D015`; they do not authorize reopening A3 or
-inventing new Holm server semantics.
+These are implementation gaps under approved decisions `D003`-`D006`, `D008`,
+`D011`, and `D015`; they do not reopen A3 design or authorize invented Holm
+semantics.
 
 ## Authority baseline
 
-- SDK checkpoint: `fe37f8528eeca38007f575307e7f3e26f642b615`
+- SDK checkpoint reviewed: `fe37f8528eeca38007f575307e7f3e26f642b615`
 - Holm baseline used by A2: `11ceae0d88e9c800eb77916e3244fbd231ad81bb`
-- Holm HEAD reviewed by authority: `bdcc8cc51eccef9d9f195a2d35d5db1af39b1655`
-- Material authority drift between those Holm commits: none
-- Governing finding set:
-  [`Review #024`](../../reviews/024_a2_holm_authority_conformance/INDEX.md)
+- Holm HEAD used by Review `#024`: `bdcc8cc51eccef9d9f195a2d35d5db1af39b1655`
+- Governing finding set: [`Review #024`](../../reviews/024_a2_holm_authority_conformance/INDEX.md)
 
-Review `#023` remains historical SDK-side evidence. Review `#024` governs A2
-owner acceptance.
+Refresh live Holm evidence before final authority return; Holm remains read-only
+from this repository.
 
-## Blocker and authorization
+## Current state
 
-Planning and the initial bounded Queue `#002` implementation window are complete.
-S01 and S02 are done, but S03 exhausted two fix cycles and Review `#030` still
-reports `P1/P2/P3=0/1/0`. Closeout `npm run ci` also fails because
-`dist/transports/index.js` is `19342` bytes against its `16384`-byte budget.
+- S01 envelope conformance and S02 caller-transition safety are complete and
+  independently approved.
+- S03 semantic source findings are resolved at `5596d0b`. Review `#030` found
+  that tracked package artifacts were not regenerated, so S03 is
+  **implementation incomplete**, not semantically blocked.
+- The last closeout source run passed `133/133` tests. Full CI then exposed
+  `dist/transports/index.js` at `19,342` bytes against its `16,384`-byte budget.
+  That size regression must be diagnosed, reduced, or resolved by an explicit
+  evidence-backed budget decision.
+- Queue `#002` is a closed historical record of the exhausted unattended run;
+  it does not govern recovery. Owner-present continuation is direct and needs
+  no second blind-window authorization.
 
-No remediation window is active. The owner must review both blockers and
-separately authorize bounded blind-strict recovery from S03. Queue `#001` stays
-done and historical, and Issue `#007` must not start.
+## Execution approach
 
-## Required direction
+1. Continue serially on `main` from the first incomplete product gate.
+2. Use strict red → green → refactor for behavior changes.
+3. Treat each public source change as owning affected `dist/` JavaScript,
+   declarations, maps, package smoke tests, reproducibility, and size checks.
+4. Run one independent SDK review over the completed S03-S05 remediation batch,
+   then perform the fresh read-only Holm-authority return.
+5. Stop before Issue `#007`, publication, release, deploy, credentials, cloud
+   mutation, or edits to another repository.
 
-### 1. Holm transport protocol conformance
+The S01-S06 plan files are implementation references, not a mandatory worker
+chain. Update their assumptions when live source or validation proves them stale.
 
-Create source-pinned fixtures for canonical `{data,meta}` success and
-`{error:{code,message,details}}` failure envelopes. Preserve relevant response
-headers and explicitly model the `/api/cmd` HTTP-200 command envelope. Expand
-the Issue `#005` migration ledger to distinguish adopted behavior from intended
-redesign and deferral.
+## Remediation slices
 
-### 2. Caller partition lifecycle
+| Slice | Status | Capability / next proof |
+| --- | --- | --- |
+| S01 | done | Holm `{data,meta}` / `{error}` / headers / `/api/cmd` conformance; approved at `da7cd8d` |
+| S02 | done | caller epoch plus cache/query/mutation/in-flight fencing; approved at `5d0df5d` |
+| S03 | implementation incomplete | regenerate package artifacts, verify read-only public capability surface, resolve size gate |
+| S04 | ready | structural credential redaction and opaque non-secret cache identity |
+| S05 | ready | request/response correlation plus explicit duplicate/late handling |
+| S06 | pending | full clean validation, integrated SDK review, fresh Holm-authority acceptance |
 
-Restore a provider-owned, deterministic, non-secret partition fingerprint or
-epoch. Caller changes must synchronously fence old data across transport cache,
-queries, mutations, and in-flight work. Cover browser sessions, explicit tokens,
-operators, agents, app changes, and future scope changes without moving server
-authorization into the SDK.
+## Required behavior
 
-### 3. Capability and extension control plane
+### Holm protocol conformance
 
-Expose a read-only capability view publicly. Keep runtime offer replacement
-private to core/runtime ownership, constrain extension-local offers to
-`sdk.*`, and provide extensions a narrow lifecycle/cancellation/caller-aware
-invocation function. No client or extension may manufacture a `holm.*` offer.
+Preserve canonical success/error/meta/header behavior and the HTTP-200
+`/api/cmd` command-envelope exception with source-pinned fixtures.
 
-### 4. Secret-safe diagnostics and cache identity
+### Caller isolation
 
-Represent auth/query/path sensitivity structurally. Redact exact proof headers
-and sensitive URL components; keep raw credentials out of cache keys,
-diagnostics, snapshots, serialized errors, and observational hooks. Preserve
-deterministic partitioning without using a credential as identity material.
+Caller changes must synchronously fence old data and late work across transport
+cache, queries, mutations, browser sessions, explicit tokens, operators, agents,
+apps, and future scope changes without moving server authorization into the SDK.
 
-### 5. Correlation, provenance, and final authority return
+### Capability ownership
 
-Validate response/request ID correlation and diagnose duplicate/late mailbox
-responses. Reconcile generated artifact source provenance with the approved
-contract, run the complete source/type/declaration/dist/repro/license/size gate,
-obtain independent SDK re-review, and return to Holm authority at current HEAD.
+Public consumers receive a read-only capability view. Runtime offer replacement
+stays private; extension-local offers are constrained to `sdk.*`; extensions
+invoke through the narrow lifecycle/cancellation/caller-aware core seam.
 
-## Slice Ledger
+### Secret-safe identity and observability
 
-| Slice | Status | Finding | Expected proof | Closure gate |
-| --- | --- | --- | --- | --- |
-| Holm envelope/error/meta/header conformance and migration ledger | done | `P1-1` | implementation `a15b3df`, fix `da7cd8d`, rereview approve (`P1/P2/P3=0/0/0`) | complete |
-| Caller epoch, cache/query/mutation reset, and late-result fencing | done | `P1-2` | implementation `5d0df5d`, review approve (`P1/P2/P3=0/0/0`) | complete |
-| Read-only capabilities and narrow extension invocation | blocked at Queue #002 S03 | `P1-3` | fix `5596d0b` + rereview `4ed5d64` (`P1/P2/P3=0/1/0`) | canonical findings in `koder/reviews/030_a2r_s03_capability_extension_ownership_rereview_2/INDEX.md`; max two fix cycles exhausted |
-| Structural credential redaction and opaque cache identity | candidate | `P1-4` | arbitrary-header/query/path secret tests | no proof appears in public observability surfaces |
-| Response correlation, artifact provenance, and final review | candidate | `P2-1` + note | mismatch tests + full clean validation + two reviews | SDK and Holm authority approve A2 |
+Sensitivity is structural. Exact auth headers and sensitive URL components are
+redacted, and raw credentials never enter cache keys, diagnostics, snapshots,
+serialized errors, or observational hooks.
 
-## Queue #002 implementation checkpoint
+### Correlation and provenance
 
-- 2026-07-15 06:18 IST: closeout `npm run ci` passed `133/133` source tests and
-  the license check but failed the transport artifact size budget (`19342` >
-  `16384` bytes). Together with Review `#030`, this is the owner recovery gate.
-- 2026-07-15 02:35 IST: S03 fix attempt `05b` landed at `5596d0b`
-  with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
-  (`P1/P2/P3=0/1/0`) at review commit `4ed5d64`, canonical findings
-  `koder/reviews/030_a2r_s03_capability_extension_ownership_rereview_2/INDEX.md`.
-  S03 exhausted the max two fix cycles, so Queue `#002` is blocked at S03.
-- 2026-07-15 02:10 IST: S03 fix attempt `05a` landed at `4c2bff3`
-  with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
-  (`P1/P2/P3=0/1/0`) at review commit `2a06c0e`, canonical findings
-  `koder/reviews/029_a2r_s03_capability_extension_ownership_rereview/INDEX.md`.
-  Coordinator `05` is opening S03 fix cycle `2` without ingesting findings.
-- 2026-07-15 01:45 IST: S03 implementation attempt `05a` landed at `206b0e8`
-  with required validation exits `0`; fresh Pi review returned `needs_fixes`
-  (`P1/P2/P3=0/2/0`) at review commit `fe604d0`, canonical findings
-  `koder/reviews/028_a2r_s03_capability_extension_ownership/INDEX.md`.
-  Coordinator `05` is opening S03 fix attempt `05a` without ingesting findings.
-- 2026-07-15 01:14 IST: S02 implementation attempt `05a` landed at `5d0df5d`
-  with required validation exits `0`; fresh Pi review approved
-  (`P1/P2/P3=0/0/0`) with no canonical finding artifact. S02 is done;
-  coordinator `05` is opening S03 implementation.
-- 2026-07-15 00:50 IST: S01 fix attempt `05b` landed at `da7cd8d` with
-  required validation exits `0`; fresh Pi rereview approved (`P1/P2/P3=0/0/0`)
-  with no canonical finding artifact. S01 is done; coordinator `05` is opening
-  S02 implementation.
-- 2026-07-15 00:23 IST: Recovery coordinator `05` resumed first unproven
-  phase S01 `fix` after adapter/config change to Claude (`sonnet`) via Harnex;
-  no phase-only commit.
-- 2026-07-15 00:16 IST: Recovery coordinator `04` attempted S01 `fix` routing
-  twice through writable Codex legacy PTY with `--timeout 30`. Attempt `04`
-  stopped at a CLI trust-prompt boot, and attempt `04b` disconnected before task
-  receipt despite hook-trust bypass/YOLO mode; neither wrote a report, commit,
-  or product WIP. The S01 `fix` phase circuit breaker remains open.
-- 2026-07-14 23:49 IST: Recovery coordinator `03` attempted reconfigured S01
-  `fix` routing through writable Codex legacy PTY twice. Both launches failed
-  to register with Harnex before worker ownership began; no session, receipt,
-  commit, or product WIP exists. The reconfigured phase circuit breaker is open.
-- 2026-07-14 23:46 IST: Recovery coordinator `03` resumed at first unproven
-  phase S01 `fix` after changing worker adapter/config/brief to writable Codex
-  legacy PTY. No phase-only metadata commit was created.
-- 2026-07-14 23:24 IST: S01 reached implementation commit `a15b3df`
-  with row validation passing, then independent review commit `aa56435` returned
-  `needs_fixes` (`P1/P2/P3=1/0/0`) at
-  `koder/reviews/027_a2r_s01_envelope_implementation/INDEX.md`. The coordinator
-  did not ingest finding prose. Two subsequent fix phase attempts produced no
-  receipt and no commit due model/transport refusal, opening the phase circuit
-  breaker. Next phase is S01 `fix` after adapter/config/brief change.
+Response IDs must match requests. Duplicate and late mailbox responses are
+handled explicitly. Generated artifacts must be reproducible from the reviewed
+source and expose the same public contract.
 
-## Acceptance Criteria
+## Acceptance criteria
 
-- [ ] Review `#024` P1-1 through P1-4 and P2-1 are each mapped to reviewed,
-      queueable strict-TDD plans.
-- [ ] Every implementation slice preserves red -> green -> refactor evidence and
-      receives independent implementation review before the next dependent
-      slice.
-- [ ] Actual Holm success, metadata, error, and `/api/cmd` exception fixtures are
-      source-pinned and pass against source plus generated artifacts.
-- [ ] Browser-session, token, operator, agent, app, and scope-transition tests
-      prove old cache/resource data and late results cannot cross callers.
-- [ ] Public consumers and extensions cannot replace or fabricate `holm.*`
-      offers; extensions can invoke only through the narrow core seam.
-- [ ] Credentials are absent from public envelopes, snapshots, diagnostics,
-      serialized errors, cache keys, and observational hooks.
-- [ ] Mismatched response IDs fail as protocol errors; late/duplicate mailbox
-      behavior is explicit and tested.
-- [ ] Issue `#005` migration evidence and generated artifact provenance satisfy
-      the approved architecture contract.
-- [ ] `npm run ci`, coverage, core typecheck, source/types/declarations/dist,
-      reproducibility, license, and size checks all pass from a clean checkout.
-- [ ] A fresh independent SDK review approves the remediation with no P1/P2
-      findings.
-- [ ] A fresh Holm authority review accepts A2 at a named current Holm commit.
-- [ ] Queue `#001` remains historical, npm remains private, and no Issue `#007+`
-      implementation begins under this issue.
+- [ ] S03 package JavaScript, declarations, maps, and exports match corrected source.
+- [ ] Transport artifact size gate passes, or an explicit reviewed budget change is justified.
+- [ ] Credential leakage tests cover arbitrary auth headers and sensitive query/path material.
+- [ ] Cache and public observability surfaces contain no raw credentials.
+- [ ] Mismatched response IDs fail; duplicate/late response behavior is deterministic and tested.
+- [ ] `npm run build` and `npm run ci` pass from a clean checkout.
+- [ ] One fresh independent SDK review reports no P1/P2 findings.
+- [ ] A fresh read-only Holm authority review accepts A2 at a named current commit.
+- [ ] Existing Holm SDK/state packages remain operational and npm remains private.
+- [ ] Issue `#007` has not begun under this issue.
 
-## Owner decision carried into later A3 planning
+## Non-goals
 
-Issue `#016` does not decide whether `app.auth.me()` remains an app-owned
-`/api/me` convention, becomes a Holm platform route, or is deferred. Record that
-decision during eventual Issue `#007` planning after A2 is accepted.
-
-## Non-Goals
-
-- Implementing or planning Issues `#007`-`#015`.
-- Adding Holm action discovery, private realtime, presence, app scopes,
-  collaboration, desktop, or mobile capabilities.
-- Editing Holm, deleting its current SDK/state packages, or inventing a second
-  server protocol.
-- Publishing npm, tagging, releasing, deploying, using credentials, or creating
+- Planning or implementing Issues `#007`-`#015`.
+- Adding action discovery, private realtime, presence, app scopes,
+  collaboration, desktop, or mobile claims.
+- Editing Holm or inventing a second server protocol.
+- Publishing, tagging, releasing, deploying, using credentials, or creating
   cloud resources.
-- Reopening approved architecture decisions unless a remediation worker proves
-  an actual contradiction and stops for owner review.
