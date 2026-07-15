@@ -56,6 +56,7 @@ process.stderr.write(coverage.stderr);
 
 const reportLines = coverage.stdout
   .split("\n")
+  .map(stripAnsi)
   .filter((line) => line.startsWith("ℹ "))
   .filter((line) =>
     line.includes("coverage report") ||
@@ -116,6 +117,10 @@ if (thresholdFailures.length > 0) {
 
 console.log(`Coverage metrics: statements=${formatPercent(measuredCoverage.statements)} lines=${formatPercent(measuredCoverage.lines)} functions=${formatPercent(measuredCoverage.functions)} branches=${formatPercent(measuredCoverage.branches)} changed_reachable=${formatPercent(measuredCoverage.changed_reachable)}`);
 console.log("Coverage check passed at measured coverage thresholds.");
+
+function stripAnsi(value) {
+  return value.replace(/\u001B\[[0-?]*[ -/]*[@-~]/g, "");
+}
 
 function parseNativeCoverageMetrics(lines) {
   const allFiles = lines.find((line) => line.trimStart().startsWith("all files"));
