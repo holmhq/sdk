@@ -1,5 +1,5 @@
 ---
-updated_at: "15 Jul 2026 | 06:18 AM IST"
+updated_at: "15 Jul 2026 | 10:21 AM IST"
 state: BLOCKED
 active_window: none
 pending_window: A2R-recovery
@@ -34,12 +34,20 @@ stop_gate: "Queue #002 stopped at S03 after two fix cycles and Review #030 still
   `16384`-byte budget. The source suite itself passed `133/133` tests.
 - A2 acceptance still requires S03 resolution, S04-S06, full green validation,
   independent SDK approval, and fresh read-only Holm-authority acceptance.
+- Queue `#002` time/token/cost, model, adapter, plan-gate, commit, and autonomy
+  observations are filed for independent review at
+  `koder/analysis/001_q002_orchestration_efficiency/INDEX.md`. The reusable
+  koder-pattern skill resides in `~/Projects/pi/.pi/skills/koder-pattern/`;
+  that repository was observed only and was not changed here.
 
 ## Future
 
-1. Owner reviews Review `#030` and the transport size regression, then decides
+1. A fresh powerful model reviews Analysis `#001` with the referenced SDK and
+   `~/Projects/pi` skill sources, then separates shared-skill, SDK-overlay,
+   Harnex-adapter, and model-role recommendations.
+2. Owner reviews Review `#030` and the transport size regression, then decides
    whether to authorize a bounded Queue `#002` recovery from S03.
-2. If authorized, resume the existing queue without more planning, resolve S03,
+3. If authorized, resume the existing queue without more planning, resolve S03,
    then execute S04-S06 through the same blind-strict boundaries.
-3. Return at the complete A2R acceptance gate. Do not begin Issue `#007`,
+4. Return at the complete A2R acceptance gate. Do not begin Issue `#007`,
    publish, release, deploy, use credentials, or mutate another repository.
