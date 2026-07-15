@@ -4,9 +4,11 @@ import {
   type CacheSourceIdentity,
 } from "../core/cache-key.js";
 import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
+import { serializeHolmError, type SerializedHolmError } from "../core/errors.js";
 import type { Clock, OperationResponse, ScheduledTask, Scheduler } from "../core/runtime.js";
-import { copyWireValue, type WireValue } from "../core/wire-value.js";
-import type { TransportHeaders, TransportRequest } from "./index.js";
+import { copyWireValue } from "../core/wire-value.js";
+import type { RedactedTransportDiagnostic, TransportRequest } from "./index.js";
+import { redactTransportRequestMetadata } from "./sensitivity.js";
 
 export type TransportCacheMode = "default" | "reload" | "no-store";
 export type TransportCacheInvalidationReason = "explicit" | "mutation";
@@ -46,8 +48,10 @@ export interface TransportCacheInvalidationResult {
   readonly keys: readonly string[];
 }
 
-export interface TransportCacheUpdateEvent extends TransportCacheKeyInput {
+export interface TransportCacheUpdateEvent {
   readonly key: string;
+  readonly partition: TransportCachePartition;
+  readonly request: RedactedTransportDiagnostic;
   readonly tags: readonly string[];
   readonly storedAt: number;
   readonly expiresAt: number;
@@ -61,10 +65,12 @@ export interface TransportCacheInvalidationEvent extends TransportCacheInvalidat
   readonly partition?: TransportCachePartition;
 }
 
-export interface TransportCacheBackgroundErrorEvent extends TransportCacheKeyInput {
+export interface TransportCacheBackgroundErrorEvent {
   readonly key: string;
+  readonly partition: TransportCachePartition;
+  readonly request: RedactedTransportDiagnostic;
   readonly tags: readonly string[];
-  readonly error: unknown;
+  readonly error: SerializedHolmError;
 }
 
 export interface TransportCacheOptions {
@@ -383,7 +389,7 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
     const event = Object.freeze({
       key,
       partition: entry.partition,
-      request: entry.request,
+      request: redactTransportRequestMetadata(entry.request),
       tags: entry.tags,
       storedAt: entry.storedAt,
       expiresAt: entry.expiresAt,
@@ -428,9 +434,9 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
     const event = Object.freeze({
       key: input.key,
       partition: input.partition,
-      request: input.request,
+      request: redactTransportRequestMetadata(input.request),
       tags: input.tags,
-      error,
+      error: serializeHolmError(error),
     }) satisfies TransportCacheBackgroundErrorEvent;
     notifyHook("transport_cache_background_error_hook_error", () => options.onBackgroundError?.(event));
     options.diagnostics?.emit({
@@ -442,7 +448,7 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
       details: {
         key: input.key,
         partition: input.partition,
-        request: redactCacheDiagnosticRequest(input.request),
+        request: redactTransportRequestMetadata(input.request),
         tags: input.tags,
       },
       error,
@@ -605,33 +611,10 @@ function diagnosticDetailsForEntry(key: string, entry: CacheEntry): unknown {
   return Object.freeze({
     key,
     partition: entry.partition,
-    request: redactCacheDiagnosticRequest(entry.request),
+    request: redactTransportRequestMetadata(entry.request),
     tags: entry.tags,
     storedAt: entry.storedAt,
     expiresAt: entry.expiresAt,
     staleUntil: entry.staleUntil,
   });
-}
-
-function redactCacheDiagnosticRequest(request: TransportRequest): WireValue {
-  return Object.freeze({
-    method: request.method,
-    url: request.url,
-    params: request.params,
-    headers: redactHeaders(request.headers),
-    responseMode: request.responseMode,
-    ...(request.timeoutMs === undefined ? {} : { timeoutMs: request.timeoutMs }),
-  });
-}
-
-function redactHeaders(headers: TransportHeaders): TransportHeaders {
-  const output: Record<string, string> = {};
-  for (const key of Object.keys(headers).sort()) {
-    output[key] = isSensitiveHeader(key) ? "[redacted]" : headers[key] as string;
-  }
-  return Object.freeze(output);
-}
-
-function isSensitiveHeader(name: string): boolean {
-  return /authorization|cookie|credential|password|secret|token|x-api-key/i.test(name);
 }

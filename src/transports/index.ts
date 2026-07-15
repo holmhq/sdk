@@ -69,11 +69,29 @@ import {
   type WireObject,
   type WireValue,
 } from "../core/wire-value.js";
+import {
+  addSensitiveTransportHeader,
+  createOpaqueTransportKey,
+  normalizeTransportSensitivity,
+  redactTransportRequestMetadata,
+} from "./sensitivity.js";
 
 export type TransportResponseMode = "json" | "raw" | "binary";
 export type TransportMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS" | string;
 export type TransportHeaders = { readonly [name: string]: string };
 export type TransportParams = { readonly [name: string]: string | number | boolean | null };
+
+export interface TransportSensitivityInput {
+  readonly url?: boolean;
+  readonly params?: readonly string[];
+  readonly headers?: readonly string[];
+}
+
+export interface TransportSensitivity {
+  readonly url: boolean;
+  readonly params: readonly string[];
+  readonly headers: readonly string[];
+}
 
 export interface JsonTransportBody {
   readonly mode: "json";
@@ -100,6 +118,7 @@ export interface TransportRequestInput {
   readonly body?: TransportBodyInput;
   readonly responseMode?: TransportResponseMode;
   readonly timeoutMs?: number;
+  readonly sensitive?: TransportSensitivityInput;
 }
 
 export interface TransportRequest {
@@ -110,6 +129,7 @@ export interface TransportRequest {
   readonly body?: TransportBody;
   readonly responseMode: TransportResponseMode;
   readonly timeoutMs?: number;
+  readonly sensitive: TransportSensitivity;
 }
 
 export type TransportBodyInput =
@@ -237,18 +257,12 @@ export function createTransportRequest(input: TransportRequestInput): TransportR
     ...(input.body === undefined ? {} : { body: normalizeBody(input.body) }),
     responseMode,
     ...(input.timeoutMs === undefined ? {} : { timeoutMs: input.timeoutMs }),
+    sensitive: normalizeTransportSensitivity(input.sensitive),
   });
 }
 
 export function canonicalTransportKey(request: TransportRequest): string {
-  return canonicalEncodeWireValue({
-    method: request.method,
-    url: request.url,
-    params: request.params,
-    responseMode: request.responseMode,
-    ...(request.body === undefined ? {} : { body: transportBodyKey(request.body) }),
-    ...(request.timeoutMs === undefined ? {} : { timeoutMs: request.timeoutMs }),
-  });
+  return createOpaqueTransportKey(request);
 }
 
 export function encodeTransportBody(body: TransportBodyInput): EncodedTransportBody {
@@ -299,6 +313,7 @@ export async function applyTransportAuth(
   const authenticated = Object.freeze({
     ...request,
     headers: applyProofToHeaders(request.headers, privateProof),
+    sensitive: applyProofSensitivity(request.sensitive, privateProof),
   }) satisfies TransportRequest;
   return Object.freeze({
     request: authenticated,
@@ -308,15 +323,7 @@ export async function applyTransportAuth(
 }
 
 export function redactTransportRequest(request: TransportRequest): RedactedTransportDiagnostic {
-  return Object.freeze({
-    method: request.method,
-    url: request.url,
-    params: request.params,
-    headers: redactHeaders(request.headers),
-    ...(request.body === undefined ? {} : { body: redactBody(request.body) }),
-    responseMode: request.responseMode,
-    ...(request.timeoutMs === undefined ? {} : { timeoutMs: request.timeoutMs }),
-  });
+  return redactTransportRequestMetadata(request);
 }
 
 export function redactAuthenticatedTransport(applied: AuthenticatedTransportRequest): RedactedTransportDiagnostic {
@@ -404,17 +411,6 @@ function validateTimeout(timeoutMs: number | undefined): void {
   }
 }
 
-function transportBodyKey(body: TransportBody): WireValue {
-  switch (body.mode) {
-    case "json":
-      return Object.freeze({ mode: "json", value: body.value });
-    case "raw":
-      return Object.freeze({ mode: "raw", value: body.value });
-    case "binary":
-      return Object.freeze({ mode: "binary", value: body.value });
-  }
-}
-
 function normalizeAuthProof(proof: TransportAuthProof): TransportAuthProof {
   switch (proof.kind) {
     case "web-session":
@@ -440,6 +436,20 @@ function applyProofToHeaders(headers: TransportHeaders, proof: TransportAuthProo
   }
 }
 
+function applyProofSensitivity(
+  sensitivity: TransportSensitivity,
+  proof: TransportAuthProof,
+): TransportSensitivity {
+  switch (proof.kind) {
+    case "web-session":
+      return sensitivity;
+    case "bearer":
+      return addSensitiveTransportHeader(sensitivity, "authorization");
+    case "header":
+      return addSensitiveTransportHeader(sensitivity, proof.name);
+  }
+}
+
 function redactAuthProof(proof: TransportAuthProof): RedactedTransportAuthProof {
   switch (proof.kind) {
     case "web-session":
@@ -449,29 +459,6 @@ function redactAuthProof(proof: TransportAuthProof): RedactedTransportAuthProof 
     case "header":
       return Object.freeze({ kind: "header", header: normalizeHeaderName(proof.name) });
   }
-}
-
-function redactHeaders(headers: TransportHeaders): TransportHeaders {
-  const output: Record<string, string> = {};
-  for (const key of Object.keys(headers).sort()) {
-    output[key] = isSensitiveHeader(key) ? "[redacted]" : headers[key] as string;
-  }
-  return Object.freeze(output);
-}
-
-function redactBody(body: TransportBody): WireValue {
-  switch (body.mode) {
-    case "json":
-      return Object.freeze({ mode: "json", value: "[redacted]" });
-    case "raw":
-      return Object.freeze({ mode: "raw", value: "[redacted]" });
-    case "binary":
-      return Object.freeze({ mode: "binary", byteLength: body.value.byteLength });
-  }
-}
-
-function isSensitiveHeader(name: string): boolean {
-  return /authorization|cookie|credential|password|secret|token|x-api-key/i.test(name);
 }
 
 function normalizeHeaderName(name: string): string {

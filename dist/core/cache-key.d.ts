@@ -10,5 +10,6 @@ export interface CallerPartitionedCacheKeyInput {
     readonly namespace?: string;
 }
 export declare function createCallerPartitionedCacheKey(input: CallerPartitionedCacheKeyInput): string;
+export declare function createOpaqueCacheIdentity(value: unknown): string;
 export declare function normalizeCacheSourceIdentity(source: CacheSourceIdentity): CacheSourceIdentity;
 //# sourceMappingURL=cache-key.d.ts.map

@@ -11,6 +11,7 @@ import { createFakeClock } from "../../../src/test/index.js";
 import {
   createTransportCache,
   createTransportRequest,
+  type TransportCacheBackgroundErrorEvent,
   type TransportCacheInvalidationEvent,
   type TransportCachePartition,
   type TransportCachePolicy,
@@ -156,6 +157,51 @@ test("transport cache returns immutable public copies without exposing canonical
 
   assert.notEqual(first, second);
   assert.deepEqual(second.payload, { nested: { label: "canonical" }, count: 1 });
+});
+
+test("transport cache observational hooks receive only redacted request and error metadata", async () => {
+  const fake = createFakeClock();
+  const updates: TransportCacheUpdateEvent[] = [];
+  const backgroundErrors: TransportCacheBackgroundErrorEvent[] = [];
+  const sensitiveRequest = createTransportRequest({
+    method: "GET",
+    url: "/api/invitations/path-hook-secret",
+    params: { access: "query-hook-secret", visible: "kept" },
+    headers: { "x-holm-proof": "header-hook-secret", "x-trace": "trace-1" },
+    responseMode: "json",
+    sensitive: { url: true, params: ["access"], headers: ["x-holm-proof"] },
+  });
+  const cache = createTransportCache({
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    maxEntries: 2,
+    onUpdate: (event) => updates.push(event),
+    onBackgroundError: (event) => backgroundErrors.push(event),
+  });
+
+  await cache.getOrLoad(
+    { partition, request: sensitiveRequest, policy: { ttlMs: 1, swrMs: 100 } },
+    async () => response("req-hook-1", { version: 1 }),
+  );
+  fake.advanceBy(2);
+  await cache.getOrLoad(
+    { partition, request: sensitiveRequest, policy: { ttlMs: 1, swrMs: 100 } },
+    async () => {
+      throw new Error("background-error-hook-secret");
+    },
+  );
+  fake.scheduler.runDue();
+  await flushBackground();
+
+  assert.equal(updates.length, 1);
+  assert.equal(backgroundErrors.length, 1);
+  assert.equal(updates[0]?.request.url, "[redacted]");
+  assert.deepEqual(updates[0]?.request.params, { access: "[redacted]", visible: "kept" });
+  assert.deepEqual(updates[0]?.request.headers, { "x-holm-proof": "[redacted]", "x-trace": "trace-1" });
+  assert.equal(JSON.stringify([updates, backgroundErrors]).includes("path-hook-secret"), false);
+  assert.equal(JSON.stringify([updates, backgroundErrors]).includes("query-hook-secret"), false);
+  assert.equal(JSON.stringify([updates, backgroundErrors]).includes("header-hook-secret"), false);
+  assert.equal(JSON.stringify([updates, backgroundErrors]).includes("background-error-hook-secret"), false);
 });
 
 test("transport cache diagnostics observe background SWR errors with redacted request evidence", async () => {

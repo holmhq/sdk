@@ -47,16 +47,17 @@ test("transport node token auth resolves fresh bearer proof and redacts diagnost
 
 
 
-test("transport generic header auth applies private proof and redacted header diagnostics", async () => {
+test("transport generic header auth structurally redacts arbitrary proof header names", async () => {
   const request = createTransportRequest({ method: "GET", url: "/api/header", responseMode: "json" });
   const applied = await applyTransportAuth(request, {
-    current: () => ({ kind: "header", name: "X-Api-Key", value: "header-secret" }),
+    current: () => ({ kind: "header", name: "X-Holm-Proof", value: "header-secret" }),
   });
 
-  assert.equal(applied.request.headers["x-api-key"], "header-secret");
+  assert.equal(applied.request.headers["x-holm-proof"], "header-secret");
   assert.equal(applied.privateProof?.kind, "header");
-  assert.deepEqual(applied.diagnostic.auth, { kind: "header", header: "x-api-key" });
-  assert.deepEqual(applied.diagnostic.headers, { "x-api-key": "[redacted]" });
+  assert.deepEqual(applied.diagnostic.auth, { kind: "header", header: "x-holm-proof" });
+  assert.deepEqual(applied.diagnostic.headers, { "x-holm-proof": "[redacted]" });
+  assert.equal(JSON.stringify(applied.diagnostic).includes("header-secret"), false);
 });
 
 test("transport auth rejects invalid provider proofs at the auth boundary", async () => {

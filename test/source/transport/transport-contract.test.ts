@@ -87,6 +87,14 @@ test("transport contracts validate invalid inputs and default optional fields", 
     () => createTransportRequest({ method: "GET", url: "/api", responseMode: "json", timeoutMs: -1 }),
     /timeout/,
   );
+  assert.throws(
+    () => createTransportRequest({ method: "GET", url: "/api", sensitive: { headers: [" "] } }),
+    /Sensitive transport header/,
+  );
+  assert.throws(
+    () => createTransportRequest({ method: "GET", url: "/api", sensitive: { params: [" "] } }),
+    /Sensitive transport param/,
+  );
   assert.throws(() => encodeTransportBody({ mode: "raw", value: 1 as never }), /Raw transport body/);
 });
 
@@ -104,8 +112,8 @@ test("transport canonical keys and redaction cover raw and binary body modes", (
     responseMode: "binary",
   });
 
-  assert.equal(canonicalTransportKey(raw).includes("secret raw"), true);
-  assert.equal(canonicalTransportKey(binary).includes("Bwg="), true);
+  assert.equal(canonicalTransportKey(raw).includes("secret raw"), false);
+  assert.equal(canonicalTransportKey(binary).includes("Bwg="), false);
   assert.deepEqual(redactTransportRequest(raw).body, { mode: "raw", value: "[redacted]" });
   assert.deepEqual(redactTransportRequest(binary).body, { mode: "binary", byteLength: 2 });
 });

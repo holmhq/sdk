@@ -4,6 +4,7 @@ export { UploadError, composeResumableUpload, createReadonlyBytesUploadSource, c
 import { CancelledError } from "../core/cancellation.js";
 import { HolmError } from "../core/errors.js";
 import { canonicalEncodeWireValue, copyWireValue, createReadonlyBytes, } from "../core/wire-value.js";
+import { addSensitiveTransportHeader, createOpaqueTransportKey, normalizeTransportSensitivity, redactTransportRequestMetadata, } from "./sensitivity.js";
 export class TransportError extends HolmError {
     constructor(options = {}) {
         super({
@@ -32,17 +33,11 @@ export function createTransportRequest(input) {
         ...(input.body === undefined ? {} : { body: normalizeBody(input.body) }),
         responseMode,
         ...(input.timeoutMs === undefined ? {} : { timeoutMs: input.timeoutMs }),
+        sensitive: normalizeTransportSensitivity(input.sensitive),
     });
 }
 export function canonicalTransportKey(request) {
-    return canonicalEncodeWireValue({
-        method: request.method,
-        url: request.url,
-        params: request.params,
-        responseMode: request.responseMode,
-        ...(request.body === undefined ? {} : { body: transportBodyKey(request.body) }),
-        ...(request.timeoutMs === undefined ? {} : { timeoutMs: request.timeoutMs }),
-    });
+    return createOpaqueTransportKey(request);
 }
 export function encodeTransportBody(body) {
     const normalized = normalizeBody(body);
@@ -85,6 +80,7 @@ export async function applyTransportAuth(request, provider) {
     const authenticated = Object.freeze({
         ...request,
         headers: applyProofToHeaders(request.headers, privateProof),
+        sensitive: applyProofSensitivity(request.sensitive, privateProof),
     });
     return Object.freeze({
         request: authenticated,
@@ -93,15 +89,7 @@ export async function applyTransportAuth(request, provider) {
     });
 }
 export function redactTransportRequest(request) {
-    return Object.freeze({
-        method: request.method,
-        url: request.url,
-        params: request.params,
-        headers: redactHeaders(request.headers),
-        ...(request.body === undefined ? {} : { body: redactBody(request.body) }),
-        responseMode: request.responseMode,
-        ...(request.timeoutMs === undefined ? {} : { timeoutMs: request.timeoutMs }),
-    });
+    return redactTransportRequestMetadata(request);
 }
 export function redactAuthenticatedTransport(applied) {
     return applied.diagnostic;
@@ -178,16 +166,6 @@ function validateTimeout(timeoutMs) {
         throw new TypeError("Transport timeout must be a non-negative finite number.");
     }
 }
-function transportBodyKey(body) {
-    switch (body.mode) {
-        case "json":
-            return Object.freeze({ mode: "json", value: body.value });
-        case "raw":
-            return Object.freeze({ mode: "raw", value: body.value });
-        case "binary":
-            return Object.freeze({ mode: "binary", value: body.value });
-    }
-}
 function normalizeAuthProof(proof) {
     switch (proof.kind) {
         case "web-session":
@@ -211,6 +189,16 @@ function applyProofToHeaders(headers, proof) {
             return normalizeHeaders({ ...headers, [proof.name]: proof.value });
     }
 }
+function applyProofSensitivity(sensitivity, proof) {
+    switch (proof.kind) {
+        case "web-session":
+            return sensitivity;
+        case "bearer":
+            return addSensitiveTransportHeader(sensitivity, "authorization");
+        case "header":
+            return addSensitiveTransportHeader(sensitivity, proof.name);
+    }
+}
 function redactAuthProof(proof) {
     switch (proof.kind) {
         case "web-session":
@@ -220,26 +208,6 @@ function redactAuthProof(proof) {
         case "header":
             return Object.freeze({ kind: "header", header: normalizeHeaderName(proof.name) });
     }
-}
-function redactHeaders(headers) {
-    const output = {};
-    for (const key of Object.keys(headers).sort()) {
-        output[key] = isSensitiveHeader(key) ? "[redacted]" : headers[key];
-    }
-    return Object.freeze(output);
-}
-function redactBody(body) {
-    switch (body.mode) {
-        case "json":
-            return Object.freeze({ mode: "json", value: "[redacted]" });
-        case "raw":
-            return Object.freeze({ mode: "raw", value: "[redacted]" });
-        case "binary":
-            return Object.freeze({ mode: "binary", byteLength: body.value.byteLength });
-    }
-}
-function isSensitiveHeader(name) {
-    return /authorization|cookie|credential|password|secret|token|x-api-key/i.test(name);
 }
 function normalizeHeaderName(name) {
     const normalized = name.trim().toLowerCase();

@@ -1,7 +1,8 @@
 import { type CacheSourceIdentity } from "../core/cache-key.js";
 import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
+import { type SerializedHolmError } from "../core/errors.js";
 import type { Clock, OperationResponse, Scheduler } from "../core/runtime.js";
-import type { TransportRequest } from "./index.js";
+import type { RedactedTransportDiagnostic, TransportRequest } from "./index.js";
 export type TransportCacheMode = "default" | "reload" | "no-store";
 export type TransportCacheInvalidationReason = "explicit" | "mutation";
 export interface TransportCachePolicy {
@@ -33,8 +34,10 @@ export interface TransportCacheInvalidationResult {
     readonly removed: number;
     readonly keys: readonly string[];
 }
-export interface TransportCacheUpdateEvent extends TransportCacheKeyInput {
+export interface TransportCacheUpdateEvent {
     readonly key: string;
+    readonly partition: TransportCachePartition;
+    readonly request: RedactedTransportDiagnostic;
     readonly tags: readonly string[];
     readonly storedAt: number;
     readonly expiresAt: number;
@@ -46,10 +49,12 @@ export interface TransportCacheInvalidationEvent extends TransportCacheInvalidat
     readonly prefixes: readonly string[];
     readonly partition?: TransportCachePartition;
 }
-export interface TransportCacheBackgroundErrorEvent extends TransportCacheKeyInput {
+export interface TransportCacheBackgroundErrorEvent {
     readonly key: string;
+    readonly partition: TransportCachePartition;
+    readonly request: RedactedTransportDiagnostic;
     readonly tags: readonly string[];
-    readonly error: unknown;
+    readonly error: SerializedHolmError;
 }
 export interface TransportCacheOptions {
     readonly clock: Clock;

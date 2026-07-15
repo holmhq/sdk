@@ -39,6 +39,7 @@ import {
   type TransportCachePartition,
   type TransportRequest,
   type TransportResponseMode,
+  type TransportSensitivityInput,
   type UploadCompletion,
   type UploadHandoff,
   type UploadProgressEvent,
@@ -136,10 +137,12 @@ stateRealtimeHook.supports.presence satisfies false;
 const stateRealtimeSnapshot = stateRealtimeHook.handle({ kind: "reconcile", data: { count: 2 } });
 const timeout = new TimeoutError({ timeoutMs: 1 });
 const responseMode: TransportResponseMode = "json";
+const transportSensitivity: TransportSensitivityInput = { url: true, params: ["access"], headers: ["x-proof"] };
 const transportRequest: TransportRequest = createTransportRequest({
   method: "GET",
   url: "/api/reports",
   responseMode,
+  sensitive: transportSensitivity,
 });
 const cachePolicy: TransportCachePolicy = { ttlMs: 100, swrMs: 25 };
 const cachePartition: TransportCachePartition = {
@@ -226,6 +229,7 @@ void webAuth;
 void nodeAuth;
 void decoded;
 void appliedTransport;
+void transportSensitivity;
 void uploadProgress;
 void uploaded;
 void uploadDiagnostic;

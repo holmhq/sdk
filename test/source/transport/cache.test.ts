@@ -8,9 +8,11 @@ import {
 } from "../../../src/core/index.js";
 import { createFakeClock } from "../../../src/test/index.js";
 import {
+  canonicalTransportKey,
   createTransportCache,
   createTransportCacheKey,
   createTransportRequest,
+  redactTransportRequest,
   type TransportCachePartition,
   type TransportCachePolicy,
 } from "../../../src/transports/index.js";
@@ -63,6 +65,42 @@ test("transport cache keys are deterministic, caller/source partitioned, and GET
       }),
     /body/,
   );
+});
+
+test("transport cache identity and diagnostics structurally protect sensitive URL, params, and headers", () => {
+  const firstRequest = createTransportRequest({
+    method: "GET",
+    url: "/api/invitations/path-secret-a",
+    params: { access: "query-secret-a", visible: "kept" },
+    headers: { "x-holm-proof": "header-secret-a", "x-trace": "trace-1" },
+    sensitive: { url: true, params: ["access"], headers: ["x-holm-proof"] },
+  });
+  const secondRequest = createTransportRequest({
+    method: "GET",
+    url: "/api/invitations/path-secret-b",
+    params: { access: "query-secret-b", visible: "kept" },
+    headers: { "x-holm-proof": "header-secret-b", "x-trace": "trace-1" },
+    sensitive: { url: true, params: ["access"], headers: ["x-holm-proof"] },
+  });
+  const first = createTransportCacheKey({ partition, request: firstRequest });
+  const second = createTransportCacheKey({ partition, request: secondRequest });
+  const diagnostic = redactTransportRequest(firstRequest);
+  const serialized = JSON.stringify({ first, canonical: canonicalTransportKey(firstRequest), diagnostic });
+
+  assert.notEqual(first, second);
+  assert.equal(serialized.includes("path-secret-a"), false);
+  assert.equal(serialized.includes("query-secret-a"), false);
+  assert.equal(serialized.includes("header-secret-a"), false);
+  assert.equal(diagnostic.url, "[redacted]");
+  assert.deepEqual(diagnostic.params, { access: "[redacted]", visible: "kept" });
+  assert.deepEqual(diagnostic.headers, { "x-holm-proof": "[redacted]", "x-trace": "trace-1" });
+
+  const opaqueCoreKey = createCallerPartitionedCacheKey({
+    source: { id: "runtime-a" },
+    callerFingerprint: "caller:v1:alpha",
+    operation: { token: "core-operation-secret" },
+  });
+  assert.equal(opaqueCoreKey.includes("core-operation-secret"), false);
 });
 
 test("transport cache serves fresh immutable copies and partitions by caller and runtime source", async () => {

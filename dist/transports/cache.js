@@ -1,5 +1,7 @@
 import { createCallerPartitionedCacheKey, normalizeCacheSourceIdentity, } from "../core/cache-key.js";
+import { serializeHolmError } from "../core/errors.js";
 import { copyWireValue } from "../core/wire-value.js";
+import { redactTransportRequestMetadata } from "./sensitivity.js";
 export function createTransportCache(options) {
     const clock = options.clock;
     const scheduler = options.scheduler;
@@ -207,7 +209,7 @@ export function createTransportCache(options) {
         const event = Object.freeze({
             key,
             partition: entry.partition,
-            request: entry.request,
+            request: redactTransportRequestMetadata(entry.request),
             tags: entry.tags,
             storedAt: entry.storedAt,
             expiresAt: entry.expiresAt,
@@ -246,9 +248,9 @@ export function createTransportCache(options) {
         const event = Object.freeze({
             key: input.key,
             partition: input.partition,
-            request: input.request,
+            request: redactTransportRequestMetadata(input.request),
             tags: input.tags,
-            error,
+            error: serializeHolmError(error),
         });
         notifyHook("transport_cache_background_error_hook_error", () => options.onBackgroundError?.(event));
         options.diagnostics?.emit({
@@ -260,7 +262,7 @@ export function createTransportCache(options) {
             details: {
                 key: input.key,
                 partition: input.partition,
-                request: redactCacheDiagnosticRequest(input.request),
+                request: redactTransportRequestMetadata(input.request),
                 tags: input.tags,
             },
             error,
@@ -406,31 +408,11 @@ function diagnosticDetailsForEntry(key, entry) {
     return Object.freeze({
         key,
         partition: entry.partition,
-        request: redactCacheDiagnosticRequest(entry.request),
+        request: redactTransportRequestMetadata(entry.request),
         tags: entry.tags,
         storedAt: entry.storedAt,
         expiresAt: entry.expiresAt,
         staleUntil: entry.staleUntil,
     });
-}
-function redactCacheDiagnosticRequest(request) {
-    return Object.freeze({
-        method: request.method,
-        url: request.url,
-        params: request.params,
-        headers: redactHeaders(request.headers),
-        responseMode: request.responseMode,
-        ...(request.timeoutMs === undefined ? {} : { timeoutMs: request.timeoutMs }),
-    });
-}
-function redactHeaders(headers) {
-    const output = {};
-    for (const key of Object.keys(headers).sort()) {
-        output[key] = isSensitiveHeader(key) ? "[redacted]" : headers[key];
-    }
-    return Object.freeze(output);
-}
-function isSensitiveHeader(name) {
-    return /authorization|cookie|credential|password|secret|token|x-api-key/i.test(name);
 }
 //# sourceMappingURL=cache.js.map

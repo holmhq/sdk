@@ -14,6 +14,16 @@ export type TransportHeaders = {
 export type TransportParams = {
     readonly [name: string]: string | number | boolean | null;
 };
+export interface TransportSensitivityInput {
+    readonly url?: boolean;
+    readonly params?: readonly string[];
+    readonly headers?: readonly string[];
+}
+export interface TransportSensitivity {
+    readonly url: boolean;
+    readonly params: readonly string[];
+    readonly headers: readonly string[];
+}
 export interface JsonTransportBody {
     readonly mode: "json";
     readonly value: WireValue;
@@ -35,6 +45,7 @@ export interface TransportRequestInput {
     readonly body?: TransportBodyInput;
     readonly responseMode?: TransportResponseMode;
     readonly timeoutMs?: number;
+    readonly sensitive?: TransportSensitivityInput;
 }
 export interface TransportRequest {
     readonly method: TransportMethod;
@@ -44,6 +55,7 @@ export interface TransportRequest {
     readonly body?: TransportBody;
     readonly responseMode: TransportResponseMode;
     readonly timeoutMs?: number;
+    readonly sensitive: TransportSensitivity;
 }
 export type TransportBodyInput = {
     readonly mode: "json";
