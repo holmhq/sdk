@@ -1,12 +1,12 @@
 ---
-updated_at: "14 Jul 2026 | 10:59 PM IST"
-state: IN_PROGRESS
-active_window: A2R-implementation
-pending_window: none
+updated_at: "15 Jul 2026 | 06:18 AM IST"
+state: BLOCKED
+active_window: none
+pending_window: A2R-recovery
 active_issue: 016
-orchestration_mode: blind-strict
-pending_queue_mode: none
-stop_gate: "Drain authorized Queue #002 through independent SDK review and fresh Holm-authority acceptance, or stop cleanly at the 8h timebox or a real blocker; never begin Issue #007"
+orchestration_mode: direct
+pending_queue_mode: blind-strict
+stop_gate: "Queue #002 stopped at S03 after two fix cycles and Review #030 still has one P2; npm run ci also fails the transport artifact size budget; owner must review and separately authorize recovery, and Issue #007 must not begin"
 ---
 
 # Koder State
@@ -16,27 +16,30 @@ stop_gate: "Drain authorized Queue #002 through independent SDK review and fresh
 - A1 decisions `D001`-`D015` are approved. Queue `#001` completed the original
   A2 core at `fe37f85`; SDK Review `#023` passed, while Holm Review `#024`
   blocked acceptance and filed remediation Issue `#016`.
-- The bounded A2R planning window produced Plan family `002` (`S00`-`S06`) and
-  blind Queue `#002`. Review `#025` requested fixes; commit `68684ad` resolved
-  them, and independent Review `#026` approved with P1/P2/P3 all zero.
-- Commit `85271ba` marked the plans approved and Queue `#002` ready while
-  preserving `execution_authorized: false` and the owner launch gate.
+- Plan family `002` and blind-strict Queue `#002` were independently approved by
+  Review `#026`; the owner authorized an unattended A2R implementation window
+  on 14 Jul 2026.
+- Queue `#002` completed S01 envelope conformance and S02 caller-transition
+  safety. S03 implementation plus two fix cycles reduced its review findings,
+  but Review `#030` still reports `P1/P2/P3=0/1/0`.
 
 ## Present
 
-- The owner authorized Queue `#002` on 14 Jul 2026 for an unattended bounded
-  A2R implementation window. It has six serial strict-TDD rows and runs
-  blind-strict on `main` through fresh implementation/review/fix workers.
-- Delivery-first rules apply: planning is complete, clean row approvals use
-  compact proof, coordinator metadata is batched, and internal rollover does
-  not run `close`.
-- A2 owner acceptance remains blocked by Review `#024` until remediation, full
-  validation, independent SDK review, and fresh Holm authority acceptance pass.
+- The A2R window has stopped at a real blocker and no autonomous window remains
+  active. Queue `#002` is blocked at S03 with S04-S06 still queued.
+- S03 exhausted its two authorized fix cycles; canonical findings are in
+  `koder/reviews/030_a2r_s03_capability_extension_ownership_rereview_2/INDEX.md`.
+- Row-level validation passed for S01-S03, but closeout `npm run ci` fails the
+  tracked size gate: `dist/transports/index.js` is `19342` bytes against a
+  `16384`-byte budget. The source suite itself passed `133/133` tests.
+- A2 acceptance still requires S03 resolution, S04-S06, full green validation,
+  independent SDK approval, and fresh read-only Holm-authority acceptance.
 
 ## Future
 
-1. Drain Queue `#002` in order and preserve clean synchronized checkpoints.
-2. Return after complete A2R acceptance, the eight-hour timebox, or a real
-   blocker; run `close` once at that owner stop gate.
-3. Do not begin Issue `#007`, publish, release, deploy, use credentials, or
-   mutate another repository.
+1. Owner reviews Review `#030` and the transport size regression, then decides
+   whether to authorize a bounded Queue `#002` recovery from S03.
+2. If authorized, resume the existing queue without more planning, resolve S03,
+   then execute S04-S06 through the same blind-strict boundaries.
+3. Return at the complete A2R acceptance gate. Do not begin Issue `#007`,
+   publish, release, deploy, use credentials, or mutate another repository.

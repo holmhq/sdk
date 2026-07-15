@@ -1,11 +1,11 @@
 ---
 title: SDK Autonomous Execution Windows
-updated: 2026-07-14
-active_window: A2R-implementation
-pending_window: none
+updated: 2026-07-15
+active_window: none
+pending_window: A2R-recovery
 active_issue: 016
-orchestration_mode: blind-strict
-pending_queue_mode: none
+orchestration_mode: direct
+pending_queue_mode: blind-strict
 requires_review_after: true
 ---
 
@@ -25,7 +25,7 @@ future window is active unless the owner records that decision here and in
 - **Decision:** `D001`-`D015` approved; `/state` is canonical and is not a
   legacy compatibility alias.
 
-## Active checkpoint — A2: core foundation authority return
+## Blocked checkpoint — A2: core foundation authority return
 
 - **Implementation result:** Queue `#001` completed Issues `#003`-`#006` at SDK
   checkpoint `fe37f85`.
@@ -35,8 +35,9 @@ future window is active unless the owner records that decision here and in
   **BLOCK** with four P1 and one P2 findings.
 - **Remediation track:**
   [`Issue #016`](../issues/016_a2_authority_conformance_remediation/INDEX.md).
-- **Current autonomy:** Queue `#002` only. The owner authorized an unattended
-  bounded A2R implementation window on 14 Jul 2026; no A3 work is authorized.
+- **Current autonomy:** none. The authorized Queue `#002` window stopped at S03
+  after two fix cycles; Review `#030` retains one P2 and closeout CI exceeds the
+  transport artifact size budget. Recovery requires a new owner authorization.
 - **A2 acceptance stop gate:** independent SDK re-review and fresh
   Holm-authority acceptance; do not begin Issue `#007`.
 
@@ -61,18 +62,15 @@ future window is active unless the owner records that decision here and in
 Do not preload product source, tests, prior worker transcripts, Queue `#001`
 plans, or future Issue `#007+` bodies in the primary coordinator context.
 
-### Allowed during active remediation
+### Allowed while blocked
 
-- Execute approved Queue `#002` serially on `main` through its blind-strict
-  implementation/review/fix boundaries.
-- Change Issue `#016` source, tests, and required generated artifacts within the
-  approved plans; commit and push logical green checkpoints.
-- Perform observational Git/process checks and required read-only Holm authority
-  review.
+- Review Review `#030`, Queue `#002`, and the closeout size-gate failure; ask the
+  owner for a separate bounded recovery grant.
+- Perform observational Git/process checks and preserve the authority handoff.
 
-### Forbidden during active remediation
+### Forbidden while blocked
 
-- No implementation outside Queue `#002` or Issue `#016`.
+- No Queue `#002` implementation or generated artifact rebuild.
 - No Issue `#007+` planning or implementation.
 - No npm publication, package release, Git tag, deploy, cloud spend,
   credentials, or registry setup.
@@ -103,9 +101,12 @@ Reached at the planning checkpoint. Control returned for separate owner
 authorization, which was granted on 14 Jul 2026 for the active Queue `#002`
 window. Issue `#007` remains forbidden.
 
-## Active window — A2R implementation
+## Exhausted window — A2R implementation
 
-A2R implementation is **authorized for Queue `#002` only**.
+The Queue `#002` implementation grant is exhausted at a real blocker. S01 and
+S02 are done; S03 stopped after two fix cycles with Review `#030`
+`P1/P2/P3=0/1/0`. Closeout `npm run ci` also fails because
+`dist/transports/index.js` exceeds its size budget. No recovery is authorized.
 
 ### Entry gate
 

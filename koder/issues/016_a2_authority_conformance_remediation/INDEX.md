@@ -2,7 +2,7 @@
 status: blocked
 priority: P1
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 tags: a2, authority, conformance, security, transport, caller, capabilities
 parent: 001
 depends_on: [004, 005, 006]
@@ -48,13 +48,14 @@ owner acceptance.
 
 ## Blocker and authorization
 
-This issue is filed but no remediation implementation window is active. The
-owner must explicitly authorize a bounded A2R planning window in
-`koder/docs/EXECUTION.md` and `koder/STATE.md`.
+Planning and the initial bounded Queue `#002` implementation window are complete.
+S01 and S02 are done, but S03 exhausted two fix cycles and Review `#030` still
+reports `P1/P2/P3=0/1/0`. Closeout `npm run ci` also fails because
+`dist/transports/index.js` is `19342` bytes against its `16384`-byte budget.
 
-After planning, implementation remains blocked until thin strict-TDD slices and
-a new blind Queue `#002` are independently reviewed. Queue `#001` stays done and
-historical. Issue `#007` must not start.
+No remediation window is active. The owner must review both blockers and
+separately authorize bounded blind-strict recovery from S03. Queue `#001` stays
+done and historical, and Issue `#007` must not start.
 
 ## Required direction
 
@@ -107,6 +108,9 @@ obtain independent SDK re-review, and return to Holm authority at current HEAD.
 
 ## Queue #002 implementation checkpoint
 
+- 2026-07-15 06:18 IST: closeout `npm run ci` passed `133/133` source tests and
+  the license check but failed the transport artifact size budget (`19342` >
+  `16384` bytes). Together with Review `#030`, this is the owner recovery gate.
 - 2026-07-15 02:35 IST: S03 fix attempt `05b` landed at `5596d0b`
   with required validation exits `0`; fresh Pi rereview returned `needs_fixes`
   (`P1/P2/P3=0/1/0`) at review commit `4ed5d64`, canonical findings
