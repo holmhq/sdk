@@ -1,8 +1,9 @@
 export { createTransportCache, createTransportCacheKey, } from "./cache.js";
+export { decodeTransportResponse, ProtocolError, RemoteError } from "./response.js";
 export { UploadError, composeResumableUpload, createReadonlyBytesUploadSource, createUploadFile, redactUploadChunk, redactUploadRequest, } from "./upload.js";
 import { CancelledError } from "../core/cancellation.js";
 import { HolmError } from "../core/errors.js";
-import { canonicalEncodeWireValue, copyWireValue, createReadonlyBytes, isReadonlyBytes, } from "../core/wire-value.js";
+import { canonicalEncodeWireValue, copyWireValue, createReadonlyBytes, } from "../core/wire-value.js";
 export class TransportError extends HolmError {
     constructor(options = {}) {
         super({
@@ -14,32 +15,6 @@ export class TransportError extends HolmError {
             cause: options.cause,
         });
         this.name = "TransportError";
-    }
-}
-export class RemoteError extends HolmError {
-    constructor(options) {
-        super({
-            kind: "remote",
-            code: options.code,
-            message: options.message,
-            status: options.status,
-            ...(options.details === undefined ? {} : { details: options.details }),
-            ...(options.retryable === undefined ? {} : { retryable: options.retryable }),
-            ...(options.cause === undefined ? {} : { cause: options.cause }),
-        });
-        this.name = "RemoteError";
-    }
-}
-export class ProtocolError extends HolmError {
-    constructor(options = {}) {
-        super({
-            kind: "protocol",
-            code: options.code ?? "invalid_transport_response",
-            message: options.message ?? "Invalid transport response.",
-            details: options.details,
-            cause: options.cause,
-        });
-        this.name = "ProtocolError";
     }
 }
 export function createTransportRequest(input) {
@@ -82,18 +57,6 @@ export function encodeTransportBody(body) {
         case "binary":
             return Object.freeze({ contentType: "application/octet-stream", body: createReadonlyBytes(normalized.value) });
     }
-}
-export function decodeTransportResponse(input) {
-    const status = normalizeStatus(input.status);
-    const responseMode = normalizeResponseMode(input.responseMode);
-    if (status < 200 || status > 299) {
-        throw createRemoteError(input, status);
-    }
-    return Object.freeze({
-        requestId: input.requestId,
-        payload: decodeResponsePayload(input.body, responseMode),
-        metadata: Object.freeze({ status }),
-    });
 }
 export function normalizeTransportError(error, context = {}) {
     if (error instanceof HolmError) {
@@ -224,81 +187,6 @@ function transportBodyKey(body) {
         case "binary":
             return Object.freeze({ mode: "binary", value: body.value });
     }
-}
-function normalizeStatus(status) {
-    if (!Number.isInteger(status) || status < 100 || status > 599) {
-        throw new ProtocolError({
-            code: "invalid_transport_status",
-            message: "Transport response status must be an integer HTTP status.",
-            details: { status },
-        });
-    }
-    return status;
-}
-function decodeResponsePayload(body, mode) {
-    switch (mode) {
-        case "json":
-            if (typeof body !== "string" || body.trim() === "") {
-                throw new ProtocolError({ details: { mode, reason: "json response body must be a non-empty string" } });
-            }
-            return parseJsonWireValue(body);
-        case "raw":
-            if (typeof body !== "string") {
-                throw new ProtocolError({ details: { mode, reason: "raw response body must be a string" } });
-            }
-            return body;
-        case "binary":
-            if (isReadonlyBytes(body)) {
-                return createReadonlyBytes(body);
-            }
-            if (isByteInput(body)) {
-                return createReadonlyBytes(body);
-            }
-            throw new ProtocolError({ details: { mode, reason: "binary response body must be bytes" } });
-    }
-}
-function parseJsonWireValue(body) {
-    try {
-        return copyWireValue(JSON.parse(body));
-    }
-    catch (cause) {
-        throw new ProtocolError({ details: { mode: "json", reason: "invalid JSON wire value" }, cause });
-    }
-}
-function createRemoteError(input, status) {
-    const envelope = parseRemoteEnvelope(input.body);
-    return new RemoteError({
-        status,
-        code: envelope.code,
-        message: envelope.message,
-        ...(envelope.details === undefined ? {} : { details: envelope.details }),
-        ...(envelope.retryable === undefined ? {} : { retryable: envelope.retryable }),
-    });
-}
-function parseRemoteEnvelope(body) {
-    if (typeof body !== "string" || body.trim() === "") {
-        return { code: "holm.remote_error", message: "Remote operation failed." };
-    }
-    try {
-        const parsed = JSON.parse(body);
-        const code = typeof parsed.code === "string" && parsed.code.trim() !== "" ? parsed.code : "holm.remote_error";
-        const message = typeof parsed.message === "string" && parsed.message.trim() !== "" ? parsed.message : "Remote operation failed.";
-        return {
-            code,
-            message,
-            ...(parsed.details === undefined ? {} : { details: parsed.details }),
-            ...(typeof parsed.retryable === "boolean" ? { retryable: parsed.retryable } : {}),
-        };
-    }
-    catch {
-        return { code: "holm.remote_error", message: "Remote operation failed." };
-    }
-}
-function isByteInput(value) {
-    if (typeof value !== "object" || value === null) {
-        return false;
-    }
-    return typeof value.length === "number" || Symbol.iterator in value;
 }
 function normalizeAuthProof(proof) {
     switch (proof.kind) {

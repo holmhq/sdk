@@ -1,3 +1,4 @@
+import { createCapabilityView, } from "./capabilities.js";
 import { HolmError } from "./errors.js";
 import { createLifecycleController, } from "./lifecycle.js";
 const reservedNamespaces = new Set([
@@ -242,12 +243,17 @@ function validateCapabilityRequirements(extensions, capabilities) {
 function setupComponents(extensions, options) {
     const ordered = [];
     const namespaces = {};
+    const capabilities = createCapabilityView(options.capabilities);
+    const invoke = options.invoke ?? extensionInvokeUnavailable;
+    const registerOffer = options.registerExtensionOffer ?? extensionCapabilityOfferRegistrationUnavailable;
     for (const extension of extensions) {
         let result;
         try {
             result = extension.source.setup(Object.freeze({
-                capabilities: options.capabilities,
+                capabilities,
                 extension: extension.descriptor,
+                invoke,
+                registerCapabilityOffer: createCapabilityOfferRegistrar(registerOffer, extension.descriptor.id),
             }));
         }
         catch (error) {
@@ -274,6 +280,34 @@ function setupComponents(extensions, options) {
         ordered: Object.freeze(ordered),
         namespaces: Object.freeze(namespaces),
     });
+}
+async function extensionInvokeUnavailable() {
+    throw new ExtensionError({
+        code: "extension_invoke_unavailable",
+        message: "Extension invocation is not available outside a running Holm instance.",
+    });
+}
+function extensionCapabilityOfferRegistrationUnavailable() {
+    throw new ExtensionError({
+        code: "extension_capability_offer_registration_unavailable",
+        message: "Extension capability offer registration is not available outside a running Holm instance.",
+    });
+}
+function createCapabilityOfferRegistrar(registerOffer, extensionId) {
+    return (offer) => {
+        try {
+            return registerOffer({ id: offer.id, version: offer.version, origin: "extension" });
+        }
+        catch (error) {
+            throw new ExtensionError({
+                code: "extension_capability_offer_forbidden",
+                message: `Extension "${extensionId}" attempted to register a forbidden capability offer.`,
+                extensionId,
+                cause: error,
+                details: { id: offer?.id },
+            });
+        }
+    };
 }
 function disposeSetupComponents(components) {
     const errors = [];

@@ -1,4 +1,4 @@
-import { type CapabilityRegistry, type CapabilityRequirement } from "./capabilities.js";
+import { type CapabilityRequirement, type CapabilityView } from "./capabilities.js";
 import type { CallerPartitionListener, CallerProvider } from "./caller.js";
 import { type ExtensionLifecycle, type ExtensionNamespaces, type HolmExtension } from "./extensions.js";
 import { type LifecycleSnapshot } from "./lifecycle.js";
@@ -19,7 +19,7 @@ export interface HolmInvokeOptions {
 }
 export interface Holm<Extensions extends readonly HolmExtension[] = readonly HolmExtension[]> {
     readonly lifecycle: LifecycleSnapshot;
-    readonly capabilities: CapabilityRegistry;
+    readonly capabilities: CapabilityView;
     readonly extensions: ExtensionLifecycle<ExtensionNamespaces<Extensions>>;
     start(): Promise<void>;
     invoke(options: HolmInvokeOptions): Promise<OperationResponse>;

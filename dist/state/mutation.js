@@ -1,4 +1,4 @@
-import { CancelledError, createCallerFingerprint, createCancellationController, HolmError, LifecycleError, normalizeCacheSourceIdentity, resolveCallerContext, } from "../core/index.js";
+import { CancelledError, createCallerFingerprint, createCancellationController, HolmError, LifecycleError, normalizeCacheSourceIdentity, onCallerTransition, resolveCallerContext, } from "../core/index.js";
 import { copyWireValue } from "../core/wire-value.js";
 import { createResourceController, } from "./resource.js";
 export function createMutationResource(options) {
@@ -12,6 +12,7 @@ export function createMutationResource(options) {
     const source = normalizeCacheSourceIdentity(options.source);
     let active;
     let disposed = false;
+    const callerUnsubscribe = subscribeToCaller();
     const mutation = Object.freeze({
         getSnapshot() {
             return controller.resource.getSnapshot();
@@ -155,8 +156,18 @@ export function createMutationResource(options) {
             return;
         }
         disposed = true;
+        callerUnsubscribe();
         cancelActive("mutation disposed");
         controller.dispose();
+    }
+    function subscribeToCaller() {
+        return onCallerTransition(options.caller, () => {
+            if (disposed) {
+                return;
+            }
+            cancelActive("caller changed");
+            controller.setIdle();
+        });
     }
     function cancelActive(reason) {
         const pending = active;

@@ -1,9 +1,9 @@
-import { type CapabilityRegistry, type CapabilityRequirement } from "./capabilities.js";
+import { type CapabilityRequirement, type CapabilityView } from "./capabilities.js";
 import { type CallerPartitionListener, type CallerProvider } from "./caller.js";
 import type { InvocationControl, OperationResponse, RuntimeAdapter } from "./runtime.js";
 export interface InvokeRuntimeOptions {
     readonly runtime: RuntimeAdapter;
-    readonly capabilities: CapabilityRegistry;
+    readonly capabilities: CapabilityView;
     readonly caller: CallerProvider;
     readonly capability: CapabilityRequirement;
     readonly operation: string;

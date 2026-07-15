@@ -9,9 +9,9 @@ export type { HolmErrorKind, HolmErrorOptions, SerializedHolmError, } from "./er
 export { createDiagnosticsSink, createHolmDiagnosticEvent, } from "./diagnostics.js";
 export type { DiagnosticsSinkOptions, HolmDiagnosticEvent, HolmDiagnosticEventInput, HolmDiagnosticsHandler, HolmDiagnosticsSink, HolmDiagnosticSeverity, } from "./diagnostics.js";
 export { CapabilityVersionError, createCapabilityRegistry, DuplicateCapabilityOfferError, InvalidCapabilityRequirementError, negotiateCapability, UnsupportedCapabilityError, } from "./capabilities.js";
-export type { CapabilityOffer, CapabilityOrigin, CapabilityRegistry, CapabilityRequirement, CapabilitySnapshot, CapabilitySnapshotListener, CapabilityVersion, CapabilityVersionErrorOptions, DuplicateCapabilityOfferErrorOptions, InvalidCapabilityRequirementErrorOptions, UnsupportedCapabilityErrorOptions, } from "./capabilities.js";
-export { createCallerFingerprint, createInvocationContext, createStaticCallerProvider, normalizeCallerContext, resolveCallerContext, } from "./caller.js";
-export type { CallerAppContext, CallerContext, CallerPartition, CallerPartitionListener, CallerProvider, CallerScopeContext, InvocationContext, PrincipalRef, } from "./caller.js";
+export type { CapabilityOffer, CapabilityOrigin, CapabilityRequirement, CapabilitySnapshot, CapabilitySnapshotListener, CapabilityVersion, CapabilityVersionErrorOptions, CapabilityView, DuplicateCapabilityOfferErrorOptions, InvalidCapabilityRequirementErrorOptions, UnsupportedCapabilityErrorOptions, } from "./capabilities.js";
+export { createCallerFingerprint, createInvocationContext, createStaticCallerProvider, normalizeCallerContext, onCallerTransition, resolveCallerContext, } from "./caller.js";
+export type { CallerAppContext, CallerContext, CallerPartition, CallerPartitionListener, CallerProvider, CallerScopeContext, CallerTransitionListener, InvocationContext, PrincipalRef, } from "./caller.js";
 export { invokeRuntime } from "./invoke.js";
 export type { InvokeRuntimeOptions } from "./invoke.js";
 export { CancelledError, createCancellationController, TimeoutError, } from "./cancellation.js";

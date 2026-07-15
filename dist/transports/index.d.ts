@@ -1,9 +1,10 @@
 export { createTransportCache, createTransportCacheKey, } from "./cache.js";
+export { decodeTransportResponse, ProtocolError, RemoteError } from "./response.js";
 export { UploadError, composeResumableUpload, createReadonlyBytesUploadSource, createUploadFile, redactUploadChunk, redactUploadRequest, } from "./upload.js";
 export type { RedactedUploadChunkDiagnostic, RedactedUploadDiagnostic, RedactedUploadFieldDiagnostic, RedactedUploadFileDiagnostic, ResumableUploadAdapter, UploadChunk, UploadChunkAck, UploadChunkBody, UploadChunkInput, UploadCompletion, UploadControl, UploadErrorOptions, UploadField, UploadFieldInput, UploadFile, UploadFileInput, UploadFinalizeInput, UploadHandoff, UploadHandoffEntry, UploadProgressEvent, UploadProgressListener, UploadRequest, UploadSession, UploadSource, UploadStatus, UploadStatusInput, UploadUnavailableSession, } from "./upload.js";
 export type { TransportCache, TransportCacheBackgroundErrorEvent, TransportCacheGetInput, TransportCacheInvalidationEvent, TransportCacheInvalidationInput, TransportCacheInvalidationReason, TransportCacheInvalidationResult, TransportCacheKeyInput, TransportCacheLoader, TransportCacheMode, TransportCacheMutationInvalidation, TransportCacheOptions, TransportCachePartition, TransportCachePolicy, TransportCacheUpdateEvent, } from "./cache.js";
 import { HolmError } from "../core/errors.js";
-import type { CancellationSignal, OperationResponse } from "../core/runtime.js";
+import type { CancellationSignal } from "../core/runtime.js";
 import { type ReadonlyBytes, type WireValue } from "../core/wire-value.js";
 export type TransportResponseMode = "json" | "raw" | "binary";
 export type TransportMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS" | string;
@@ -64,6 +65,7 @@ export interface TransportResponseInput {
     readonly body: unknown;
     readonly responseMode: TransportResponseMode;
     readonly headers?: TransportHeaders;
+    readonly url?: string;
 }
 export type TransportAuthProof = WebSessionTransportAuthProof | BearerTransportAuthProof | HeaderTransportAuthProof;
 export interface WebSessionTransportAuthProof {
@@ -132,16 +134,9 @@ export interface NormalizeTransportErrorContext {
 export declare class TransportError extends HolmError {
     constructor(options?: TransportErrorOptions);
 }
-export declare class RemoteError extends HolmError {
-    constructor(options: RemoteErrorOptions);
-}
-export declare class ProtocolError extends HolmError {
-    constructor(options?: ProtocolErrorOptions);
-}
 export declare function createTransportRequest(input: TransportRequestInput): TransportRequest;
 export declare function canonicalTransportKey(request: TransportRequest): string;
 export declare function encodeTransportBody(body: TransportBodyInput): EncodedTransportBody;
-export declare function decodeTransportResponse(input: TransportResponseInput): OperationResponse;
 export declare function normalizeTransportError(error: unknown, context?: NormalizeTransportErrorContext): HolmError;
 export declare function applyTransportAuth(request: TransportRequest, provider: TransportAuthProvider): Promise<AuthenticatedTransportRequest>;
 export declare function redactTransportRequest(request: TransportRequest): RedactedTransportDiagnostic;

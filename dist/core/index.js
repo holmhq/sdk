@@ -6,7 +6,7 @@ export { assertWireValue, canonicalEncodeWireValue, copyWireValue, createReadonl
 export { HolmError, isHolmError, serializeHolmError, } from "./errors.js";
 export { createDiagnosticsSink, createHolmDiagnosticEvent, } from "./diagnostics.js";
 export { CapabilityVersionError, createCapabilityRegistry, DuplicateCapabilityOfferError, InvalidCapabilityRequirementError, negotiateCapability, UnsupportedCapabilityError, } from "./capabilities.js";
-export { createCallerFingerprint, createInvocationContext, createStaticCallerProvider, normalizeCallerContext, resolveCallerContext, } from "./caller.js";
+export { createCallerFingerprint, createInvocationContext, createStaticCallerProvider, normalizeCallerContext, onCallerTransition, resolveCallerContext, } from "./caller.js";
 export { invokeRuntime } from "./invoke.js";
 export { CancelledError, createCancellationController, TimeoutError, } from "./cancellation.js";
 export { createHolm, } from "./create-holm.js";

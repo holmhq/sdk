@@ -17,6 +17,7 @@ const budgets = new Map([
   ["dist/state/index.js", { rawBudget: 1024, gzipBudget: 512 }],
   ["dist/state/resource.js", { rawBudget: 12288, gzipBudget: 3072 }],
   ["dist/transports/index.js", { rawBudget: 16384, gzipBudget: 3584 }],
+  ["dist/transports/response.js", { rawBudget: 12288, gzipBudget: 3584 }],
   ["dist/web/index.js", { rawBudget: 1024, gzipBudget: 512 }],
   ["dist/node/index.js", { rawBudget: 1024, gzipBudget: 512 }],
 ]);

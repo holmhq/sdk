@@ -54,6 +54,8 @@ export interface CallerPartition {
     readonly fingerprint: string;
 }
 export type CallerPartitionListener = (partition: CallerPartition) => void;
+export type CallerTransitionListener = () => void;
+export declare function onCallerTransition(provider: CallerProvider, listener: CallerTransitionListener): () => void;
 export declare function createStaticCallerProvider(context: CallerContext): CallerProvider;
 export declare function resolveCallerContext(provider: CallerProvider): Promise<CallerContext>;
 export declare function createInvocationContext(context: CallerContext, invocationId: string, startedAt: number, reason?: string): InvocationContext;

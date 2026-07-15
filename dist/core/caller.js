@@ -1,4 +1,10 @@
 import { canonicalEncodeWireValue, copyWireValue } from "./wire-value.js";
+export function onCallerTransition(provider, listener) {
+    if (provider.subscribe === undefined) {
+        return () => undefined;
+    }
+    return provider.subscribe(listener);
+}
 export function createStaticCallerProvider(context) {
     const normalized = normalizeCallerContext(context);
     return Object.freeze({

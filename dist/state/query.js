@@ -1,4 +1,4 @@
-import { CancelledError, createCallerFingerprint, createCallerPartitionedCacheKey, createCancellationController, HolmError, LifecycleError, normalizeCacheSourceIdentity, resolveCallerContext, } from "../core/index.js";
+import { CancelledError, createCallerFingerprint, createCallerPartitionedCacheKey, createCancellationController, HolmError, LifecycleError, normalizeCacheSourceIdentity, onCallerTransition, resolveCallerContext, } from "../core/index.js";
 import { copyWireValue } from "../core/wire-value.js";
 import { createResourceController, } from "./resource.js";
 export function createQueryResource(options) {
@@ -155,10 +155,7 @@ export function createQueryResource(options) {
         pending.cancellation.cancel(reason);
     }
     function subscribeToCaller(provider) {
-        if (provider.subscribe === undefined) {
-            return noop;
-        }
-        return provider.subscribe(() => {
+        return onCallerTransition(provider, () => {
             if (disposed) {
                 return;
             }

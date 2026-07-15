@@ -313,6 +313,64 @@ test("transport response normalization covers fallback remote envelopes and inva
   );
 });
 
+test("transport response normalization validates decoder-only inputs and command envelope variants", () => {
+  assert.throws(
+    () => decodeTransportResponse({ requestId: "req-mode", status: 200, body: "ok", responseMode: "xml" as never }),
+    /Unknown transport response mode/,
+  );
+  assert.throws(
+    () =>
+      decodeTransportResponse({
+        requestId: "req-header",
+        status: 200,
+        body: "ok",
+        responseMode: "raw",
+        headers: { " ": "value" },
+      }),
+    /headers/,
+  );
+
+  const commandSuccess = decodeTransportResponse({
+    requestId: "req-cmd-success",
+    status: 200,
+    url: "https://holm.test/api/cmd?trace=1",
+    body: JSON.stringify({ data: { success: true, data: { ok: true } } }),
+    responseMode: "json",
+  });
+  const commandScalar = decodeTransportResponse({
+    requestId: "req-cmd-scalar",
+    status: 200,
+    url: "/api/cmd",
+    body: JSON.stringify({ data: "accepted" }),
+    responseMode: "json",
+  });
+  const commandPlainObject = decodeTransportResponse({
+    requestId: "req-cmd-object",
+    status: 200,
+    url: "/api/cmd",
+    body: JSON.stringify({ data: { ok: true } }),
+    responseMode: "json",
+  });
+
+  assert.deepEqual(commandSuccess.payload, { ok: true });
+  assert.equal(commandScalar.payload, "accepted");
+  assert.deepEqual(commandPlainObject.payload, { ok: true });
+  assert.throws(
+    () =>
+      decodeTransportResponse({
+        requestId: "req-cmd-failure",
+        status: 200,
+        url: "/api/cmd",
+        body: JSON.stringify({ data: { success: false, error: "Rejected", code: "COMMAND_REJECTED" } }),
+        responseMode: "json",
+      }),
+    (error: unknown) => error instanceof RemoteError && error.code === "COMMAND_REJECTED" && error.message === "Rejected",
+  );
+  assert.throws(
+    () => decodeTransportResponse({ requestId: "req-null-error", status: 400, body: "null", responseMode: "json" }),
+    (error: unknown) => error instanceof RemoteError && error.code === "holm.remote_error",
+  );
+});
 
 test("transport errors normalize abort cancellation and network failures", () => {
   const cancellation = createCancellationController();

@@ -16,33 +16,33 @@
         "gzipBytes": 768,
         "rawBytes": 2048
       },
-      "gzipBytes": 472,
-      "minifiedBytes": 1140,
+      "gzipBytes": 481,
+      "minifiedBytes": 1159,
       "path": "dist/core/index.js",
-      "rawBytes": 1277,
-      "sha256": "cba8bbfb1784ae94a89fb624b2fa7a45d32db0b24ac09982ed58859b57843acb"
+      "rawBytes": 1297,
+      "sha256": "ca794417b8eaca07d8db6c7e8964a6f0f6e7a86d99892cd2a970605800682c4f"
     },
     {
       "budgets": {
         "gzipBytes": 2048,
         "rawBytes": 6144
       },
-      "gzipBytes": 903,
-      "minifiedBytes": 2816,
+      "gzipBytes": 950,
+      "minifiedBytes": 2963,
       "path": "dist/core/caller.js",
-      "rawBytes": 3667,
-      "sha256": "c5d2f482c74b199e5a619e17bb4f015e788987d3abf520c22664d6e2e35f5e78"
+      "rawBytes": 3849,
+      "sha256": "9823bff8c49810a04a33b967ace3b2c511b3fa136c9a2a1e8e55f3d589b03e16"
     },
     {
       "budgets": {
         "gzipBytes": 3072,
         "rawBytes": 10240
       },
-      "gzipBytes": 1724,
-      "minifiedBytes": 6396,
+      "gzipBytes": 1970,
+      "minifiedBytes": 7617,
       "path": "dist/core/capabilities.js",
-      "rawBytes": 8746,
-      "sha256": "e65504c3270039ce7edd5c0e0fad32c5898e826a8061e006c2427be077b3cba6"
+      "rawBytes": 10228,
+      "sha256": "630ec1033e9f5fce3f132fc24288505b27f2379ef91e59d57c8b79722bc25c33"
     },
     {
       "budgets": {
@@ -60,11 +60,11 @@
         "gzipBytes": 4096,
         "rawBytes": 18432
       },
-      "gzipBytes": 2952,
-      "minifiedBytes": 11992,
+      "gzipBytes": 3222,
+      "minifiedBytes": 13173,
       "path": "dist/core/extensions.js",
-      "rawBytes": 16446,
-      "sha256": "c9a4221f42a42a054b3f3aefdcefc07f34e667f1779605fc34200cae0858148c"
+      "rawBytes": 17953,
+      "sha256": "920df49347e2471d2a08bb3db0215cce113b5f41c436ce88906d248e3a20eb15"
     },
     {
       "budgets": {
@@ -137,11 +137,22 @@
         "gzipBytes": 3584,
         "rawBytes": 16384
       },
-      "gzipBytes": 2821,
-      "minifiedBytes": 11151,
+      "gzipBytes": 2167,
+      "minifiedBytes": 8118,
       "path": "dist/transports/index.js",
-      "rawBytes": 14613,
-      "sha256": "8abf3134113d92900204ba9d626ff67ab30ca3c336c7f5143f6dfaeb1531d0a8"
+      "rawBytes": 10438,
+      "sha256": "0717706ce19cfa18021b7474c8fbc8535c3c7b2dd26410da22d3013b54763369"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 3584,
+        "rawBytes": 12288
+      },
+      "gzipBytes": 1948,
+      "minifiedBytes": 7139,
+      "path": "dist/transports/response.js",
+      "rawBytes": 9807,
+      "sha256": "0ab6b17c96bcdada9ad862c4f76d4b2da6085eee1f938230977fec41ad99986c"
     },
     {
       "budgets": {
@@ -173,8 +184,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 15941,
-    "minifiedBytes": 54390,
-    "rawBytes": 73771
+    "gzipBytes": 17807,
+    "minifiedBytes": 61064,
+    "rawBytes": 82594
   }
 }

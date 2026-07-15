@@ -52,7 +52,18 @@ export class DuplicateCapabilityOfferError extends HolmError {
     }
 }
 export function createCapabilityRegistry(offers = []) {
+    return createCapabilityView(new InstanceCapabilityRegistry(offers));
+}
+export function createCapabilityRuntimeUpdater(offers = []) {
     return new InstanceCapabilityRegistry(offers);
+}
+export function createCapabilityView(registry) {
+    return Object.freeze({
+        getSnapshot: () => registry.getSnapshot(),
+        match: (requirement) => registry.match(requirement),
+        require: (requirement) => registry.require(requirement),
+        subscribe: (listener) => registry.subscribe(listener),
+    });
 }
 export function negotiateCapability(offers, requirement) {
     const normalizedOffers = normalizeOffers(offers);
@@ -60,10 +71,13 @@ export function negotiateCapability(offers, requirement) {
     return findRequiredOffer(normalizedOffers, normalizedRequirement);
 }
 class InstanceCapabilityRegistry {
+    #baseOffers;
+    #extensionOffers = [];
     #snapshot;
     #listeners = new Set();
     constructor(offers) {
-        this.#snapshot = createSnapshot(0, offers);
+        this.#baseOffers = normalizeOffers(offers);
+        this.#snapshot = createSnapshot(0, this.#baseOffers, this.#extensionOffers);
     }
     getSnapshot() {
         return this.#snapshot;
@@ -77,7 +91,17 @@ class InstanceCapabilityRegistry {
         return findRequiredOffer(this.#snapshot.offers, normalizedRequirement);
     }
     replaceOffers(offers) {
-        const next = createSnapshot(this.#snapshot.revision + 1, offers);
+        return this.#commitWith(normalizeOffers(offers), this.#extensionOffers);
+    }
+    registerExtensionOffer(offer) {
+        const normalized = normalizeExtensionOffer(offer);
+        this.#commitWith(this.#baseOffers, [...this.#extensionOffers, normalized]);
+        return normalized;
+    }
+    #commitWith(baseOffers, extensionOffers) {
+        const next = createSnapshot(this.#snapshot.revision + 1, baseOffers, extensionOffers);
+        this.#baseOffers = baseOffers;
+        this.#extensionOffers = extensionOffers;
         this.#snapshot = next;
         this.#notify(next);
         return next;
@@ -114,11 +138,21 @@ class InstanceCapabilityRegistry {
         }
     }
 }
-function createSnapshot(revision, offers) {
+function createSnapshot(revision, baseOffers, extensionOffers) {
     return Object.freeze({
         revision,
-        offers: Object.freeze(normalizeOffers(offers)),
+        offers: Object.freeze(normalizeOffers([...baseOffers, ...extensionOffers])),
     });
+}
+function normalizeExtensionOffer(offer) {
+    const normalized = normalizeOffer({ ...offer, origin: "extension" });
+    if (!normalized.id.startsWith("sdk.")) {
+        throw new InvalidCapabilityRequirementError({
+            reason: "extension-registered capability offers must use the sdk. namespace",
+            requirement: normalized,
+        });
+    }
+    return normalized;
 }
 function normalizeOffers(offers) {
     const normalized = [];

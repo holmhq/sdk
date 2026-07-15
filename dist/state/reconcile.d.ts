@@ -1,4 +1,4 @@
-import { type CapabilityRegistry, type HolmDiagnosticsSink } from "../core/index.js";
+import { type CapabilityView, type HolmDiagnosticsSink } from "../core/index.js";
 import type { HolmError } from "../core/errors.js";
 import type { ResourceSnapshot } from "./resource.js";
 import type { QueryResource } from "./query.js";
@@ -40,7 +40,7 @@ export interface RealtimeReconcileHook<TData, E extends HolmError = HolmError> {
 }
 export interface RealtimeReconcileHookOptions<TData, E extends HolmError = HolmError> {
     readonly query: QueryResource<TData, E>;
-    readonly capabilities: CapabilityRegistry;
+    readonly capabilities: CapabilityView;
     readonly requirement?: RealtimePublicSubscribeRequirement;
     readonly diagnostics?: HolmDiagnosticsSink;
     readonly id?: string;

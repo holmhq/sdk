@@ -1,4 +1,4 @@
-import { createCapabilityRegistry } from "./capabilities.js";
+import { createCapabilityRuntimeUpdater, createCapabilityView, } from "./capabilities.js";
 import { createCancellationController, createCancellationScope } from "./cancellation.js";
 import { createExtensionLifecycle, } from "./extensions.js";
 import { invokeRuntime } from "./invoke.js";
@@ -10,7 +10,7 @@ class HolmInstance {
     #runtime;
     #caller;
     #onCallerPartition;
-    #capabilities = createCapabilityRegistry([]);
+    #capabilities = createCapabilityRuntimeUpdater([]);
     #extensionLifecycle;
     #ownedCancellation = createCancellationController();
     #controller;
@@ -22,6 +22,8 @@ class HolmInstance {
         this.#extensionLifecycle = createExtensionLifecycle(options.extensions ?? [], {
             capabilities: this.#capabilities,
             validateCapabilities: false,
+            invoke: (invokeOptions) => this.#invoke(invokeOptions),
+            registerExtensionOffer: (offer) => this.#capabilities.registerExtensionOffer(offer),
         });
         this.#controller = createLifecycleController({
             start: () => this.#startComponents(),
@@ -34,7 +36,7 @@ class HolmInstance {
             get lifecycle() {
                 return instance.#controller.getSnapshot();
             },
-            capabilities: this.#capabilities,
+            capabilities: createCapabilityView(this.#capabilities),
             extensions: this.#extensionLifecycle,
             start() {
                 return instance.#controller.start();

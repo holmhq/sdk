@@ -1,6 +1,7 @@
-import type { CapabilityRegistry, CapabilityRequirement, CapabilityVersion } from "./capabilities.js";
+import { type CapabilityOffer, type CapabilityRequirement, type CapabilityVersion, type CapabilityView } from "./capabilities.js";
 import { HolmError } from "./errors.js";
 import { type LifecycleSnapshot } from "./lifecycle.js";
+import type { InvocationControl, OperationResponse } from "./runtime.js";
 export type ReadonlyDeep<T> = T extends (...args: infer Args) => infer Return ? (...args: Args) => Return : T extends readonly (infer Item)[] ? readonly ReadonlyDeep<Item>[] : T extends object ? {
     readonly [Key in keyof T]: ReadonlyDeep<T[Key]>;
 } : T;
@@ -17,9 +18,24 @@ export interface ExtensionDescriptor {
     readonly requiresCapabilities: readonly CapabilityRequirement[];
     readonly conflicts: readonly string[];
 }
+interface ExtensionInvokeRequest {
+    readonly capability: CapabilityRequirement;
+    readonly operation: string;
+    readonly payload: unknown;
+    readonly requestId: string;
+    readonly reason?: string;
+    readonly control?: InvocationControl;
+}
+type ExtensionInvokeFunction = (request: ExtensionInvokeRequest) => Promise<OperationResponse>;
+interface ExtensionCapabilityOfferInput {
+    readonly id: string;
+    readonly version: CapabilityVersion;
+}
 export interface ExtensionSetupContext {
-    readonly capabilities: CapabilityRegistry;
+    readonly capabilities: CapabilityView;
     readonly extension: ExtensionDescriptor;
+    invoke: ExtensionInvokeFunction;
+    registerCapabilityOffer(offer: ExtensionCapabilityOfferInput): CapabilityOffer;
 }
 export interface ExtensionSetupResult<Api = unknown> {
     readonly api: Api;
@@ -65,8 +81,10 @@ export interface ExtensionLifecycle<Namespaces extends object = ExtensionNamespa
     dispose(): Promise<void>;
 }
 export interface ExtensionLifecycleOptions {
-    readonly capabilities: CapabilityRegistry;
+    readonly capabilities: CapabilityView;
     readonly validateCapabilities?: boolean;
+    readonly invoke?: ExtensionInvokeFunction;
+    readonly registerExtensionOffer?: (offer: CapabilityOffer) => CapabilityOffer;
 }
 export interface ExtensionErrorOptions {
     readonly code: string;

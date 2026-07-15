@@ -45,12 +45,20 @@ export interface CapabilitySnapshot {
     readonly offers: readonly CapabilityOffer[];
 }
 export type CapabilitySnapshotListener = (snapshot: CapabilitySnapshot) => void;
-export interface CapabilityRegistry {
+export interface CapabilityView {
     getSnapshot(): CapabilitySnapshot;
     match(requirement: CapabilityRequirement): CapabilityOffer | undefined;
     require(requirement: CapabilityRequirement): CapabilityOffer;
-    replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot;
     subscribe(listener: CapabilitySnapshotListener): () => void;
+}
+/**
+ * Runtime-owned mutation seam. Deliberately not re-exported from the package
+ * barrels: it is wired internally by createHolm()/the extension registrar so
+ * standalone consumers cannot manufacture or forge holm.* capability offers.
+ */
+export interface CapabilityRuntimeUpdater extends CapabilityView {
+    replaceOffers(offers: readonly CapabilityOffer[]): CapabilitySnapshot;
+    registerExtensionOffer(offer: CapabilityOffer): CapabilityOffer;
 }
 export declare class UnsupportedCapabilityError extends HolmError {
     constructor(options: UnsupportedCapabilityErrorOptions);
@@ -64,6 +72,8 @@ export declare class InvalidCapabilityRequirementError extends HolmError {
 export declare class DuplicateCapabilityOfferError extends HolmError {
     constructor(options: DuplicateCapabilityOfferErrorOptions);
 }
-export declare function createCapabilityRegistry(offers?: readonly CapabilityOffer[]): CapabilityRegistry;
+export declare function createCapabilityRegistry(offers?: readonly CapabilityOffer[]): CapabilityView;
+export declare function createCapabilityRuntimeUpdater(offers?: readonly CapabilityOffer[]): CapabilityRuntimeUpdater;
+export declare function createCapabilityView(registry: CapabilityView): CapabilityView;
 export declare function negotiateCapability(offers: readonly CapabilityOffer[], requirement: CapabilityRequirement): CapabilityOffer;
 //# sourceMappingURL=capabilities.d.ts.map
