@@ -57,15 +57,15 @@ process.stderr.write(coverage.stderr);
 const reportLines = coverage.stdout
   .split("\n")
   .map(stripAnsi)
-  .filter((line) => line.startsWith("ℹ "))
+  .map(stripCoveragePrefix)
+  .filter((line) => line !== undefined)
   .filter((line) =>
     line.includes("coverage report") ||
     line.includes("---") ||
     line.includes("file") ||
     line.includes("index.js") ||
     line.includes("all files"),
-  )
-  .map((line) => line.replace(/^ℹ /, ""));
+  );
 
 const nativeMetrics = parseNativeCoverageMetrics(reportLines);
 const coverageRecords = readV8Coverage(v8CoverageDir);
@@ -120,6 +120,13 @@ console.log("Coverage check passed at measured coverage thresholds.");
 
 function stripAnsi(value) {
   return value.replace(/\u001B\[[0-?]*[ -/]*[@-~]/g, "");
+}
+
+function stripCoveragePrefix(line) {
+  if (line.startsWith("ℹ ") || line.startsWith("# ")) {
+    return line.slice(2);
+  }
+  return undefined;
 }
 
 function parseNativeCoverageMetrics(lines) {
