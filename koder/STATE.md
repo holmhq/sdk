@@ -1,6 +1,6 @@
 ---
-updated_at: "16 Jul 2026 | 12:30 AM IST"
-state: READY
+updated_at: "16 Jul 2026 | 03:04 AM IST"
+state: REVIEW_READY
 active_window: none
 active_issue: 016
 orchestration_mode: direct
@@ -11,36 +11,40 @@ stop_gate: "Complete Issue #016 with green build/CI, one independent SDK remedia
 
 ## Past
 
-- Architecture decisions `D001`-`D015` are approved. The original A2 core
-  completed at `fe37f85`; Holm-authority Review `#024` then opened remediation
-  Issue `#016`.
-- Historical Queue `#002` completed S01 envelope conformance and S02
-  caller-transition safety. S03 semantic source corrections landed at
-  `5596d0b`; Review `#030` found stale generated package output.
-- The SDK process overlay was audited against koder-pattern commits `b1b892f`
-  and `f60d64a` plus Holm's task-routing refinements. Duplicate global execution
-  and blind-orchestration documents were removed, and Queue `#002` was closed
-  as historical rather than retained as future policy.
+- Architecture decisions `D001`-`D015` are approved. Holm-authority Review
+  `#024` opened remediation Issue `#016`; S01 envelope conformance and S02
+  caller-transition safety were completed and independently approved.
+- S03 package/artifact completion landed at `a962301`, S04 credential-safe
+  diagnostics/cache identity at `ca5e895`, and S05 response correlation at
+  `af846d7`. Tracked ESM, declarations, maps, package smoke, and size budgets
+  now match the public source contract.
+- Integrated Reviews `#031` and `#032` exposed reporter-dependent coverage
+  parsing rather than another S03-S05 semantic defect. Fixes `a1ac154` and
+  `69095cb` now handle ANSI and TAP coverage output; Issue/plan status was
+  checkpointed at `83b0498`.
 
 ## Present
 
-- Issue `#016` is open and ready for owner-present direct work. There is no
-  process or authorization blocker and no mandatory Harnex/worker chain.
-- S03 is implementation incomplete: regenerate tracked JavaScript,
-  declarations, and maps, prove the public package surface, and resolve the
-  transport artifact size failure (`19,342` bytes vs `16,384`).
-- S04 credential-safe diagnostics/cache identity and S05 response correlation
-  remain product work. No product source changed during the process cleanup.
-- Agents now start from this handoff and the active issue, loading architecture,
-  plans, queues, or cross-repository material only when the task needs them.
+- S03-S05 are implemented with `139/139` source tests and green normal plus
+  TAP/color full CI. A clean build followed by license/size regeneration and
+  `npm run ci` passes; reproducibility, declarations, dist smoke, coverage,
+  licenses, and all measured artifact budgets are green.
+- The independent-review gate is not yet accepted: Review `#032` correctly
+  rejected the earlier `a1ac154` fix under TAP output, while the follow-up
+  `69095cb` fix has not received a fresh independent verdict.
+- Two unattended Codex review attempts produced durable Reviews `#031`/`#032`
+  but exhausted the run's report/process retry budget. Do not auto-dispatch a
+  third reviewer; resume with an owner-present fresh review run.
+- The repository remains private. No Holm write, Issue `#007` work, release,
+  publish, deploy, credential use, or production/cloud mutation occurred.
 
 ## Future
 
-1. Continue S03 directly: regenerate package artifacts, diagnose the size delta,
-   and make the affected source/declaration/dist/size gates green.
-2. Implement S04 and S05 serially with strict TDD and generated-artifact checks
-   in each logical change.
-3. Run `npm run build` plus full `npm run ci`, then obtain one integrated SDK
-   review and fresh read-only Holm-authority acceptance.
-4. Do not begin Issue `#007`, publish, release, deploy, use credentials, or edit
-   another repository before the A2 acceptance gate.
+1. Obtain a fresh independent integrated SDK rereview covering S03-S05 and
+   coverage fix `69095cb`; require zero P1/P2 and green normal plus TAP/color CI.
+2. If approved, refresh live read-only Holm evidence at a named commit and
+   obtain fresh Holm-authority A2 acceptance.
+3. Update and close Issue `#016` only after both review gates pass. Do not begin
+   Issue `#007` without the completed A2 gate and explicit owner direction.
+4. Do not publish, release, deploy, use credentials, mutate cloud/production,
+   or edit another repository without explicit approval.
