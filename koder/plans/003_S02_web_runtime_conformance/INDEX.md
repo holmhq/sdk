@@ -1,6 +1,6 @@
 ---
 title: W3 S02 - Web runtime conformance reconciliation
-status: in_review
+status: approved
 issue: 009
 plan: 003
 slice: S02

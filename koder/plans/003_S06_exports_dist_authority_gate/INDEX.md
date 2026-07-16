@@ -1,6 +1,6 @@
 ---
 title: W3 S06 - Package integration and authority gate
-status: in_review
+status: approved
 issue: 009
 plan: 003
 slice: S06

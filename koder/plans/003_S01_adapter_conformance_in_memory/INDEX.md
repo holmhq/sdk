@@ -1,6 +1,6 @@
 ---
 title: W3 S01 - Adapter conformance harness and in-memory runtime
-status: in_review
+status: approved
 issue: 009
 plan: 003
 slice: S01

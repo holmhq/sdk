@@ -1,6 +1,6 @@
 ---
 title: W3 S05 - Reserved bridge mocks and service slots
-status: in_review
+status: approved
 issue: 009
 plan: 003
 slice: S05
