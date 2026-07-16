@@ -42,12 +42,18 @@ const args = [
   `--test-coverage-branches=${thresholds.branches}`,
   ...testFiles,
 ];
+const coverageEnv = {
+  ...process.env,
+  NODE_V8_COVERAGE: v8CoverageDir,
+};
+// Keep measured coverage reporter-stable when outer CI modes set NODE_OPTIONS
+// (for example --test-reporter=tap); the mode-specific test runs above still
+// inherit NODE_OPTIONS through npm run test:source.
+delete coverageEnv.NODE_OPTIONS;
+
 const coverage = spawnSync(process.execPath, args, {
   encoding: "utf8",
-  env: {
-    ...process.env,
-    NODE_V8_COVERAGE: v8CoverageDir,
-  },
+  env: coverageEnv,
   shell: false,
 });
 

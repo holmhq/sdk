@@ -6,9 +6,13 @@ import {
   canonicalEncodeWireValue,
   createCallerFingerprint,
   createHolm,
+  createCancellationController,
   createInvocationContext,
   createReadonlyBytes,
   createStaticCallerProvider,
+  CancelledError,
+  CapabilityVersionError,
+  LifecycleError,
   ProtocolError,
   UnsupportedCapabilityError,
   type CallerContext,
@@ -236,6 +240,176 @@ test("sobekRuntime reports missing capabilities and injected services with typed
       (error.toJSON().details as { readonly surface?: unknown }).surface === "server",
   );
   await runtime.dispose();
+});
+
+test("sobekRuntime covers URL parsing, query merging, metadata, and reserved invalidate", async () => {
+  const fake = createFakeSobekInjectedRuntime({
+    handler(request) {
+      const headers = { "x-sobek": ["ok"], "content-type": ["application/json"] };
+      if (request.path === "/api/empty") {
+        return { status: 204, headers };
+      }
+      return {
+        status: 200,
+        headers,
+        body: {
+          path: request.path,
+          query: request.query,
+          params: request.params ?? null,
+          headers: request.headers,
+          body: request.body ?? null,
+          files: request.files ?? null,
+          approval: request.approval ?? null,
+          idempotencyKey: request.idempotencyKey ?? null,
+        },
+      };
+    },
+  });
+  const services = createFakeClock(900);
+  const runtime = sobekRuntime({ id: "sobek-rich", runtime: fake, clock: services.clock, scheduler: services.scheduler });
+  await runtime.start();
+
+  const response = await runtime.invoke(makeRequest({
+    requestId: "req-sobek-url",
+    payload: {
+      method: "post",
+      url: "https://holm.example.test/api/reports?tag=one&tag=two&tag=three&&space=a+b&empty=#hash",
+      params: { page: 2, dryRun: false },
+      headers: { "X-List": ["a", "b"], "X-One": "1", "Idempotency-Key": "idem-url" },
+      body: { mode: "json", value: { title: "Report" } },
+      files: { upload: createReadonlyBytes([1, 2]) },
+      approval: { token: "approval" },
+    },
+  }), {});
+  const empty = await runtime.invoke(makeRequest({
+    requestId: "req-sobek-empty",
+    payload: { method: "GET", path: "/api/empty" },
+  }), {});
+  const rootUrl = await runtime.invoke(makeRequest({
+    requestId: "req-sobek-root-url",
+    payload: { method: "GET", url: "https://holm.example.test", params: { from: "root" } },
+  }), {});
+  const pathParams = await runtime.invoke(makeRequest({
+    requestId: "req-sobek-path-params",
+    payload: { method: "GET", path: "/api/params", params: { id: "report-1" } },
+  }), {});
+  const invalidated = await runtime.invoke({
+    ...makeRequest({ requestId: "req-sobek-invalidate", payload: { method: "GET", path: "/api/reports" } }),
+    operation: "invalidate-cache",
+  }, {});
+
+  assert.deepEqual(response.payload, {
+    path: "/api/reports",
+    query: { dryRun: false, empty: "", page: 2, space: "a b", tag: ["one", "two", "three"] },
+    params: null,
+    headers: { "idempotency-key": ["idem-url"], "x-list": ["a", "b"], "x-one": ["1"] },
+    body: { title: "Report" },
+    files: { upload: createReadonlyBytes([1, 2]) },
+    approval: { token: "approval" },
+    idempotencyKey: "idem-url",
+  });
+  assert.deepEqual(response.metadata, { status: 200, headers: { "content-type": ["application/json"], "x-sobek": ["ok"] } });
+  assert.deepEqual(empty.payload, null);
+  assert.deepEqual((rootUrl.payload as { readonly path: string; readonly query: unknown }).path, "/");
+  assert.deepEqual((rootUrl.payload as { readonly query: unknown }).query, { from: "root" });
+  assert.deepEqual((pathParams.payload as { readonly params: unknown }).params, { id: "report-1" });
+  assert.deepEqual(invalidated.payload, null);
+  assert.equal(runtime.clock.now(), 900);
+  await runtime.dispose();
+});
+
+test("sobekRuntime validates lifecycle, malformed requests, responses, and cancellation", async () => {
+  assert.throws(() => sobekRuntime({ id: " " }), TypeError);
+  const fake = createFakeSobekInjectedRuntime();
+  const runtime = sobekRuntime({ id: "sobek-validation", runtime: fake });
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-not-started", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof LifecycleError && error.code === "sobek_runtime_not_started",
+  );
+  await runtime.start();
+
+  await assert.rejects(
+    () => runtime.invoke({ ...makeRequest({ requestId: "req-sobek-version", payload: { method: "GET", path: "/api/me" } }), capability: { id: HOLM_APP_HTTP_CAPABILITY.id, major: 2 } }, {}),
+    (error: unknown) => error instanceof CapabilityVersionError,
+  );
+  for (const [requestId, payload] of [
+    ["req-sobek-missing-path", { method: "GET" }],
+    ["req-sobek-relative", { method: "GET", path: "api/me" }],
+    ["req-sobek-bad-query", { method: "GET", path: "/api/me?bad=%E0%A4%A" }],
+    ["req-sobek-missing-method", { path: "/api/me" }],
+    ["req-sobek-delete", { method: "DELETE", path: "/api/me" }],
+    ["req-sobek-header-name", { method: "GET", path: "/api/me", headers: { " ": "bad" } }],
+    ["req-sobek-header-value", { method: "GET", path: "/api/me", headers: { "x-bad": ["ok", 1] } }],
+    ["req-sobek-body-missing", { method: "POST", url: "/api/me", body: { mode: "json" } }],
+    ["req-sobek-body-raw", { method: "POST", url: "/api/me", body: { mode: "raw", value: 1 } }],
+    ["req-sobek-body-binary", { method: "POST", url: "/api/me", body: { mode: "binary", value: { bytes: [1] } } }],
+    ["req-sobek-body-mode", { method: "POST", url: "/api/me", body: { mode: 1, value: null } }],
+    ["req-sobek-query", { method: "GET", path: "/api/me", query: null }],
+    ["req-sobek-params", { method: "GET", path: "/api/me", params: null }],
+  ] as const) {
+    await assert.rejects(
+      () => runtime.invoke(makeRequest({ requestId, payload }), {}),
+      (error: unknown) => error instanceof ProtocolError,
+    );
+  }
+
+  fake.setHandler(() => ({ status: 99, body: { ok: true } }));
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-status", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof ProtocolError && error.code === "invalid_sobek_response_status",
+  );
+  fake.setHandler(() => ({ status: 200, headers: { " ": ["bad"] }, body: { ok: true } }));
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-response-header-name", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof ProtocolError && error.code === "invalid_sobek_response_headers",
+  );
+  fake.setHandler(() => ({ status: 200, headers: { "x-bad": ["ok", 1 as unknown as string] }, body: { ok: true } }));
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-response-header-value", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof ProtocolError && error.code === "invalid_sobek_response_headers",
+  );
+  fake.setHandler(() => ({ status: 400, body: { error: { code: "REMOTE_BODY", message: "Remote body error.", retryable: true } } }));
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-body-error", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof RemoteError && error.code === "REMOTE_BODY" && error.retryable === true,
+  );
+  fake.setHandler(() => ({ status: 400, body: { error: { code: "", message: "ignored" } } }));
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-invalid-body-error", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof RemoteError && error.code === "holm.remote_error",
+  );
+  fake.setHandler(() => ({ error: { code: "", message: "bad" } }));
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-invalid-error", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof ProtocolError && error.code === "invalid_sobek_error",
+  );
+  fake.setHandler(() => ({ error: { code: "BAD", message: "" } }));
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-invalid-error-message", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof ProtocolError && error.code === "invalid_sobek_error",
+  );
+
+  let resolveCancelled: ((response: { readonly status: number; readonly body: { readonly ok: true } }) => void) | undefined;
+  const cancelled = createFakeSobekInjectedRuntime({
+    handler: () => new Promise<{ readonly status: number; readonly body: { readonly ok: true } }>((resolve) => { resolveCancelled = resolve; }),
+  });
+  const cancellable = sobekRuntime({ id: "sobek-cancellable", runtime: cancelled });
+  await cancellable.start();
+  const sdkCancellation = createCancellationController();
+  const pending = cancellable.invoke(makeRequest({ requestId: "req-sobek-cancel", payload: { method: "GET", path: "/api/me" } }), { cancellation: sdkCancellation.signal });
+  sdkCancellation.cancel("caller-left");
+  resolveCancelled?.({ status: 200, body: { ok: true } });
+  await assert.rejects(pending, (error: unknown) => error instanceof CancelledError);
+  await cancellable.dispose();
+
+  assert.throws(() => sobekRuntime({ id: "sobek-missing-clock" }).clock.now(), UnsupportedSobekRuntimeServiceError);
+  assert.throws(() => sobekRuntime({ id: "sobek-missing-scheduler" }).scheduler.schedule(1, () => undefined), UnsupportedSobekRuntimeServiceError);
+  await runtime.dispose();
+  await assert.rejects(
+    () => runtime.invoke(makeRequest({ requestId: "req-sobek-disposed", payload: { method: "GET", path: "/api/me" } }), {}),
+    (error: unknown) => error instanceof LifecycleError && error.code === "sobek_runtime_disposed",
+  );
+  await assert.rejects(() => runtime.start(), (error: unknown) => error instanceof LifecycleError && error.code === "sobek_runtime_disposed");
 });
 
 function makeRequest(options: {

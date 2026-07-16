@@ -398,6 +398,39 @@
     },
     {
       "budgets": {
+        "gzipBytes": 6144,
+        "rawBytes": 24576
+      },
+      "gzipBytes": 4035,
+      "minifiedBytes": 14802,
+      "path": "dist/node/runtime.js",
+      "rawBytes": 19708,
+      "sha256": "1f2677833fbd87051e31822d98100e96e085b0b622eb2d4c2ae6aaa0f9e9c353"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 2048,
+        "rawBytes": 8192
+      },
+      "gzipBytes": 953,
+      "minifiedBytes": 3079,
+      "path": "dist/node/services.js",
+      "rawBytes": 4132,
+      "sha256": "c8c2d8ce8dbb3d76584184a289f17eb8157d20273a49454e61f1e349e144e11f"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 512,
+        "rawBytes": 1024
+      },
+      "gzipBytes": 200,
+      "minifiedBytes": 331,
+      "path": "dist/node/upload.js",
+      "rawBytes": 431,
+      "sha256": "ff479695cd1b6ada88eebe387811dfe31f1c123a995f80efb6a97cdddb4c64bf"
+    },
+    {
+      "budgets": {
         "gzipBytes": 512,
         "rawBytes": 1024
       },
@@ -417,6 +450,28 @@
       "path": "dist/sobek/runtime.js",
       "rawBytes": 22018,
       "sha256": "0b241c04c5a1d1730755f231835d9b3618a10a86c9de1db26426dbf52bb831e1"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 2560,
+        "rawBytes": 12288
+      },
+      "gzipBytes": 1517,
+      "minifiedBytes": 5031,
+      "path": "dist/test/index.js",
+      "rawBytes": 7255,
+      "sha256": "3bd96ffce5a6083f3cc6b7286be91b80f010ad53807b72d8ba56b6ce3b0e7242"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 6144,
+        "rawBytes": 32768
+      },
+      "gzipBytes": 3379,
+      "minifiedBytes": 16312,
+      "path": "dist/bridge/index.js",
+      "rawBytes": 22763,
+      "sha256": "eabda8b1e36d74ab586f45fb038fa5f78ae446c578276683ec3db0513c6a4895"
     }
   ],
   "package": {
@@ -426,8 +481,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 38746,
-    "minifiedBytes": 126269,
-    "rawBytes": 171644
+    "gzipBytes": 48830,
+    "minifiedBytes": 165824,
+    "rawBytes": 225933
   }
 }

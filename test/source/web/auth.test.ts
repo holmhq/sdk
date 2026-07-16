@@ -146,4 +146,15 @@ test("web token and caller providers resolve fresh values per invocation", async
   assert.equal((await dynamic.current()).app, undefined);
   appId = " ";
   await assert.rejects(async () => dynamic.current(), /app id/);
+
+  assert.throws(() => createWebCaller({ origin: " " }), /origin/);
+  const undefinedSubscribe = createWebCaller({
+    subscribe: (() => undefined) as unknown as (listener: () => void) => () => void,
+  });
+  const noop = undefinedSubscribe.subscribe?.(() => undefined);
+  assert.equal(typeof noop, "function");
+  noop?.();
+
+  const badOrigin = createWebCaller({ origin: () => " " });
+  await assert.rejects(async () => badOrigin.current(), /origin/);
 });

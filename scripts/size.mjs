@@ -40,8 +40,13 @@ const budgets = new Map([
   ["dist/web/upload-service.js", { rawBudget: 16384, gzipBudget: 4096 }],
   ["dist/web/url.js", { rawBudget: 4096, gzipBudget: 1536 }],
   ["dist/node/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/node/runtime.js", { rawBudget: 24576, gzipBudget: 6144 }],
+  ["dist/node/services.js", { rawBudget: 8192, gzipBudget: 2048 }],
+  ["dist/node/upload.js", { rawBudget: 1024, gzipBudget: 512 }],
   ["dist/sobek/index.js", { rawBudget: 1024, gzipBudget: 512 }],
   ["dist/sobek/runtime.js", { rawBudget: 24576, gzipBudget: 6144 }],
+  ["dist/test/index.js", { rawBudget: 12288, gzipBudget: 2560 }],
+  ["dist/bridge/index.js", { rawBudget: 32768, gzipBudget: 6144 }],
 ]);
 const targets = [...budgets].map(([path, budget]) => ({ path, ...budget }));
 

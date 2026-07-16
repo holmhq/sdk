@@ -6,14 +6,22 @@ import { listFiles } from "./lib/artifacts.mjs";
 
 const { createBfbbApp } = await import("../examples/bfbb/app.js");
 const rawCalls = [];
+
+function jsonFetchResponse(body) {
+  return {
+    status: 200,
+    url: "",
+    headers: new Map([["content-type", "application/json"]]),
+    text: async () => body,
+    arrayBuffer: async () => new ArrayBuffer(0),
+  };
+}
 const raw = createBfbbApp({
   baseUrl: "https://app.example.test/",
   cache: false,
   fetch: async (input) => {
     rawCalls.push(String(input));
-    return new Response('{"data":{"ok":true,"mode":"bfbb"}}', {
-      headers: { "content-type": "application/json" },
-    });
+    return jsonFetchResponse('{"data":{"ok":true,"mode":"bfbb"}}');
   },
 });
 const rawResult = await raw.app.http.get("/api/example");
@@ -49,4 +57,11 @@ if (!bundle.includes("/api/me") || !bundle.includes("holm.http.app")) {
   throw new Error("Vite example bundle does not contain the app HTTP composition.");
 }
 
-console.log("Example checks passed: raw BFBB import and Vite production build.");
+const examplesReadme = readFileSync("examples/README.md", "utf8").toLowerCase();
+for (const requiredLabel of ["desktop", "mobile", "reserved", "unsupported"]) {
+  if (!examplesReadme.includes(requiredLabel)) {
+    throw new Error(`Examples README must label desktop/mobile bridge imports as reserved/unsupported; missing ${requiredLabel}.`);
+  }
+}
+
+console.log("Example checks passed: raw BFBB import, Vite production build, and reserved bridge labels.");

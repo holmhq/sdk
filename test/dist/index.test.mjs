@@ -1,4 +1,5 @@
 import { strict as assert } from "node:assert";
+import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import {
@@ -78,6 +79,24 @@ import {
   REALTIME_PUBLIC_SUBSCRIBE_CAPABILITY,
 } from "../../dist/state/index.js";
 
+async function readJsonArtifact(relativePath) {
+  return JSON.parse(await readFile(new URL(relativePath, import.meta.url), "utf8"));
+}
+
+async function readTextArtifact(relativePath) {
+  return readFile(new URL(relativePath, import.meta.url), "utf8");
+}
+
+function jsonFetchResponse(body, options = {}) {
+  return {
+    status: options.status ?? 200,
+    url: options.url ?? "",
+    headers: new Map([["content-type", "application/json"]]),
+    text: async () => body,
+    arrayBuffer: async () => new ArrayBuffer(0),
+  };
+}
+
 function deferred() {
   let resolve;
   const promise = new Promise((innerResolve) => {
@@ -85,6 +104,40 @@ function deferred() {
   });
   return { promise, resolve };
 }
+
+test("generated package artifacts expose isolated Issue 009 runtime subpaths", async () => {
+  const packageJson = await readJsonArtifact("../../package.json");
+  const manifest = await readJsonArtifact("../../dist/manifest.json");
+  const sizeReport = await readJsonArtifact("../../dist/size-report.json");
+  const manifestPaths = new Set(manifest.artifacts.map((artifact) => artifact.path));
+  const sizedPaths = new Set(sizeReport.artifacts.map((artifact) => artifact.path));
+  const runtimeSubpaths = ["./web", "./node", "./sobek", "./test", "./bridge"];
+
+  for (const subpath of runtimeSubpaths) {
+    assert.deepEqual(packageJson.exports[subpath], {
+      types: `./dist/${subpath.slice(2)}/index.d.ts`,
+      import: `./dist/${subpath.slice(2)}/index.js`,
+    });
+    assert.equal(manifestPaths.has(`dist/${subpath.slice(2)}/index.js`), true, `${subpath} ESM is in the dist manifest`);
+    assert.equal(manifestPaths.has(`dist/${subpath.slice(2)}/index.d.ts`), true, `${subpath} declarations are in the dist manifest`);
+    assert.equal(sizedPaths.has(`dist/${subpath.slice(2)}/index.js`), true, `${subpath} ESM is covered by the size gate`);
+  }
+
+  for (const runtimeFile of [
+    "dist/node/runtime.js",
+    "dist/node/services.js",
+    "dist/node/upload.js",
+    "dist/sobek/runtime.js",
+    "dist/bridge/index.js",
+    "dist/test/index.js",
+  ]) {
+    assert.equal(manifestPaths.has(runtimeFile), true, `${runtimeFile} is in the dist manifest`);
+    assert.equal(sizedPaths.has(runtimeFile), true, `${runtimeFile} is covered by the size gate`);
+  }
+
+  const rootEsm = await readTextArtifact("../../dist/index.js");
+  assert.equal(/\.\/(web|node|sobek|bridge|test)\//.test(rootEsm), false, "root import must not pull runtime subpaths implicitly");
+});
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
   assert.equal(createCoreEnvironment(), "core");
@@ -184,9 +237,7 @@ test("generated ESM artifact exposes S09 transport auth and error contracts", as
 });
 
 test("generated ESM artifact exposes the Issue 007 app extension and web composition", async () => {
-  const fetch = async () => new Response('{"data":{"ok":true}}', {
-    headers: { "content-type": "application/json" },
-  });
+  const fetch = async () => jsonFetchResponse('{"data":{"ok":true}}');
   const runtime = webRuntime({ fetch, cache: false });
   const extension = createAppExtension({ requestId: (sequence) => `dist-app-${sequence}` });
   const holm = createHolm({
@@ -311,9 +362,7 @@ test("generated ESM artifact exposes the Issue 009 Node/CLI runtime services", a
     baseUrl: "https://cli.example.test/",
     fetch: async (input, init) => {
       calls.push({ input, init });
-      return new Response('{"data":{"ok":true}}', {
-        headers: { "content-type": "application/json" },
-      });
+      return jsonFetchResponse('{"data":{"ok":true}}');
     },
     auth: createNodeTokenAuth({ token: "dist-node-token", operatorId: "dist-operator" }),
     clock: fake.clock,
@@ -347,10 +396,7 @@ test("generated ESM artifact exposes the Issue 007 web Fetch runtime", async () 
     baseUrl: "https://app.example.test/",
     fetch: async (input, init) => {
       calls.push({ input: String(input), init });
-      return new Response('{"data":{"member":{"id":"member_dist"}}}', {
-        status: 200,
-        headers: { "content-type": "application/json" },
-      });
+      return jsonFetchResponse('{"data":{"member":{"id":"member_dist"}}}');
     },
   });
   const holm = createHolm({
