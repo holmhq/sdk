@@ -591,14 +591,14 @@
       "sha256": "d0b21e3ec0ddf941c0acb06bdbd56f7a790366c56f0bd1496b1882c1f90d412d"
     },
     {
-      "bytes": 20645,
+      "bytes": 22018,
       "path": "dist/sobek/runtime.js",
-      "sha256": "ae201408bb9849247de2b6bd15f9c78f5eb52ed9cb380ff9c766edd60e58145b"
+      "sha256": "0b241c04c5a1d1730755f231835d9b3618a10a86c9de1db26426dbf52bb831e1"
     },
     {
-      "bytes": 20711,
+      "bytes": 21909,
       "path": "dist/sobek/runtime.js.map",
-      "sha256": "1fa98eca70b925d8fcd6c941c8ee1b09387cd4c0c59b02ffa7c6bb446a71aefb"
+      "sha256": "730caadb55e00d463674126dca181b23751b2da8828208ba3319fed41a1898ab"
     },
     {
       "bytes": 1457,

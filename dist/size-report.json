@@ -412,11 +412,11 @@
         "gzipBytes": 6144,
         "rawBytes": 24576
       },
-      "gzipBytes": 3983,
-      "minifiedBytes": 15779,
+      "gzipBytes": 4235,
+      "minifiedBytes": 16803,
       "path": "dist/sobek/runtime.js",
-      "rawBytes": 20645,
-      "sha256": "ae201408bb9849247de2b6bd15f9c78f5eb52ed9cb380ff9c766edd60e58145b"
+      "rawBytes": 22018,
+      "sha256": "0b241c04c5a1d1730755f231835d9b3618a10a86c9de1db26426dbf52bb831e1"
     }
   ],
   "package": {
@@ -426,8 +426,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 38494,
-    "minifiedBytes": 125245,
-    "rawBytes": 170271
+    "gzipBytes": 38746,
+    "minifiedBytes": 126269,
+    "rawBytes": 171644
   }
 }

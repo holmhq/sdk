@@ -201,7 +201,7 @@ function sobekRequestFromOperation(request: OperationRequest): SobekInjectedRequ
   const headers = readHeaders(payload.headers);
   const query = readQuery(payload, parsed.query, source.kind);
   const idempotencyKey = readOptionalString(payload.idempotencyKey, "idempotencyKey") ?? headers["idempotency-key"]?.[0];
-  const body = payload.body === undefined ? undefined : copyWireValue(payload.body);
+  const body = payload.body === undefined ? undefined : readBody(payload.body, source.kind);
   const files = payload.files === undefined ? undefined : copyWireValue(payload.files);
   const approval = payload.approval === undefined ? undefined : copyWireValue(payload.approval);
   const params = source.kind === "path" && payload.params !== undefined ? requireWireObject(payload.params, "params") : undefined;
@@ -247,6 +247,47 @@ function sobekRequestFromOperation(request: OperationRequest): SobekInjectedRequ
     input.approval = approval;
   }
   return Object.freeze(input);
+}
+
+function readBody(value: WireValue, sourceKind: "path" | "url"): WireValue {
+  if (sourceKind === "path") {
+    return copyWireValue(value);
+  }
+  return readTransportBody(value);
+}
+
+function readTransportBody(value: WireValue): WireValue {
+  const body = requireWireObject(value, "transport body");
+  switch (body.mode) {
+    case "json":
+      if (body.value === undefined) {
+        throw invalidTransportBody("json", "JSON transport bodies must include a value.");
+      }
+      return copyWireValue(body.value);
+    case "raw":
+      if (typeof body.value !== "string") {
+        throw invalidTransportBody("raw", "Raw transport bodies must include a string value.");
+      }
+      return body.value;
+    case "binary":
+      if (!isReadonlyBytes(body.value)) {
+        throw invalidTransportBody("binary", "Binary transport bodies must include SDK readonly bytes.");
+      }
+      return copyWireValue(body.value);
+    default:
+      throw invalidTransportBody(
+        typeof body.mode === "string" ? body.mode : undefined,
+        "Sobek transport request bodies must use json, raw, or binary mode.",
+      );
+  }
+}
+
+function invalidTransportBody(mode: string | undefined, message: string): ProtocolError {
+  return new ProtocolError({
+    code: "invalid_sobek_request_body",
+    message,
+    ...(mode === undefined ? {} : { details: { mode } }),
+  });
 }
 
 function readQuery(payload: WireObject, parsedQuery: WireObject, sourceKind: "path" | "url"): WireObject {

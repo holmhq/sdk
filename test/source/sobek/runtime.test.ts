@@ -1,17 +1,20 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
 
-import { HOLM_APP_HTTP_CAPABILITY } from "../../../src/app/index.js";
+import { createAppExtension, HOLM_APP_HTTP_CAPABILITY } from "../../../src/app/index.js";
 import {
   canonicalEncodeWireValue,
   createCallerFingerprint,
+  createHolm,
   createInvocationContext,
   createReadonlyBytes,
+  createStaticCallerProvider,
   ProtocolError,
   UnsupportedCapabilityError,
   type CallerContext,
   type OperationRequest,
 } from "../../../src/core/index.js";
+import { createFakeClock } from "../../../src/test/index.js";
 import { RemoteError } from "../../../src/transports/index.js";
 import {
   createFakeSobekInjectedRuntime,
@@ -81,6 +84,60 @@ test("sobekRuntime invokes an injected runtime directly without fetch and preser
       headers: { "content-type": ["application/json; charset=utf-8"], location: ["/api/tasks/task-1"] },
     });
     await runtime.dispose();
+  } finally {
+    fetch.restore();
+  }
+});
+
+test("createHolm app HTTP calls through sobekRuntime pass canonical request bodies without HTTP self-calls", async () => {
+  const fetch = installFailingFetch();
+  try {
+    const fake = createFakeSobekInjectedRuntime({
+      handler: (request) => ({
+        status: 200,
+        body: { ok: true, body: request.body ?? null, caller: request.caller.principal },
+      }),
+    });
+    const services = createFakeClock(100);
+    const holm = createHolm({
+      runtime: sobekRuntime({
+        id: "sobek-app-extension",
+        runtime: fake,
+        clock: services.clock,
+        scheduler: services.scheduler,
+      }),
+      caller: createStaticCallerProvider({
+        surface: "server",
+        principal: { kind: "service", id: "server-runtime" },
+        app: { id: "app-1" },
+        origin: "holm://sobek/app-1",
+      }),
+      extensions: [createAppExtension({ requestId: (sequence) => `sobek-app-${sequence}` })] as const,
+    });
+
+    const json = await holm.app.http.post("/api/tasks?draft=true", { title: "x" }, {
+      params: { page: 1 },
+      headers: { "x-caller-hint": "member-evil" },
+    });
+    const raw = await holm.app.http.request({ method: "POST", url: "/api/raw", body: { mode: "raw", value: "plain" } });
+    const binaryBytes = createReadonlyBytes([4, 5, 6]);
+    const binary = await holm.app.http.request({ method: "POST", url: "/api/binary", body: { mode: "binary", value: binaryBytes } });
+
+    assert.equal(fetch.calls, 0, "Sobek app composition must not use fetch/HTTP self-calls");
+    assert.equal(fake.invocations.length, 3);
+    const jsonRequest = fake.invocations[0]?.request as SobekInjectedRequest;
+    assert.equal(jsonRequest.requestId, "sobek-app-1");
+    assert.equal(jsonRequest.method, "POST");
+    assert.equal(jsonRequest.path, "/api/tasks");
+    assert.deepEqual(jsonRequest.query, { draft: "true", page: 1 });
+    assert.deepEqual(jsonRequest.body, { title: "x" });
+    assert.deepEqual(jsonRequest.caller.principal, { kind: "service", id: "server-runtime" });
+    assert.deepEqual(json, { ok: true, body: { title: "x" }, caller: { kind: "service", id: "server-runtime" } });
+    assert.equal((fake.invocations[1]?.request as SobekInjectedRequest).body, "plain");
+    assert.deepEqual((fake.invocations[2]?.request as SobekInjectedRequest).body, binaryBytes);
+    assert.deepEqual(raw, { ok: true, body: "plain", caller: { kind: "service", id: "server-runtime" } });
+    assert.deepEqual(binary, { ok: true, body: binaryBytes, caller: { kind: "service", id: "server-runtime" } });
+    await holm.dispose();
   } finally {
     fetch.restore();
   }
