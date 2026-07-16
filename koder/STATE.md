@@ -1,48 +1,48 @@
 ---
-updated_at: "16 Jul 2026 | 03:00 PM IST"
+updated_at: "16 Jul 2026 | 03:58 PM IST"
 state: READY
-active_window: W1 complete (koder/docs/EXECUTION.md); W2 not opened
-active_issue: none (016 resolved; 007 next per program order)
-orchestration_mode: owner decision pending for W2
-stop_gate: "W2 (Issue #007) starts only after owner picks execution mode and dispatch_models for the next window"
+active_window: W2 open (koder/docs/EXECUTION.md) — Issue #007, not yet started
+active_issue: "007 (web and app client)"
+orchestration_mode: owner-present direct with spot dispatches; dispatch_models [pi/gpt-5.5]
+stop_gate: "#007 closes only after four CI modes green + clean-tree reproducibility, one independent review dispatch with zero P1/P2, and read-only Holm-authority conformance of web-client route/auth surfaces at a named Holm commit"
 ---
 
 # Koder State
 
 ## Past
 
-- Issue `#016` is **resolved** (2026-07-16). P2-2 fixed at `9825963` (bounded
-  `keyGenerations` with refcounted generation release + structural
-  zero-residue regression test, red-proof recorded); entry-review P2 (clean
-  build deleted tracked dist reports) fixed at `fe7879e` (build chains
-  `check:licenses` + `size`). Four CI modes green at HEAD; clean-tree
-  `npm run build` leaves zero diff.
-- Review `#034` accepts A2 at Holm `ded755f8` (v0.184.0): all A2 authority
-  paths drift-free since `#024` HEAD; S01-S06 ledger done; npm still private;
-  Holm untouched (read-only).
-- Blind run q003-w1 history: preflight smokes green; codex/gpt-5.3-codex had
-  3 integrity failures (ack-only, false env blocker, fabricated review
-  verdict — all caught by required artifact-report sidecars);
-  pi/gpt-5.5 clean on all 3 substantive dispatches. Mid-run the owner
-  directed common-sense direct resolution; coordinator finished entries 1-3
-  directly (queue `003` run log has the full audit trail).
+- Issue `#016` resolved (2026-07-16); W1 complete with all gates satisfied.
+  P2-2 fixed at `9825963`, entry-review P2 at `fe7879e`; four CI modes green
+  at that HEAD; clean-tree `npm run build` left zero diff. Review `#034`
+  accepted A2 at Holm `ded755f8` (v0.184.0). Queue `003` audit trail holds
+  the blind-run history (pi clean; codex had 3 caught integrity failures).
+- Owner decision (2026-07-16, this session): W2 (Issue `#007`) runs
+  **owner-present direct with spot dispatches** — no blind queue 004 —
+  and `dispatch_models: [pi/gpt-5.5]` only (codex removed for W2, no
+  fallback). Recorded in `koder/docs/EXECUTION.md` at `8b92f96`; decision
+  covers W2 only, W3 mode is a fresh owner call at the boundary.
 
 ## Present
 
-- Queue `003` done; W1 stop gate fully satisfied. `main` at the `#016`
-  closeout checkpoint, tree clean, several commits ahead of origin
-  (unpushed). 9 P3 advisories from `#033` remain open backlog.
-- `koder/docs/EXECUTION.md` still describes the blind-orchestrator program
-  shape agreed before this run; W2 queue (`004`, Issue `#007`) is NOT filed.
+- `main` clean at the W2-opening checkpoint; docs-only delta since the
+  `#016` closeout (no source changes, CI standing unchanged). Local commits
+  ahead of origin are unpushed unless the owner mirrored them.
+- Issue `#007` (`koder/issues/007_web_app_client/INDEX.md`) is the active
+  slice: web runtime adapter, member auth, custom `/api/*` transport,
+  uploads/blob-links, lifecycle hooks, BFBB + Vite examples, and full
+  `app.audit.js` route classification. No implementation has begun.
+- 9 P3 advisories from `#033` remain open backlog.
 
 ## Future
 
-1. Owner decision for W2 (Issue `#007`, web app client): execution mode
-   (blind queue vs owner-present direct with spot dispatches) and
-   `dispatch_models` (codex health warrants reassessment; pi was reliable).
-   Update `koder/docs/EXECUTION.md` accordingly before starting.
-2. Program order after `#007`: `#009` → `#014` → `#008` → `#010` → `#011` →
-   `#013` → `#012` → `#015`.
-3. Standing gates unchanged: no publish/release/deploy/credentials/cloud;
-   Holm read-only; serial on `main`; push to origin when the owner wants the
-   checkpoint mirrored.
+1. Start `#007` owner-present under strict red → green → refactor TDD.
+   Suggested first steps: route audit mapping from `app.audit.js`, then the
+   web runtime adapter contract with its first failing test. Generated
+   `dist/` artifacts ship in the same logical implementation as each public
+   source change.
+2. At the `#007` milestone: preflight `pi` smoke, dispatch the independent
+   review, then the read-only Holm-authority conformance check at a named
+   Holm commit. Any P1/P2 or exhausted budget blocks and returns to owner.
+3. Program order after `#007`: `#009` → `#014` → `#008` → `#010` → `#011` →
+   `#013` → `#012` → `#015`. Standing gates unchanged: no publish/release/
+   deploy/credentials/cloud; Holm read-only; serial on `main`.
