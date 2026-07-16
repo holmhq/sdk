@@ -1,93 +1,80 @@
 ---
-title: Active execution window
-updated: 2026-07-16
-window: W3
-mode: blind
-queue: koder/queue/004_w3_issue009_runtime_adapters/INDEX.md
+title: Execution boundary
+updated: 2026-07-17
+window: none
+mode: none
+last_window: W3
+last_queue: koder/queue/004_w3_issue009_runtime_adapters/INDEX.md
 ---
 
-# Execution Window
+# Execution Boundary
 
-## Authorization
+## Current authorization
 
-- Owner authorization, 2026-07-16 (in-session, explicit): after W2 / Issue
-  `#007` completed, the owner requested a long queue or multiple queues that
-  could drain unattended overnight. W3 therefore uses **blind orchestration**
-  for Issue `#009` only.
-- Outcome disclosed before launch: product code, tests, declarations, and
-  tracked generated artifacts across six reviewed runtime-adapter slices; about
-  10-18 fresh worker phases including entry reviews/fixes and one integrated
-  final review; up to about eight hours wall time with a 45-minute closeout
-  reserve.
-- W3 does not authorize Issue `#014` or a multi-issue conveyor. The queue stops
-  when Issue `#009` is accepted or a fail-closed gate blocks it.
-- Program order after this boundary remains `#014` → `#008` → `#010` → `#011`
-  → `#013` → `#012` → `#015`; every later window requires a fresh owner mode
-  decision.
+No execution window is active. W3 / Queue `#004` completed Issue `#009` and its
+stop gate. Do not file or begin Issue `#014`, select a new orchestration mode,
+or dispatch implementation workers until the owner explicitly chooses the next
+window shape and `dispatch_models` policy.
 
-## Active window: W3 — Issue #009 runtime and surface adapters
+Program order remains `#014` → `#008` → `#010` → `#011` → `#013` → `#012` →
+`#015`. Older queue and execution records are evidence, not standing
+authorization.
 
-- Issue: `koder/issues/009_runtime_surface_adapters/INDEX.md`.
-- Queue: `koder/queue/004_w3_issue009_runtime_adapters/INDEX.md`.
-- Reviewed plans: `koder/plans/003_S01_*` through `003_S06_*`; independent
-  Review `#040` approved the family with zero P1/P2/P3 at `bbf9388`.
-- Mode: unattended blind orchestration, serial on `main`. The root session is a
-  process-only governor. Fresh coordinators own at most two entries and route
-  fresh implement, review, fix, rereview, recovery, and final-review workers.
-  The governor/coordinators must not ingest product source, diffs, worker
-  transcripts, or finding prose.
-- Target window: 2026-07-16 23:53 IST through 2026-07-17 07:45 IST. Start no new
-  implementation phase after 07:00 IST; reserve the remainder for validation,
-  review, accounting, and handoff.
-- First product-visible result: common adapter conformance plus the deterministic
-  in-memory/test adapter (S01).
-- Holm authority: live Issue `#534` at planning commit `55cd8213` (v0.185.0)
-  supersedes old Issue `#486`. GET/POST remains Holm's canonical app wire;
-  SDK operation envelopes stay internal and any Sobek/in-process seam must
-  preserve canonical caller/validation/response/error semantics. Holm is
-  read-only and currently has unrelated pre-existing dirty work.
+## Completed window: W3 — Issue #009
 
-## Stop gate
+- Owner authorization: 2026-07-16, unattended blind orchestration for Issue
+  `#009` only, serial on `main`, with `pi/gpt-5.5` as the sole automatic model
+  and no fallback.
+- Queue: `koder/queue/004_w3_issue009_runtime_adapters/INDEX.md`, drained.
+- Plans: `koder/plans/003_S01_*` through `003_S06_*`, all implemented.
+- Product result: common adapter conformance and deterministic in-memory/test
+  adapter; reconciled web adapter; explicit Node/CLI services; structural Sobek
+  injected runtime with no HTTP self-call; reserved desktop/mobile bridge mocks;
+  isolated exports, declarations, examples, and tracked generated artifacts.
+- Product commit: `f06d1c0ef8fd1fd2e1225ab4c60759d58a7a9c22`.
+- Validation: four full CI modes green with identical coverage metrics
+  (98.01 statements / 98.90 lines / 98.58 functions / 95.50 branches /
+  100.00 changed-reachable), 212 source tests, clean rebuild reproducibility for
+  227 dist artifacts, and size/license/example/declaration/dist gates green.
+- Integrated SDK Review `#046`: approved, zero P1/P2/P3.
+- Fresh read-only Holm-authority Review `#048`: accepted, zero P1/P2/P3 at Holm
+  `fb34d6b` (v0.185.0), with no drift in mapped authority paths.
+- Queue process failures: `4/6`; all were fail-closed and recovered within
+  policy. No fallback model, push, release, deploy, credential, cloud,
+  production, worktree, or cross-repository write occurred.
 
-Issue `#009` closes only after:
+## Monitoring correction
 
-1. S01-S06 are implemented under strict red → green → refactor TDD, with each
-   public source change owning affected JavaScript, declarations, maps, package
-   smoke, reproducibility, and size evidence.
-2. Every implementation/fix receives a fresh independent entry review with zero
-   outstanding P1/P2; semantic fix cycles are capped at two.
-3. Full validation is green in normal, FORCE_COLOR, TAP, and TAP+color modes
-   with identical coverage metrics and clean-tree build reproducibility.
-4. A fresh integrated SDK review reports zero P1/P2.
-5. A fresh read-only Holm-authority review accepts the adapter boundary against
-   Issue `#534` at a named current commit.
-6. Git is clean and committed.
+The owner observed that a 60-minute outer watch made completed nested worker
+phases insufficiently visible. Any future nested blind window must use governor
+watch fences of at most five minutes, reconcile `harnex status`, typed reports,
+and Git after each fence, and stop completed sessions promptly. Do not use a
+long blocking outer watch merely because the inner coordinator has a longer wall
+cap.
 
-Any P1/P2 at the final gate, architecture/product decision, Holm contradiction,
-out-of-policy model requirement, process-failure budget exhaustion, or timebox
-boundary blocks and returns to the owner. Do not continue into Issue `#014`.
+## W3 stop gate disposition
 
-## Blind-run overlay
+Satisfied:
 
-- `dispatch_models: [pi/gpt-5.5]`; no automatic fallback is authorized. The Pi
-  preflight passed before launch. Never substitute another model or adapter.
-- `review_granularity: entry`; `coordinator_entry_cap: 2`;
-  `max_fix_cycles: 2`; queue-global `process_failure_budget: 6`;
-  `final_review_required: true`; implementation ownership is serial.
-- Compact required Harnex reports live under ignored `.harnex/q004/`; durable
-  queue/review artifacts retain the minimum owner-facing proof. Missing or
-  malformed proof fails closed.
-- Coordinators batch queue/issue/plan accounting with logical work or resumable
-  checkpoints; no metadata-only phase worker and no commit per frontmatter
-  transition.
+1. S01-S06 implemented under strict TDD with owned source, tests, declarations,
+   maps, generated JavaScript, manifests, package smoke, reproducibility, and
+   size evidence.
+2. Every implementation/fix received fresh independent review with no
+   outstanding P1/P2.
+3. Normal, FORCE_COLOR, TAP, and TAP+color CI modes passed with identical
+   metrics and clean-tree build reproducibility.
+4. Integrated Review `#046` approved with zero P1/P2/P3.
+5. Holm-authority Review `#048` accepted with zero P1/P2/P3.
+6. Issue `#009` is resolved and Queue `#004` is drained.
 
-## Hard limits
+The next checkpoint is owner review of the W3 closeout and a separate W4 mode
+decision. The completed W3 contract grants no Issue `#014` implementation
+permission.
+
+## Standing hard limits
 
 - No npm publish, tags, releases, push, or deploy; `package.json` stays private.
 - No credentials and no cloud/production mutation.
-- Holm and every repository other than this SDK are read-only; no cross-repo
-  edits or tests that mutate their worktrees.
-- Serial on `main`; no worktrees.
-- No Issue `#014`, admin, actions/CLI projection, realtime, collaboration,
-  framework binding, production desktop/mobile, or Holm Issue `#534`
-  implementation under W3.
+- Holm and every repository other than this SDK remain read-only unless the
+  owner explicitly approves a cross-repository change.
+- Serial on `main`; no worktrees without explicit owner approval.

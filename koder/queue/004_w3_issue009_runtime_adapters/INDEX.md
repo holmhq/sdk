@@ -150,3 +150,8 @@ does not consume a semantic fix cycle.
   accepted `P1=0 P2=0 P3=0` against Holm `fb34d6b` (`v0.185.0`) with clean
   read-only fingerprints. Process failures used `4/6`; blocker: none. Queue
   drained; Issue `#009` resolved at product commit `f06d1c0`.
+- Governor monitoring correction from the owner: the outer session used a
+  60-minute watch after its first coordinator fence, which made completed nested
+  phases insufficiently visible. Future nested blind runs must use at most
+  5-minute governor fences, then reconcile `harnex status`, typed reports, Git,
+  and promptly stop completed sessions; do not use a long blocking outer watch.

@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-07-13
-updated: 2026-07-14
+updated: 2026-07-17
 tags: sdk, typescript, surfaces, state, realtime, frameworks, bfbb
 source:
   repo: holmhq/holm
@@ -12,7 +12,7 @@ source:
 type: design
 issue_kind: track
 slice_count: 15
-slices_done: 5
+slices_done: 8
 context: Build a new universal TypeScript SDK without deleting the existing Holm SDK/state packages, then migrate capabilities only with conformance evidence.
 ---
 
@@ -187,10 +187,10 @@ Highest-value sources at Holm commit
 | Universal core, capabilities, adapters, extensions | done | [`#004`](../004_universal_core/INDEX.md) | `#002`, `#003` | no DOM/Node ambient leakage |
 | Transport, auth, cache, uploads, errors | done | [`#005`](../005_transport_cache_auth/INDEX.md) | `#004` | transport conformance + parity fixtures |
 | Framework-neutral reactive resources | done | [`#006`](../006_reactive_resources/INDEX.md) | `#004`, `#005` | immutable snapshot/subscription tests |
-| A2 Holm-authority conformance remediation | in progress | [`#016`](../016_a2_authority_conformance_remediation/INDEX.md) | `#004`, `#005`, `#006` | SDK re-review + Holm authority acceptance |
-| Web/app client migration | planned | [`#007`](../007_web_app_client/INDEX.md) | `#005`, `#006`, `#016` | adopted app methods + browser tests |
+| A2 Holm-authority conformance remediation | done | [`#016`](../016_a2_authority_conformance_remediation/INDEX.md) | `#004`, `#005`, `#006` | SDK re-review + Holm authority acceptance |
+| Web/app client migration | done | [`#007`](../007_web_app_client/INDEX.md) | `#005`, `#006`, `#016` | adopted app methods + browser tests |
 | Admin/operator client migration | planned | [`#008`](../008_admin_client/INDEX.md) | `#005`, `#016` | audited namespace parity report |
-| Runtime/surface adapter contracts | planned | [`#009`](../009_runtime_surface_adapters/INDEX.md) | `#004`, `#005`, `#016` | web/node/test adapters; reserved bridge contracts |
+| Runtime/surface adapter contracts | done | [`#009`](../009_runtime_surface_adapters/INDEX.md) | `#004`, `#005`, `#016` | web/node/test adapters; reserved bridge contracts |
 | Action/schema and CLI surface helpers | planned | [`#010`](../010_actions_cli_surface/INDEX.md) | `#004`, `#009`, `#016` | JSON Schema fixture discovery/invocation |
 | Realtime extension and future presence seam | planned | [`#011`](../011_realtime_extension/INDEX.md) | `#004`, `#006`, `#009` | current channel proof + future capability gates |
 | Collaboration/oplog/CRDT extension seam | planned | [`#012`](../012_collaboration_extension/INDEX.md) | `#006`, `#011` | codec/provider contract + opaque binary fixtures |
@@ -205,10 +205,11 @@ it does not require a second execution-window artifact. Any future unattended
 queue must declare its own bounded authorization and stop gate using the live
 koder-pattern mode-selection rules.
 
-A2 acceptance still depends on Issue `#016`, independent SDK review, and fresh
-Holm-authority acceptance. Do not begin A3 / Issue `#007` before that product
-gate. Cross-repository ownership and write policy are indexed in
-`koder/projects/INDEX.md`.
+Issues `#016`, `#007`, and `#009` are complete with their independent SDK and
+fresh read-only Holm-authority gates satisfied. No execution window is active
+after W3. Return to the owner before Issue `#014`; its mode and dispatch policy
+must be selected for that window. Cross-repository ownership and write policy
+remain indexed in `koder/projects/INDEX.md`.
 
 ## Recommended execution order
 
