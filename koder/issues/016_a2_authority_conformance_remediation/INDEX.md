@@ -50,8 +50,13 @@ from this repository.
   response code was split into measured modules and all size gates pass.
 - Independent Reviews `#031` and `#032` found no additional S03-S05 semantic
   defect but exposed coverage-report parsing under color/TAP reporters. Fixes
-  `a1ac154` and `69095cb` now make normal and TAP+color full CI green. A fresh
-  independent rereview of `69095cb` is still required before Holm return.
+  `a1ac154` and `69095cb` now make normal and TAP+color full CI green.
+- Fresh independent rereview `#033` (owner-present, 2026-07-16) confirmed the
+  S03-S05 batch and `69095cb` clean (0 in-batch P1/P2; all four CI gate modes
+  green at `699ef68`) but surfaced pre-existing P2-2: unbounded
+  `keyGenerations` growth in `src/transports/cache.ts` (from S02-era
+  `02f0f63`). P2-2 must be remediated and independently confirmed before the
+  no-P1/P2 acceptance box is checked and before the Holm-authority return.
 - Queue `#002` is a closed historical record and does not govern recovery. Two
   unattended review attempts exhausted their process/report retry budget, so
   do not auto-dispatch another reviewer without a fresh owner-present run.
