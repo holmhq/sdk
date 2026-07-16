@@ -1,50 +1,50 @@
 ---
-updated_at: "16 Jul 2026 | 03:04 AM IST"
-state: REVIEW_READY
-active_window: none
+updated_at: "16 Jul 2026 | 11:34 AM IST"
+state: READY
+active_window: W1 (koder/docs/EXECUTION.md)
 active_issue: 016
-orchestration_mode: direct
-stop_gate: "Complete Issue #016 with green build/CI, one independent SDK remediation review, and fresh Holm-authority acceptance before Issue #007"
+orchestration_mode: blind
+stop_gate: "Issue #016 closes only after P2-2 fix passes focused independent review (0 P1/P2, four CI modes green) AND fresh read-only Holm-authority A2 acceptance at a named Holm commit"
 ---
 
 # Koder State
 
 ## Past
 
-- Architecture decisions `D001`-`D015` are approved. Holm-authority Review
-  `#024` opened remediation Issue `#016`; S01 envelope conformance and S02
-  caller-transition safety were completed and independently approved.
-- S03 package/artifact completion landed at `a962301`, S04 credential-safe
-  diagnostics/cache identity at `ca5e895`, and S05 response correlation at
-  `af846d7`. Tracked ESM, declarations, maps, package smoke, and size budgets
-  now match the public source contract.
-- Integrated Reviews `#031` and `#032` exposed reporter-dependent coverage
-  parsing rather than another S03-S05 semantic defect. Fixes `a1ac154` and
-  `69095cb` now handle ANSI and TAP coverage output; Issue/plan status was
-  checkpointed at `83b0498`.
+- Issue `#016` S01-S05 are implemented. Reviews `#031`/`#032` cleared S03-S05
+  semantics but rejected on coverage-parser gates; fixes `a1ac154`/`69095cb`
+  landed.
+- Fresh owner-present independent rereview `#033` (2026-07-16, at `699ef68`)
+  confirmed the S03-S05 batch + `69095cb` clean: 0 in-batch P1/P2, all four CI
+  gate modes green (normal, FORCE_COLOR, TAP, TAP+color; 139/139 tests,
+  identical metrics). Review `#032` P2-1 is closed.
+- `#033` surfaced pre-existing **P2-2**: unbounded `keyGenerations` growth in
+  `src/transports/cache.ts` (S02-era `02f0f63`); 9 P3 advisories logged.
+- Owner authorized (2026-07-16, in-session) the full SDK completion program at
+  highest autonomy: primary session acts EXCLUSIVELY as blind orchestrator;
+  GPT-family workers (pi/gpt-5.5, codex/gpt-5.3-codex) implement/review via
+  Harnex. Authorization lives in `koder/docs/EXECUTION.md`.
 
 ## Present
 
-- S03-S05 are implemented with `139/139` source tests and green normal plus
-  TAP/color full CI. A clean build followed by license/size regeneration and
-  `npm run ci` passes; reproducibility, declarations, dist smoke, coverage,
-  licenses, and all measured artifact budgets are green.
-- The independent-review gate is not yet accepted: Review `#032` correctly
-  rejected the earlier `a1ac154` fix under TAP output, while the follow-up
-  `69095cb` fix has not received a fresh independent verdict.
-- Two unattended Codex review attempts produced durable Reviews `#031`/`#032`
-  but exhausted the run's report/process retry budget. Do not auto-dispatch a
-  third reviewer; resume with an owner-present fresh review run.
-- The repository remains private. No Holm write, Issue `#007` work, release,
-  publish, deploy, credential use, or production/cloud mutation occurred.
+- Window W1 is active with Queue `003` ready
+  (`koder/queue/003_w1_issue016_closeout/INDEX.md`): (1) P2-2 fix with strict
+  TDD + owned dist artifacts + entry review, (2) read-only Holm-authority A2
+  acceptance at a named Holm commit (file review `#034`), (3) close Issue
+  `#016` + checkpoint.
+- Harnex healthy (`harnex doctor` ok); adapters live: pi 0.80.7, codex-cli
+  0.144.4. Preflight dispatch smoke still required before the unattended run.
+- Repository private and clean at close. No Holm writes, no release/publish/
+  deploy/credential/cloud actions occurred or are authorized.
 
 ## Future
 
-1. Obtain a fresh independent integrated SDK rereview covering S03-S05 and
-   coverage fix `69095cb`; require zero P1/P2 and green normal plus TAP/color CI.
-2. If approved, refresh live read-only Holm evidence at a named commit and
-   obtain fresh Holm-authority A2 acceptance.
-3. Update and close Issue `#016` only after both review gates pass. Do not begin
-   Issue `#007` without the completed A2 gate and explicit owner direction.
-4. Do not publish, release, deploy, use credentials, mutate cloud/production,
-   or edit another repository without explicit approval.
+1. Next session opens as blind orchestrator: preflight both adapters, then
+   drain Queue `003` per its completion contract; fail closed on any P1/P2 or
+   exhausted budget and return to owner.
+2. At the W1 boundary: file Queue `004` (Issue `#007`) and update
+   `koder/docs/EXECUTION.md` to W2. Program order: `#007` → `#009` → `#014` →
+   `#008` → `#010` → `#011` → `#013` → `#012` → `#015`.
+3. Owner return points: blocked rows, any forbidden-action gate (publish/
+   release/deploy/credentials/cloud/Holm writes stay owner-only), and final
+   program closeout.
