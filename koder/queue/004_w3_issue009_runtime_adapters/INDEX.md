@@ -44,8 +44,8 @@ strictly read-only.
 
 | Order | Ref | Status | Estimate | Risk | Validation | Stop |
 | ---: | --- | --- | ---: | --- | --- | --- |
-| 1 | `koder/plans/003_S01_adapter_conformance_in_memory/INDEX.md` | queued | 90-120m | yellow | Plan validation plus clean reproducible owned `dist/`; fresh entry review 0 P1/P2 | Any architecture change, unshipped Holm requirement, out-of-seam source, or irreproducible public artifact blocks |
-| 2 | `koder/plans/003_S02_web_runtime_conformance/INDEX.md` | queued | 90-120m | yellow | Plan validation plus `npm run test:examples`; fresh entry review 0 P1/P2 | Any weakening of Issue `#007` auth/URL containment, public-protocol invention, Holm-owned behavior, or dist drift blocks |
+| 1 | `koder/plans/003_S01_adapter_conformance_in_memory/INDEX.md` | done | 90-120m | yellow | Plan validation plus clean reproducible owned `dist/`; fresh entry review 0 P1/P2 | Any architecture change, unshipped Holm requirement, out-of-seam source, or irreproducible public artifact blocks |
+| 2 | `koder/plans/003_S02_web_runtime_conformance/INDEX.md` | done | 90-120m | yellow | Plan validation plus `npm run test:examples`; fresh entry review 0 P1/P2 | Any weakening of Issue `#007` auth/URL containment, public-protocol invention, Holm-owned behavior, or dist drift blocks |
 | 3 | `koder/plans/003_S03_node_cli_runtime_services/INDEX.md` | queued | 90-120m | yellow | Plan validation, ambient-boundary type checks, owned `dist/`; fresh entry review 0 P1/P2 | Implicit process/env/fs access, core ambient leak, local-dispatch requirement, or unapproved CLI semantics blocks |
 | 4 | `koder/plans/003_S04_sobek_injected_runtime/INDEX.md` | queued | 90-120m | yellow | Plan validation, no-self-HTTP fake proof, owned `dist/`; fresh entry review 0 P1/P2 | Missing production Holm API, fake becoming server implementation, self-HTTP, or irreproducible subpath blocks |
 | 5 | `koder/plans/003_S05_bridge_mocks_service_slots/INDEX.md` | queued | 90-120m | yellow | Plan validation, ambient isolation, copied mailbox proof, owned `dist/`; fresh entry review 0 P1/P2 | Any production-capability claim, shared native object, ambient contamination, or shell implementation blocks |
@@ -109,3 +109,11 @@ does not consume a semantic fix cycle.
 - Overnight blind execution authorized by the owner and started from clean
   `main`, three expected local commits ahead of upstream (planning, review, and
   authorization); no push is authorized. First eligible entry is S01.
+- Coordinator `q004-coordinator-01` completed S01 and S02. S01 implementation
+  `q004-c01-e01-implement-a01` committed `53007a9`; S01 review
+  `q004-c01-e01-review-a01` approved `P1=0 P2=0 P3=0`; validation was green
+  for all S01 plan commands with owned `dist/test` output. S02 implementation
+  `q004-c01-e02-implement-a01` committed `8ad6bb0`; S02 review
+  `q004-c01-e02-review-a01` approved `P1=0 P2=0 P3=0`; validation was green
+  for all S02 plan commands including examples with owned `dist/web` output.
+  Process failures remain `0/6`; blocker: none. Next eligible entry is S03.
