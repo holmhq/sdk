@@ -1,7 +1,7 @@
 ---
 queue: 004
 title: W3 - Issue 009 runtime and surface adapters
-status: active
+status: drained
 orchestration_mode: blind
 review_granularity: entry
 coordinator_entry_cap: 2
@@ -48,8 +48,8 @@ strictly read-only.
 | 2 | `koder/plans/003_S02_web_runtime_conformance/INDEX.md` | done | 90-120m | yellow | Plan validation plus `npm run test:examples`; fresh entry review 0 P1/P2 | Any weakening of Issue `#007` auth/URL containment, public-protocol invention, Holm-owned behavior, or dist drift blocks |
 | 3 | `koder/plans/003_S03_node_cli_runtime_services/INDEX.md` | done | 90-120m | yellow | Plan validation, ambient-boundary type checks, owned `dist/`; fresh entry review 0 P1/P2 | Implicit process/env/fs access, core ambient leak, local-dispatch requirement, or unapproved CLI semantics blocks |
 | 4 | `koder/plans/003_S04_sobek_injected_runtime/INDEX.md` | done | 90-120m | yellow | Plan validation, no-self-HTTP fake proof, owned `dist/`; fresh entry review 0 P1/P2 | Missing production Holm API, fake becoming server implementation, self-HTTP, or irreproducible subpath blocks |
-| 5 | `koder/plans/003_S05_bridge_mocks_service_slots/INDEX.md` | queued | 90-120m | yellow | Plan validation, ambient isolation, copied mailbox proof, owned `dist/`; fresh entry review 0 P1/P2 | Any production-capability claim, shared native object, ambient contamination, or shell implementation blocks |
-| 6 | `koder/plans/003_S06_exports_dist_authority_gate/INDEX.md` | queued | 90-120m + CI | yellow | Four CI modes, clean-tree reproducibility, fresh read-only Holm acceptance, integrated final review 0 P1/P2 | Any red full gate, export-boundary collapse, Holm contradiction, P1/P2, Issue `#014` scope, or exhausted fix budget blocks |
+| 5 | `koder/plans/003_S05_bridge_mocks_service_slots/INDEX.md` | done | 90-120m | yellow | Plan validation, ambient isolation, copied mailbox proof, owned `dist/`; fresh entry review 0 P1/P2 | Any production-capability claim, shared native object, ambient contamination, or shell implementation blocks |
+| 6 | `koder/plans/003_S06_exports_dist_authority_gate/INDEX.md` | done | 90-120m + CI | yellow | Four CI modes, clean-tree reproducibility, fresh read-only Holm acceptance, integrated final review 0 P1/P2 | Any red full gate, export-boundary collapse, Holm contradiction, P1/P2, Issue `#014` scope, or exhausted fix budget blocks |
 
 Entries run strictly in order on `main`. Every implementation and every fix is
 committed, validated, and reviewed by a fresh worker before the next entry.
@@ -129,3 +129,24 @@ does not consume a semantic fix cycle.
   `q004-c02-e04-rereview-a01` approved `P1=0 P2=0 P3=0`; all plan validation
   commands were green with owned `dist/sobek` output and no-self-HTTP proof.
   Process failures used `1/6`; blocker: none. Next eligible entry is S05.
+- Coordinator `q004-coordinator-03` completed S05, S06, and the Issue `#009`
+  stop gate. S05 implementation first attempt `q004-c03-e05-implement-a01`
+  boot-failed with no source change; retry `q004-c03-e05-implement-a02`
+  committed `dc024bc`; review `q004-c03-e05-review-a01` committed finding
+  artifact `koder/reviews/045_q004_s05_entry_review/INDEX.md` at `d383e1c`
+  with `P1=0 P2=1 P3=0`; fix `q004-c03-e05-fix-a01` committed `c201804`;
+  rereview `q004-c03-e05-rereview-a01` approved `P1=0 P2=0 P3=0`. S06
+  implementation `q004-c03-e06-implement-a01` committed `f06d1c0`; four CI
+  modes passed with identical metrics `statements=98.01 lines=98.90
+  functions=98.58 branches=95.50 changed_reachable=100.00`, clean build/repro,
+  declarations, dist, examples, license, size, and Holm smoke skip/run gate
+  were green. Integrated final review attempts `q004-c03-final-review-a01` and
+  `q004-c03-final-review-a02` failed provider/sidecar-free startup; retry
+  `q004-c03-final-review-a03` committed
+  `koder/reviews/046_issue009_integrated_sdk_review/INDEX.md` at `e3deedf`
+  with verdict approved `P1=0 P2=0 P3=0`. Fresh read-only Holm authority
+  acceptance `q004-c03-authority-a01` committed
+  `koder/reviews/048_issue009_holm_authority_acceptance/INDEX.md` at `6a7509f`,
+  accepted `P1=0 P2=0 P3=0` against Holm `fb34d6b` (`v0.185.0`) with clean
+  read-only fingerprints. Process failures used `4/6`; blocker: none. Queue
+  drained; Issue `#009` resolved at product commit `f06d1c0`.

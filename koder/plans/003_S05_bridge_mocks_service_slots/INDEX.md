@@ -1,6 +1,6 @@
 ---
 title: W3 S05 - Reserved bridge mocks and service slots
-status: approved
+status: implemented
 issue: 009
 plan: 003
 slice: S05
@@ -8,7 +8,7 @@ type: implementation
 queue_candidate: 004
 owner: sdk-runtime
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-07-17
 ---
 
 # Plan 003 S05: Reserved bridge mocks and service slots

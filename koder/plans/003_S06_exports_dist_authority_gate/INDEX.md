@@ -1,6 +1,6 @@
 ---
 title: W3 S06 - Package integration and authority gate
-status: approved
+status: implemented
 issue: 009
 plan: 003
 slice: S06
@@ -8,7 +8,7 @@ type: implementation
 queue_candidate: 004
 owner: sdk-runtime
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-07-17
 ---
 
 # Plan 003 S06: Package integration and authority gate

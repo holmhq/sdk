@@ -1,5 +1,5 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
 updated: 2026-07-17
@@ -13,6 +13,8 @@ source_paths:
 type: design
 issue_kind: track
 context: Prove one capability core can cross several runtime boundaries without pretending future native shells already exist.
+resolved: 2026-07-17
+resolved_commit: f06d1c0ef8fd1fd2e1225ab4c60759d58a7a9c22
 ---
 
 # Issue 009: Runtime and Surface Adapter Contracts
@@ -69,22 +71,22 @@ Implement and conformance-test:
 
 ## Acceptance Criteria
 
-- [ ] One conformance suite runs against web, Node/CLI, and in-memory adapters.
-- [ ] Server/Sobek contract is tested with an injected fake runtime and has no
+- [x] One conformance suite runs against web, Node/CLI, and in-memory adapters.
+- [x] Server/Sobek contract is tested with an injected fake runtime and has no
       HTTP self-call requirement.
-- [ ] Desktop/mobile mocks prove message/snapshot boundaries and capability
+- [x] Desktop/mobile mocks prove message/snapshot boundaries and capability
       negotiation but cannot be mistaken for production runtimes.
-- [ ] Caller context differs safely across web member, CLI token/operator, and
+- [x] Caller context differs safely across web member, CLI token/operator, and
       injected server contexts.
-- [ ] Missing runtime services produce typed unsupported-capability errors.
-- [ ] No adapter shares mutable resource objects across a native/mailbox
+- [x] Missing runtime services produce typed unsupported-capability errors.
+- [x] No adapter shares mutable resource objects across a native/mailbox
       boundary.
-- [ ] Core remains free of DOM/Node types; adapters own ambient APIs.
-- [ ] Bundle entry points do not pull all runtime implementations implicitly.
-- [ ] Public source changes own affected generated JavaScript, declarations,
+- [x] Core remains free of DOM/Node types; adapters own ambient APIs.
+- [x] Bundle entry points do not pull all runtime implementations implicitly.
+- [x] Public source changes own affected generated JavaScript, declarations,
       source maps, package smoke checks, reproducibility checks, and size gate
       evidence in the same logical implementation.
-- [ ] Final closeout includes read-only Holm-authority acceptance against Issue
+- [x] Final closeout includes read-only Holm-authority acceptance against Issue
       `#534` at a named commit and one independent SDK review reporting zero
       P1/P2 findings.
 
@@ -96,8 +98,27 @@ Implement and conformance-test:
 | S02 web runtime conformance reconciliation | done | `koder/plans/003_S02_web_runtime_conformance/INDEX.md` | q004 | Existing web adapter passes conformance without regressing Issue `#007` |
 | S03 Node/CLI runtime services | done | `koder/plans/003_S03_node_cli_runtime_services/INDEX.md` | q004 | Node/CLI fetch/token/env/secure-store adapter passes conformance |
 | S04 Sobek injected runtime contract | done | `koder/plans/003_S04_sobek_injected_runtime/INDEX.md` | q004 | Injected fake proves no HTTP self-call and preserves Holm semantics |
-| S05 bridge mocks and service slots | queued | `koder/plans/003_S05_bridge_mocks_service_slots/INDEX.md` | q004 | Desktop/mobile reserved mocks copy boundaries and fail closed in production |
-| S06 package integration and authority gate | queued | `koder/plans/003_S06_exports_dist_authority_gate/INDEX.md` | q004 | Exports/declarations/dist/examples/full validation, Holm acceptance, review green |
+| S05 bridge mocks and service slots | done | `koder/plans/003_S05_bridge_mocks_service_slots/INDEX.md` | q004 | Desktop/mobile reserved mocks copy boundaries and fail closed in production |
+| S06 package integration and authority gate | done | `koder/plans/003_S06_exports_dist_authority_gate/INDEX.md` | q004 | Exports/declarations/dist/examples/full validation, Holm acceptance, review green |
+
+## Closeout Evidence
+
+- S05 bridge mocks landed in `dc024bc` and were fixed in `c201804`; fresh
+  rereview `q004-c03-e05-rereview-a01` approved `P1=0 P2=0 P3=0` after
+  `koder/reviews/045_q004_s05_entry_review/INDEX.md` was resolved.
+- S06 package/full-gate integration landed in product commit
+  `f06d1c0ef8fd1fd2e1225ab4c60759d58a7a9c22` with normal, FORCE_COLOR, TAP,
+  and TAP+color CI green and identical metrics `statements=98.01 lines=98.90
+  functions=98.58 branches=95.50 changed_reachable=100.00`; clean build,
+  `check:repro`, declarations, dist smoke, examples, license, size, and Holm
+  smoke gate were green.
+- Integrated SDK Review `#046`
+  (`koder/reviews/046_issue009_integrated_sdk_review/INDEX.md`) approved the
+  Issue `#009` product range with `P1=0 P2=0 P3=0` at review commit `e3deedf`.
+- Fresh read-only Holm authority Review `#048`
+  (`koder/reviews/048_issue009_holm_authority_acceptance/INDEX.md`) accepted
+  the adapter boundary with `P1=0 P2=0 P3=0` against Holm
+  `fb34d6b768f15f9bc596e0b82430e5c678fd2088` (`v0.185.0`).
 
 ## Non-Goals
 
