@@ -1,4 +1,12 @@
-import type { CapabilityOffer } from "../core/capabilities.js";
+import {
+  CapabilityVersionError,
+  negotiateCapability,
+  UnsupportedCapabilityError,
+  type CapabilityOffer,
+  type CapabilityRequirement,
+} from "../core/capabilities.js";
+import { createInvocationContext } from "../core/caller.js";
+import { throwIfCancelled } from "../core/cancellation.js";
 import type { InvocationControl, OperationRequest, OperationResponse, RuntimeAdapter, Scheduler, Clock } from "../core/runtime.js";
 import { copyWireValue } from "../core/wire-value.js";
 
@@ -133,7 +141,7 @@ export function createFakeClock(start = 0): FakeClockScheduler {
 
 export function createInMemoryRuntimeAdapter(options: InMemoryRuntimeAdapterOptions = {}): InMemoryRuntimeAdapter {
   const fake = createFakeClock();
-  let offers = Object.freeze([...(options.offers ?? [])]) as readonly CapabilityOffer[];
+  let offers = copyCapabilityOffers(options.offers ?? []);
   let startCount = 0;
   let disposeCount = 0;
   const requests: OperationRequest[] = [];
@@ -146,10 +154,10 @@ export function createInMemoryRuntimeAdapter(options: InMemoryRuntimeAdapterOpti
     clock: options.clock ?? fake.clock,
     scheduler: options.scheduler ?? fake.scheduler,
     get requests(): readonly OperationRequest[] {
-      return requests;
+      return Object.freeze([...requests]);
     },
     get controls(): readonly InvocationControl[] {
-      return controls;
+      return Object.freeze([...controls]);
     },
     get startCount(): number {
       return startCount;
@@ -159,27 +167,113 @@ export function createInMemoryRuntimeAdapter(options: InMemoryRuntimeAdapterOpti
     },
     async start(): Promise<readonly CapabilityOffer[]> {
       startCount += 1;
-      return offers;
+      return copyCapabilityOffers(offers);
     },
     async invoke(request: OperationRequest, control: InvocationControl): Promise<OperationResponse> {
-      requests.push(request);
-      controls.push(control);
-      const handler = handlers.get(`${request.capability.id}:${request.operation}`);
+      const controlSnapshot = copyInvocationControl(control);
+      throwIfCancelled(controlSnapshot.cancellation);
+      const requestSnapshot = copyOperationRequest(request);
+      requireRuntimeOffer(offers, requestSnapshot, options.id ?? "runtime-test", options.surface ?? "test");
+      requests.push(requestSnapshot);
+      controls.push(controlSnapshot);
+      const handler = handlers.get(`${requestSnapshot.capability.id}:${requestSnapshot.operation}`);
       if (handler) {
-        return handler(request, control);
+        return copyOperationResponse(await handler(requestSnapshot, controlSnapshot));
       }
-      return { requestId: request.requestId, payload: copyWireValue(request.payload) };
+      return copyOperationResponse({ requestId: requestSnapshot.requestId, payload: requestSnapshot.payload });
     },
     async dispose(): Promise<void> {
       disposeCount += 1;
     },
     setOffers(nextOffers: readonly CapabilityOffer[]): void {
-      offers = Object.freeze([...nextOffers]);
+      offers = copyCapabilityOffers(nextOffers);
     },
     setHandler(key: string, handler: InMemoryRuntimeHandler): void {
       handlers.set(key, handler);
     },
   }) satisfies InMemoryRuntimeAdapter;
+}
+
+function copyCapabilityOffers(offers: readonly CapabilityOffer[]): readonly CapabilityOffer[] {
+  return Object.freeze(offers.map((offer) => copyCapabilityOffer(offer)));
+}
+
+function copyCapabilityOffer(offer: CapabilityOffer): CapabilityOffer {
+  return Object.freeze({
+    id: offer.id,
+    origin: offer.origin,
+    version: Object.freeze({ major: offer.version.major, minor: offer.version.minor }),
+  });
+}
+
+function copyCapabilityRequirement(capability: CapabilityRequirement): CapabilityRequirement {
+  return Object.freeze({
+    id: capability.id,
+    major: capability.major,
+    ...(capability.minMinor === undefined ? {} : { minMinor: capability.minMinor }),
+  });
+}
+
+function copyInvocationControl(control: InvocationControl): InvocationControl {
+  return Object.freeze({
+    ...(control.cancellation === undefined ? {} : { cancellation: control.cancellation }),
+    ...(control.timeoutMs === undefined ? {} : { timeoutMs: control.timeoutMs }),
+  });
+}
+
+function copyOperationRequest(request: OperationRequest): OperationRequest {
+  return Object.freeze({
+    requestId: request.requestId,
+    capability: copyCapabilityRequirement(request.capability),
+    operation: request.operation,
+    caller: createInvocationContext(
+      request.caller,
+      request.caller.invocationId,
+      request.caller.startedAt,
+      request.caller.reason,
+    ),
+    callerFingerprint: request.callerFingerprint,
+    payload: copyWireValue(request.payload),
+  });
+}
+
+function copyOperationResponse(response: OperationResponse): OperationResponse {
+  return Object.freeze({
+    requestId: response.requestId,
+    payload: copyWireValue(response.payload),
+    ...(response.metadata === undefined ? {} : { metadata: copyWireValue(response.metadata) }),
+  });
+}
+
+function requireRuntimeOffer(
+  offers: readonly CapabilityOffer[],
+  request: OperationRequest,
+  adapter: string,
+  surface: string,
+): void {
+  try {
+    negotiateCapability(offers, request.capability);
+  } catch (error) {
+    if (error instanceof UnsupportedCapabilityError) {
+      throw new UnsupportedCapabilityError({
+        id: request.capability.id,
+        requirement: request.capability,
+        offered: offers,
+        adapter,
+        surface,
+      });
+    }
+    if (error instanceof CapabilityVersionError) {
+      throw new CapabilityVersionError({
+        id: request.capability.id,
+        requirement: request.capability,
+        offered: offers.filter((offer) => offer.id === request.capability.id),
+        adapter,
+        surface,
+      });
+    }
+    throw error;
+  }
 }
 
 function sortEntries(entries: ScheduledEntry[]): void {

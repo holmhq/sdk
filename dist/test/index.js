@@ -1,3 +1,6 @@
+import { CapabilityVersionError, negotiateCapability, UnsupportedCapabilityError, } from "../core/capabilities.js";
+import { createInvocationContext } from "../core/caller.js";
+import { throwIfCancelled } from "../core/cancellation.js";
 import { copyWireValue } from "../core/wire-value.js";
 export function createFakeClock(start = 0) {
     let now = start;
@@ -77,7 +80,7 @@ export function createFakeClock(start = 0) {
 }
 export function createInMemoryRuntimeAdapter(options = {}) {
     const fake = createFakeClock();
-    let offers = Object.freeze([...(options.offers ?? [])]);
+    let offers = copyCapabilityOffers(options.offers ?? []);
     let startCount = 0;
     let disposeCount = 0;
     const requests = [];
@@ -89,10 +92,10 @@ export function createInMemoryRuntimeAdapter(options = {}) {
         clock: options.clock ?? fake.clock,
         scheduler: options.scheduler ?? fake.scheduler,
         get requests() {
-            return requests;
+            return Object.freeze([...requests]);
         },
         get controls() {
-            return controls;
+            return Object.freeze([...controls]);
         },
         get startCount() {
             return startCount;
@@ -102,27 +105,97 @@ export function createInMemoryRuntimeAdapter(options = {}) {
         },
         async start() {
             startCount += 1;
-            return offers;
+            return copyCapabilityOffers(offers);
         },
         async invoke(request, control) {
-            requests.push(request);
-            controls.push(control);
-            const handler = handlers.get(`${request.capability.id}:${request.operation}`);
+            const controlSnapshot = copyInvocationControl(control);
+            throwIfCancelled(controlSnapshot.cancellation);
+            const requestSnapshot = copyOperationRequest(request);
+            requireRuntimeOffer(offers, requestSnapshot, options.id ?? "runtime-test", options.surface ?? "test");
+            requests.push(requestSnapshot);
+            controls.push(controlSnapshot);
+            const handler = handlers.get(`${requestSnapshot.capability.id}:${requestSnapshot.operation}`);
             if (handler) {
-                return handler(request, control);
+                return copyOperationResponse(await handler(requestSnapshot, controlSnapshot));
             }
-            return { requestId: request.requestId, payload: copyWireValue(request.payload) };
+            return copyOperationResponse({ requestId: requestSnapshot.requestId, payload: requestSnapshot.payload });
         },
         async dispose() {
             disposeCount += 1;
         },
         setOffers(nextOffers) {
-            offers = Object.freeze([...nextOffers]);
+            offers = copyCapabilityOffers(nextOffers);
         },
         setHandler(key, handler) {
             handlers.set(key, handler);
         },
     });
+}
+function copyCapabilityOffers(offers) {
+    return Object.freeze(offers.map((offer) => copyCapabilityOffer(offer)));
+}
+function copyCapabilityOffer(offer) {
+    return Object.freeze({
+        id: offer.id,
+        origin: offer.origin,
+        version: Object.freeze({ major: offer.version.major, minor: offer.version.minor }),
+    });
+}
+function copyCapabilityRequirement(capability) {
+    return Object.freeze({
+        id: capability.id,
+        major: capability.major,
+        ...(capability.minMinor === undefined ? {} : { minMinor: capability.minMinor }),
+    });
+}
+function copyInvocationControl(control) {
+    return Object.freeze({
+        ...(control.cancellation === undefined ? {} : { cancellation: control.cancellation }),
+        ...(control.timeoutMs === undefined ? {} : { timeoutMs: control.timeoutMs }),
+    });
+}
+function copyOperationRequest(request) {
+    return Object.freeze({
+        requestId: request.requestId,
+        capability: copyCapabilityRequirement(request.capability),
+        operation: request.operation,
+        caller: createInvocationContext(request.caller, request.caller.invocationId, request.caller.startedAt, request.caller.reason),
+        callerFingerprint: request.callerFingerprint,
+        payload: copyWireValue(request.payload),
+    });
+}
+function copyOperationResponse(response) {
+    return Object.freeze({
+        requestId: response.requestId,
+        payload: copyWireValue(response.payload),
+        ...(response.metadata === undefined ? {} : { metadata: copyWireValue(response.metadata) }),
+    });
+}
+function requireRuntimeOffer(offers, request, adapter, surface) {
+    try {
+        negotiateCapability(offers, request.capability);
+    }
+    catch (error) {
+        if (error instanceof UnsupportedCapabilityError) {
+            throw new UnsupportedCapabilityError({
+                id: request.capability.id,
+                requirement: request.capability,
+                offered: offers,
+                adapter,
+                surface,
+            });
+        }
+        if (error instanceof CapabilityVersionError) {
+            throw new CapabilityVersionError({
+                id: request.capability.id,
+                requirement: request.capability,
+                offered: offers.filter((offer) => offer.id === request.capability.id),
+                adapter,
+                surface,
+            });
+        }
+        throw error;
+    }
 }
 function sortEntries(entries) {
     entries.sort((left, right) => left.dueAt - right.dueAt || left.id - right.id);

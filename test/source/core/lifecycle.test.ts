@@ -190,6 +190,10 @@ test("lifecycle rejects pre-cancelled work before adapter invocation", async () 
 test("lifecycle timeouts use the injected scheduler and ignore late adapter results", async () => {
   const fake = createFakeClock();
   const seen: OperationRequest[] = [];
+  let resolveSeen: (() => void) | undefined;
+  const seenStarted = new Promise<void>((resolve) => {
+    resolveSeen = resolve;
+  });
   const runtime = createInMemoryRuntimeAdapter({
     clock: fake.clock,
     scheduler: fake.scheduler,
@@ -197,6 +201,7 @@ test("lifecycle timeouts use the injected scheduler and ignore late adapter resu
     handlers: {
       "com.example.reports:list": (request) => {
         seen.push(request);
+        resolveSeen?.();
         return new Promise((resolve) => {
           fake.scheduler.schedule(50, () => {
             resolve({ requestId: request.requestId, payload: { late: true } });
@@ -215,7 +220,7 @@ test("lifecycle timeouts use the injected scheduler and ignore late adapter resu
     requestId: "req-timeout",
     control: { timeoutMs: 10 },
   });
-  await Promise.resolve();
+  await seenStarted;
   fake.advanceBy(10);
 
   await assert.rejects(

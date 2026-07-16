@@ -1,4 +1,4 @@
-import type { CapabilityOffer } from "../core/capabilities.js";
+import { type CapabilityOffer } from "../core/capabilities.js";
 import type { InvocationControl, OperationRequest, OperationResponse, RuntimeAdapter, Scheduler, Clock } from "../core/runtime.js";
 export interface FakeClock extends Clock {
     advanceBy(delayMs: number): void;
