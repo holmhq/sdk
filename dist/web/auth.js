@@ -1,6 +1,10 @@
 export function createWebSessionAuth(options = {}) {
     const credentials = normalizeCredentials(options.credentials ?? "same-origin");
-    const proof = Object.freeze({ kind: "web-session", credentials });
+    const proof = Object.freeze({
+        kind: "web-session",
+        credentials,
+        cachePartition: `web-session:${credentials}`,
+    });
     return Object.freeze({
         current() {
             return proof;
@@ -9,13 +13,20 @@ export function createWebSessionAuth(options = {}) {
 }
 export function createWebTokenAuth(options) {
     const scheme = normalizeTokenPart(options.scheme ?? "Bearer", "scheme");
-    validateTokenSource(options.token);
+    let token = resolveToken(options.token);
+    let epoch = 0;
     return Object.freeze({
         current() {
+            const nextToken = resolveToken(options.token);
+            if (nextToken !== token) {
+                token = nextToken;
+                epoch += 1;
+            }
             return Object.freeze({
                 kind: "bearer",
                 scheme,
-                token: resolveToken(options.token),
+                token,
+                cachePartition: `web-token:${epoch}`,
             });
         },
     });
@@ -25,9 +36,6 @@ function normalizeCredentials(credentials) {
         throw new TypeError("Web session credentials must be same-origin, include, or omit.");
     }
     return credentials;
-}
-function validateTokenSource(source) {
-    resolveToken(source);
 }
 function resolveToken(source) {
     return normalizeTokenPart(typeof source === "function" ? source() : source, "token");

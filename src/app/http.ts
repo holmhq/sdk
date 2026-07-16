@@ -10,7 +10,11 @@ import {
   type TransportResponseMode,
   type TransportSensitivityInput,
 } from "../transports/index.js";
-import { APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY } from "./protocol.js";
+import {
+  APP_HTTP_INVALIDATE_OPERATION,
+  APP_HTTP_REQUEST_OPERATION,
+  HOLM_APP_HTTP_CAPABILITY,
+} from "./protocol.js";
 
 export interface AppHttpInvocationOptions {
   readonly control?: InvocationControl;
@@ -39,6 +43,7 @@ export interface AppHttpClient {
   put<Result = WireValue>(url: string, body: unknown, options?: AppHttpRequestOptions): Promise<Result>;
   patch<Result = WireValue>(url: string, body: unknown, options?: AppHttpRequestOptions): Promise<Result>;
   delete<Result = WireValue>(url: string, options?: AppHttpRequestOptions): Promise<Result>;
+  invalidateCache(): Promise<void>;
 }
 
 export type AppRequestIdFactory = (sequence: number) => string;
@@ -73,9 +78,21 @@ export function createAppHttpClient(
     return (await requestRaw(input, options)).payload as Result;
   }
 
+  async function invalidateCache(): Promise<void> {
+    sequence += 1;
+    await context.invoke({
+      capability: HOLM_APP_HTTP_CAPABILITY,
+      operation: APP_HTTP_INVALIDATE_OPERATION,
+      payload: null,
+      requestId: requestIdFactory(sequence),
+      reason: "app.http.invalidate-cache",
+    });
+  }
+
   return Object.freeze({
     request,
     requestRaw,
+    invalidateCache,
     get<Result = WireValue>(url: string, options: AppHttpRequestOptions = {}): Promise<Result> {
       return request<Result>(requestInput("GET", url, options), options);
     },

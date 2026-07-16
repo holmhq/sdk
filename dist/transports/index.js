@@ -172,12 +172,32 @@ function normalizeAuthProof(proof) {
             if (proof.credentials !== "same-origin" && proof.credentials !== "include" && proof.credentials !== "omit") {
                 throw new TypeError("Web session credentials must be same-origin, include, or omit.");
             }
-            return Object.freeze({ kind: "web-session", credentials: proof.credentials });
+            return Object.freeze({
+                kind: "web-session",
+                credentials: proof.credentials,
+                ...normalizeAuthCachePartition(proof.cachePartition),
+            });
         case "bearer":
-            return Object.freeze({ kind: "bearer", scheme: normalizeTokenPart(proof.scheme, "scheme"), token: normalizeTokenPart(proof.token, "token") });
+            return Object.freeze({
+                kind: "bearer",
+                scheme: normalizeTokenPart(proof.scheme, "scheme"),
+                token: normalizeTokenPart(proof.token, "token"),
+                ...normalizeAuthCachePartition(proof.cachePartition),
+            });
         case "header":
-            return Object.freeze({ kind: "header", name: normalizeHeaderName(proof.name), value: normalizeTokenPart(proof.value, "header value") });
+            return Object.freeze({
+                kind: "header",
+                name: normalizeHeaderName(proof.name),
+                value: normalizeTokenPart(proof.value, "header value"),
+                ...normalizeAuthCachePartition(proof.cachePartition),
+            });
     }
+}
+function normalizeAuthCachePartition(value) {
+    if (value === undefined) {
+        return {};
+    }
+    return Object.freeze({ cachePartition: normalizeTokenPart(value, "cache partition") });
 }
 function applyProofToHeaders(headers, proof) {
     switch (proof.kind) {

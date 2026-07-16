@@ -1,4 +1,8 @@
-import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
+import {
+  CancelledError,
+  createCancellationController,
+  throwIfCancelled,
+} from "../core/cancellation.js";
 import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
 import type {
   CancellationSignal,
@@ -18,9 +22,23 @@ export interface WebRuntimeCacheOptions {
   readonly maxEntries?: number;
 }
 
+export interface WebRuntimeCacheLease {
+  readonly signal: CancellationSignal;
+  track(response: Promise<OperationResponse>): void;
+  release(): void;
+}
+
 export interface WebRuntimeCacheState {
   readonly instance: TransportCache;
   readonly policy: TransportCachePolicy;
+  acquire(key: string, onAbandon: () => void): WebRuntimeCacheLease;
+}
+
+interface SharedLoad {
+  readonly controller: ReturnType<typeof createCancellationController>;
+  consumers: number;
+  settled: boolean;
+  tracked: boolean;
 }
 
 export function createWebRuntimeCache(
@@ -32,18 +50,64 @@ export function createWebRuntimeCache(
   if (options === false) {
     return undefined;
   }
+  const loads = new Map<string, SharedLoad>();
   const policy = Object.freeze({
     ttlMs: normalizeCacheDuration(options?.ttlMs ?? 30_000, "ttlMs"),
     swrMs: normalizeCacheDuration(options?.swrMs ?? 60_000, "swrMs"),
   });
+  const instance = createTransportCache({
+    clock,
+    scheduler,
+    maxEntries: options?.maxEntries ?? 100,
+    ...(diagnostics === undefined ? {} : { diagnostics }),
+  });
   return Object.freeze({
-    instance: createTransportCache({
-      clock,
-      scheduler,
-      maxEntries: options?.maxEntries ?? 100,
-      ...(diagnostics === undefined ? {} : { diagnostics }),
-    }),
+    instance,
     policy,
+    acquire(key: string, onAbandon: () => void): WebRuntimeCacheLease {
+      let load = loads.get(key);
+      if (load === undefined) {
+        load = {
+          controller: createCancellationController(),
+          consumers: 0,
+          settled: false,
+          tracked: false,
+        };
+        loads.set(key, load);
+      }
+      load.consumers += 1;
+      const shared = load;
+      let released = false;
+      return Object.freeze({
+        signal: shared.controller.signal,
+        track(response: Promise<OperationResponse>): void {
+          if (shared.tracked) {
+            return;
+          }
+          shared.tracked = true;
+          void response.finally(() => {
+            shared.settled = true;
+            if (loads.get(key) === shared) {
+              loads.delete(key);
+            }
+          }).catch(() => undefined);
+        },
+        release(): void {
+          if (released) {
+            return;
+          }
+          released = true;
+          shared.consumers -= 1;
+          if (shared.consumers === 0 && !shared.settled) {
+            shared.controller.cancel("cache-no-consumers");
+            onAbandon();
+            if (loads.get(key) === shared) {
+              loads.delete(key);
+            }
+          }
+        },
+      });
+    },
   });
 }
 

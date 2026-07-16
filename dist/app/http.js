@@ -1,5 +1,5 @@
 import { createTransportRequest, } from "../transports/index.js";
-import { APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY } from "./protocol.js";
+import { APP_HTTP_INVALIDATE_OPERATION, APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "./protocol.js";
 export function createAppHttpClient(context, requestIdFactory) {
     let sequence = 0;
     async function requestRaw(input, options = {}) {
@@ -18,9 +18,20 @@ export function createAppHttpClient(context, requestIdFactory) {
     async function request(input, options = {}) {
         return (await requestRaw(input, options)).payload;
     }
+    async function invalidateCache() {
+        sequence += 1;
+        await context.invoke({
+            capability: HOLM_APP_HTTP_CAPABILITY,
+            operation: APP_HTTP_INVALIDATE_OPERATION,
+            payload: null,
+            requestId: requestIdFactory(sequence),
+            reason: "app.http.invalidate-cache",
+        });
+    }
     return Object.freeze({
         request,
         requestRaw,
+        invalidateCache,
         get(url, options = {}) {
             return request(requestInput("GET", url, options), options);
         },

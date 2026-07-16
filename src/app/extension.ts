@@ -49,7 +49,7 @@ export function createAppExtension(options: AppExtensionOptions = {}): HolmExten
     setup(context: ExtensionSetupContext) {
       const http = createAppHttpClient(context, requestId);
       const auth = createAppAuthApi(http, options.navigation);
-      const upload = createAppUpload(options.uploads);
+      const upload = createAppUpload(options.uploads, () => http.invalidateCache());
       const links = createAppLinksApi(http, upload);
       const surface = createAppSurfaceApi(options.surfaces);
       const paginate = createAppPaginate(http);

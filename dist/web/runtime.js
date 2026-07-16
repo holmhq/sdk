@@ -1,11 +1,13 @@
-import { APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
+import { APP_HTTP_INVALIDATE_OPERATION, APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
+import { createCallerPartitionedCacheKey } from "../core/cache-key.js";
 import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
 import { ProtocolError } from "../core/errors.js";
 import { LifecycleError } from "../core/lifecycle.js";
 import { isReadonlyBytes } from "../core/wire-value.js";
-import { applyTransportAuth, createTransportRequest, decodeTransportResponse, encodeTransportBody, normalizeTransportError, } from "../transports/index.js";
+import { applyTransportAuth, createTransportCacheKey, createTransportRequest, decodeTransportResponse, encodeTransportBody, normalizeTransportError, } from "../transports/index.js";
 import { createWebRuntimeCache, rebindResponseRequestId, waitForWebResponse, } from "./runtime-cache.js";
-export { APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
+import { resolveWebRequestUrl } from "./url.js";
+export { APP_HTTP_INVALIDATE_OPERATION, APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
 export const WEB_HTTP_REQUEST_OPERATION = APP_HTTP_REQUEST_OPERATION;
 const appHttpOffer = Object.freeze({
     id: HOLM_APP_HTTP_CAPABILITY.id,
@@ -16,6 +18,7 @@ const appHttpOffers = Object.freeze([appHttpOffer]);
 const defaultWebSessionProof = Object.freeze({
     kind: "web-session",
     credentials: "same-origin",
+    cachePartition: "web-session:same-origin",
 });
 const defaultWebSessionAuth = Object.freeze({
     current() {
@@ -78,26 +81,48 @@ export function webRuntime(options = {}) {
         async invoke(request, control) {
             assertReady(started, disposed);
             assertHttpOperation(request);
+            if (request.operation === APP_HTTP_INVALIDATE_OPERATION) {
+                cache?.instance.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
+                return Object.freeze({ requestId: request.requestId, payload: null });
+            }
             const transportRequest = transportRequestFromPayload(request.payload);
+            const url = resolveWebRequestUrl(transportRequest.url, baseUrl, transportRequest.params);
             const authenticated = await authenticateWebRequest(transportRequest, auth, control.cancellation);
             throwIfRuntimeDisposed(disposed);
-            const url = createWebRequestUrl(authenticated.request, baseUrl);
-            const partition = Object.freeze({
-                source: Object.freeze({ id, surface: "web" }),
-                callerFingerprint: request.callerFingerprint,
-            });
-            if (cache !== undefined && authenticated.request.method === "GET") {
+            const source = Object.freeze({ id, surface: "web" });
+            const authCachePartition = resolveAuthCachePartition(authenticated.privateProof);
+            const partition = authCachePartition === undefined
+                ? undefined
+                : Object.freeze({
+                    source,
+                    callerFingerprint: createCallerPartitionedCacheKey({
+                        namespace: "web.auth",
+                        source,
+                        callerFingerprint: request.callerFingerprint,
+                        operation: { auth: authCachePartition },
+                    }),
+                });
+            if (cache !== undefined && partition !== undefined && authenticated.request.method === "GET") {
+                const cacheKeyInput = Object.freeze({ partition, request: authenticated.request });
+                const lease = cache.acquire(createTransportCacheKey(cacheKeyInput), () => {
+                    cache.instance.delete(cacheKeyInput);
+                });
                 const cached = cache.instance.getOrLoad({
-                    partition,
-                    request: authenticated.request,
+                    ...cacheKeyInput,
                     policy: cache.policy,
-                    tags: [webRuntimeCacheTag],
-                }, () => executeFetch(authenticated, url, request.requestId));
-                return rebindResponseRequestId(await waitForWebResponse(cached, control.cancellation), request.requestId);
+                    tags: [webRuntimeCacheTag, callerCacheTag(request.callerFingerprint)],
+                }, () => executeFetch(authenticated, url, request.requestId, lease.signal));
+                lease.track(cached);
+                try {
+                    return rebindResponseRequestId(await waitForWebResponse(cached, control.cancellation), request.requestId);
+                }
+                finally {
+                    lease.release();
+                }
             }
             const response = await executeFetch(authenticated, url, request.requestId, control.cancellation);
             if (cache !== undefined) {
-                cache.instance.invalidateForMutation({ partition, tags: [webRuntimeCacheTag] });
+                cache.instance.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
             }
             return response;
         },
@@ -114,6 +139,18 @@ export function webRuntime(options = {}) {
             active.clear();
         },
     });
+}
+function callerCacheTag(callerFingerprint) {
+    return `web:caller:${callerFingerprint}`;
+}
+function resolveAuthCachePartition(proof) {
+    if (proof === undefined) {
+        return "anonymous";
+    }
+    if (proof.kind === "web-session") {
+        return proof.cachePartition ?? `web-session:${proof.credentials}`;
+    }
+    return proof.cachePartition;
 }
 async function authenticateWebRequest(request, auth, cancellation) {
     try {
@@ -205,10 +242,10 @@ function assertReady(started, disposed) {
 function assertHttpOperation(request) {
     if (request.capability.id !== HOLM_APP_HTTP_CAPABILITY.id ||
         request.capability.major !== HOLM_APP_HTTP_CAPABILITY.major ||
-        request.operation !== WEB_HTTP_REQUEST_OPERATION) {
+        (request.operation !== WEB_HTTP_REQUEST_OPERATION && request.operation !== APP_HTTP_INVALIDATE_OPERATION)) {
         throw new ProtocolError({
             code: "unsupported_web_runtime_operation",
-            message: "The web runtime only accepts holm.http.app request operations.",
+            message: "The web runtime only accepts supported holm.http.app operations.",
             details: {
                 capability: request.capability.id,
                 major: request.capability.major,
@@ -331,38 +368,6 @@ function requireBoolean(value, label) {
         throw new TypeError(`${label} must be a boolean`);
     }
     return value;
-}
-function createWebRequestUrl(request, baseUrl) {
-    if (baseUrl !== undefined || isAbsoluteUrl(request.url)) {
-        const url = baseUrl === undefined ? new URL(request.url) : new URL(request.url, baseUrl);
-        appendSearchParams(url.searchParams, request.params);
-        return url.href;
-    }
-    const query = createSearchParams(request.params).toString();
-    if (query === "") {
-        return request.url;
-    }
-    const hashIndex = request.url.indexOf("#");
-    const beforeHash = hashIndex === -1 ? request.url : request.url.slice(0, hashIndex);
-    const hash = hashIndex === -1 ? "" : request.url.slice(hashIndex);
-    return `${beforeHash}${beforeHash.includes("?") ? "&" : "?"}${query}${hash}`;
-}
-function isAbsoluteUrl(value) {
-    return /^[A-Za-z][A-Za-z\d+.-]*:/.test(value);
-}
-function createSearchParams(params) {
-    const search = new URLSearchParams();
-    appendSearchParams(search, params);
-    return search;
-}
-function appendSearchParams(search, params) {
-    for (const key of Object.keys(params).sort()) {
-        const value = params[key];
-        if (value !== null && value !== undefined) {
-            search.append(key, String(value));
-        }
-    }
-    search.sort();
 }
 function createFetchInit(request, proof, signal) {
     const headers = new Headers(request.headers);

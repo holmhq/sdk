@@ -157,18 +157,21 @@ export type TransportAuthProof = WebSessionTransportAuthProof | BearerTransportA
 export interface WebSessionTransportAuthProof {
   readonly kind: "web-session";
   readonly credentials: "same-origin" | "include" | "omit";
+  readonly cachePartition?: string;
 }
 
 export interface BearerTransportAuthProof {
   readonly kind: "bearer";
   readonly scheme: string;
   readonly token: string;
+  readonly cachePartition?: string;
 }
 
 export interface HeaderTransportAuthProof {
   readonly kind: "header";
   readonly name: string;
   readonly value: string;
+  readonly cachePartition?: string;
 }
 
 export interface TransportAuthProvider {
@@ -411,12 +414,33 @@ function normalizeAuthProof(proof: TransportAuthProof): TransportAuthProof {
       if (proof.credentials !== "same-origin" && proof.credentials !== "include" && proof.credentials !== "omit") {
         throw new TypeError("Web session credentials must be same-origin, include, or omit.");
       }
-      return Object.freeze({ kind: "web-session", credentials: proof.credentials });
+      return Object.freeze({
+        kind: "web-session",
+        credentials: proof.credentials,
+        ...normalizeAuthCachePartition(proof.cachePartition),
+      });
     case "bearer":
-      return Object.freeze({ kind: "bearer", scheme: normalizeTokenPart(proof.scheme, "scheme"), token: normalizeTokenPart(proof.token, "token") });
+      return Object.freeze({
+        kind: "bearer",
+        scheme: normalizeTokenPart(proof.scheme, "scheme"),
+        token: normalizeTokenPart(proof.token, "token"),
+        ...normalizeAuthCachePartition(proof.cachePartition),
+      });
     case "header":
-      return Object.freeze({ kind: "header", name: normalizeHeaderName(proof.name), value: normalizeTokenPart(proof.value, "header value") });
+      return Object.freeze({
+        kind: "header",
+        name: normalizeHeaderName(proof.name),
+        value: normalizeTokenPart(proof.value, "header value"),
+        ...normalizeAuthCachePartition(proof.cachePartition),
+      });
   }
+}
+
+function normalizeAuthCachePartition(value: string | undefined): { readonly cachePartition?: string } {
+  if (value === undefined) {
+    return {};
+  }
+  return Object.freeze({ cachePartition: normalizeTokenPart(value, "cache partition") });
 }
 
 function applyProofToHeaders(headers: TransportHeaders, proof: TransportAuthProof): TransportHeaders {

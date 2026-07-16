@@ -21,6 +21,7 @@ export interface AppHttpClient {
     put<Result = WireValue>(url: string, body: unknown, options?: AppHttpRequestOptions): Promise<Result>;
     patch<Result = WireValue>(url: string, body: unknown, options?: AppHttpRequestOptions): Promise<Result>;
     delete<Result = WireValue>(url: string, options?: AppHttpRequestOptions): Promise<Result>;
+    invalidateCache(): Promise<void>;
 }
 export type AppRequestIdFactory = (sequence: number) => string;
 export declare function createAppHttpClient(context: ExtensionSetupContext, requestIdFactory: AppRequestIdFactory): AppHttpClient;

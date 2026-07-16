@@ -84,16 +84,19 @@ export type TransportAuthProof = WebSessionTransportAuthProof | BearerTransportA
 export interface WebSessionTransportAuthProof {
     readonly kind: "web-session";
     readonly credentials: "same-origin" | "include" | "omit";
+    readonly cachePartition?: string;
 }
 export interface BearerTransportAuthProof {
     readonly kind: "bearer";
     readonly scheme: string;
     readonly token: string;
+    readonly cachePartition?: string;
 }
 export interface HeaderTransportAuthProof {
     readonly kind: "header";
     readonly name: string;
     readonly value: string;
+    readonly cachePartition?: string;
 }
 export interface TransportAuthProvider {
     current(): TransportAuthProof | undefined | Promise<TransportAuthProof | undefined>;

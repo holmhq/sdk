@@ -47,17 +47,69 @@ test("web explicit-token auth and caller context remain isolated across app clie
   await Promise.all([alpha.dispose(), beta.dispose()]);
 });
 
+test("web dynamic token epochs cannot reuse prior-credential cache entries", async () => {
+  let token = "first-secret";
+  let fetchCalls = 0;
+  const auth = createWebTokenAuth({ token: () => token });
+  const app = createHolm({
+    runtime: webRuntime({
+      auth,
+      fetch: async (_input, init = {}) => {
+        fetchCalls += 1;
+        return new Response(JSON.stringify({
+          data: { authorization: new Headers(init.headers).get("authorization") },
+        }), { headers: { "content-type": "application/json" } });
+      },
+    }),
+    caller: createWebCaller(),
+    extensions: [createAppExtension()] as const,
+  });
+
+  assert.deepEqual(await app.app.auth.me(), { authorization: "Bearer first-secret" });
+  token = "second-secret";
+  assert.deepEqual(await app.app.auth.me(), { authorization: "Bearer second-secret" });
+  assert.equal(fetchCalls, 2);
+  await app.dispose();
+
+  let customCalls = 0;
+  const custom = createHolm({
+    runtime: webRuntime({
+      auth: { current: () => ({ kind: "bearer", scheme: "Bearer", token: "custom-secret" }) },
+      fetch: async () => {
+        customCalls += 1;
+        return new Response('{"data":{"ok":true}}', { headers: { "content-type": "application/json" } });
+      },
+    }),
+    caller: createWebCaller(),
+    extensions: [createAppExtension()] as const,
+  });
+  await custom.app.auth.me();
+  await custom.app.auth.me();
+  assert.equal(customCalls, 2);
+  await custom.dispose();
+});
+
 test("web token and caller providers resolve fresh values per invocation", async () => {
   let token = "first-secret";
   let memberId = "member_first";
   const auth = createWebTokenAuth({ token: () => token, scheme: "Token" });
   const caller = createWebCaller({ principal: () => ({ kind: "member", id: memberId }) });
 
-  assert.deepEqual(await auth.current(), { kind: "bearer", scheme: "Token", token: "first-secret" });
+  assert.deepEqual(await auth.current(), {
+    kind: "bearer",
+    scheme: "Token",
+    token: "first-secret",
+    cachePartition: "web-token:0",
+  });
   assert.deepEqual(await caller.current(), { surface: "web", principal: { kind: "member", id: "member_first" } });
   token = "second-secret";
   memberId = "member_second";
-  assert.deepEqual(await auth.current(), { kind: "bearer", scheme: "Token", token: "second-secret" });
+  assert.deepEqual(await auth.current(), {
+    kind: "bearer",
+    scheme: "Token",
+    token: "second-secret",
+    cachePartition: "web-token:1",
+  });
   assert.deepEqual(await caller.current(), { surface: "web", principal: { kind: "member", id: "member_second" } });
 
   assert.throws(() => createWebTokenAuth({ token: " " }), /token/);

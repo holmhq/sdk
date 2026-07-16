@@ -6,9 +6,15 @@ export interface WebRuntimeCacheOptions {
     readonly swrMs?: number;
     readonly maxEntries?: number;
 }
+export interface WebRuntimeCacheLease {
+    readonly signal: CancellationSignal;
+    track(response: Promise<OperationResponse>): void;
+    release(): void;
+}
 export interface WebRuntimeCacheState {
     readonly instance: TransportCache;
     readonly policy: TransportCachePolicy;
+    acquire(key: string, onAbandon: () => void): WebRuntimeCacheLease;
 }
 export declare function createWebRuntimeCache(options: false | WebRuntimeCacheOptions | undefined, clock: Clock, scheduler: Scheduler, diagnostics: HolmDiagnosticsSink | undefined): WebRuntimeCacheState | undefined;
 export declare function waitForWebResponse(response: Promise<OperationResponse>, cancellation: CancellationSignal | undefined): Promise<OperationResponse>;

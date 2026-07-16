@@ -129,6 +129,114 @@ test("web runtime deduplicates caller-partitioned GETs without reusing response 
   await runtime.dispose();
 });
 
+test("web runtime rejects cross-origin app requests before resolving or sending auth proof", async () => {
+  let authCalls = 0;
+  let fetchCalls = 0;
+  const runtime = webRuntime({
+    baseUrl: "https://app.example.test/",
+    auth: {
+      current() {
+        authCalls += 1;
+        return { kind: "bearer", scheme: "Bearer", token: "cross-origin-secret" };
+      },
+    },
+    fetch: async () => {
+      fetchCalls += 1;
+      return new Response('{"data":{"unexpected":true}}', {
+        headers: { "content-type": "application/json" },
+      });
+    },
+  });
+  await runtime.start();
+
+  await assert.rejects(
+    () => runtime.invoke(
+      operationRequest(createTransportRequest({ method: "GET", url: "https://evil.example/api/me" }), "req-cross-origin"),
+      {},
+    ),
+    (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+  );
+  assert.equal(authCalls, 0);
+  assert.equal(fetchCalls, 0);
+  await runtime.dispose();
+});
+
+test("web runtime fences cancelled shared GET loads from later cache reads", async () => {
+  const cancellation = createCancellationController();
+  let fetchCalls = 0;
+  let releaseFirst: ((response: Response) => void) | undefined;
+  let markEntered: (() => void) | undefined;
+  const entered = new Promise<void>((resolve) => {
+    markEntered = resolve;
+  });
+  const firstResponse = new Promise<Response>((resolve) => {
+    releaseFirst = resolve;
+  });
+  const runtime = webRuntime({
+    fetch: async () => {
+      fetchCalls += 1;
+      if (fetchCalls === 1) {
+        markEntered?.();
+        return firstResponse;
+      }
+      return new Response('{"data":{"source":"fresh"}}', {
+        headers: { "content-type": "application/json" },
+      });
+    },
+  });
+  await runtime.start();
+  const request = operationRequest(
+    createTransportRequest({ method: "GET", url: "/api/cancelled-cache", responseMode: "json" }),
+    "req-cancelled-cache",
+  );
+  const cancelled = runtime.invoke(request, { cancellation: cancellation.signal });
+  await entered;
+  cancellation.cancel("leave-page");
+  await assert.rejects(cancelled, CancelledError);
+  releaseFirst?.(new Response('{"data":{"source":"cancelled"}}', {
+    headers: { "content-type": "application/json" },
+  }));
+  await new Promise<void>((resolve) => setImmediate(resolve));
+
+  const after = await runtime.invoke(operationRequest(
+    createTransportRequest({ method: "GET", url: "/api/cancelled-cache", responseMode: "json" }),
+    "req-after-cancelled-cache",
+  ), {});
+  assert.deepEqual(after.payload, { source: "fresh" });
+  assert.equal(fetchCalls, 2);
+  await runtime.dispose();
+});
+
+test("web runtime keeps a shared GET alive while another cache consumer remains", async () => {
+  const firstCancellation = createCancellationController();
+  let release: ((response: Response) => void) | undefined;
+  let fetchCalls = 0;
+  const response = new Promise<Response>((resolve) => {
+    release = resolve;
+  });
+  const runtime = webRuntime({
+    fetch: async () => {
+      fetchCalls += 1;
+      return response;
+    },
+  });
+  await runtime.start();
+  const input = createTransportRequest({ method: "GET", url: "/api/shared", responseMode: "json" });
+  const first = runtime.invoke(operationRequest(input, "req-shared-cancel"), {
+    cancellation: firstCancellation.signal,
+  });
+  const second = runtime.invoke(operationRequest(input, "req-shared-active"), {});
+  await new Promise<void>((resolve) => setImmediate(resolve));
+  firstCancellation.cancel("first-left");
+  await assert.rejects(first, CancelledError);
+  release?.(new Response('{"data":{"shared":true}}', {
+    headers: { "content-type": "application/json" },
+  }));
+  assert.deepEqual((await second).payload, { shared: true });
+  assert.equal(fetchCalls, 1);
+  await runtime.dispose();
+});
+
 test("web runtime cache partitions callers, invalidates mutations, retries errors, and can be disabled", async () => {
   const fake = createFakeClock(500);
   let calls = 0;
@@ -250,6 +358,7 @@ test("web runtime encodes bearer-authenticated JSON and preserves raw responses"
 test("web runtime sends and receives copied binary bodies through Fetch", async () => {
   let captured: RequestInit | undefined;
   const runtime = webRuntime({
+    baseUrl: "https://app.example.test/",
     fetch: async (_input, init = {}) => {
       captured = init;
       return new Response(Uint8Array.from([4, 5, 6]), {

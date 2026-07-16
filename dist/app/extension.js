@@ -15,7 +15,7 @@ export function createAppExtension(options = {}) {
         setup(context) {
             const http = createAppHttpClient(context, requestId);
             const auth = createAppAuthApi(http, options.navigation);
-            const upload = createAppUpload(options.uploads);
+            const upload = createAppUpload(options.uploads, () => http.invalidateCache());
             const links = createAppLinksApi(http, upload);
             const surface = createAppSurfaceApi(options.surfaces);
             const paginate = createAppPaginate(http);

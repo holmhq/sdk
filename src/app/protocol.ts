@@ -6,3 +6,4 @@ export const HOLM_APP_HTTP_CAPABILITY = Object.freeze({
 }) satisfies CapabilityRequirement;
 
 export const APP_HTTP_REQUEST_OPERATION = "request";
+export const APP_HTTP_INVALIDATE_OPERATION = "invalidate-cache";

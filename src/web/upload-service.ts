@@ -25,6 +25,7 @@ import {
 } from "../transports/index.js";
 import { createWebSessionAuth } from "./auth.js";
 import type { WebUploadChunkBody } from "./upload.js";
+import { resolveWebRequestUrl } from "./url.js";
 
 export const WEB_UPLOAD_PROGRESS_MODE = "acknowledged-resumable+coarse-multipart-fallback";
 
@@ -64,6 +65,7 @@ export function createWebUploadService(options: WebUploadServiceOptions = {}): W
   }
 
   async function request(context: WebUploadRequestContext): Promise<WireValue> {
+    const url = resolveWebRequestUrl(context.path, baseUrl);
     const transportRequest = createTransportRequest({
       method: context.method,
       url: context.path,
@@ -88,7 +90,7 @@ export function createWebUploadService(options: WebUploadServiceOptions = {}): W
     const controller = new AbortController();
     const unsubscribe = context.signal?.onCancel(() => controller.abort());
     try {
-      const response = await fetchImplementation(resolveUrl(context.path, baseUrl), {
+      const response = await fetchImplementation(url, {
         method: context.method,
         headers: new Headers(authenticated.request.headers),
         ...(context.body === undefined ? {} : { body: context.body }),
@@ -109,7 +111,7 @@ export function createWebUploadService(options: WebUploadServiceOptions = {}): W
         body,
         responseMode: "json",
         headers: responseHeaders(response.headers),
-        url: response.url || resolveUrl(context.path, baseUrl),
+        url: response.url || url,
       }).payload;
     } catch (error) {
       throw normalizeTransportError(error, {
@@ -216,6 +218,7 @@ export function createWebUploadService(options: WebUploadServiceOptions = {}): W
   return Object.freeze({
     progressMode: WEB_UPLOAD_PROGRESS_MODE,
     async upload(input: UploadRequest): Promise<WireValue> {
+      resolveWebRequestUrl(input.path, baseUrl);
       const webInput = input as UploadRequest<WebUploadChunkBody>;
       await validateWebUploadFiles(webInput);
       try {
@@ -364,10 +367,6 @@ function normalizeBaseUrl(value: string | URL | undefined): URL | undefined {
   } catch (cause) {
     throw new TypeError("Web upload baseUrl must be an absolute URL.", { cause });
   }
-}
-
-function resolveUrl(path: string, baseUrl: URL | undefined): string {
-  return baseUrl === undefined ? path : new URL(path, baseUrl).href;
 }
 
 function responseHeaders(headers: Headers): Record<string, string> {

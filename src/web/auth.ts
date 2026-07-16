@@ -17,7 +17,11 @@ export interface WebTokenAuthOptions {
 
 export function createWebSessionAuth(options: WebSessionAuthOptions = {}): TransportAuthProvider {
   const credentials = normalizeCredentials(options.credentials ?? "same-origin");
-  const proof = Object.freeze({ kind: "web-session", credentials }) satisfies WebSessionTransportAuthProof;
+  const proof = Object.freeze({
+    kind: "web-session",
+    credentials,
+    cachePartition: `web-session:${credentials}`,
+  }) satisfies WebSessionTransportAuthProof;
   return Object.freeze({
     current(): WebSessionTransportAuthProof {
       return proof;
@@ -27,13 +31,20 @@ export function createWebSessionAuth(options: WebSessionAuthOptions = {}): Trans
 
 export function createWebTokenAuth(options: WebTokenAuthOptions): TransportAuthProvider {
   const scheme = normalizeTokenPart(options.scheme ?? "Bearer", "scheme");
-  validateTokenSource(options.token);
+  let token = resolveToken(options.token);
+  let epoch = 0;
   return Object.freeze({
     current(): BearerTransportAuthProof {
+      const nextToken = resolveToken(options.token);
+      if (nextToken !== token) {
+        token = nextToken;
+        epoch += 1;
+      }
       return Object.freeze({
         kind: "bearer",
         scheme,
-        token: resolveToken(options.token),
+        token,
+        cachePartition: `web-token:${epoch}`,
       });
     },
   });
@@ -44,10 +55,6 @@ function normalizeCredentials(credentials: WebSessionCredentials): WebSessionCre
     throw new TypeError("Web session credentials must be same-origin, include, or omit.");
   }
   return credentials;
-}
-
-function validateTokenSource(source: string | (() => string)): void {
-  resolveToken(source);
 }
 
 function resolveToken(source: string | (() => string)): string {

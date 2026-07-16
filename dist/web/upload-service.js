@@ -2,6 +2,7 @@ import { throwIfCancelled } from "../core/cancellation.js";
 import { canonicalEncodeWireValue, } from "../core/wire-value.js";
 import { RemoteError, UploadError, applyTransportAuth, composeResumableUpload, createTransportRequest, decodeTransportResponse, normalizeTransportError, } from "../transports/index.js";
 import { createWebSessionAuth } from "./auth.js";
+import { resolveWebRequestUrl } from "./url.js";
 export const WEB_UPLOAD_PROGRESS_MODE = "acknowledged-resumable+coarse-multipart-fallback";
 const resumableUnavailableStatuses = new Set([404, 405, 501]);
 export function createWebUploadService(options = {}) {
@@ -14,6 +15,7 @@ export function createWebUploadService(options = {}) {
         return `web-upload-${sequence}`;
     }
     async function request(context) {
+        const url = resolveWebRequestUrl(context.path, baseUrl);
         const transportRequest = createTransportRequest({
             method: context.method,
             url: context.path,
@@ -38,7 +40,7 @@ export function createWebUploadService(options = {}) {
         const controller = new AbortController();
         const unsubscribe = context.signal?.onCancel(() => controller.abort());
         try {
-            const response = await fetchImplementation(resolveUrl(context.path, baseUrl), {
+            const response = await fetchImplementation(url, {
                 method: context.method,
                 headers: new Headers(authenticated.request.headers),
                 ...(context.body === undefined ? {} : { body: context.body }),
@@ -59,7 +61,7 @@ export function createWebUploadService(options = {}) {
                 body,
                 responseMode: "json",
                 headers: responseHeaders(response.headers),
-                url: response.url || resolveUrl(context.path, baseUrl),
+                url: response.url || url,
             }).payload;
         }
         catch (error) {
@@ -140,6 +142,7 @@ export function createWebUploadService(options = {}) {
     return Object.freeze({
         progressMode: WEB_UPLOAD_PROGRESS_MODE,
         async upload(input) {
+            resolveWebRequestUrl(input.path, baseUrl);
             const webInput = input;
             await validateWebUploadFiles(webInput);
             try {
@@ -270,9 +273,6 @@ function normalizeBaseUrl(value) {
     catch (cause) {
         throw new TypeError("Web upload baseUrl must be an absolute URL.", { cause });
     }
-}
-function resolveUrl(path, baseUrl) {
-    return baseUrl === undefined ? path : new URL(path, baseUrl).href;
 }
 function responseHeaders(headers) {
     const output = {};

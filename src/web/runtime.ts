@@ -1,7 +1,9 @@
 import {
+  APP_HTTP_INVALIDATE_OPERATION,
   APP_HTTP_REQUEST_OPERATION,
   HOLM_APP_HTTP_CAPABILITY,
 } from "../app/protocol.js";
+import { createCallerPartitionedCacheKey } from "../core/cache-key.js";
 import type { CapabilityOffer } from "../core/capabilities.js";
 import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
 import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
@@ -19,11 +21,13 @@ import type {
 import { isReadonlyBytes, type WireObject, type WireValue } from "../core/wire-value.js";
 import {
   applyTransportAuth,
+  createTransportCacheKey,
   createTransportRequest,
   decodeTransportResponse,
   encodeTransportBody,
   normalizeTransportError,
   type AuthenticatedTransportRequest,
+  type TransportAuthProof,
   type TransportAuthProvider,
   type TransportBodyInput,
   type TransportHeaders,
@@ -40,10 +44,12 @@ import {
   waitForWebResponse,
   type WebRuntimeCacheOptions,
 } from "./runtime-cache.js";
+import { resolveWebRequestUrl } from "./url.js";
 
 export type { WebRuntimeCacheOptions } from "./runtime-cache.js";
 
 export {
+  APP_HTTP_INVALIDATE_OPERATION,
   APP_HTTP_REQUEST_OPERATION,
   HOLM_APP_HTTP_CAPABILITY,
 } from "../app/protocol.js";
@@ -59,6 +65,7 @@ const appHttpOffers = Object.freeze([appHttpOffer]);
 const defaultWebSessionProof = Object.freeze({
   kind: "web-session",
   credentials: "same-origin",
+  cachePartition: "web-session:same-origin",
 }) satisfies WebSessionTransportAuthProof;
 const defaultWebSessionAuth = Object.freeze({
   current(): WebSessionTransportAuthProof {
@@ -142,34 +149,58 @@ export function webRuntime(options: WebRuntimeOptions = {}): RuntimeAdapter {
     async invoke(request: OperationRequest, control: InvocationControl): Promise<OperationResponse> {
       assertReady(started, disposed);
       assertHttpOperation(request);
+      if (request.operation === APP_HTTP_INVALIDATE_OPERATION) {
+        cache?.instance.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
+        return Object.freeze({ requestId: request.requestId, payload: null });
+      }
       const transportRequest = transportRequestFromPayload(request.payload);
+      const url = resolveWebRequestUrl(transportRequest.url, baseUrl, transportRequest.params);
       const authenticated = await authenticateWebRequest(transportRequest, auth, control.cancellation);
       throwIfRuntimeDisposed(disposed);
-      const url = createWebRequestUrl(authenticated.request, baseUrl);
-      const partition = Object.freeze({
-        source: Object.freeze({ id, surface: "web" as const }),
-        callerFingerprint: request.callerFingerprint,
-      });
+      const source = Object.freeze({ id, surface: "web" as const });
+      const authCachePartition = resolveAuthCachePartition(authenticated.privateProof);
+      const partition = authCachePartition === undefined
+        ? undefined
+        : Object.freeze({
+            source,
+            callerFingerprint: createCallerPartitionedCacheKey({
+              namespace: "web.auth",
+              source,
+              callerFingerprint: request.callerFingerprint,
+              operation: { auth: authCachePartition },
+            }),
+          });
 
-      if (cache !== undefined && authenticated.request.method === "GET") {
+      if (cache !== undefined && partition !== undefined && authenticated.request.method === "GET") {
+        const cacheKeyInput = Object.freeze({ partition, request: authenticated.request });
+        const lease = cache.acquire(
+          createTransportCacheKey(cacheKeyInput),
+          () => {
+            cache.instance.delete(cacheKeyInput);
+          },
+        );
         const cached = cache.instance.getOrLoad(
           {
-            partition,
-            request: authenticated.request,
+            ...cacheKeyInput,
             policy: cache.policy,
-            tags: [webRuntimeCacheTag],
+            tags: [webRuntimeCacheTag, callerCacheTag(request.callerFingerprint)],
           },
-          () => executeFetch(authenticated, url, request.requestId),
+          () => executeFetch(authenticated, url, request.requestId, lease.signal),
         );
-        return rebindResponseRequestId(
-          await waitForWebResponse(cached, control.cancellation),
-          request.requestId,
-        );
+        lease.track(cached);
+        try {
+          return rebindResponseRequestId(
+            await waitForWebResponse(cached, control.cancellation),
+            request.requestId,
+          );
+        } finally {
+          lease.release();
+        }
       }
 
       const response = await executeFetch(authenticated, url, request.requestId, control.cancellation);
       if (cache !== undefined) {
-        cache.instance.invalidateForMutation({ partition, tags: [webRuntimeCacheTag] });
+        cache.instance.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
       }
       return response;
     },
@@ -186,6 +217,20 @@ export function webRuntime(options: WebRuntimeOptions = {}): RuntimeAdapter {
       active.clear();
     },
   }) satisfies RuntimeAdapter;
+}
+
+function callerCacheTag(callerFingerprint: string): string {
+  return `web:caller:${callerFingerprint}`;
+}
+
+function resolveAuthCachePartition(proof: TransportAuthProof | undefined): string | undefined {
+  if (proof === undefined) {
+    return "anonymous";
+  }
+  if (proof.kind === "web-session") {
+    return proof.cachePartition ?? `web-session:${proof.credentials}`;
+  }
+  return proof.cachePartition;
 }
 
 async function authenticateWebRequest(
@@ -290,11 +335,11 @@ function assertHttpOperation(request: OperationRequest): void {
   if (
     request.capability.id !== HOLM_APP_HTTP_CAPABILITY.id ||
     request.capability.major !== HOLM_APP_HTTP_CAPABILITY.major ||
-    request.operation !== WEB_HTTP_REQUEST_OPERATION
+    (request.operation !== WEB_HTTP_REQUEST_OPERATION && request.operation !== APP_HTTP_INVALIDATE_OPERATION)
   ) {
     throw new ProtocolError({
       code: "unsupported_web_runtime_operation",
-      message: "The web runtime only accepts holm.http.app request operations.",
+      message: "The web runtime only accepts supported holm.http.app operations.",
       details: {
         capability: request.capability.id,
         major: request.capability.major,
@@ -426,42 +471,6 @@ function requireBoolean(value: WireValue, label: string): boolean {
     throw new TypeError(`${label} must be a boolean`);
   }
   return value;
-}
-
-function createWebRequestUrl(request: TransportRequest, baseUrl: URL | undefined): string {
-  if (baseUrl !== undefined || isAbsoluteUrl(request.url)) {
-    const url = baseUrl === undefined ? new URL(request.url) : new URL(request.url, baseUrl);
-    appendSearchParams(url.searchParams, request.params);
-    return url.href;
-  }
-  const query = createSearchParams(request.params).toString();
-  if (query === "") {
-    return request.url;
-  }
-  const hashIndex = request.url.indexOf("#");
-  const beforeHash = hashIndex === -1 ? request.url : request.url.slice(0, hashIndex);
-  const hash = hashIndex === -1 ? "" : request.url.slice(hashIndex);
-  return `${beforeHash}${beforeHash.includes("?") ? "&" : "?"}${query}${hash}`;
-}
-
-function isAbsoluteUrl(value: string): boolean {
-  return /^[A-Za-z][A-Za-z\d+.-]*:/.test(value);
-}
-
-function createSearchParams(params: TransportParams): URLSearchParams {
-  const search = new URLSearchParams();
-  appendSearchParams(search, params);
-  return search;
-}
-
-function appendSearchParams(search: URLSearchParams, params: TransportParams): void {
-  for (const key of Object.keys(params).sort()) {
-    const value = params[key];
-    if (value !== null && value !== undefined) {
-      search.append(key, String(value));
-    }
-  }
-  search.sort();
 }
 
 function createFetchInit(

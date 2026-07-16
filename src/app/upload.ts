@@ -11,7 +11,10 @@ export interface AppUploadService {
 
 export type AppUpload = <Result = WireValue>(request: AppUploadRequest) => Promise<Result>;
 
-export function createAppUpload(service: AppUploadService | undefined): AppUpload {
+export function createAppUpload(
+  service: AppUploadService | undefined,
+  onSuccess?: () => void | Promise<void>,
+): AppUpload {
   return async function upload<Result = WireValue>(request: AppUploadRequest): Promise<Result> {
     if (service === undefined) {
       throw new UnsupportedCapabilityError({
@@ -19,7 +22,9 @@ export function createAppUpload(service: AppUploadService | undefined): AppUploa
         message: "App uploads require an explicit runtime upload service.",
       });
     }
-    return await service.upload(request) as Result;
+    const result = await service.upload(request) as Result;
+    await onSuccess?.();
+    return result;
   };
 }
 

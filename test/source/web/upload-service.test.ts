@@ -2,9 +2,10 @@ import { strict as assert } from "node:assert";
 import { test } from "node:test";
 
 import { createAppExtension } from "../../../src/app/index.js";
-import { createCancellationController, createHolm } from "../../../src/core/index.js";
+import { ProtocolError, createCancellationController, createHolm } from "../../../src/core/index.js";
 import { TransportError, UploadError, type UploadProgressEvent } from "../../../src/transports/index.js";
 import {
+  createWebApp,
   createWebCaller,
   createWebUploadFile,
   createWebUploadService,
@@ -207,8 +208,66 @@ test("web upload service resumes acknowledged chunks and supports explicit beare
   assert.equal(authorization.every((value) => value === "Token upload-secret"), true);
 });
 
+test("web link imports invalidate cached link reads for the same app client", async () => {
+  let listCalls = 0;
+  const fixtureFetch: typeof fetch = async (input, init = {}) => {
+    const url = new URL(String(input), "https://app.example.test/");
+    if (url.pathname === "/api/apps/app_sales/links" && init.method === "GET") {
+      listCalls += 1;
+      return jsonResponse({ items: [`list-${listCalls}`] });
+    }
+    if (url.pathname === "/api/uploads") {
+      return jsonResponse({ code: "missing" }, 404);
+    }
+    if (url.pathname === "/api/apps/app_sales/links/import") {
+      return jsonResponse({ imported: true });
+    }
+    throw new Error(`Unexpected request: ${init.method} ${url.pathname}`);
+  };
+  const app = createWebApp({
+    runtime: { baseUrl: "https://app.example.test/", fetch: fixtureFetch },
+    navigation: false,
+  });
+  const file = createWebUploadFile({
+    field: "file",
+    name: "import.txt",
+    blob: new Blob(["import"], { type: "text/plain" }),
+  });
+
+  assert.deepEqual(await app.app.links.list("app_sales"), { items: ["list-1"] });
+  assert.deepEqual(await app.app.links.import("app_sales", { files: [file] }), { imported: true });
+  assert.deepEqual(await app.app.links.list("app_sales"), { items: ["list-2"] });
+  assert.equal(listCalls, 2);
+  await app.dispose();
+});
+
 test("web upload service validates configuration, cancellation, blobs, and Holm responses", async () => {
   assert.throws(() => createWebUploadService({ baseUrl: "relative" }), /baseUrl/);
+
+  let crossOriginAuthCalls = 0;
+  let crossOriginFetchCalls = 0;
+  const crossOrigin = createWebUploadService({
+    baseUrl: "https://app.example.test/",
+    auth: {
+      current() {
+        crossOriginAuthCalls += 1;
+        return { kind: "bearer", scheme: "Bearer", token: "upload-cross-origin-secret" };
+      },
+    },
+    fetch: async () => {
+      crossOriginFetchCalls += 1;
+      return jsonResponse({ unexpected: true });
+    },
+  });
+  await assert.rejects(
+    () => crossOrigin.upload({
+      path: "https://evil.example/import",
+      files: [createWebUploadFile({ field: "file", blob: new Blob(["x"]) })],
+    }),
+    (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+  );
+  assert.equal(crossOriginAuthCalls, 0);
+  assert.equal(crossOriginFetchCalls, 0);
 
   const fetchDescriptor = Object.getOwnPropertyDescriptor(globalThis, "fetch");
   try {
