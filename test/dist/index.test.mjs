@@ -35,7 +35,13 @@ import {
   redactAuthenticatedTransport,
   redactUploadRequest,
 } from "../../dist/transports/index.js";
-import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index.js";
+import {
+  createNodeOperatorCaller,
+  createNodeTokenAuth,
+  createNodeUploadFile,
+  nodeRuntime,
+  UnsupportedNodeRuntimeServiceError,
+} from "../../dist/node/index.js";
 import {
   HOLM_APP_HTTP_CAPABILITY,
   WEB_HTTP_REQUEST_OPERATION,
@@ -185,6 +191,43 @@ test("generated ESM artifact exposes the Issue 007 app extension and web composi
   assert.deepEqual(await convenience.app.auth.me(), { ok: true });
   assert.equal(convenience.app.surface.analyticsUrl(), "/analytics");
   await convenience.dispose();
+});
+
+test("generated ESM artifact exposes the Issue 009 Node/CLI runtime services", async () => {
+  const fake = createFakeClock(9);
+  const calls = [];
+  const runtime = nodeRuntime({
+    baseUrl: "https://cli.example.test/",
+    fetch: async (input, init) => {
+      calls.push({ input, init });
+      return new Response('{"data":{"ok":true}}', {
+        headers: { "content-type": "application/json" },
+      });
+    },
+    auth: createNodeTokenAuth({ token: "dist-node-token", operatorId: "dist-operator" }),
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    environment: { get: (name) => name === "HOLM_PROFILE" ? "dist" : undefined },
+    secureStore: { get: (key) => key === "holm.token" ? "dist-secret" : undefined },
+  });
+  const caller = await createNodeOperatorCaller({ operatorId: "dist-operator" }).current();
+  await runtime.start();
+  const response = await runtime.invoke({
+    requestId: "req-dist-node",
+    capability: HOLM_APP_HTTP_CAPABILITY,
+    operation: "request",
+    caller: { ...caller, invocationId: "req-dist-node", startedAt: 9 },
+    callerFingerprint: createCallerFingerprint(caller),
+    payload: createTransportRequest({ method: "GET", url: "/api/node" }),
+  }, {});
+
+  assert.deepEqual(response.payload, { ok: true });
+  assert.equal(calls[0].input, "https://cli.example.test/api/node");
+  assert.equal(calls[0].init.headers.authorization, "Bearer dist-node-token");
+  assert.equal(await runtime.services.environment.get("HOLM_PROFILE"), "dist");
+  assert.equal(JSON.stringify(response).includes("dist-node-token"), false);
+  assert.throws(() => nodeRuntime({ id: "dist-missing" }).clock.now(), UnsupportedNodeRuntimeServiceError);
+  await runtime.dispose();
 });
 
 test("generated ESM artifact exposes the Issue 007 web Fetch runtime", async () => {

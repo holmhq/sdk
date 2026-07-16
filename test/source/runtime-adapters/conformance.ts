@@ -60,6 +60,7 @@ export interface HttpAppRuntimeConformanceOptions {
 
 export interface HttpAppRuntimeConformanceTarget<Adapter extends RuntimeAdapter> {
   readonly name: string;
+  readonly unsupportedOperationCode?: string;
   createAdapter(options: HttpAppRuntimeConformanceOptions): Adapter;
 }
 
@@ -366,6 +367,7 @@ export function runRuntimeAdapterConformance<Adapter extends RuntimeAdapter>(
 export function runHttpAppRuntimeAdapterConformance<Adapter extends RuntimeAdapter>(
   target: HttpAppRuntimeConformanceTarget<Adapter>,
 ): void {
+  const unsupportedOperationCode = target.unsupportedOperationCode ?? "unsupported_web_runtime_operation";
   test(`${target.name} preserves canonical app GET/POST transport semantics and response envelopes`, async () => {
     const calls: Array<{ readonly url: string; readonly init: RequestInit }> = [];
     const adapter = target.createAdapter({
@@ -605,7 +607,7 @@ export function runHttpAppRuntimeAdapterConformance<Adapter extends RuntimeAdapt
         requestId: "req-unsupported-operation-http",
         caller: webCaller("member-1"),
       }), {}),
-      (error: unknown) => error instanceof ProtocolError && error.code === "unsupported_web_runtime_operation",
+      (error: unknown) => error instanceof ProtocolError && error.code === unsupportedOperationCode,
     );
     assert.equal(authCalls, 0);
     assert.equal(fetchCalls, 0);

@@ -1,39 +1,34 @@
 export { createNodeUploadFile } from "./upload.js";
 export type { NodeUploadFileOptions } from "./upload.js";
 
-import type { BearerTransportAuthProof, TransportAuthProvider } from "../transports/index.js";
+export {
+  createNodeOperatorCaller,
+  createNodeRuntimeServices,
+  createNodeTokenAuth,
+  UnsupportedNodeRuntimeServiceError,
+} from "./services.js";
+export type {
+  NodeEnvironmentService,
+  NodeOperatorCallerOptions,
+  NodeRuntimeServices,
+  NodeSecureStoreService,
+  NodeTokenAuthOptions,
+} from "./services.js";
 
-export interface NodeTokenAuthOptions {
-  readonly token: string | (() => string);
-  readonly scheme?: string;
-}
-
-export function createNodeTokenAuth(options: NodeTokenAuthOptions): TransportAuthProvider {
-  const scheme = normalizePart(options.scheme ?? "Bearer", "scheme");
-  validateTokenSource(options.token);
-  return Object.freeze({
-    current(): BearerTransportAuthProof {
-      return Object.freeze({
-        kind: "bearer",
-        scheme,
-        token: resolveToken(options.token),
-      });
-    },
-  });
-}
-
-function validateTokenSource(source: string | (() => string)): void {
-  resolveToken(source);
-}
-
-function resolveToken(source: string | (() => string)): string {
-  return normalizePart(typeof source === "function" ? source() : source, "token");
-}
-
-function normalizePart(value: string, label: string): string {
-  const normalized = value.trim();
-  if (normalized === "") {
-    throw new TypeError(`Node token auth ${label} must be non-empty.`);
-  }
-  return normalized;
-}
+export {
+  APP_HTTP_INVALIDATE_OPERATION,
+  APP_HTTP_REQUEST_OPERATION,
+  HOLM_APP_HTTP_CAPABILITY,
+  NODE_HTTP_REQUEST_OPERATION,
+  nodeRuntime,
+} from "./runtime.js";
+export type {
+  NodeRuntimeAbortSignal,
+  NodeRuntimeAdapter,
+  NodeRuntimeCacheOptions,
+  NodeRuntimeFetch,
+  NodeRuntimeFetchHeaders,
+  NodeRuntimeFetchInit,
+  NodeRuntimeFetchResponse,
+  NodeRuntimeOptions,
+} from "./runtime.js";

@@ -1,0 +1,670 @@
+import {
+  APP_HTTP_INVALIDATE_OPERATION,
+  APP_HTTP_REQUEST_OPERATION,
+  HOLM_APP_HTTP_CAPABILITY,
+} from "../app/protocol.js";
+import { createCallerPartitionedCacheKey } from "../core/cache-key.js";
+import {
+  CapabilityVersionError,
+  UnsupportedCapabilityError,
+  type CapabilityOffer,
+} from "../core/capabilities.js";
+import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
+import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
+import { ProtocolError } from "../core/errors.js";
+import { LifecycleError } from "../core/lifecycle.js";
+import type {
+  CancellationSignal,
+  Clock,
+  InvocationControl,
+  OperationRequest,
+  OperationResponse,
+  RuntimeAdapter,
+  Scheduler,
+} from "../core/runtime.js";
+import { isReadonlyBytes, type ReadonlyBytes, type WireObject, type WireValue } from "../core/wire-value.js";
+import {
+  applyTransportAuth,
+  createTransportCache,
+  createTransportRequest,
+  decodeTransportResponse,
+  encodeTransportBody,
+  normalizeTransportError,
+  type AuthenticatedTransportRequest,
+  type TransportAuthProof,
+  type TransportAuthProvider,
+  type TransportBodyInput,
+  type TransportCache,
+  type TransportHeaders,
+  type TransportParams,
+  type TransportRequest,
+  type TransportRequestInput,
+  type TransportResponseMode,
+  type TransportSensitivityInput,
+} from "../transports/index.js";
+import {
+  createNodeRuntimeServices,
+  createUnsupportedClock,
+  createUnsupportedScheduler,
+  UnsupportedNodeRuntimeServiceError,
+  type NodeEnvironmentService,
+  type NodeRuntimeServices,
+  type NodeSecureStoreService,
+} from "./services.js";
+
+export {
+  APP_HTTP_INVALIDATE_OPERATION,
+  APP_HTTP_REQUEST_OPERATION,
+  HOLM_APP_HTTP_CAPABILITY,
+} from "../app/protocol.js";
+
+export const NODE_HTTP_REQUEST_OPERATION = APP_HTTP_REQUEST_OPERATION;
+
+export interface NodeRuntimeAbortSignal {
+  readonly aborted: boolean;
+  readonly reason?: unknown;
+  readonly onabort?: unknown;
+  throwIfAborted?(): void;
+  addEventListener?(type: string, listener: unknown, options?: unknown): void;
+  removeEventListener?(type: string, listener: unknown, options?: unknown): void;
+  dispatchEvent?(event: unknown): boolean;
+}
+
+export interface NodeRuntimeFetchInit {
+  readonly method: string;
+  readonly headers: TransportHeaders;
+  readonly body?: string | Uint8Array;
+  readonly signal?: NodeRuntimeAbortSignal;
+}
+
+export interface NodeRuntimeFetchHeaders {
+  forEach?(callback: (value: string, key: string) => void): void;
+  entries?(): IterableIterator<readonly [string, string]>;
+}
+
+export interface NodeRuntimeFetchResponse {
+  readonly status: number;
+  readonly url?: string;
+  readonly headers?: NodeRuntimeFetchHeaders | Iterable<readonly [string, string]>;
+  text(): Promise<string>;
+  arrayBuffer(): Promise<ArrayBuffer>;
+}
+
+export type NodeRuntimeFetch = (input: string, init?: NodeRuntimeFetchInit) => Promise<NodeRuntimeFetchResponse>;
+
+export interface NodeRuntimeCacheOptions {
+  readonly ttlMs?: number;
+  readonly swrMs?: number;
+  readonly maxEntries?: number;
+}
+
+export interface NodeRuntimeOptions {
+  readonly id?: string;
+  readonly baseUrl?: string;
+  readonly fetch?: NodeRuntimeFetch;
+  readonly auth?: TransportAuthProvider;
+  readonly clock?: Clock;
+  readonly scheduler?: Scheduler;
+  readonly cache?: false | NodeRuntimeCacheOptions;
+  readonly diagnostics?: HolmDiagnosticsSink;
+  readonly environment?: NodeEnvironmentService;
+  readonly secureStore?: NodeSecureStoreService;
+}
+
+export interface NodeRuntimeAdapter extends RuntimeAdapter {
+  readonly surface: "cli";
+  readonly services: NodeRuntimeServices;
+}
+
+const appHttpOffer = Object.freeze({
+  id: HOLM_APP_HTTP_CAPABILITY.id,
+  version: Object.freeze({ major: HOLM_APP_HTTP_CAPABILITY.major, minor: 0 }),
+  origin: "runtime",
+}) satisfies CapabilityOffer;
+const appHttpOffers = Object.freeze([appHttpOffer]);
+const nodeRuntimeCacheTag = "node:http";
+
+export function nodeRuntime(options: NodeRuntimeOptions = {}): NodeRuntimeAdapter {
+  const id = normalizeRuntimeId(options.id ?? "node-cli-fetch");
+  const baseUrl = normalizeBaseUrl(options.baseUrl);
+  const clock = options.clock ?? createUnsupportedClock(id);
+  const scheduler = options.scheduler ?? createUnsupportedScheduler(id);
+  const services = createNodeRuntimeServices({
+    adapter: id,
+    ...(options.environment === undefined ? {} : { environment: options.environment }),
+    ...(options.secureStore === undefined ? {} : { secureStore: options.secureStore }),
+    ...(options.diagnostics === undefined ? {} : { diagnostics: options.diagnostics }),
+  });
+  const cache = createNodeRuntimeCache(options.cache, clock, scheduler, options.diagnostics);
+  const active = new Set<AbortController>();
+  let started = false;
+  let disposed = false;
+
+  async function executeFetch(
+    authenticated: AuthenticatedTransportRequest,
+    url: string,
+    requestId: string,
+    cancellation?: CancellationSignal,
+  ): Promise<OperationResponse> {
+    const fetchImplementation = requireFetch(options.fetch, id);
+    const controller = new AbortController();
+    active.add(controller);
+    const unsubscribe = cancellation?.onCancel(() => controller.abort());
+    try {
+      const response = await fetchImplementation(url, createFetchInit(authenticated.request, controller.signal));
+      throwIfCancelled(cancellation);
+      throwIfRuntimeDisposed(disposed);
+      const body = await readFetchResponseBody(response, authenticated.request.responseMode);
+      throwIfCancelled(cancellation);
+      throwIfRuntimeDisposed(disposed);
+      return decodeTransportResponse({
+        requestId,
+        status: response.status,
+        body,
+        responseMode: authenticated.request.responseMode,
+        headers: readFetchResponseHeaders(response.headers),
+        url: response.url || url,
+      });
+    } catch (error) {
+      throw normalizeTransportError(error, {
+        request: authenticated.request,
+        ...(cancellation === undefined ? {} : { cancellation }),
+      });
+    } finally {
+      unsubscribe?.();
+      active.delete(controller);
+    }
+  }
+
+  return Object.freeze({
+    id,
+    surface: "cli",
+    clock,
+    scheduler,
+    services,
+    async start(): Promise<readonly CapabilityOffer[]> {
+      assertNotDisposed(disposed, "start");
+      started = true;
+      return appHttpOffers;
+    },
+    async invoke(request: OperationRequest, control: InvocationControl): Promise<OperationResponse> {
+      assertReady(started, disposed);
+      throwIfCancelled(control.cancellation);
+      assertHttpOperation(request, id);
+      if (request.operation === APP_HTTP_INVALIDATE_OPERATION) {
+        cache?.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
+        return Object.freeze({ requestId: request.requestId, payload: null });
+      }
+      const transportRequest = transportRequestFromPayload(request.payload);
+      requireFetch(options.fetch, id);
+      const url = resolveNodeRequestUrl(transportRequest.url, baseUrl, transportRequest.params);
+      const authenticated = await authenticateNodeRequest(transportRequest, options.auth, id, control.cancellation);
+      throwIfRuntimeDisposed(disposed);
+      const source = Object.freeze({ id, surface: "cli" as const });
+      const authCachePartition = resolveAuthCachePartition(authenticated.privateProof);
+      const partition = authCachePartition === undefined
+        ? undefined
+        : Object.freeze({
+            source,
+            callerFingerprint: createCallerPartitionedCacheKey({
+              namespace: "node.auth",
+              source,
+              callerFingerprint: request.callerFingerprint,
+              operation: { auth: authCachePartition },
+            }),
+          });
+
+      if (cache !== undefined && partition !== undefined && authenticated.request.method === "GET") {
+        const cacheKeyInput = Object.freeze({ partition, request: authenticated.request });
+        const cached = cache.getOrLoad(
+          {
+            ...cacheKeyInput,
+            policy: createNodeCachePolicy(options.cache),
+            tags: [nodeRuntimeCacheTag, callerCacheTag(request.callerFingerprint)],
+          },
+          () => executeFetch(authenticated, url, request.requestId, control.cancellation),
+        );
+        return rebindResponseRequestId(await waitForNodeResponse(cached, control.cancellation), request.requestId);
+      }
+
+      const response = await waitForNodeResponse(
+        executeFetch(authenticated, url, request.requestId, control.cancellation),
+        control.cancellation,
+      );
+      if (cache !== undefined) {
+        cache.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
+      }
+      return response;
+    },
+    async dispose(): Promise<void> {
+      if (disposed) {
+        return;
+      }
+      disposed = true;
+      started = false;
+      cache?.clear();
+      for (const controller of active) {
+        controller.abort();
+      }
+      active.clear();
+    },
+  }) satisfies NodeRuntimeAdapter;
+}
+
+function createNodeRuntimeCache(
+  options: false | NodeRuntimeCacheOptions | undefined,
+  clock: Clock,
+  scheduler: Scheduler,
+  diagnostics: HolmDiagnosticsSink | undefined,
+): TransportCache | undefined {
+  if (options === false) {
+    return undefined;
+  }
+  return createTransportCache({
+    clock,
+    scheduler,
+    maxEntries: options?.maxEntries ?? 100,
+    ...(diagnostics === undefined ? {} : { diagnostics }),
+  });
+}
+
+function createNodeCachePolicy(options: false | NodeRuntimeCacheOptions | undefined): { readonly ttlMs: number; readonly swrMs: number } {
+  return Object.freeze({
+    ttlMs: normalizeCacheDuration(options === false ? 0 : options?.ttlMs ?? 30_000, "ttlMs"),
+    swrMs: normalizeCacheDuration(options === false ? 0 : options?.swrMs ?? 60_000, "swrMs"),
+  });
+}
+
+async function authenticateNodeRequest(
+  request: TransportRequest,
+  auth: TransportAuthProvider | undefined,
+  adapterId: string,
+  cancellation: CancellationSignal | undefined,
+): Promise<AuthenticatedTransportRequest> {
+  if (auth === undefined) {
+    throw new UnsupportedNodeRuntimeServiceError({ adapter: adapterId, service: "auth" });
+  }
+  try {
+    throwIfCancelled(cancellation);
+    const authenticated = await applyTransportAuth(request, auth);
+    if (authenticated.privateProof?.kind === "web-session") {
+      throw new UnsupportedCapabilityError({
+        id: "web-session-auth",
+        adapter: adapterId,
+        surface: "cli",
+        message: "The Node/CLI runtime requires explicit token or header auth and never infers browser cookies.",
+      });
+    }
+    throwIfCancelled(cancellation);
+    return authenticated;
+  } catch (error) {
+    throw normalizeTransportError(error, {
+      request,
+      ...(cancellation === undefined ? {} : { cancellation }),
+    });
+  }
+}
+
+function requireFetch(fetchImplementation: NodeRuntimeFetch | undefined, adapter: string): NodeRuntimeFetch {
+  if (fetchImplementation === undefined) {
+    throw new UnsupportedNodeRuntimeServiceError({ adapter, service: "fetch" });
+  }
+  return fetchImplementation;
+}
+
+function callerCacheTag(callerFingerprint: string): string {
+  return `node:caller:${callerFingerprint}`;
+}
+
+function resolveAuthCachePartition(proof: TransportAuthProof | undefined): string | undefined {
+  if (proof === undefined) {
+    return "anonymous";
+  }
+  if (proof.kind === "web-session") {
+    return undefined;
+  }
+  return proof.cachePartition;
+}
+
+function throwIfRuntimeDisposed(disposed: boolean): void {
+  if (disposed) {
+    throw new CancelledError({ reason: "disposed" });
+  }
+}
+
+function normalizeRuntimeId(value: string): string {
+  const normalized = value.trim();
+  if (normalized === "") {
+    throw new TypeError("Node runtime id must be a non-empty string.");
+  }
+  return normalized;
+}
+
+function normalizeBaseUrl(value: string | undefined): URL | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  try {
+    return new URL(value);
+  } catch (cause) {
+    throw new TypeError("Node runtime baseUrl must be an absolute URL.", { cause });
+  }
+}
+
+function normalizeCacheDuration(value: number, label: string): number {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new TypeError(`Node runtime cache ${label} must be a non-negative finite number.`);
+  }
+  return value;
+}
+
+function assertNotDisposed(disposed: boolean, operation: string): void {
+  if (!disposed) {
+    return;
+  }
+  throw new LifecycleError({
+    code: "node_runtime_disposed",
+    message: `Cannot ${operation} a disposed Node/CLI runtime.`,
+    state: "disposed",
+  });
+}
+
+function assertReady(started: boolean, disposed: boolean): void {
+  assertNotDisposed(disposed, "invoke");
+  if (started) {
+    return;
+  }
+  throw new LifecycleError({
+    code: "node_runtime_not_started",
+    message: "Cannot invoke the Node/CLI runtime before start().",
+    state: "created",
+  });
+}
+
+function assertHttpOperation(request: OperationRequest, adapterId: string): void {
+  const capability = request.capability;
+  if (capability.id !== HOLM_APP_HTTP_CAPABILITY.id || capability.major !== HOLM_APP_HTTP_CAPABILITY.major) {
+    const context = {
+      id: capability.id,
+      requirement: capability,
+      offered: appHttpOffers,
+      adapter: adapterId,
+      surface: "cli",
+    };
+    if (capability.id !== HOLM_APP_HTTP_CAPABILITY.id) {
+      throw new UnsupportedCapabilityError(context);
+    }
+    throw new CapabilityVersionError(context);
+  }
+  if (request.operation !== APP_HTTP_REQUEST_OPERATION && request.operation !== APP_HTTP_INVALIDATE_OPERATION) {
+    throw new ProtocolError({
+      code: "unsupported_node_runtime_operation",
+      message: "The Node/CLI runtime only accepts supported holm.http.app operations.",
+      details: {
+        capability: request.capability.id,
+        major: request.capability.major,
+        operation: request.operation,
+      },
+    });
+  }
+}
+
+function transportRequestFromPayload(payload: WireValue): TransportRequest {
+  try {
+    if (!isWireObject(payload)) {
+      throw new TypeError("payload must be an object");
+    }
+    const input: TransportRequestInput = {
+      method: requireString(payload.method, "method"),
+      url: requireString(payload.url, "url"),
+      ...(payload.params === undefined ? {} : { params: readParams(payload.params) }),
+      ...(payload.headers === undefined ? {} : { headers: readHeaders(payload.headers) }),
+      ...(payload.body === undefined ? {} : { body: readBody(payload.body) }),
+      ...(payload.responseMode === undefined ? {} : { responseMode: readResponseMode(payload.responseMode) }),
+      ...(payload.timeoutMs === undefined ? {} : { timeoutMs: requireNumber(payload.timeoutMs, "timeoutMs") }),
+      ...(payload.sensitive === undefined ? {} : { sensitive: readSensitivity(payload.sensitive) }),
+    };
+    return createTransportRequest(input);
+  } catch (cause) {
+    throw new ProtocolError({
+      code: "invalid_node_http_request",
+      message: "Invalid Node/CLI HTTP operation payload.",
+      details: { reason: cause instanceof Error ? cause.message : "invalid payload" },
+      cause,
+    });
+  }
+}
+
+function isWireObject(value: WireValue): value is WireObject {
+  return typeof value === "object" && value !== null && !Array.isArray(value) && !isReadonlyBytes(value);
+}
+
+function readParams(value: WireValue): TransportParams {
+  if (!isWireObject(value)) {
+    throw new TypeError("params must be an object");
+  }
+  const params: Record<string, string | number | boolean | null> = {};
+  for (const [key, item] of Object.entries(value)) {
+    if (item === null || typeof item === "string" || typeof item === "boolean" || typeof item === "number") {
+      params[key] = item;
+    } else {
+      throw new TypeError(`param ${key} must be a scalar`);
+    }
+  }
+  return params;
+}
+
+function readHeaders(value: WireValue): TransportHeaders {
+  if (!isWireObject(value)) {
+    throw new TypeError("headers must be an object");
+  }
+  const headers: Record<string, string> = {};
+  for (const [key, item] of Object.entries(value)) {
+    headers[key] = requireString(item, `header ${key}`);
+  }
+  return headers;
+}
+
+function readBody(value: WireValue): TransportBodyInput {
+  if (!isWireObject(value)) {
+    throw new TypeError("body must be an object");
+  }
+  switch (value.mode) {
+    case "json":
+      if (value.value === undefined) {
+        throw new TypeError("json body value is required");
+      }
+      return { mode: "json", value: value.value };
+    case "raw":
+      return { mode: "raw", value: requireString(value.value, "raw body value") };
+    case "binary":
+      if (!isReadonlyBytes(value.value)) {
+        throw new TypeError("binary body value must be readonly bytes");
+      }
+      return { mode: "binary", value: value.value };
+    default:
+      throw new TypeError("body mode must be json, raw, or binary");
+  }
+}
+
+function readResponseMode(value: WireValue): TransportResponseMode {
+  if (value === "json" || value === "raw" || value === "binary") {
+    return value;
+  }
+  throw new TypeError("responseMode must be json, raw, or binary");
+}
+
+function readSensitivity(value: WireValue): TransportSensitivityInput {
+  if (!isWireObject(value)) {
+    throw new TypeError("sensitive must be an object");
+  }
+  return {
+    ...(value.url === undefined ? {} : { url: requireBoolean(value.url, "sensitive.url") }),
+    ...(value.params === undefined ? {} : { params: readStringArray(value.params, "sensitive.params") }),
+    ...(value.headers === undefined ? {} : { headers: readStringArray(value.headers, "sensitive.headers") }),
+  };
+}
+
+function readStringArray(value: WireValue, label: string): readonly string[] {
+  if (!Array.isArray(value)) {
+    throw new TypeError(`${label} must be an array`);
+  }
+  return value.map((item, index) => requireString(item, `${label}[${index}]`));
+}
+
+function requireString(value: WireValue | undefined, label: string): string {
+  if (typeof value !== "string") {
+    throw new TypeError(`${label} must be a string`);
+  }
+  return value;
+}
+
+function requireNumber(value: WireValue, label: string): number {
+  if (typeof value !== "number") {
+    throw new TypeError(`${label} must be a number`);
+  }
+  return value;
+}
+
+function requireBoolean(value: WireValue, label: string): boolean {
+  if (typeof value !== "boolean") {
+    throw new TypeError(`${label} must be a boolean`);
+  }
+  return value;
+}
+
+function resolveNodeRequestUrl(value: string, baseUrl: URL | undefined, params: TransportParams = {}): string {
+  if (baseUrl === undefined) {
+    return appendRelativeSearchParams(value, params);
+  }
+  let resolved: URL;
+  try {
+    resolved = new URL(value, baseUrl);
+  } catch (cause) {
+    throw new ProtocolError({
+      code: "invalid_node_request_url",
+      message: "Node/CLI app request URL is invalid.",
+      cause,
+    });
+  }
+  if (resolved.username !== "" || resolved.password !== "") {
+    throw new ProtocolError({
+      code: "node_credentialed_request_url",
+      message: "Node/CLI app request URLs cannot contain embedded credentials.",
+    });
+  }
+  appendSearchParams(resolved.searchParams, params);
+  return resolved.href;
+}
+
+function appendRelativeSearchParams(value: string, params: TransportParams): string {
+  const query = createSearchParams(params).toString();
+  if (query === "") {
+    return value;
+  }
+  const hashIndex = value.indexOf("#");
+  const beforeHash = hashIndex === -1 ? value : value.slice(0, hashIndex);
+  const hash = hashIndex === -1 ? "" : value.slice(hashIndex);
+  return `${beforeHash}${beforeHash.includes("?") ? "&" : "?"}${query}${hash}`;
+}
+
+function createSearchParams(params: TransportParams): URLSearchParams {
+  const search = new URLSearchParams();
+  appendSearchParams(search, params);
+  return search;
+}
+
+function appendSearchParams(search: URLSearchParams, params: TransportParams): void {
+  for (const key of Object.keys(params).sort()) {
+    const value = params[key];
+    if (value !== null && value !== undefined) {
+      search.append(key, String(value));
+    }
+  }
+  search.sort();
+}
+
+function createFetchInit(request: TransportRequest, signal: NodeRuntimeAbortSignal): NodeRuntimeFetchInit {
+  const headers: Record<string, string> = { ...request.headers };
+  if (headers.accept === undefined) {
+    headers.accept = request.responseMode === "json" ? "application/json" : "*/*";
+  }
+  const body = request.body === undefined ? undefined : encodeTransportBody(request.body);
+  if (body !== undefined && headers["content-type"] === undefined) {
+    headers["content-type"] = body.contentType;
+  }
+  return Object.freeze({
+    method: request.method,
+    headers: Object.freeze(headers),
+    ...(body === undefined ? {} : { body: typeof body.body === "string" ? body.body : copyBytesToUint8Array(body.body) }),
+    signal,
+  });
+}
+
+function copyBytesToUint8Array(bytes: ReadonlyBytes): Uint8Array {
+  const copy = new Uint8Array(bytes.byteLength);
+  copy.set(bytes.toUint8Array());
+  return copy;
+}
+
+async function readFetchResponseBody(response: NodeRuntimeFetchResponse, mode: TransportResponseMode): Promise<string | Uint8Array> {
+  if (mode === "binary") {
+    return new Uint8Array(await response.arrayBuffer());
+  }
+  return response.text();
+}
+
+function readFetchResponseHeaders(headers: NodeRuntimeFetchResponse["headers"]): TransportHeaders {
+  const output: Record<string, string> = {};
+  if (headers === undefined) {
+    return Object.freeze(output);
+  }
+  if (typeof (headers as NodeRuntimeFetchHeaders).forEach === "function") {
+    (headers as Required<Pick<NodeRuntimeFetchHeaders, "forEach">>).forEach((value, key) => {
+      output[key] = value;
+    });
+    return Object.freeze(output);
+  }
+  const entries = typeof (headers as NodeRuntimeFetchHeaders).entries === "function"
+    ? (headers as Required<Pick<NodeRuntimeFetchHeaders, "entries">>).entries()
+    : headers as Iterable<readonly [string, string]>;
+  for (const [key, value] of entries) {
+    output[key] = value;
+  }
+  return Object.freeze(output);
+}
+
+function waitForNodeResponse(
+  response: Promise<OperationResponse>,
+  cancellation: CancellationSignal | undefined,
+): Promise<OperationResponse> {
+  if (cancellation === undefined) {
+    return response;
+  }
+  throwIfCancelled(cancellation);
+  return new Promise<OperationResponse>((resolve, reject) => {
+    let settled = false;
+    const unsubscribe = cancellation.onCancel(() => {
+      finish(() => reject(new CancelledError(cancellation.reason === undefined ? {} : { reason: cancellation.reason })));
+    });
+    const finish = (complete: () => void): void => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      unsubscribe();
+      complete();
+    };
+    response.then(
+      (value) => finish(() => resolve(value)),
+      (error: unknown) => finish(() => reject(error)),
+    );
+  });
+}
+
+function rebindResponseRequestId(response: OperationResponse, requestId: string): OperationResponse {
+  return Object.freeze({
+    ...response,
+    requestId,
+  });
+}

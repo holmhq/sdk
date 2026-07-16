@@ -52,7 +52,14 @@ import {
   type AppUploadService,
   type CompleteMagicLinkInput,
 } from "@holmhq/sdk/app";
-import { createNodeTokenAuth, createNodeUploadFile } from "@holmhq/sdk/node";
+import {
+  createNodeOperatorCaller,
+  createNodeTokenAuth,
+  createNodeUploadFile,
+  nodeRuntime,
+  UnsupportedNodeRuntimeServiceError,
+  type NodeRuntimeFetch,
+} from "@holmhq/sdk/node";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 import {
   createDerivedResource,
@@ -123,6 +130,22 @@ const extensionLifecycle: ExtensionLifecycle = createExtensionLifecycle([reports
   capabilities: createCapabilityRegistry([]),
 });
 const fake = createFakeClock();
+const nodeFetch: NodeRuntimeFetch = async (_input, _init) => ({
+  status: 200,
+  headers: new Map([["content-type", "application/json"]]),
+  text: async () => "{\"data\":{\"ok\":true}}",
+  arrayBuffer: async () => new ArrayBuffer(0),
+});
+const nodeRuntimeAdapter = nodeRuntime({
+  fetch: nodeFetch,
+  auth: createNodeTokenAuth({ token: "decl-node-token", operatorId: "decl-operator" }),
+  clock: fake.clock,
+  scheduler: fake.scheduler,
+  environment: { get: () => undefined },
+  secureStore: { get: () => undefined },
+});
+const nodeCaller = createNodeOperatorCaller({ operatorId: "decl-operator", app: { id: "decl-app" } });
+const nodeServiceError = new UnsupportedNodeRuntimeServiceError({ adapter: "decl-node", service: "environment" });
 const testRuntime = createInMemoryRuntimeAdapter({ clock: fake.clock, scheduler: fake.scheduler });
 const holm = createHolm({ runtime: testRuntime, caller, diagnostics: createDiagnosticsSink() });
 const stateController = createResourceController<{ readonly count: number }>();
@@ -238,6 +261,9 @@ void cachedTransport;
 void cacheInvalidation;
 void diagnostics;
 void nodeAuth;
+void nodeRuntimeAdapter;
+void nodeCaller;
+void nodeServiceError;
 void decoded;
 void appliedTransport;
 void transportSensitivity;
