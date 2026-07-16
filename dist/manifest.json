@@ -508,17 +508,17 @@
     {
       "bytes": 3055,
       "path": "dist/transports/cache.d.ts.map",
-      "sha256": "f7acf1e7726b26e5f156dd521b5da1f3dc8ea57a0551d0360dd704d4568436c6"
+      "sha256": "a546cc9c7b89d64239cd30f26d7045ee9397ad08a3bc69168cd37b05ab9bb528"
     },
     {
-      "bytes": 15413,
+      "bytes": 16254,
       "path": "dist/transports/cache.js",
-      "sha256": "3aa6bb3b30a24f1a3086ac2d3808cbd48fb45f9dfeaa997a8eebce6fc1127839"
+      "sha256": "cb7df0066f72d370605d81b246406582197ae66ff01b6a375643319f42f8a088"
     },
     {
-      "bytes": 15054,
+      "bytes": 15964,
       "path": "dist/transports/cache.js.map",
-      "sha256": "307584178283ad1b1cbabebee3e277443aa15f6a0acb334a2112118e1b1f864e"
+      "sha256": "07ca987aedcaf15a932fa95dd726118170f5a5f4ee43754bdf8fe6a26970a1b5"
     },
     {
       "bytes": 6837,

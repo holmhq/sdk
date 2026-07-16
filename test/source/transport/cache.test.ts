@@ -318,6 +318,32 @@ test("transport cache suppresses duplicate stale refresh scheduling", async () =
   assert.equal(backgroundErrors.length, 0);
 });
 
+test("transport cache does not retain generations for inactive request keys", () => {
+  const fake = createFakeClock();
+  const NativeMap = globalThis.Map;
+  const observed: Array<Map<unknown, unknown>> = [];
+
+  class ObservedMap<K, V> extends NativeMap<K, V> {
+    constructor(entries?: Iterable<readonly [K, V]> | null) {
+      super(entries);
+      observed.push(this as Map<unknown, unknown>);
+    }
+  }
+
+  try {
+    globalThis.Map = ObservedMap as MapConstructor;
+    const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 4 });
+    for (let index = 0; index < 8; index += 1) {
+      assert.equal(cache.delete({ partition, request: request(`/api/generations/${index}`) }), false);
+    }
+
+    assert.equal(cache.size, 0);
+    assert.equal(observed.every((map) => map.size === 0), true);
+  } finally {
+    globalThis.Map = NativeMap;
+  }
+});
+
 test("transport cache delete and clear fence pending refreshes and loads", async () => {
   const fake = createFakeClock();
   const cache = createTransportCache({ clock: fake.clock, scheduler: fake.scheduler, maxEntries: 3 });

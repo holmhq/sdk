@@ -10,6 +10,7 @@ export function createTransportCache(options) {
     const inflight = new Map();
     const scheduledRefreshes = new Map();
     const keyGenerations = new Map();
+    const activeLoadCounts = new Map();
     let clearGeneration = 0;
     async function getOrLoad(input, loader) {
         const normalized = normalizeGetInput(input);
@@ -77,6 +78,7 @@ export function createTransportCache(options) {
         const token = Object.freeze({});
         const keyGeneration = currentKeyGeneration(input.key);
         const loadClearGeneration = clearGeneration;
+        retainActiveLoad(input.key);
         const next = invokeLoader(loader)
             .then((response) => storeIfCurrent(input, response, keyGeneration, loadClearGeneration), (error) => {
             onError?.(error);
@@ -86,6 +88,7 @@ export function createTransportCache(options) {
             if (inflight.get(input.key)?.token === token) {
                 inflight.delete(input.key);
             }
+            releaseActiveLoad(input.key);
         });
         inflight.set(input.key, Object.freeze({ promise: next, token, keyGeneration, clearGeneration: loadClearGeneration, input }));
         return next;
@@ -150,8 +153,14 @@ export function createTransportCache(options) {
     function removeCacheKey(key) {
         const deleted = entries.delete(key);
         cancelScheduledRefresh(key);
-        inflight.delete(key);
-        advanceKeyGeneration(key);
+        const hadActiveLoad = (activeLoadCounts.get(key) ?? 0) > 0;
+        const hadInflight = inflight.delete(key);
+        if (hadActiveLoad || hadInflight) {
+            advanceKeyGeneration(key);
+        }
+        else {
+            keyGenerations.delete(key);
+        }
         return deleted;
     }
     function matchesInvalidation(entry, input) {
@@ -201,6 +210,23 @@ export function createTransportCache(options) {
     }
     function advanceKeyGeneration(key) {
         keyGenerations.set(key, currentKeyGeneration(key) + 1);
+    }
+    function retainActiveLoad(key) {
+        activeLoadCounts.set(key, (activeLoadCounts.get(key) ?? 0) + 1);
+    }
+    function releaseActiveLoad(key) {
+        const count = activeLoadCounts.get(key);
+        if (count === undefined) {
+            return;
+        }
+        if (count > 1) {
+            activeLoadCounts.set(key, count - 1);
+            return;
+        }
+        activeLoadCounts.delete(key);
+        if (!scheduledRefreshes.has(key)) {
+            keyGenerations.delete(key);
+        }
     }
     function isCurrentGeneration(key, keyGeneration, loadClearGeneration) {
         return clearGeneration === loadClearGeneration && currentKeyGeneration(key) === keyGeneration;
