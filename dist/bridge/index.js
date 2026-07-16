@@ -54,23 +54,41 @@ export function createBridgeMailbox(options) {
             return promise;
         },
         receive(envelope) {
-            const copied = copyBridgeEnvelope(envelope);
-            if (copied.kind !== "response" && copied.kind !== "error") {
-                return false;
+            if (envelope.protocol !== bridgeMailboxProtocol) {
+                throw new ProtocolError({
+                    code: "invalid_bridge_mailbox_protocol",
+                    message: "Bridge mailbox envelopes must use the reserved bridge protocol.",
+                });
             }
-            const requestId = requireEnvelopeRequestId(copied, copied.kind);
-            const entry = pending.get(requestId);
-            if (!entry) {
-                return false;
+            switch (envelope.kind) {
+                case "response":
+                case "error": {
+                    const requestId = requireEnvelopeRequestId(envelope, envelope.kind);
+                    const entry = pending.get(requestId);
+                    if (!entry) {
+                        return false;
+                    }
+                    const copied = copyBridgeEnvelope(envelope);
+                    pending.delete(requestId);
+                    if (copied.kind === "error") {
+                        entry.reject(holmErrorFromSerialized(requireEnvelopeError(copied)));
+                    }
+                    else {
+                        entry.resolve(copyBridgeResponseEnvelope(copied));
+                    }
+                    return true;
+                }
+                case "request":
+                case "event":
+                case "cancel":
+                    copyBridgeEnvelope(envelope);
+                    return false;
+                default:
+                    throw new ProtocolError({
+                        code: "invalid_bridge_mailbox_kind",
+                        message: "Bridge mailbox envelope kind is not supported.",
+                    });
             }
-            pending.delete(requestId);
-            if (copied.kind === "error") {
-                entry.reject(holmErrorFromSerialized(requireEnvelopeError(copied)));
-            }
-            else {
-                entry.resolve(copyBridgeResponseEnvelope(copied));
-            }
-            return true;
         },
         cancel(requestId, reason) {
             const entry = pending.get(requestId);

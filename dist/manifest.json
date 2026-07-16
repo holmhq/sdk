@@ -188,17 +188,17 @@
     {
       "bytes": 5661,
       "path": "dist/bridge/index.d.ts.map",
-      "sha256": "24b38b335f8acecef96efa88f66f2af1595f6c50d8c43d4aefdae7fd6dd132f2"
+      "sha256": "cf1018b1cac9a8eb41e34fe140c109ddf2420159c5029c79ade7dc18d7e3ea77"
     },
     {
-      "bytes": 21918,
+      "bytes": 22763,
       "path": "dist/bridge/index.js",
-      "sha256": "bf4b1893e0d8d279fc3a540689a1a854381de7653423dda4741a97151efad763"
+      "sha256": "eabda8b1e36d74ab586f45fb038fa5f78ae446c578276683ec3db0513c6a4895"
     },
     {
-      "bytes": 20244,
+      "bytes": 20616,
       "path": "dist/bridge/index.js.map",
-      "sha256": "f6d39e6af1130e9c58283333cf5d3275197f70d843349d9319d97977cdf10abd"
+      "sha256": "92cc127dc42588441a15205a9b4538fa7d7cdcf5db3e05618efb0de57234b052"
     },
     {
       "bytes": 673,

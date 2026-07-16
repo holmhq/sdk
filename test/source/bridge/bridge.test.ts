@@ -86,6 +86,7 @@ test("bridge mailbox copies and freezes request and response wire values and ign
     requestId: "req-mailbox-copy",
     payload: { ok: true, bytes: createReadonlyBytes([4, 5]) },
   }), true);
+  const response = await pending;
   assert.equal(mailbox.receive({
     protocol: bridgeMailboxProtocol,
     kind: "response",
@@ -98,8 +99,25 @@ test("bridge mailbox copies and freezes request and response wire values and ign
     requestId: "req-missing",
     payload: { late: true },
   }), false);
+  assert.equal(mailbox.receive({
+    protocol: bridgeMailboxProtocol,
+    kind: "response",
+    requestId: "req-mailbox-copy",
+    payload: () => undefined,
+  } as unknown as BridgeMailboxEnvelope), false);
+  assert.equal(mailbox.receive({
+    protocol: bridgeMailboxProtocol,
+    kind: "error",
+    requestId: "req-mailbox-copy",
+    error: {
+      $holm: "error",
+      kind: "native",
+      code: "late_duplicate",
+      message: "late duplicate",
+      details: () => undefined,
+    },
+  } as unknown as BridgeMailboxEnvelope), false);
 
-  const response = await pending;
   assert.equal(Object.isFrozen(response), true);
   assert.equal(Object.isFrozen(response.payload), true);
   assert.deepEqual(response.payload, { ok: true, bytes: createReadonlyBytes([4, 5]) });
