@@ -1,8 +1,9 @@
 ---
-status: open
+status: done
 priority: P1
 created: 2026-07-13
 updated: 2026-07-16
+resolved_commit: d8e8ea041128a0d744324026551ec04ce6a5d5af
 tags: web, app-client, auth, browser, migration
 parent: 001
 depends_on: [005, 006]
@@ -65,8 +66,22 @@ selectively into the new runtime/resource contracts rather than copied blindly.
   declaration and generated ESM consumers cover both `/app` and `/web`.
 - Raw BFBB and Vite production builds pass via `npm run test:examples`.
 - Full local `npm run ci` passed with reproducible tracked `dist/`, measured
-  coverage, license allowlist, and per-module size budgets. Independent review
-  and final read-only Holm-authority acceptance remain the issue close gates.
+  coverage, license allowlist, and per-module size budgets.
+
+## Closeout (W2 stop gate satisfied at `d8e8ea0`)
+
+- Independent review chain: `#035` (4 P2s) → `78e2667`; `#036` (mixed-slash
+  bypass) → `3a164d7`; `#037` confirmation found a residual no-ambient
+  whitespace/control auth-leak variant → `d8e8ea0`; `#038` confirmation
+  **approved, 0 P1/P2/P3** at `d8e8ea0`.
+- Four CI modes (normal, FORCE_COLOR, TAP, TAP+color) green with identical
+  metrics and clean-tree `npm run build` reproducibility (207 dist artifacts)
+  at `d8e8ea0`. Coverage statements 98.26 / lines 99.18 / functions 99.09 /
+  branches 96.25 / changed-reachable 100.00; size 149,330 raw / 34,393 gzip.
+- Read-only Holm-authority acceptance `#039` at Holm `2d125730` (v0.185.0):
+  zero drift on mapped authority paths since ledger pin `8deb00b7`; route
+  ledger matches live `app.audit.js` (12 keys / 15 pairs); auth, blob-link, and
+  `/api/me` registrations verified live.
 
 ## Non-Goals
 
