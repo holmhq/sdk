@@ -269,6 +269,41 @@ test("web upload service validates configuration, cancellation, blobs, and Holm 
   assert.equal(crossOriginAuthCalls, 0);
   assert.equal(crossOriginFetchCalls, 0);
 
+  const locationDescriptor = Object.getOwnPropertyDescriptor(globalThis, "location");
+  try {
+    Object.defineProperty(globalThis, "location", {
+      configurable: true,
+      value: { href: "https://app.example.test/root/" },
+    });
+    const mixedOrigin = createWebUploadService({
+      auth: {
+        current() {
+          crossOriginAuthCalls += 1;
+          return { kind: "bearer", scheme: "Bearer", token: "mixed-secret" };
+        },
+      },
+      fetch: async () => {
+        crossOriginFetchCalls += 1;
+        return jsonResponse({ unexpected: true });
+      },
+    });
+    await assert.rejects(
+      () => mixedOrigin.upload({
+        path: "/\\evil.example/import",
+        files: [createWebUploadFile({ field: "file", blob: new Blob(["x"]) })],
+      }),
+      (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+    );
+  } finally {
+    if (locationDescriptor === undefined) {
+      Reflect.deleteProperty(globalThis, "location");
+    } else {
+      Object.defineProperty(globalThis, "location", locationDescriptor);
+    }
+  }
+  assert.equal(crossOriginAuthCalls, 0);
+  assert.equal(crossOriginFetchCalls, 0);
+
   const fetchDescriptor = Object.getOwnPropertyDescriptor(globalThis, "fetch");
   try {
     Object.defineProperty(globalThis, "fetch", { configurable: true, value: undefined, writable: true });

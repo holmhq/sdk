@@ -161,6 +161,49 @@ test("web runtime rejects cross-origin app requests before resolving or sending 
   await runtime.dispose();
 });
 
+test("web runtime rejects mixed authority separators against ambient browser origin", async () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "location");
+  let authCalls = 0;
+  let fetchCalls = 0;
+  try {
+    Object.defineProperty(globalThis, "location", {
+      configurable: true,
+      value: { href: "https://app.example.test/root/" },
+    });
+    const runtime = webRuntime({
+      auth: {
+        current() {
+          authCalls += 1;
+          return { kind: "bearer", scheme: "Bearer", token: "ambient-secret" };
+        },
+      },
+      fetch: async () => {
+        fetchCalls += 1;
+        return new Response('{"data":{"unexpected":true}}', {
+          headers: { "content-type": "application/json" },
+        });
+      },
+    });
+    await runtime.start();
+    await assert.rejects(
+      () => runtime.invoke(
+        operationRequest(createTransportRequest({ method: "GET", url: "/\\evil.example/api/me" }), "req-mixed-origin"),
+        {},
+      ),
+      (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+    );
+    await runtime.dispose();
+  } finally {
+    if (descriptor === undefined) {
+      Reflect.deleteProperty(globalThis, "location");
+    } else {
+      Object.defineProperty(globalThis, "location", descriptor);
+    }
+  }
+  assert.equal(authCalls, 0);
+  assert.equal(fetchCalls, 0);
+});
+
 test("web runtime fences cancelled shared GET loads from later cache reads", async () => {
   const cancellation = createCancellationController();
   let fetchCalls = 0;

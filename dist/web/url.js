@@ -1,34 +1,34 @@
 import { ProtocolError } from "../core/errors.js";
 export function resolveWebRequestUrl(value, baseUrl, params = {}) {
     const ambientBase = baseUrl ?? readAmbientBaseUrl();
-    if (baseUrl !== undefined || isAbsoluteOrAuthorityUrl(value)) {
-        if (ambientBase === undefined) {
+    if (ambientBase === undefined) {
+        if (isAbsoluteOrAuthorityUrl(value)) {
             throw crossOriginRequest(undefined, absoluteOrigin(value));
         }
-        let resolved;
-        try {
-            resolved = new URL(value, ambientBase);
-        }
-        catch (cause) {
-            throw new ProtocolError({
-                code: "invalid_web_request_url",
-                message: "Web app request URL is invalid.",
-                cause,
-            });
-        }
-        if (resolved.origin !== ambientBase.origin) {
-            throw crossOriginRequest(ambientBase.origin, resolved.origin);
-        }
-        if (resolved.username !== "" || resolved.password !== "") {
-            throw new ProtocolError({
-                code: "web_credentialed_request_url",
-                message: "Web app request URLs cannot contain embedded credentials.",
-            });
-        }
-        appendSearchParams(resolved.searchParams, params);
-        return resolved.href;
+        return appendRelativeSearchParams(value, params);
     }
-    return appendRelativeSearchParams(value, params);
+    let resolved;
+    try {
+        resolved = new URL(value, ambientBase);
+    }
+    catch (cause) {
+        throw new ProtocolError({
+            code: "invalid_web_request_url",
+            message: "Web app request URL is invalid.",
+            cause,
+        });
+    }
+    if (resolved.origin !== ambientBase.origin) {
+        throw crossOriginRequest(ambientBase.origin, resolved.origin);
+    }
+    if (resolved.username !== "" || resolved.password !== "") {
+        throw new ProtocolError({
+            code: "web_credentialed_request_url",
+            message: "Web app request URLs cannot contain embedded credentials.",
+        });
+    }
+    appendSearchParams(resolved.searchParams, params);
+    return resolved.href;
 }
 function readAmbientBaseUrl() {
     const browser = globalThis;
@@ -43,7 +43,10 @@ function readAmbientBaseUrl() {
     }
 }
 function isAbsoluteOrAuthorityUrl(value) {
-    return /^[A-Za-z][A-Za-z\d+.-]*:/.test(value) || value.startsWith("//") || value.startsWith("\\\\");
+    return /^[A-Za-z][A-Za-z\d+.-]*:/.test(value) || (isAuthoritySeparator(value[0]) && isAuthoritySeparator(value[1]));
+}
+function isAuthoritySeparator(value) {
+    return value === "/" || value === "\\";
 }
 function absoluteOrigin(value) {
     try {

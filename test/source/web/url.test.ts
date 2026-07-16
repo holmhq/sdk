@@ -40,10 +40,12 @@ test("web URL resolution uses ambient location only as an explicit same-origin a
       resolveWebRequestUrl("https://ambient.example.test/api/me", undefined),
       "https://ambient.example.test/api/me",
     );
-    assert.throws(
-      () => resolveWebRequestUrl("//evil.example/api/me", undefined),
-      (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
-    );
+    for (const bypass of ["//evil.example/api/me", "/\\evil.example/api/me", "\\/evil.example/api/me"]) {
+      assert.throws(
+        () => resolveWebRequestUrl(bypass, undefined),
+        (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+      );
+    }
 
     Object.defineProperty(globalThis, "location", {
       configurable: true,
