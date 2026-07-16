@@ -46,8 +46,8 @@ strictly read-only.
 | ---: | --- | --- | ---: | --- | --- | --- |
 | 1 | `koder/plans/003_S01_adapter_conformance_in_memory/INDEX.md` | done | 90-120m | yellow | Plan validation plus clean reproducible owned `dist/`; fresh entry review 0 P1/P2 | Any architecture change, unshipped Holm requirement, out-of-seam source, or irreproducible public artifact blocks |
 | 2 | `koder/plans/003_S02_web_runtime_conformance/INDEX.md` | done | 90-120m | yellow | Plan validation plus `npm run test:examples`; fresh entry review 0 P1/P2 | Any weakening of Issue `#007` auth/URL containment, public-protocol invention, Holm-owned behavior, or dist drift blocks |
-| 3 | `koder/plans/003_S03_node_cli_runtime_services/INDEX.md` | queued | 90-120m | yellow | Plan validation, ambient-boundary type checks, owned `dist/`; fresh entry review 0 P1/P2 | Implicit process/env/fs access, core ambient leak, local-dispatch requirement, or unapproved CLI semantics blocks |
-| 4 | `koder/plans/003_S04_sobek_injected_runtime/INDEX.md` | queued | 90-120m | yellow | Plan validation, no-self-HTTP fake proof, owned `dist/`; fresh entry review 0 P1/P2 | Missing production Holm API, fake becoming server implementation, self-HTTP, or irreproducible subpath blocks |
+| 3 | `koder/plans/003_S03_node_cli_runtime_services/INDEX.md` | done | 90-120m | yellow | Plan validation, ambient-boundary type checks, owned `dist/`; fresh entry review 0 P1/P2 | Implicit process/env/fs access, core ambient leak, local-dispatch requirement, or unapproved CLI semantics blocks |
+| 4 | `koder/plans/003_S04_sobek_injected_runtime/INDEX.md` | done | 90-120m | yellow | Plan validation, no-self-HTTP fake proof, owned `dist/`; fresh entry review 0 P1/P2 | Missing production Holm API, fake becoming server implementation, self-HTTP, or irreproducible subpath blocks |
 | 5 | `koder/plans/003_S05_bridge_mocks_service_slots/INDEX.md` | queued | 90-120m | yellow | Plan validation, ambient isolation, copied mailbox proof, owned `dist/`; fresh entry review 0 P1/P2 | Any production-capability claim, shared native object, ambient contamination, or shell implementation blocks |
 | 6 | `koder/plans/003_S06_exports_dist_authority_gate/INDEX.md` | queued | 90-120m + CI | yellow | Four CI modes, clean-tree reproducibility, fresh read-only Holm acceptance, integrated final review 0 P1/P2 | Any red full gate, export-boundary collapse, Holm contradiction, P1/P2, Issue `#014` scope, or exhausted fix budget blocks |
 
@@ -117,3 +117,15 @@ does not consume a semantic fix cycle.
   `q004-c01-e02-review-a01` approved `P1=0 P2=0 P3=0`; validation was green
   for all S02 plan commands including examples with owned `dist/web` output.
   Process failures remain `0/6`; blocker: none. Next eligible entry is S03.
+- Coordinator `q004-coordinator-02` completed S03 and S04. S03 implementation
+  `q004-c02-e03-implement-a01` committed `f1f06dc`; S03 review
+  `q004-c02-e03-review-a01` approved `P1=0 P2=0 P3=0`; all plan validation
+  commands were green with owned `dist/node` output. S04 implementation
+  `q004-c02-e04-implement-a01` committed `116a8e5`; initial review
+  `q004-c02-e04-review-a01` committed finding artifact
+  `koder/reviews/044_q004_s04_entry_review/INDEX.md` at `b1441b6` with
+  `P1=0 P2=1 P3=0` but failed sidecar finalization; fix
+  `q004-c02-e04-fix-a01` committed `f1968b2`; rereview
+  `q004-c02-e04-rereview-a01` approved `P1=0 P2=0 P3=0`; all plan validation
+  commands were green with owned `dist/sobek` output and no-self-HTTP proof.
+  Process failures used `1/6`; blocker: none. Next eligible entry is S05.

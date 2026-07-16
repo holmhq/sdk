@@ -1,6 +1,6 @@
 ---
 title: W3 S04 - Sobek injected runtime contract
-status: approved
+status: implemented
 issue: 009
 plan: 003
 slice: S04

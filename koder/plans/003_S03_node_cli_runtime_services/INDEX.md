@@ -1,6 +1,6 @@
 ---
 title: W3 S03 - Node CLI runtime services
-status: approved
+status: implemented
 issue: 009
 plan: 003
 slice: S03

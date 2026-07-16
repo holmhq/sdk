@@ -94,8 +94,8 @@ Implement and conformance-test:
 | --- | --- | --- | --- | --- |
 | S01 adapter conformance + in-memory runtime | done | `koder/plans/003_S01_adapter_conformance_in_memory/INDEX.md` | q004 | Common conformance is red/green over in-memory and web fixture seams |
 | S02 web runtime conformance reconciliation | done | `koder/plans/003_S02_web_runtime_conformance/INDEX.md` | q004 | Existing web adapter passes conformance without regressing Issue `#007` |
-| S03 Node/CLI runtime services | queued | `koder/plans/003_S03_node_cli_runtime_services/INDEX.md` | q004 | Node/CLI fetch/token/env/secure-store adapter passes conformance |
-| S04 Sobek injected runtime contract | queued | `koder/plans/003_S04_sobek_injected_runtime/INDEX.md` | q004 | Injected fake proves no HTTP self-call and preserves Holm semantics |
+| S03 Node/CLI runtime services | done | `koder/plans/003_S03_node_cli_runtime_services/INDEX.md` | q004 | Node/CLI fetch/token/env/secure-store adapter passes conformance |
+| S04 Sobek injected runtime contract | done | `koder/plans/003_S04_sobek_injected_runtime/INDEX.md` | q004 | Injected fake proves no HTTP self-call and preserves Holm semantics |
 | S05 bridge mocks and service slots | queued | `koder/plans/003_S05_bridge_mocks_service_slots/INDEX.md` | q004 | Desktop/mobile reserved mocks copy boundaries and fail closed in production |
 | S06 package integration and authority gate | queued | `koder/plans/003_S06_exports_dist_authority_gate/INDEX.md` | q004 | Exports/declarations/dist/examples/full validation, Holm acceptance, review green |
 
