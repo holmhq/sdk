@@ -1,7 +1,7 @@
 ---
-updated_at: "16 Jul 2026 | 03:58 PM IST"
-state: READY
-active_window: W2 open (koder/docs/EXECUTION.md) — Issue #007, not yet started
+updated_at: "16 Jul 2026 | 08:17 PM IST"
+state: REVIEW_READY
+active_window: W2 review gate (koder/docs/EXECUTION.md) — Issue #007 implementation at 3a164d7
 active_issue: "007 (web and app client)"
 orchestration_mode: owner-present direct with spot dispatches; dispatch_models [pi/gpt-5.5]
 stop_gate: "#007 closes only after four CI modes green + clean-tree reproducibility, one independent review dispatch with zero P1/P2, and read-only Holm-authority conformance of web-client route/auth surfaces at a named Holm commit"
@@ -11,38 +11,38 @@ stop_gate: "#007 closes only after four CI modes green + clean-tree reproducibil
 
 ## Past
 
-- Issue `#016` resolved (2026-07-16); W1 complete with all gates satisfied.
-  P2-2 fixed at `9825963`, entry-review P2 at `fe7879e`; four CI modes green
-  at that HEAD; clean-tree `npm run build` left zero diff. Review `#034`
-  accepted A2 at Holm `ded755f8` (v0.184.0). Queue `003` audit trail holds
-  the blind-run history (pi clean; codex had 3 caught integrity failures).
-- Owner decision (2026-07-16, this session): W2 (Issue `#007`) runs
-  **owner-present direct with spot dispatches** — no blind queue 004 —
-  and `dispatch_models: [pi/gpt-5.5]` only (codex removed for W2, no
-  fallback). Recorded in `koder/docs/EXECUTION.md` at `8b92f96`; decision
-  covers W2 only, W3 mode is a fresh owner call at the boundary.
+- Issue `#016` and W1 are complete; Review `#034` accepted A2 at Holm
+  `ded755f8` (v0.184.0). W2 remains owner-present direct with pi-only spot
+  dispatches; no blind queue is active.
+- Issue `#007` implementation landed in `5eb285f`, `7fd7763`, and `30f6f5f`:
+  route ledger, Fetch runtime/cache, `@holmhq/sdk/app`, auth/caller isolation,
+  links/pagination/surfaces, resumable + multipart uploads, lifecycle/bootstrap,
+  raw BFBB and Vite examples, declarations, maps, manifests, and size gates.
+- Independent Review `#035` found 4 P2s. `78e2667` fixed all four with red
+  regressions; Review `#036` confirmed 3 closed and found one mixed-separator
+  URL bypass. `3a164d7` closes that residual with runtime/upload/default-browser
+  coverage.
 
 ## Present
 
-- `main` clean at the W2-opening checkpoint; docs-only delta since the
-  `#016` closeout (no source changes, CI standing unchanged). Local commits
-  ahead of origin are unpushed unless the owner mirrored them.
-- Issue `#007` (`koder/issues/007_web_app_client/INDEX.md`) is the active
-  slice: web runtime adapter, member auth, custom `/api/*` transport,
-  uploads/blob-links, lifecycle hooks, BFBB + Vite examples, and full
-  `app.audit.js` route classification. No implementation has begun.
-- 9 P3 advisories from `#033` remain open backlog.
+- `main` is at the final remediation checkpoint `3a164d7`. Full `npm run ci`
+  passed: 175 source tests, 207 reproducible dist artifacts, BFBB + Vite,
+  statements 98.19 / lines 99.15 / functions 99.09 / branches 96.13 /
+  changed-reachable 100, and 148,831 raw / 34,312 gzip budgeted bytes.
+- Route evidence is pinned read-only to current Holm `8deb00b7` (v0.185.0);
+  mapped `packages/holm-sdk` app files did not drift. A real local Holm health
+  smoke passed; the bare host had no app `/api/me` route and was not counted as
+  app-route conformance.
+- Review receipts are durable in `koder/reviews/{035,036}_*/`. No independent
+  reviewer has yet returned zero P1/P2 on `3a164d7`, so the W2 stop gate is not
+  satisfied. The normal CI mode is green; the final four-mode matrix remains.
 
 ## Future
 
-1. Start `#007` owner-present under strict red → green → refactor TDD.
-   Suggested first steps: route audit mapping from `app.audit.js`, then the
-   web runtime adapter contract with its first failing test. Generated
-   `dist/` artifacts ship in the same logical implementation as each public
-   source change.
-2. At the `#007` milestone: preflight `pi` smoke, dispatch the independent
-   review, then the read-only Holm-authority conformance check at a named
-   Holm commit. Any P1/P2 or exhausted budget blocks and returns to owner.
-3. Program order after `#007`: `#009` → `#014` → `#008` → `#010` → `#011` →
-   `#013` → `#012` → `#015`. Standing gates unchanged: no publish/release/
-   deploy/credentials/cloud; Holm read-only; serial on `main`.
+1. Dispatch one focused pi/gpt-5.5 confirmation of Review `#036` P2 closure at
+   `3a164d7`; any P1/P2 blocks and returns to the owner.
+2. At the accepted HEAD, run all four CI modes plus clean-tree `npm run build`
+   reproducibility and record exact metrics.
+3. Perform fresh read-only Holm route/auth authority acceptance at the then-
+   current named commit. Only then resolve `#007`; do not begin `#009` or choose
+   W3 mode without the owner.
