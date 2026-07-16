@@ -1,15 +1,16 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-14
 updated: 2026-07-16
+resolved: 2026-07-16
 tags: a2, authority, conformance, security, transport, caller, capabilities
 parent: 001
 depends_on: [004, 005, 006]
 type: bug
 issue_kind: track
 slice_count: 6
-slices_done: 2
+slices_done: 6
 source_review: ../../reviews/024_a2_holm_authority_conformance/INDEX.md
 context: Holm's authority review found four P1 and one P2 foundation defects that block A2 acceptance and formal A3 work.
 ---
@@ -81,10 +82,10 @@ chain. Update their assumptions when live source or validation proves them stale
 | --- | --- | --- |
 | S01 | done | Holm `{data,meta}` / `{error}` / headers / `/api/cmd` conformance; approved at `da7cd8d` |
 | S02 | done | caller epoch plus cache/query/mutation/in-flight fencing; approved at `5d0df5d` |
-| S03 | implemented | generated package surface is read-only and measured; integrated rereview pending |
-| S04 | implemented | structural redaction, opaque identity, and redacted observer events are green |
-| S05 | implemented | mismatch rejection plus bounded duplicate/late tracking and diagnostics are green |
-| S06 | review pending | validation is green at `69095cb`; fresh SDK rereview and Holm-authority acceptance remain |
+| S03 | done | generated package surface is read-only and measured; confirmed by rereview `#033` |
+| S04 | done | structural redaction, opaque identity, and redacted observer events; confirmed by `#033` |
+| S05 | done | mismatch rejection plus bounded duplicate/late tracking and diagnostics; confirmed by `#033` |
+| S06 | done | P2-2 fixed (`9825963` + `fe7879e`), entry review 0 P1/P2 outstanding, four CI modes green; A2 accepted by Review `#034` at Holm `ded755f8` |
 
 ## Required behavior
 
@@ -125,9 +126,9 @@ source and expose the same public contract.
 - [x] Cache and public observability surfaces contain no raw credentials.
 - [x] Mismatched response IDs fail; duplicate/late response behavior is deterministic and tested.
 - [x] `npm run build` and `npm run ci` pass from a clean checkout.
-- [ ] One fresh independent SDK review reports no P1/P2 findings.
-- [ ] A fresh read-only Holm authority review accepts A2 at a named current commit.
-- [ ] Existing Holm SDK/state packages remain operational and npm remains private.
+- [x] One fresh independent SDK review reports no P1/P2 findings. (Entry review of `9825963`: 1 P2, fixed at `fe7879e` and re-verified; 0 outstanding — Review `#034` §entry-1.)
+- [x] A fresh read-only Holm authority review accepts A2 at a named current commit. (Review `#034`, Holm `ded755f8`, v0.184.0.)
+- [x] Existing Holm SDK/state packages remain operational and npm remains private. (`packages/holm-{sdk,state}` unchanged since baseline; `"private": true` verified.)
 - [x] Issue `#007` has not begun under this issue.
 
 ## Non-goals

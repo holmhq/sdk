@@ -1,7 +1,7 @@
 ---
 queue: 003
 title: W1 - Issue 016 closeout
-status: blocked
+status: done
 orchestration_mode: blind
 review_granularity: entry
 coordinator_entry_cap: 2
@@ -28,9 +28,9 @@ then fresh read-only Holm-authority A2 acceptance at a named Holm commit.
 
 | Order | Ref | Status | Validation | Stop |
 | ---: | --- | --- | --- | --- |
-| 1 | `koder/reviews/033_a2r_integrated_sdk_remediation_rereview_2/INDEX.md` P2-2 + required next action 1 (bound `keyGenerations`; strict TDD; owned `dist/` artifacts) | blocked | `npm run ci`; `FORCE_COLOR=1 npm run ci`; `NODE_OPTIONS='--test-reporter=tap' npm run test:coverage`; `FORCE_COLOR=1 NODE_OPTIONS='--test-reporter=tap' npm run test:coverage`; clean tree | entry review must report 0 P1/P2 on the fix; `max_fix_cycles: 2`; scope limited to `src/transports/cache.ts` + tests + owned dist — any wider change blocks |
-| 2 | Issue `#016` acceptance criterion: fresh read-only Holm-authority A2 review at a named current Holm commit (`~/Projects/holmhq/holm/master`, read-only); durable review artifact `koder/reviews/034_*` | queued | review artifact filed with `verdict`, `p1`, `p2`, `p3`, pinned Holm commit; A2 accepted requires 0 P1/P2 | any P1/P2 finding → block and return to owner; no Holm writes |
-| 3 | Close Issue `#016` (check remaining acceptance boxes, ledger S06 → done) + batched checkpoint | queued | issue frontmatter/ledger updated; `koder/STATE.md` mirror current; clean, committed tree | coordinator-owned accounting; no worker dispatch |
+| 1 | `koder/reviews/033_a2r_integrated_sdk_remediation_rereview_2/INDEX.md` P2-2 + required next action 1 (bound `keyGenerations`; strict TDD; owned `dist/` artifacts) | done | `npm run ci`; `FORCE_COLOR=1 npm run ci`; `NODE_OPTIONS='--test-reporter=tap' npm run test:coverage`; `FORCE_COLOR=1 NODE_OPTIONS='--test-reporter=tap' npm run test:coverage`; clean tree | entry review must report 0 P1/P2 on the fix; `max_fix_cycles: 2`; scope limited to `src/transports/cache.ts` + tests + owned dist — any wider change blocks |
+| 2 | Issue `#016` acceptance criterion: fresh read-only Holm-authority A2 review at a named current Holm commit (`~/Projects/holmhq/holm/master`, read-only); durable review artifact `koder/reviews/034_*` | done | review artifact filed with `verdict`, `p1`, `p2`, `p3`, pinned Holm commit; A2 accepted requires 0 P1/P2 | any P1/P2 finding → block and return to owner; no Holm writes |
+| 3 | Close Issue `#016` (check remaining acceptance boxes, ledger S06 → done) + batched checkpoint | done | issue frontmatter/ledger updated; `koder/STATE.md` mirror current; clean, committed tree | coordinator-owned accounting; no worker dispatch |
 
 ## Completion contract
 
@@ -63,14 +63,23 @@ then fresh read-only Holm-authority A2 acceptance at a named Holm commit.
     Content benign (no deps, `private` intact) but OUT OF ROW SCOPE →
     row stop rule "any wider change blocks" triggered. Fix worker should
     have returned BLOCKED per brief; did not.
-- **BLOCKED (owner decision required):** the entry-review P2's correct fix
-  appears to live in the build pipeline (`package.json`), outside this row's
-  declared scope — a product-scope finding. `fe7879e` is committed on `main`,
-  unreviewed at rereview level, tree clean, nothing pushed. Owner options:
-  (a) revert `fe7879e`, amend row scope or downgrade the finding, resume;
-  (b) accept `fe7879e` via explicit scope amendment + fresh rereview, resume;
-  (c) revert and close entry 1 at `9825963` only if the P2 is re-classified
-  by the owner as pre-existing/out-of-entry advisory. Codex adapter logged
-  3 integrity failures this run (ack-only, false blocker, fabricated
-  verdict) — reassess `dispatch_models` before the next unattended window.
-- Entries 2-3 not started (fail-closed at entry 1 gate).
+- Block resolved 2026-07-16 by owner direction ("use common sense and solve
+  this"): coordinator switched to owner-present direct mode. Findings read
+  directly: the P2 was a real defect (clean-tree `npm run build` deleted
+  tracked `dist/{license,size}-report.json`) whose only correct fix is the
+  `package.json` build chain — `fe7879e` accepted as scope amendment.
+  Direct verification: P2 acceptance test green (build → zero diff), cache
+  fix semantics re-reviewed (refcounted generation release, structural
+  zero-residue test, red-proof), all four CI modes green at `fe7879e`.
+  Entry 1 done; 0 outstanding P1/P2.
+- Entry 2 done directly: Review `#034` accepts A2 at Holm `ded755f8`
+  (v0.184.0) — authority paths drift-free since `#024` HEAD `bdcc8cc5`
+  (`internal/api/`, `cmd/server/app.go`, `internal/hosting/`,
+  `packages/holm-{sdk,state}`, SDK docs); no Holm writes.
+- Entry 3 done: Issue `#016` resolved (all acceptance boxes checked,
+  ledger S01-S06 done), this checkpoint commit.
+- Adapter health for next window: codex/gpt-5.3-codex logged 3 integrity
+  failures (ack-only turn, false env blocker, fabricated verdict — all
+  caught by fail-closed sidecar proof); pi/gpt-5.5 clean on 3/3
+  substantive dispatches. Reassess `dispatch_models` before any further
+  unattended run.
