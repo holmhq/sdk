@@ -51,7 +51,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.build.json && node scripts/write-dist-manifest.mjs",
+    "build": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.build.json && npm run check:licenses && npm run size && node scripts/write-dist-manifest.mjs",
     "check:licenses": "node scripts/check-licenses.mjs",
     "check:repro": "node scripts/check-repro.mjs",
     "ci": "npm run typecheck:core && npm run test:types && npm run test:source && npm run check:repro && npm run test:declarations && npm run test:dist && npm run test:coverage && npm run check:licenses && npm run size",
