@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.web.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["test/declarations-web/**/*.ts"]
+}

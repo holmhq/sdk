@@ -1,0 +1,106 @@
+{
+  "schema": "holm.sdk.app-route-audit/1",
+  "source": {
+    "repository": "holmhq/holm",
+    "commit": "858224c81098eb6fd254aa214924ccbbf4e8a69e",
+    "path": "packages/holm-sdk/app.audit.js"
+  },
+  "entries": [
+    {
+      "sourceKey": "/auth/login",
+      "methods": ["GET"],
+      "path": "/auth/login",
+      "classification": "redesigned",
+      "sdk": ["auth.loginHref", "auth.login"],
+      "rationale": "Preserve the login URL and redirect parameter, but perform navigation only through an explicitly injected optional web navigation service."
+    },
+    {
+      "sourceKey": "GET /auth/qr/scanner",
+      "methods": ["GET"],
+      "path": "/auth/qr/scanner",
+      "classification": "redesigned",
+      "sdk": ["auth.qrScannerHref", "auth.scanQRCode"],
+      "rationale": "Preserve URL construction while isolating browser navigation and capability checks behind the web adapter."
+    },
+    {
+      "sourceKey": "POST /auth/anonymous/start",
+      "methods": ["POST"],
+      "path": "/auth/anonymous/start",
+      "classification": "adopted",
+      "sdk": ["auth.startAnonymous"],
+      "rationale": "Retain the app-or-host-bound anonymous session flow using adapter-private cookie proof and no JavaScript-readable credential."
+    },
+    {
+      "sourceKey": "POST /auth/anonymous/promote",
+      "methods": ["POST"],
+      "path": "/auth/anonymous/promote",
+      "classification": "adopted",
+      "sdk": ["auth.promoteAnonymous"],
+      "rationale": "Retain server-authoritative anonymous ownership promotion through the shared app transport."
+    },
+    {
+      "sourceKey": "POST /auth/magic/request",
+      "methods": ["POST"],
+      "path": "/auth/magic/request",
+      "classification": "adopted",
+      "sdk": ["auth.requestMagicLink"],
+      "rationale": "Retain generic magic-link requests while treating email and link tokens as sensitive request fields."
+    },
+    {
+      "sourceKey": "GET /auth/magic/complete",
+      "methods": ["GET"],
+      "path": "/auth/magic/complete",
+      "classification": "intentionally-unsupported",
+      "sdk": [],
+      "rationale": "This is a Holm-owned browser confirmation page reached from an emailed link, not a route the SDK should invoke directly."
+    },
+    {
+      "sourceKey": "POST /auth/magic/complete",
+      "methods": ["POST"],
+      "path": "/auth/magic/complete",
+      "classification": "adopted",
+      "sdk": ["auth.completeMagicLink"],
+      "rationale": "Retain token or email-and-key completion through the shared app transport with sensitive payload redaction."
+    },
+    {
+      "sourceKey": "POST /auth/logout",
+      "methods": ["POST"],
+      "path": "/auth/logout",
+      "classification": "adopted",
+      "sdk": ["auth.logout"],
+      "rationale": "Retain server-side session invalidation and reset caller-partitioned resources after success."
+    },
+    {
+      "sourceKey": "/api/apps/{id}/links",
+      "methods": ["GET", "POST"],
+      "path": "/api/apps/{id}/links",
+      "classification": "adopted",
+      "sdk": ["links.list", "links.create"],
+      "rationale": "Retain list and create operations through shared cache, error, and mutation-invalidation behavior."
+    },
+    {
+      "sourceKey": "POST /api/apps/{id}/links/import",
+      "methods": ["POST"],
+      "path": "/api/apps/{id}/links/import",
+      "classification": "redesigned",
+      "sdk": ["links.import"],
+      "rationale": "Preserve the import route while moving file transfer to the standards-based resumable upload seam with an isolated multipart fallback."
+    },
+    {
+      "sourceKey": "/api/apps/{id}/links/{idOrSlug}",
+      "methods": ["GET", "PATCH", "DELETE"],
+      "path": "/api/apps/{id}/links/{idOrSlug}",
+      "classification": "adopted",
+      "sdk": ["links.get", "links.update", "links.delete"],
+      "rationale": "Retain detail, update, and revoke operations while encoding path segments and sharing transport error semantics."
+    },
+    {
+      "sourceKey": "GET /api/me",
+      "methods": ["GET"],
+      "path": "/api/me",
+      "classification": "adopted",
+      "sdk": ["auth.me"],
+      "rationale": "Retain the reserved app-runtime identity route as a caller-partitioned auth resource."
+    }
+  ]
+}

@@ -59,7 +59,7 @@
     "size": "node scripts/size.mjs",
     "test:coverage": "node scripts/coverage.mjs && node scripts/check-coverage-summary.mjs",
     "typecheck:core": "tsc -p tsconfig.core.json --noEmit",
-    "test:declarations": "tsc -p tsconfig.test-declarations.json --noEmit",
+    "test:declarations": "tsc -p tsconfig.test-declarations.json --noEmit && tsc -p tsconfig.test-declarations-web.json --noEmit",
     "test:dist": "node --test test/dist/index.test.mjs",
     "test:source": "node scripts/test-source.mjs",
     "test:types": "tsc -p tsconfig.test-types.core.json --noEmit && tsc -p tsconfig.test-types.web.json --noEmit && tsc -p tsconfig.test-types.node.json --noEmit"

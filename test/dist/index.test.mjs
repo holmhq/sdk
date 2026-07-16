@@ -32,7 +32,13 @@ import {
   redactUploadRequest,
 } from "../../dist/transports/index.js";
 import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index.js";
-import { createWebSessionAuth, createWebUploadFile } from "../../dist/web/index.js";
+import {
+  HOLM_APP_HTTP_CAPABILITY,
+  WEB_HTTP_REQUEST_OPERATION,
+  createWebSessionAuth,
+  createWebUploadFile,
+  webRuntime,
+} from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
 import {
   createDerivedResource,
@@ -147,6 +153,36 @@ test("generated ESM artifact exposes S09 transport auth and error contracts", as
   assert.equal(JSON.stringify(redactAuthenticatedTransport(authenticated)).includes("dist-secret"), false);
   assert.equal(webAuthenticated.privateProof.credentials, "include");
   assert.deepEqual(decoded.payload, { ok: true });
+});
+
+test("generated ESM artifact exposes the Issue 007 web Fetch runtime", async () => {
+  const calls = [];
+  const runtime = webRuntime({
+    baseUrl: "https://app.example.test/",
+    fetch: async (input, init) => {
+      calls.push({ input: String(input), init });
+      return new Response('{"data":{"member":{"id":"member_dist"}}}', {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    },
+  });
+  const holm = createHolm({
+    runtime,
+    caller: createStaticCallerProvider({ surface: "web", principal: { kind: "browser-session" } }),
+  });
+
+  const response = await holm.invoke({
+    capability: HOLM_APP_HTTP_CAPABILITY,
+    operation: WEB_HTTP_REQUEST_OPERATION,
+    payload: createTransportRequest({ method: "GET", url: "/api/me" }),
+    requestId: "req-dist-web",
+  });
+
+  assert.deepEqual(response.payload, { member: { id: "member_dist" } });
+  assert.equal(calls[0].input, "https://app.example.test/api/me");
+  assert.equal(calls[0].init.credentials, "same-origin");
+  await holm.dispose();
 });
 
 test("generated ESM artifact exposes S12 upload seam helpers", async () => {

@@ -1,4 +1,11 @@
 export {
+  HOLM_APP_HTTP_CAPABILITY,
+  WEB_HTTP_REQUEST_OPERATION,
+  webRuntime,
+} from "./runtime.js";
+export type { WebRuntimeOptions } from "./runtime.js";
+
+export {
   createWebUploadFile,
   createWebUploadSource,
 } from "./upload.js";

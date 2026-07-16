@@ -601,24 +601,44 @@
       "sha256": "7f67bcbba431c247076876c9bb052d42d190b5f6687674af0485ab90882f423c"
     },
     {
-      "bytes": 566,
+      "bytes": 719,
       "path": "dist/web/index.d.ts",
-      "sha256": "5ba11104525fbb3383df355a7178e5e9c55391425333edf309d3afffcd8be3e4"
+      "sha256": "bc81d701317b02203bb692a8ab9a0491fb8bcca7a23385aba1241044a3441f62"
     },
     {
-      "bytes": 489,
+      "bytes": 599,
       "path": "dist/web/index.d.ts.map",
-      "sha256": "08726e618fd354a86e0859a0001c300b38acaf2b186b3fb67ca1150408a1ccf9"
+      "sha256": "6b5d9531cb6569ffaec1e7124e190cd79bda878fa2ec1b42a3b84639fbe558a5"
     },
     {
-      "bytes": 678,
+      "bytes": 776,
       "path": "dist/web/index.js",
-      "sha256": "2e63da8ab56d03db76c89b4c3c52779bde37d00ab85e35031e5b6bdd04f0a522"
+      "sha256": "01d30dce807f92fa1e39b77a3407a7d60e1a4fc0aa9dda63eb6cfbc108577c20"
     },
     {
-      "bytes": 645,
+      "bytes": 712,
       "path": "dist/web/index.js.map",
-      "sha256": "6c0acc11fff52eb15eef1f924f68d329c5e10a72464a841b0d9c02214e398a78"
+      "sha256": "3d02f3addac3e0f6dd45b957d6cc210455585aab51568522c47dd0736911d766"
+    },
+    {
+      "bytes": 669,
+      "path": "dist/web/runtime.d.ts",
+      "sha256": "649b02db51147639fd45ee1fa50912cf5e4409fcfe540b6782c6910ef98236fa"
+    },
+    {
+      "bytes": 649,
+      "path": "dist/web/runtime.d.ts.map",
+      "sha256": "24f51ad3e6a347d5f44d9fb1a34da420af88af731eb3aee768584d2902d836c1"
+    },
+    {
+      "bytes": 13878,
+      "path": "dist/web/runtime.js",
+      "sha256": "9c21de7a59f09fa7f34d7d6693e138264b2ca5380c013a682d2596903f9b4c64"
+    },
+    {
+      "bytes": 13998,
+      "path": "dist/web/runtime.js.map",
+      "sha256": "5b55622521eb9566c187aedcca635445e96747db0f27c1826725059170d1ecfd"
     },
     {
       "bytes": 980,

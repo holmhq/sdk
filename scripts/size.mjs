@@ -21,6 +21,7 @@ const budgets = new Map([
   ["dist/transports/response.js", { rawBudget: 12288, gzipBudget: 3584 }],
   ["dist/transports/sensitivity.js", { rawBudget: 8192, gzipBudget: 2560 }],
   ["dist/web/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/web/runtime.js", { rawBudget: 16384, gzipBudget: 4096 }],
   ["dist/node/index.js", { rawBudget: 1024, gzipBudget: 512 }],
 ]);
 const targets = [...budgets].map(([path, budget]) => ({ path, ...budget }));

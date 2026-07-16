@@ -47,7 +47,6 @@ import {
   type UploadSession,
 } from "@holmhq/sdk/transports";
 import { createNodeTokenAuth, createNodeUploadFile } from "@holmhq/sdk/node";
-import { createWebSessionAuth, createWebUploadFile, type WebUploadBlobLike } from "@holmhq/sdk/web";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 import {
   createDerivedResource,
@@ -164,7 +163,6 @@ const cacheInvalidation: TransportCacheInvalidationResult = transportCache.inval
   partition: cachePartition,
   tags: ["reports"],
 });
-const webAuth = createWebSessionAuth({ credentials: "same-origin" });
 const nodeAuth = createNodeTokenAuth({ token: "test-token" });
 const decoded = decodeTransportResponse({ requestId: "req-decl", status: 200, body: "{\"ok\":true}", responseMode });
 const appliedTransport = applyTransportAuth(transportRequest, nodeAuth);
@@ -185,14 +183,6 @@ const uploadAdapter: ResumableUploadAdapter<UploadHandoff> = {
 const uploaded = composeResumableUpload({ path: "/api/upload", files: [uploadFile] }, uploadAdapter);
 const uploadDiagnostic = redactUploadRequest({ path: "/api/upload", files: [uploadFile] });
 const nodeUploadFile = createNodeUploadFile({ field: "node", name: "node.bin", bytes: [1, 2, 3] });
-const blobLike: WebUploadBlobLike = {
-  size: 3,
-  type: "application/octet-stream",
-  slice(start, end, type) {
-    return type === undefined ? { size: end - start } : { size: end - start, type };
-  },
-};
-const webUploadFile = createWebUploadFile({ field: "web", blob: blobLike, name: "web.bin" });
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -228,7 +218,6 @@ void transportCache;
 void cachedTransport;
 void cacheInvalidation;
 void diagnostics;
-void webAuth;
 void nodeAuth;
 void decoded;
 void appliedTransport;
@@ -237,5 +226,4 @@ void uploadProgress;
 void uploaded;
 void uploadDiagnostic;
 void nodeUploadFile;
-void webUploadFile;
 void invalidEnvironment;
