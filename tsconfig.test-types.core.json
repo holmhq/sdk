@@ -5,7 +5,9 @@
   },
   "include": [
     "src/core/**/*.ts",
+    "src/bridge/**/*.ts",
     "test/types/app-client.test.ts",
+    "test/types/bridge-ambient-boundary.test.ts",
     "test/types/capabilities.test.ts",
     "test/types/core-ambient-boundary.test.ts",
     "test/types/extensions.test.ts",

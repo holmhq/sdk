@@ -50,6 +50,16 @@ import {
   UnsupportedSobekRuntimeServiceError,
 } from "../../dist/sobek/index.js";
 import {
+  bridgeMailboxProtocol,
+  copyBridgeMailboxEnvelope,
+  createBridgeMailbox,
+  createMockBridgeRuntime,
+  createMockBridgeServices,
+  createReservedDesktopBridgeRuntime,
+  createReservedMobileBridgeRuntime,
+  UnsupportedBridgeRuntimeServiceError,
+} from "../../dist/bridge/index.js";
+import {
   HOLM_APP_HTTP_CAPABILITY,
   WEB_HTTP_REQUEST_OPERATION,
   createWebApp,
@@ -230,6 +240,68 @@ test("generated ESM artifact exposes the Issue 009 Sobek injected runtime contra
   assert.deepEqual(response.payload, { path: "/api/sobek", caller: { kind: "service", id: "dist-sobek" }, bytes: createReadonlyBytes([6, 7]) });
   assert.throws(() => sobekRuntime({ id: "dist-sobek-missing" }).clock.now(), UnsupportedSobekRuntimeServiceError);
   await runtime.dispose();
+});
+
+test("generated ESM artifact exposes the Issue 009 reserved bridge mocks and service slots", async () => {
+  const services = createMockBridgeServices({
+    adapter: "dist-bridge",
+    surface: "desktop",
+    secureStorage: { entries: { token: "dist-token" } },
+  });
+  const runtime = createMockBridgeRuntime({
+    id: "dist-bridge",
+    surface: "desktop",
+    capabilities: [{ id: "com.example.bridge", origin: "runtime", version: { major: 1, minor: 0 } }],
+    services,
+    handlers: {
+      "com.example.bridge:echo": (request) => ({
+        requestId: request.requestId,
+        payload: { echo: request.payload, token: services.secureStorage.get("token") },
+      }),
+    },
+  });
+  const mailbox = createBridgeMailbox({ post: () => undefined });
+  const pending = mailbox.request({
+    requestId: "req-dist-bridge-mailbox",
+    capability: { id: "com.example.bridge", major: 1 },
+    operation: "echo",
+    payload: { bytes: createReadonlyBytes([1, 2]) },
+  });
+  assert.equal(mailbox.receive({
+    protocol: bridgeMailboxProtocol,
+    kind: "response",
+    requestId: "req-dist-bridge-mailbox",
+    payload: { ok: true },
+  }), true);
+  assert.equal(mailbox.receive({
+    protocol: bridgeMailboxProtocol,
+    kind: "response",
+    requestId: "req-dist-bridge-mailbox",
+    payload: { late: true },
+  }), false);
+  assert.deepEqual(copyBridgeMailboxEnvelope({
+    protocol: bridgeMailboxProtocol,
+    kind: "event",
+    eventId: "evt-dist",
+    name: "connectivity",
+    payload: { online: true },
+  }).payload, { online: true });
+
+  assert.deepEqual(await createReservedDesktopBridgeRuntime({ id: "dist-desktop" }).start(), []);
+  assert.deepEqual(await createReservedMobileBridgeRuntime({ id: "dist-mobile" }).start(), []);
+  assert.throws(() => createReservedDesktopBridgeRuntime({ id: "dist-missing" }).clock.now(), UnsupportedBridgeRuntimeServiceError);
+  assert.deepEqual((await pending).payload, { ok: true });
+  await runtime.start();
+  const caller = { surface: "desktop", principal: { kind: "member", id: "dist-bridge" }, app: { id: "dist-app" } };
+  const response = await runtime.invoke({
+    requestId: "req-dist-bridge",
+    capability: { id: "com.example.bridge", major: 1 },
+    operation: "echo",
+    caller: { ...caller, invocationId: "req-dist-bridge", startedAt: 7 },
+    callerFingerprint: createCallerFingerprint(caller),
+    payload: { value: "ready" },
+  }, {});
+  assert.deepEqual(response.payload, { echo: { value: "ready" }, token: "dist-token" });
 });
 
 test("generated ESM artifact exposes the Issue 009 Node/CLI runtime services", async () => {

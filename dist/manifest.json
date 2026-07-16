@@ -181,6 +181,26 @@
       "sha256": "458f496b11eddd2093927be7eb094ee03b1855a5bebacf4d93850f6b240a7284"
     },
     {
+      "bytes": 6601,
+      "path": "dist/bridge/index.d.ts",
+      "sha256": "504dfda0da4a901ca39f6293edd7ef70d3ad90398822d96f484a9408d907c747"
+    },
+    {
+      "bytes": 5661,
+      "path": "dist/bridge/index.d.ts.map",
+      "sha256": "24b38b335f8acecef96efa88f66f2af1595f6c50d8c43d4aefdae7fd6dd132f2"
+    },
+    {
+      "bytes": 21918,
+      "path": "dist/bridge/index.js",
+      "sha256": "bf4b1893e0d8d279fc3a540689a1a854381de7653423dda4741a97151efad763"
+    },
+    {
+      "bytes": 20244,
+      "path": "dist/bridge/index.js.map",
+      "sha256": "f6d39e6af1130e9c58283333cf5d3275197f70d843349d9319d97977cdf10abd"
+    },
+    {
       "bytes": 673,
       "path": "dist/core/cache-key.d.ts",
       "sha256": "2326344e412109ae1b38a44f05834122c7ee4cd760e0773a08d541cc726f73b2"
