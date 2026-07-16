@@ -43,6 +43,13 @@ import {
   UnsupportedNodeRuntimeServiceError,
 } from "../../dist/node/index.js";
 import {
+  createFakeSobekInjectedRuntime,
+  HOLM_APP_HTTP_CAPABILITY as SOBEK_APP_HTTP_CAPABILITY,
+  SOBEK_HTTP_REQUEST_OPERATION,
+  sobekRuntime,
+  UnsupportedSobekRuntimeServiceError,
+} from "../../dist/sobek/index.js";
+import {
   HOLM_APP_HTTP_CAPABILITY,
   WEB_HTTP_REQUEST_OPERATION,
   createWebApp,
@@ -191,6 +198,38 @@ test("generated ESM artifact exposes the Issue 007 app extension and web composi
   assert.deepEqual(await convenience.app.auth.me(), { ok: true });
   assert.equal(convenience.app.surface.analyticsUrl(), "/analytics");
   await convenience.dispose();
+});
+
+test("generated ESM artifact exposes the Issue 009 Sobek injected runtime contract", async () => {
+  const calls = [];
+  const fake = createFakeSobekInjectedRuntime({
+    handler(request) {
+      calls.push(request);
+      return {
+        status: 200,
+        headers: { "content-type": ["application/json; charset=utf-8"] },
+        body: { path: request.path, caller: request.caller.principal, bytes: createReadonlyBytes([6, 7]) },
+      };
+    },
+  });
+  const runtime = sobekRuntime({ id: "dist-sobek", runtime: fake });
+  const caller = { surface: "server", principal: { kind: "service", id: "dist-sobek" }, app: { id: "dist-app" } };
+  await runtime.start();
+  const response = await runtime.invoke({
+    requestId: "req-dist-sobek",
+    capability: SOBEK_APP_HTTP_CAPABILITY,
+    operation: SOBEK_HTTP_REQUEST_OPERATION,
+    caller: { ...caller, invocationId: "req-dist-sobek", startedAt: 9 },
+    callerFingerprint: createCallerFingerprint(caller),
+    payload: { method: "GET", path: "/api/sobek", caller: { principal: { kind: "member", id: "hint" } } },
+  }, {});
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].path, "/api/sobek");
+  assert.deepEqual(calls[0].caller.principal, { kind: "service", id: "dist-sobek" });
+  assert.deepEqual(response.payload, { path: "/api/sobek", caller: { kind: "service", id: "dist-sobek" }, bytes: createReadonlyBytes([6, 7]) });
+  assert.throws(() => sobekRuntime({ id: "dist-sobek-missing" }).clock.now(), UnsupportedSobekRuntimeServiceError);
+  await runtime.dispose();
 });
 
 test("generated ESM artifact exposes the Issue 009 Node/CLI runtime services", async () => {

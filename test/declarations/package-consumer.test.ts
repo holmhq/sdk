@@ -2,6 +2,7 @@ import {
   canonicalEncodeWireValue,
   createCapabilityRegistry,
   createCallerFingerprint,
+  createInvocationContext,
   createCoreEnvironment,
   createDiagnosticsSink,
   createExtensionLifecycle,
@@ -60,6 +61,12 @@ import {
   UnsupportedNodeRuntimeServiceError,
   type NodeRuntimeFetch,
 } from "@holmhq/sdk/node";
+import {
+  createFakeSobekInjectedRuntime,
+  sobekRuntime,
+  UnsupportedSobekRuntimeServiceError,
+  type SobekInjectedRequest,
+} from "@holmhq/sdk/sobek";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 import {
   createDerivedResource,
@@ -146,6 +153,23 @@ const nodeRuntimeAdapter = nodeRuntime({
 });
 const nodeCaller = createNodeOperatorCaller({ operatorId: "decl-operator", app: { id: "decl-app" } });
 const nodeServiceError = new UnsupportedNodeRuntimeServiceError({ adapter: "decl-node", service: "environment" });
+const sobekCaller = createInvocationContext(
+  { surface: "server", principal: { kind: "service", id: "decl-sobek" }, app: { id: "decl-app" } },
+  "req-decl-sobek",
+  1,
+  "declaration",
+);
+const sobekInjectedRequest: SobekInjectedRequest = {
+  requestId: "req-decl-sobek",
+  method: "GET",
+  path: "/api/declarations",
+  query: {},
+  headers: {},
+  caller: sobekCaller,
+};
+const sobekFake = createFakeSobekInjectedRuntime({ handler: () => ({ status: 200, body: { ok: true } }) });
+const sobekRuntimeAdapter = sobekRuntime({ runtime: sobekFake });
+const sobekServiceError = new UnsupportedSobekRuntimeServiceError({ adapter: "decl-sobek", service: "runtime" });
 const testRuntime = createInMemoryRuntimeAdapter({ clock: fake.clock, scheduler: fake.scheduler });
 const holm = createHolm({ runtime: testRuntime, caller, diagnostics: createDiagnosticsSink() });
 const stateController = createResourceController<{ readonly count: number }>();
@@ -264,6 +288,9 @@ void nodeAuth;
 void nodeRuntimeAdapter;
 void nodeCaller;
 void nodeServiceError;
+void sobekInjectedRequest;
+void sobekRuntimeAdapter;
+void sobekServiceError;
 void decoded;
 void appliedTransport;
 void transportSensitivity;

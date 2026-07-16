@@ -11,6 +11,7 @@
     "src/core/**/*.ts",
     "src/transports/**/*.ts",
     "src/state/**/*.ts",
+    "src/sobek/**/*.ts",
     "src/test/**/*.ts",
     "test/types/core-ambient-boundary.test.ts"
   ]

@@ -11,6 +11,7 @@
     "test/types/extensions.test.ts",
     "test/types/lifecycle.test.ts",
     "test/types/runtime-invocation.test.ts",
+    "test/types/sobek-ambient-boundary.test.ts",
     "test/types/state.test-d.ts",
     "test/types/state-derived.test-d.ts",
     "test/types/state-mutation.test-d.ts",
