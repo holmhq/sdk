@@ -3,8 +3,10 @@ import { test } from "node:test";
 
 import {
   CancelledError,
+  CapabilityVersionError,
   LifecycleError,
   ProtocolError,
+  UnsupportedCapabilityError,
   createCancellationController,
   createHolm,
   createReadonlyBytes,
@@ -517,11 +519,11 @@ test("web runtime validates construction, operation payloads, and adapter lifecy
   );
   await assert.rejects(
     () => runtime.invoke({ ...valid, capability: { id: "holm.http.admin", major: 1 } }, {}),
-    (error: unknown) => error instanceof ProtocolError && error.code === "unsupported_web_runtime_operation",
+    (error: unknown) => error instanceof UnsupportedCapabilityError && error.code === "unsupported_capability",
   );
   await assert.rejects(
     () => runtime.invoke({ ...valid, capability: { id: "holm.http.app", major: 2 } }, {}),
-    (error: unknown) => error instanceof ProtocolError && error.code === "unsupported_web_runtime_operation",
+    (error: unknown) => error instanceof CapabilityVersionError && error.code === "capability_version_mismatch",
   );
 
   const malformedPayloads: readonly WireValue[] = [

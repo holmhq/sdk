@@ -1,5 +1,6 @@
 import { APP_HTTP_INVALIDATE_OPERATION, APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
 import { createCallerPartitionedCacheKey } from "../core/cache-key.js";
+import { CapabilityVersionError, UnsupportedCapabilityError, } from "../core/capabilities.js";
 import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
 import { ProtocolError } from "../core/errors.js";
 import { LifecycleError } from "../core/lifecycle.js";
@@ -80,7 +81,7 @@ export function webRuntime(options = {}) {
         },
         async invoke(request, control) {
             assertReady(started, disposed);
-            assertHttpOperation(request);
+            assertHttpOperation(request, id);
             if (request.operation === APP_HTTP_INVALIDATE_OPERATION) {
                 cache?.instance.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
                 return Object.freeze({ requestId: request.requestId, payload: null });
@@ -239,10 +240,22 @@ function assertReady(started, disposed) {
         state: "created",
     });
 }
-function assertHttpOperation(request) {
-    if (request.capability.id !== HOLM_APP_HTTP_CAPABILITY.id ||
-        request.capability.major !== HOLM_APP_HTTP_CAPABILITY.major ||
-        (request.operation !== WEB_HTTP_REQUEST_OPERATION && request.operation !== APP_HTTP_INVALIDATE_OPERATION)) {
+function assertHttpOperation(request, adapterId) {
+    const capability = request.capability;
+    if (capability.id !== HOLM_APP_HTTP_CAPABILITY.id || capability.major !== HOLM_APP_HTTP_CAPABILITY.major) {
+        const context = {
+            id: capability.id,
+            requirement: capability,
+            offered: appHttpOffers,
+            adapter: adapterId,
+            surface: "web",
+        };
+        if (capability.id !== HOLM_APP_HTTP_CAPABILITY.id) {
+            throw new UnsupportedCapabilityError(context);
+        }
+        throw new CapabilityVersionError(context);
+    }
+    if (request.operation !== WEB_HTTP_REQUEST_OPERATION && request.operation !== APP_HTTP_INVALIDATE_OPERATION) {
         throw new ProtocolError({
             code: "unsupported_web_runtime_operation",
             message: "The web runtime only accepts supported holm.http.app operations.",

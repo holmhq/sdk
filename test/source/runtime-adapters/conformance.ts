@@ -18,6 +18,7 @@ import {
   type CapabilityOffer,
   type CallerContext,
   type HolmDiagnosticEvent,
+  type HolmDiagnosticsSink,
   type InvocationControl,
   type OperationRequest,
   type OperationResponse,
@@ -25,6 +26,11 @@ import {
   type WireValue,
 } from "../../../src/core/index.js";
 import { createInvocationResponseTracker } from "../../../src/core/invoke.js";
+import {
+  RemoteError,
+  createTransportRequest,
+  type TransportAuthProvider,
+} from "../../../src/transports/index.js";
 
 export type RuntimeAdapterConformanceHandler = (
   request: OperationRequest,
@@ -42,6 +48,19 @@ export interface RuntimeAdapterConformanceTarget<Adapter extends RuntimeAdapter>
   createAdapter(options: RuntimeAdapterConformanceOptions): Adapter;
   getRequests(adapter: Adapter): readonly OperationRequest[];
   getControls(adapter: Adapter): readonly InvocationControl[];
+}
+
+export interface HttpAppRuntimeConformanceOptions {
+  readonly baseUrl?: string | URL;
+  readonly fetch: typeof fetch;
+  readonly auth?: TransportAuthProvider;
+  readonly cache?: false | { readonly ttlMs?: number; readonly swrMs?: number; readonly maxEntries?: number };
+  readonly diagnostics?: HolmDiagnosticsSink;
+}
+
+export interface HttpAppRuntimeConformanceTarget<Adapter extends RuntimeAdapter> {
+  readonly name: string;
+  createAdapter(options: HttpAppRuntimeConformanceOptions): Adapter;
 }
 
 const appRequestCapability = { id: "holm.http.app", major: 1 };
@@ -344,10 +363,310 @@ export function runRuntimeAdapterConformance<Adapter extends RuntimeAdapter>(
   });
 }
 
+export function runHttpAppRuntimeAdapterConformance<Adapter extends RuntimeAdapter>(
+  target: HttpAppRuntimeConformanceTarget<Adapter>,
+): void {
+  test(`${target.name} preserves canonical app GET/POST transport semantics and response envelopes`, async () => {
+    const calls: Array<{ readonly url: string; readonly init: RequestInit }> = [];
+    const adapter = target.createAdapter({
+      baseUrl: "https://app.example.test/root/",
+      fetch: async (input, init = {}) => {
+        calls.push({ url: String(input), init });
+        if (init.method === "POST") {
+          return new Response(JSON.stringify({ data: { created: true }, meta: { request_id: "remote-post" } }), {
+            status: 201,
+            headers: { "content-type": "application/json", "x-request-id": "remote-post" },
+          });
+        }
+        return new Response(JSON.stringify({ data: { ok: true }, meta: { request_id: "remote-get" } }), {
+          status: 200,
+          headers: { "content-type": "application/json", "x-request-id": "remote-get" },
+        });
+      },
+    });
+    await adapter.start();
+
+    const get = await adapter.invoke(
+      makeRequest({
+        capability: appRequestCapability,
+        operation: "request",
+        payload: createTransportRequest({
+          method: "GET",
+          url: "/api/apps/app-1/reports?existing=1#section",
+          params: { z: 2, skip: null, a: "first" },
+          headers: { "x-holm-request-id": "req-http-get" },
+        }),
+        requestId: "req-http-get",
+        caller: webCaller("member-1"),
+      }),
+      {},
+    );
+    const post = await adapter.invoke(
+      makeRequest({
+        capability: appRequestCapability,
+        operation: "request",
+        payload: createTransportRequest({
+          method: "POST",
+          url: "/api/apps/app-1/reports",
+          headers: { accept: "application/json", "content-type": "application/vnd.holm+json" },
+          body: { mode: "json", value: { z: true, a: 1 } },
+        }),
+        requestId: "req-http-post",
+        caller: webCaller("member-1"),
+      }),
+      {},
+    );
+
+    assert.equal(calls.length, 2);
+    assert.equal(calls[0]?.url, "https://app.example.test/api/apps/app-1/reports?a=first&existing=1&z=2#section");
+    assert.equal(calls[0]?.init.method, "GET");
+    assert.equal(new Headers(calls[0]?.init.headers).get("x-holm-request-id"), "req-http-get");
+    assert.equal(calls[1]?.url, "https://app.example.test/api/apps/app-1/reports");
+    assert.equal(calls[1]?.init.method, "POST");
+    assert.equal(calls[1]?.init.body, '{"a":1,"z":true}');
+    assert.deepEqual(get.payload, { ok: true });
+    assert.equal(get.requestId, "req-http-get");
+    assert.deepEqual(get.metadata, {
+      status: 200,
+      meta: { request_id: "remote-get" },
+      headers: { "content-type": "application/json", "x-request-id": "remote-get" },
+    });
+    assert.deepEqual(post.payload, { created: true });
+    assert.equal(post.requestId, "req-http-post");
+    assert.deepEqual(post.metadata, {
+      status: 201,
+      meta: { request_id: "remote-post" },
+      headers: { "content-type": "application/json", "x-request-id": "remote-post" },
+    });
+    await adapter.dispose();
+
+    const errorAdapter = target.createAdapter({
+      fetch: async () => new Response(
+        JSON.stringify({ error: { code: "holm.stable_denied", message: "Denied by policy." } }),
+        { status: 403, headers: { "content-type": "application/json" } },
+      ),
+    });
+    await errorAdapter.start();
+    await assert.rejects(
+      () => errorAdapter.invoke(
+        makeRequest({
+          capability: appRequestCapability,
+          operation: "request",
+          payload: createTransportRequest({ method: "GET", url: "/api/denied" }),
+          requestId: "req-stable-error",
+          caller: webCaller("member-1"),
+        }),
+        {},
+      ),
+      (error: unknown) => error instanceof RemoteError && error.code === "holm.stable_denied" && error.status === 403,
+    );
+    await errorAdapter.dispose();
+  });
+
+  test(`${target.name} keeps auth private while partitioning GET cache by caller and web session`, async () => {
+    const events: HolmDiagnosticEvent[] = [];
+    const seenAuthorization: string[] = [];
+    let cachePartition = "member-a-session";
+    let token = "secret-token-a";
+    let fetchCalls = 0;
+    const adapter = target.createAdapter({
+      cache: { ttlMs: 30_000, swrMs: 0, maxEntries: 8 },
+      diagnostics: createDiagnosticsSink((event) => {
+        events.push(event);
+      }),
+      auth: {
+        current: () => ({ kind: "bearer", scheme: "Bearer", token, cachePartition }),
+      },
+      fetch: async (_input, init = {}) => {
+        fetchCalls += 1;
+        seenAuthorization.push(new Headers(init.headers).get("authorization") ?? "");
+        return new Response(JSON.stringify({ data: { call: fetchCalls } }), {
+          headers: { "content-type": "application/json" },
+        });
+      },
+    });
+    const offers = await adapter.start();
+    const request = createTransportRequest({
+      method: "GET",
+      url: "/api/private",
+      headers: { "x-visible": "ok" },
+      sensitive: { headers: ["x-visible"] },
+    });
+
+    const first = await adapter.invoke(makeRequest({
+      capability: appRequestCapability,
+      operation: "request",
+      payload: request,
+      requestId: "req-private-1",
+      caller: webCaller("member-1"),
+    }), {});
+    const cached = await adapter.invoke(makeRequest({
+      capability: appRequestCapability,
+      operation: "request",
+      payload: request,
+      requestId: "req-private-2",
+      caller: webCaller("member-1"),
+    }), {});
+    cachePartition = "member-b-session";
+    token = "secret-token-b";
+    const sessionChanged = await adapter.invoke(makeRequest({
+      capability: appRequestCapability,
+      operation: "request",
+      payload: request,
+      requestId: "req-private-3",
+      caller: webCaller("member-1"),
+    }), {});
+    const callerChanged = await adapter.invoke(makeRequest({
+      capability: appRequestCapability,
+      operation: "request",
+      payload: request,
+      requestId: "req-private-4",
+      caller: webCaller("member-2"),
+    }), {});
+
+    assert.deepEqual(first.payload, { call: 1 });
+    assert.deepEqual(cached.payload, { call: 1 });
+    assert.deepEqual(sessionChanged.payload, { call: 2 });
+    assert.deepEqual(callerChanged.payload, { call: 3 });
+    assert.equal(cached.requestId, "req-private-2");
+    assert.equal(fetchCalls, 3);
+    assert.deepEqual(seenAuthorization, ["Bearer secret-token-a", "Bearer secret-token-b", "Bearer secret-token-b"]);
+    const publicState = JSON.stringify({ offers, events, first, cached, sessionChanged, callerChanged });
+    assert.equal(publicState.includes("secret-token"), false);
+    assert.equal(publicState.includes("member-a-session"), false);
+    assert.equal(publicState.includes("member-b-session"), false);
+    await adapter.dispose();
+
+    const failing = target.createAdapter({
+      auth: { current: () => ({ kind: "bearer", scheme: "Bearer", token: "secret-token-c" }) },
+      fetch: async () => {
+        throw new Error("network failed with secret-token-c");
+      },
+    });
+    await failing.start();
+    await assert.rejects(
+      () => failing.invoke(makeRequest({
+        capability: appRequestCapability,
+        operation: "request",
+        payload: createTransportRequest({ method: "GET", url: "/api/fail" }),
+        requestId: "req-private-error",
+        caller: webCaller("member-1"),
+      }), {}),
+      (error: unknown) => typeof (error as { toJSON?: unknown }).toJSON === "function" &&
+        !JSON.stringify((error as { toJSON(): unknown }).toJSON()).includes("secret-token-c"),
+    );
+    await failing.dispose();
+  });
+
+  test(`${target.name} rejects unsupported operations and capabilities before fetch or auth`, async () => {
+    let authCalls = 0;
+    let fetchCalls = 0;
+    const adapter = target.createAdapter({
+      auth: {
+        current() {
+          authCalls += 1;
+          return { kind: "bearer", scheme: "Bearer", token: "secret-token-unsupported" };
+        },
+      },
+      fetch: async () => {
+        fetchCalls += 1;
+        return new Response('{"data":{"unexpected":true}}');
+      },
+    });
+    await adapter.start();
+    const cancelled = createCancellationController();
+    cancelled.cancel("caller-left");
+
+    await assert.rejects(
+      () => adapter.invoke(makeRequest({
+        capability: appRequestCapability,
+        operation: "request",
+        payload: createTransportRequest({ method: "GET", url: "/api/pre-cancelled" }),
+        requestId: "req-pre-cancelled-http",
+        caller: webCaller("member-1"),
+      }), { cancellation: cancelled.signal }),
+      (error: unknown) => error instanceof CancelledError && error.code === "operation_cancelled",
+    );
+    await assert.rejects(
+      () => adapter.invoke(makeRequest({
+        capability: reportsCapability,
+        operation: "list",
+        payload: null,
+        requestId: "req-unsupported-capability-http",
+        caller: webCaller("member-1"),
+      }), {}),
+      (error: unknown) => error instanceof UnsupportedCapabilityError && error.code === "unsupported_capability",
+    );
+    await assert.rejects(
+      () => adapter.invoke(makeRequest({
+        capability: appRequestCapability,
+        operation: "discover",
+        payload: createTransportRequest({ method: "GET", url: "/api/discover" }),
+        requestId: "req-unsupported-operation-http",
+        caller: webCaller("member-1"),
+      }), {}),
+      (error: unknown) => error instanceof ProtocolError && error.code === "unsupported_web_runtime_operation",
+    );
+    assert.equal(authCalls, 0);
+    assert.equal(fetchCalls, 0);
+    await adapter.dispose();
+  });
+
+  test(`${target.name} aborts cancelled fetches when possible and ignores late responses`, async () => {
+    const cancellation = createCancellationController();
+    let capturedSignal: AbortSignal | undefined;
+    let markEntered: (() => void) | undefined;
+    let releaseLate: ((response: Response) => void) | undefined;
+    const entered = new Promise<void>((resolve) => {
+      markEntered = resolve;
+    });
+    const lateResponse = new Promise<Response>((resolve) => {
+      releaseLate = resolve;
+    });
+    const adapter = target.createAdapter({
+      fetch: async (_input, init = {}) => {
+        capturedSignal = init.signal ?? undefined;
+        markEntered?.();
+        return lateResponse;
+      },
+    });
+    await adapter.start();
+
+    const pending = adapter.invoke(makeRequest({
+      capability: appRequestCapability,
+      operation: "request",
+      payload: createTransportRequest({ method: "GET", url: "/api/slow" }),
+      requestId: "req-cancel-late-http",
+      caller: webCaller("member-1"),
+    }), { cancellation: cancellation.signal });
+    await entered;
+    cancellation.cancel("route-change");
+    await assert.rejects(
+      () => pending,
+      (error: unknown) => error instanceof CancelledError && JSON.stringify(error.details).includes("route-change"),
+    );
+    assert.equal(capturedSignal?.aborted, true);
+    releaseLate?.(new Response('{"data":{"late":true}}', { headers: { "content-type": "application/json" } }));
+    await new Promise<void>((resolve) => {
+      setImmediate(resolve);
+    });
+    await adapter.dispose();
+  });
+}
+
+function webCaller(memberId: string): CallerContext {
+  return Object.freeze({
+    surface: "web",
+    principal: { kind: "member" as const, id: memberId },
+    app: { id: "app-1" },
+    origin: "https://app.example.test",
+  });
+}
+
 function makeRequest(options: {
   readonly capability: { readonly id: string; readonly major: number; readonly minMinor?: number };
   readonly operation: string;
-  readonly payload: WireValue;
+  readonly payload: unknown;
   readonly requestId: string;
   readonly caller?: CallerContext;
 }): OperationRequest {
@@ -358,6 +677,6 @@ function makeRequest(options: {
     operation: options.operation,
     caller: createInvocationContext(caller, options.requestId, 100, "conformance"),
     callerFingerprint: createCallerFingerprint(caller),
-    payload: options.payload,
+    payload: options.payload as WireValue,
   };
 }
