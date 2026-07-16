@@ -1,5 +1,6 @@
 import type { CapabilityOffer, CapabilityRequirement } from "../core/capabilities.js";
 import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
+import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
 import { ProtocolError } from "../core/errors.js";
 import { LifecycleError } from "../core/lifecycle.js";
 import type {
@@ -29,6 +30,14 @@ import {
   type TransportSensitivityInput,
   type WebSessionTransportAuthProof,
 } from "../transports/index.js";
+import {
+  createWebRuntimeCache,
+  rebindResponseRequestId,
+  waitForWebResponse,
+  type WebRuntimeCacheOptions,
+} from "./runtime-cache.js";
+
+export type { WebRuntimeCacheOptions } from "./runtime-cache.js";
 
 export const HOLM_APP_HTTP_CAPABILITY = Object.freeze({
   id: "holm.http.app",
@@ -60,7 +69,11 @@ export interface WebRuntimeOptions {
   readonly auth?: TransportAuthProvider;
   readonly clock?: Clock;
   readonly scheduler?: Scheduler;
+  readonly cache?: false | WebRuntimeCacheOptions;
+  readonly diagnostics?: HolmDiagnosticsSink;
 }
+
+const webRuntimeCacheTag = "web:http";
 
 export function webRuntime(options: WebRuntimeOptions = {}): RuntimeAdapter {
   const id = normalizeRuntimeId(options.id ?? "web-fetch");
@@ -69,9 +82,48 @@ export function webRuntime(options: WebRuntimeOptions = {}): RuntimeAdapter {
   const auth = options.auth ?? defaultWebSessionAuth;
   const clock = options.clock ?? createWebClock();
   const scheduler = options.scheduler ?? createWebScheduler();
+  const cache = createWebRuntimeCache(options.cache, clock, scheduler, options.diagnostics);
   const active = new Set<AbortController>();
   let started = false;
   let disposed = false;
+
+  async function executeFetch(
+    authenticated: AuthenticatedTransportRequest,
+    url: string,
+    requestId: string,
+    cancellation?: CancellationSignal,
+  ): Promise<OperationResponse> {
+    const controller = new AbortController();
+    active.add(controller);
+    const unsubscribe = cancellation?.onCancel(() => controller.abort());
+    try {
+      const response = await fetchImplementation(
+        url,
+        createFetchInit(authenticated.request, authenticated.privateProof, controller.signal),
+      );
+      throwIfCancelled(cancellation);
+      throwIfRuntimeDisposed(disposed);
+      const body = await readFetchResponseBody(response, authenticated.request.responseMode);
+      throwIfCancelled(cancellation);
+      throwIfRuntimeDisposed(disposed);
+      return decodeTransportResponse({
+        requestId,
+        status: response.status,
+        body,
+        responseMode: authenticated.request.responseMode,
+        headers: readFetchResponseHeaders(response.headers),
+        url: response.url || url,
+      });
+    } catch (error) {
+      throw normalizeTransportError(error, {
+        request: authenticated.request,
+        ...(cancellation === undefined ? {} : { cancellation }),
+      });
+    } finally {
+      unsubscribe?.();
+      active.delete(controller);
+    }
+  }
 
   return Object.freeze({
     id,
@@ -90,33 +142,32 @@ export function webRuntime(options: WebRuntimeOptions = {}): RuntimeAdapter {
       const authenticated = await authenticateWebRequest(transportRequest, auth, control.cancellation);
       throwIfRuntimeDisposed(disposed);
       const url = createWebRequestUrl(authenticated.request, baseUrl);
-      const controller = new AbortController();
-      active.add(controller);
-      const unsubscribe = control.cancellation?.onCancel(() => controller.abort());
-      try {
-        const response = await fetchImplementation(url, createFetchInit(authenticated.request, authenticated.privateProof, controller.signal));
-        throwIfCancelled(control.cancellation);
-        throwIfRuntimeDisposed(disposed);
-        const body = await readFetchResponseBody(response, authenticated.request.responseMode);
-        throwIfCancelled(control.cancellation);
-        throwIfRuntimeDisposed(disposed);
-        return decodeTransportResponse({
-          requestId: request.requestId,
-          status: response.status,
-          body,
-          responseMode: authenticated.request.responseMode,
-          headers: readFetchResponseHeaders(response.headers),
-          url: response.url || url,
-        });
-      } catch (error) {
-        throw normalizeTransportError(error, {
-          request: authenticated.request,
-          ...(control.cancellation === undefined ? {} : { cancellation: control.cancellation }),
-        });
-      } finally {
-        unsubscribe?.();
-        active.delete(controller);
+      const partition = Object.freeze({
+        source: Object.freeze({ id, surface: "web" as const }),
+        callerFingerprint: request.callerFingerprint,
+      });
+
+      if (cache !== undefined && authenticated.request.method === "GET") {
+        const cached = cache.instance.getOrLoad(
+          {
+            partition,
+            request: authenticated.request,
+            policy: cache.policy,
+            tags: [webRuntimeCacheTag],
+          },
+          () => executeFetch(authenticated, url, request.requestId),
+        );
+        return rebindResponseRequestId(
+          await waitForWebResponse(cached, control.cancellation),
+          request.requestId,
+        );
       }
+
+      const response = await executeFetch(authenticated, url, request.requestId, control.cancellation);
+      if (cache !== undefined) {
+        cache.instance.invalidateForMutation({ partition, tags: [webRuntimeCacheTag] });
+      }
+      return response;
     },
     async dispose(): Promise<void> {
       if (disposed) {
@@ -124,6 +175,7 @@ export function webRuntime(options: WebRuntimeOptions = {}): RuntimeAdapter {
       }
       disposed = true;
       started = false;
+      cache?.instance.clear();
       for (const controller of active) {
         controller.abort();
       }

@@ -178,8 +178,16 @@ test("generated ESM artifact exposes the Issue 007 web Fetch runtime", async () 
     payload: createTransportRequest({ method: "GET", url: "/api/me" }),
     requestId: "req-dist-web",
   });
+  const cached = await holm.invoke({
+    capability: HOLM_APP_HTTP_CAPABILITY,
+    operation: WEB_HTTP_REQUEST_OPERATION,
+    payload: createTransportRequest({ method: "GET", url: "/api/me" }),
+    requestId: "req-dist-web-cached",
+  });
 
   assert.deepEqual(response.payload, { member: { id: "member_dist" } });
+  assert.equal(cached.requestId, "req-dist-web-cached");
+  assert.equal(calls.length, 1);
   assert.equal(calls[0].input, "https://app.example.test/api/me");
   assert.equal(calls[0].init.credentials, "same-origin");
   await holm.dispose();

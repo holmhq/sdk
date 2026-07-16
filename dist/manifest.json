@@ -601,14 +601,14 @@
       "sha256": "7f67bcbba431c247076876c9bb052d42d190b5f6687674af0485ab90882f423c"
     },
     {
-      "bytes": 719,
+      "bytes": 743,
       "path": "dist/web/index.d.ts",
-      "sha256": "bc81d701317b02203bb692a8ab9a0491fb8bcca7a23385aba1241044a3441f62"
+      "sha256": "5b5ceae854260dd1998594e6efabd4d60dbdad611226c765329dd39a957116a3"
     },
     {
-      "bytes": 599,
+      "bytes": 611,
       "path": "dist/web/index.d.ts.map",
-      "sha256": "6b5d9531cb6569ffaec1e7124e190cd79bda878fa2ec1b42a3b84639fbe558a5"
+      "sha256": "869fec63a4d5824718bea3f7083945638cfa3119b5fb97ed58e6de2a13a64dc3"
     },
     {
       "bytes": 776,
@@ -621,24 +621,44 @@
       "sha256": "3d02f3addac3e0f6dd45b957d6cc210455585aab51568522c47dd0736911d766"
     },
     {
-      "bytes": 669,
+      "bytes": 1046,
+      "path": "dist/web/runtime-cache.d.ts",
+      "sha256": "38ee0128f7db388f42002c18e0e1815b911cf7ce4481755e5029c9a4c86cddca"
+    },
+    {
+      "bytes": 950,
+      "path": "dist/web/runtime-cache.d.ts.map",
+      "sha256": "60c03ebb09193e8ca8e956bd3ba07708b18946ff9730a55df4b7193e97506e09"
+    },
+    {
+      "bytes": 1886,
+      "path": "dist/web/runtime-cache.js",
+      "sha256": "9e0cd43e27c23d39ceac788434ff9c7f774b9a3b52f458bf54300bb7f1569c3d"
+    },
+    {
+      "bytes": 2006,
+      "path": "dist/web/runtime-cache.js.map",
+      "sha256": "154282822eb738c8755c90098870a0231de95e74bd13faa8bfafc802b6baacc4"
+    },
+    {
+      "bytes": 969,
       "path": "dist/web/runtime.d.ts",
-      "sha256": "649b02db51147639fd45ee1fa50912cf5e4409fcfe540b6782c6910ef98236fa"
+      "sha256": "4bd39d912791ec61d8d711513164634a9b1fc78a65399a2b98f0b3ada2ecad18"
     },
     {
-      "bytes": 649,
+      "bytes": 891,
       "path": "dist/web/runtime.d.ts.map",
-      "sha256": "24f51ad3e6a347d5f44d9fb1a34da420af88af731eb3aee768584d2902d836c1"
+      "sha256": "8d277dd949fe9db077826e9e800689819783d348dde95ccfdf7be5840ccad0a2"
     },
     {
-      "bytes": 13878,
+      "bytes": 15055,
       "path": "dist/web/runtime.js",
-      "sha256": "9c21de7a59f09fa7f34d7d6693e138264b2ca5380c013a682d2596903f9b4c64"
+      "sha256": "dd600871f53e74d30d9b64e1e8386a5b9161a3496379397fdfc57774170a7a48"
     },
     {
-      "bytes": 13998,
+      "bytes": 15097,
       "path": "dist/web/runtime.js.map",
-      "sha256": "5b55622521eb9566c187aedcca635445e96747db0f27c1826725059170d1ecfd"
+      "sha256": "3d7fec65ad00a81bcc35e44db44feaf0f85fb682c116c53aeddca07dd6ca811f"
     },
     {
       "bytes": 980,

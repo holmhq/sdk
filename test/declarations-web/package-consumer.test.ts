@@ -5,15 +5,18 @@ import {
   createWebSessionAuth,
   createWebUploadFile,
   webRuntime,
+  type WebRuntimeCacheOptions,
   type WebRuntimeOptions,
   type WebUploadBlobLike,
 } from "@holmhq/sdk/web";
 
 const auth = createWebSessionAuth({ credentials: "same-origin" });
+const cache: WebRuntimeCacheOptions = { ttlMs: 30_000, swrMs: 60_000, maxEntries: 100 };
 const options: WebRuntimeOptions = {
   baseUrl: new URL("https://app.example.test/"),
   fetch,
   auth,
+  cache,
 };
 const runtime: RuntimeAdapter = webRuntime(options);
 const capability: CapabilityRequirement = HOLM_APP_HTTP_CAPABILITY;
@@ -31,6 +34,7 @@ const uploadFile = createWebUploadFile({ field: "web", blob: blobLike, name: "we
 createWebSessionAuth({ credentials: "always" });
 
 void runtime;
+void cache;
 void capability;
 void operation;
 void uploadFile;

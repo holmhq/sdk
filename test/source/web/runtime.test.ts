@@ -15,6 +15,7 @@ import {
 } from "../../../src/core/index.js";
 import { createFakeClock } from "../../../src/test/index.js";
 import {
+  RemoteError,
   TransportError,
   createTransportRequest,
 } from "../../../src/transports/index.js";
@@ -89,6 +90,115 @@ test("web runtime invokes Holm app HTTP through Fetch with private session crede
   assert.equal(headers.has("authorization"), false);
 
   await holm.dispose();
+});
+
+test("web runtime deduplicates caller-partitioned GETs without reusing response request IDs", async () => {
+  const fake = createFakeClock(100);
+  let releaseFetch: (() => void) | undefined;
+  const fetchGate = new Promise<void>((resolve) => {
+    releaseFetch = resolve;
+  });
+  let fetchCalls = 0;
+  const runtime = webRuntime({
+    fetch: async () => {
+      fetchCalls += 1;
+      await fetchGate;
+      return new Response('{"data":{"items":["one"]}}', {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    },
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+  });
+  await runtime.start();
+
+  const request = createTransportRequest({ method: "GET", url: "/api/items", params: { page: 1 } });
+  const first = runtime.invoke(operationRequest(request, "req-cache-1"), {});
+  const second = runtime.invoke(operationRequest(request, "req-cache-2"), {});
+  await Promise.resolve();
+  await Promise.resolve();
+  releaseFetch?.();
+  const [firstResponse, secondResponse] = await Promise.all([first, second]);
+
+  assert.equal(fetchCalls, 1);
+  assert.equal(firstResponse.requestId, "req-cache-1");
+  assert.equal(secondResponse.requestId, "req-cache-2");
+  assert.deepEqual(firstResponse.payload, { items: ["one"] });
+  assert.deepEqual(secondResponse.payload, { items: ["one"] });
+  await runtime.dispose();
+});
+
+test("web runtime cache partitions callers, invalidates mutations, retries errors, and can be disabled", async () => {
+  const fake = createFakeClock(500);
+  let calls = 0;
+  const fixtureFetch: typeof fetch = async (_input, init = {}) => {
+    calls += 1;
+    if (calls === 5) {
+      return new Response('{"error":{"code":"temporary","message":"Retry"}}', {
+        status: 503,
+        headers: { "content-type": "application/json" },
+      });
+    }
+    return new Response(JSON.stringify({ data: { call: calls, method: init.method } }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  const runtime = webRuntime({
+    fetch: fixtureFetch,
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    cache: { ttlMs: 100, swrMs: 0, maxEntries: 4 },
+  });
+  await runtime.start();
+  const get = createTransportRequest({ method: "GET", url: "/api/items" });
+  const post = createTransportRequest({
+    method: "POST",
+    url: "/api/items",
+    body: { mode: "json", value: { label: "new" } },
+  });
+
+  const alphaFirst = await runtime.invoke(operationRequest(get, "req-alpha-1", "caller-alpha"), {});
+  const alphaCached = await runtime.invoke(operationRequest(get, "req-alpha-2", "caller-alpha"), {});
+  const betaFirst = await runtime.invoke(operationRequest(get, "req-beta-1", "caller-beta"), {});
+  await runtime.invoke(operationRequest(post, "req-alpha-post", "caller-alpha"), {});
+  const alphaReloaded = await runtime.invoke(operationRequest(get, "req-alpha-3", "caller-alpha"), {});
+  const betaCached = await runtime.invoke(operationRequest(get, "req-beta-2", "caller-beta"), {});
+
+  assert.deepEqual(alphaFirst.payload, { call: 1, method: "GET" });
+  assert.deepEqual(alphaCached.payload, { call: 1, method: "GET" });
+  assert.deepEqual(betaFirst.payload, { call: 2, method: "GET" });
+  assert.deepEqual(alphaReloaded.payload, { call: 4, method: "GET" });
+  assert.deepEqual(betaCached.payload, { call: 2, method: "GET" });
+  assert.equal(betaCached.requestId, "req-beta-2");
+  assert.equal(calls, 4);
+
+  fake.advanceBy(101);
+  await assert.rejects(
+    () => runtime.invoke(operationRequest(get, "req-alpha-error", "caller-alpha"), {}),
+    (error: unknown) => error instanceof RemoteError && error.code === "temporary",
+  );
+  const retried = await runtime.invoke(operationRequest(get, "req-alpha-retry", "caller-alpha"), {});
+  assert.deepEqual(retried.payload, { call: 6, method: "GET" });
+  assert.equal(calls, 6);
+  await runtime.dispose();
+
+  let uncachedCalls = 0;
+  const uncached = webRuntime({
+    cache: false,
+    fetch: async () => {
+      uncachedCalls += 1;
+      return new Response(JSON.stringify({ data: { call: uncachedCalls } }), {
+        headers: { "content-type": "application/json" },
+      });
+    },
+  });
+  await uncached.start();
+  await uncached.invoke(operationRequest(get, "req-uncached-1"), {});
+  await uncached.invoke(operationRequest(get, "req-uncached-2"), {});
+  assert.equal(uncachedCalls, 2);
+  await uncached.dispose();
 });
 
 test("web runtime encodes bearer-authenticated JSON and preserves raw responses", async () => {
@@ -179,6 +289,9 @@ test("web runtime sends and receives copied binary bodies through Fetch", async 
 test("web runtime validates construction, operation payloads, and adapter lifecycle", async () => {
   assert.throws(() => webRuntime({ id: " " }), /runtime id/);
   assert.throws(() => webRuntime({ baseUrl: "relative" }), /baseUrl/);
+  assert.throws(() => webRuntime({ cache: { ttlMs: -1 } }), /cache ttlMs/);
+  assert.throws(() => webRuntime({ cache: { swrMs: Number.NaN } }), /cache swrMs/);
+  assert.throws(() => webRuntime({ cache: { maxEntries: 0 } }), /maxEntries/);
 
   const fetchDescriptor = Object.getOwnPropertyDescriptor(globalThis, "fetch");
   try {
@@ -376,7 +489,11 @@ function basicRequest(requestId: string): OperationRequest {
   return operationRequest(createTransportRequest({ method: "GET", url: "/api/health", responseMode: "raw" }), requestId);
 }
 
-function operationRequest(payload: unknown, requestId = "req-web-direct"): OperationRequest {
+function operationRequest(
+  payload: unknown,
+  requestId = "req-web-direct",
+  callerFingerprint = "caller:v1:web-test",
+): OperationRequest {
   return {
     requestId,
     capability: HOLM_APP_HTTP_CAPABILITY,
@@ -387,7 +504,7 @@ function operationRequest(payload: unknown, requestId = "req-web-direct"): Opera
       invocationId: requestId,
       startedAt: 0,
     },
-    callerFingerprint: "caller:v1:web-test",
+    callerFingerprint,
     payload: payload as WireValue,
   };
 }
