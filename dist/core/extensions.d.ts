@@ -2,7 +2,7 @@ import { type CapabilityOffer, type CapabilityRequirement, type CapabilityVersio
 import { HolmError } from "./errors.js";
 import { type LifecycleSnapshot } from "./lifecycle.js";
 import type { InvocationControl, OperationResponse } from "./runtime.js";
-export type ReadonlyDeep<T> = T extends (...args: infer Args) => infer Return ? (...args: Args) => Return : T extends readonly (infer Item)[] ? readonly ReadonlyDeep<Item>[] : T extends object ? {
+export type ReadonlyDeep<T> = T extends (...args: never[]) => unknown ? T : T extends readonly (infer Item)[] ? readonly ReadonlyDeep<Item>[] : T extends object ? {
     readonly [Key in keyof T]: ReadonlyDeep<T[Key]>;
 } : T;
 export interface ExtensionRequirement {

@@ -5,6 +5,14 @@ import { readJson, sha256, stableJson } from "./lib/artifacts.mjs";
 
 const budgets = new Map([
   ["dist/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/app/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/app/auth.js", { rawBudget: 6144, gzipBudget: 2048 }],
+  ["dist/app/extension.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/app/http.js", { rawBudget: 6144, gzipBudget: 2048 }],
+  ["dist/app/links.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/app/pagination.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/app/surface.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/app/upload.js", { rawBudget: 2048, gzipBudget: 1024 }],
   ["dist/core/index.js", { rawBudget: 2048, gzipBudget: 768 }],
   ["dist/core/caller.js", { rawBudget: 6144, gzipBudget: 2048 }],
   ["dist/core/capabilities.js", { rawBudget: 10240, gzipBudget: 3072 }],
@@ -20,9 +28,16 @@ const budgets = new Map([
   ["dist/transports/index.js", { rawBudget: 16384, gzipBudget: 3584 }],
   ["dist/transports/response.js", { rawBudget: 12288, gzipBudget: 3584 }],
   ["dist/transports/sensitivity.js", { rawBudget: 8192, gzipBudget: 2560 }],
-  ["dist/web/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/web/index.js", { rawBudget: 2048, gzipBudget: 768 }],
+  ["dist/web/app.js", { rawBudget: 6144, gzipBudget: 2048 }],
+  ["dist/web/auth.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/web/bootstrap.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/web/caller.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/web/lifecycle.js", { rawBudget: 6144, gzipBudget: 2048 }],
+  ["dist/web/navigation.js", { rawBudget: 2048, gzipBudget: 1024 }],
   ["dist/web/runtime.js", { rawBudget: 16384, gzipBudget: 4096 }],
   ["dist/web/runtime-cache.js", { rawBudget: 4096, gzipBudget: 1536 }],
+  ["dist/web/upload-service.js", { rawBudget: 16384, gzipBudget: 4096 }],
   ["dist/node/index.js", { rawBudget: 1024, gzipBudget: 512 }],
 ]);
 const targets = [...budgets].map(([path, budget]) => ({ path, ...budget }));

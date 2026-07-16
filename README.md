@@ -33,19 +33,20 @@ how operations cross a boundary; a framework binding adapts immutable resource
 snapshots and subscriptions to the host framework.
 
 ```ts
-const holm = createHolm({ runtime: webRuntime() })
+import { createWebApp } from '@holmhq/sdk/web'
 
-const usage = holm.query({
-  key: ['usage', range],
-  load: () => holm.http.get('/api/usage', { params: { range } }),
-  ttl: 30_000,
+const holm = createWebApp()
+const member = await holm.app.auth.me()
+const usage = await holm.app.http.get('/api/usage', {
+  params: { range: 'month' },
 })
 
-usage.getSnapshot()
-usage.subscribe(render)
+await holm.dispose()
 ```
 
-The API above is illustrative, not yet a frozen contract.
+The package remains pre-release, but the web/app slice above is executable and
+covered by source, declaration-consumer, generated-artifact, raw BFBB, and Vite
+build tests.
 
 ## Surfaces
 
@@ -74,6 +75,7 @@ Expected entry points and artifacts will be validated before they are frozen:
 ```text
 @holmhq/sdk
 @holmhq/sdk/web
+@holmhq/sdk/app
 @holmhq/sdk/node
 @holmhq/sdk/state
 @holmhq/sdk/react
@@ -161,6 +163,8 @@ npm run test:types       # prove runtime-specific ambient types stay opt-in
 npm run test:source      # run source-level tests through the TS harness
 npm run test:declarations # type-test package declarations from a consumer fixture
 npm run test:dist        # smoke-test generated ESM artifacts
+npm run test:examples    # execute raw BFBB import + build the Vite example
+npm run test:holm-smoke  # optional read-only /api/me smoke via HOLM_SMOKE_URL
 npm run test:coverage    # enforce native node:test coverage and compact measured metrics
 npm run coverage         # alias for test:coverage
 npm run check:licenses   # verify package privacy and MIT-compatible locked licenses

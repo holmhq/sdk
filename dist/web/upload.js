@@ -1,6 +1,7 @@
 import { createUploadFile, } from "../transports/upload.js";
 export function createWebUploadFile(options) {
-    const type = normalizeWebUploadType(options.type ?? options.blob.type ?? "application/octet-stream");
+    const inferredType = options.blob.type?.trim() ? options.blob.type : "application/octet-stream";
+    const type = normalizeWebUploadType(options.type ?? inferredType);
     return createUploadFile({
         field: options.field,
         name: options.name ?? "blob",

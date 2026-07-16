@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-16
 tags: web, app-client, auth, browser, migration
 parent: 001
 depends_on: [005, 006]
@@ -39,20 +39,34 @@ selectively into the new runtime/resource contracts rather than copied blindly.
 
 ## Acceptance Criteria
 
-- [ ] Browser tests run against a deterministic Holm-shaped HTTP fixture and at
+- [x] Browser tests run against a deterministic Holm-shaped HTTP fixture and at
       least one real/local Holm smoke when available.
-- [ ] Custom app routes receive the same cache/dedup/error behavior as wrapped
+- [x] Custom app routes receive the same cache/dedup/error behavior as wrapped
       platform routes.
-- [ ] Cookie and explicit-token auth do not leak across client instances.
-- [ ] Redirect/navigation helpers are optional browser services, not core
+- [x] Cookie and explicit-token auth do not leak across client instances.
+- [x] Redirect/navigation helpers are optional browser services, not core
       `window` references.
-- [ ] Upload progress has a standards path and a clearly isolated fallback.
-- [ ] `__HOLM_SURFACES__` compatibility is mapped behind an adapter/bootstrap
+- [x] Upload progress has a standards path and a clearly isolated fallback.
+- [x] `__HOLM_SURFACES__` compatibility is mapped behind an adapter/bootstrap
       boundary.
-- [ ] Every current `app.audit.js` route is classified adopted, redesigned,
+- [x] Every current `app.audit.js` route is classified adopted, redesigned,
       deferred, or intentionally unsupported.
-- [ ] Raw BFBB and Vite-built examples both pass.
-- [ ] No npm publication is needed; generated ESM can be imported locally.
+- [x] Raw BFBB and Vite-built examples both pass.
+- [x] No npm publication is needed; generated ESM can be imported locally.
+
+## Implementation Evidence
+
+- Route classification and current Holm authority pin:
+  `koder/evidence/003_issue007_app_routes/` at Holm
+  `8deb00b7aa1cc07f39665fde6e81c1b33d3620c4` (`v0.185.0`).
+- Runtime-neutral app namespace: `src/app/`; browser adapters and convenience
+  composition: `src/web/`.
+- Deterministic source tests: `test/source/app/` and `test/source/web/`;
+  declaration and generated ESM consumers cover both `/app` and `/web`.
+- Raw BFBB and Vite production builds pass via `npm run test:examples`.
+- Full local `npm run ci` passed with reproducible tracked `dist/`, measured
+  coverage, license allowlist, and per-module size budgets. Independent review
+  and final read-only Holm-authority acceptance remain the issue close gates.
 
 ## Non-Goals
 

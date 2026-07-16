@@ -60,7 +60,7 @@ test("Issue 007 classifies every live app.audit.js route at a named Holm commit"
   assert.equal(audit.schema, "holm.sdk.app-route-audit/1");
   assert.deepEqual(audit.source, {
     repository: "holmhq/holm",
-    commit: "858224c81098eb6fd254aa214924ccbbf4e8a69e",
+    commit: "8deb00b7aa1cc07f39665fde6e81c1b33d3620c4",
     path: "packages/holm-sdk/app.audit.js",
   });
   assert.deepEqual(

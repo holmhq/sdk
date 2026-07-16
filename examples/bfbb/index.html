@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Holm SDK BFBB example</title>
+  </head>
+  <body>
+    <pre id="status">Loading…</pre>
+    <script type="module">
+      import { createBfbbApp } from "./app.js";
+
+      const app = createBfbbApp();
+      const status = document.querySelector("#status");
+      app.app.auth.me()
+        .then((member) => { status.textContent = JSON.stringify(member, null, 2); })
+        .catch((error) => { status.textContent = error.message; });
+    </script>
+  </body>
+</html>

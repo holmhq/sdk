@@ -46,6 +46,12 @@ import {
   type UploadProgressEvent,
   type UploadSession,
 } from "@holmhq/sdk/transports";
+import {
+  HOLM_APP_HTTP_CAPABILITY,
+  createAppExtension,
+  type AppUploadService,
+  type CompleteMagicLinkInput,
+} from "@holmhq/sdk/app";
 import { createNodeTokenAuth, createNodeUploadFile } from "@holmhq/sdk/node";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "@holmhq/sdk/test";
 import {
@@ -95,6 +101,16 @@ const runtime: RuntimeAdapter = {
     return undefined;
   },
 };
+const appUploadService: AppUploadService = {
+  upload: (request) => ({ path: request.path }),
+};
+const appExtension = createAppExtension({ uploads: appUploadService });
+const appCapability: CapabilityOffer = {
+  id: HOLM_APP_HTTP_CAPABILITY.id,
+  origin: "runtime",
+  version: { major: 1, minor: 0 },
+};
+const magicInput: CompleteMagicLinkInput = { token: "declaration-token" };
 const reportsExtension = {
   id: "com.example.reports",
   namespace: "reports",
@@ -200,6 +216,9 @@ void fingerprint;
 void runtime;
 void runtimeEnvelopeProtocol;
 void extensionLifecycle;
+void appExtension;
+void appCapability;
+void magicInput;
 void holm;
 void stateController;
 void stateResource;

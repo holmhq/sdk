@@ -29,6 +29,10 @@
       "types": "./dist/web/index.d.ts",
       "import": "./dist/web/index.js"
     },
+    "./app": {
+      "types": "./dist/app/index.d.ts",
+      "import": "./dist/app/index.js"
+    },
     "./node": {
       "types": "./dist/node/index.d.ts",
       "import": "./dist/node/index.js"
@@ -54,18 +58,21 @@
     "build": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.build.json && npm run check:licenses && npm run size && node scripts/write-dist-manifest.mjs",
     "check:licenses": "node scripts/check-licenses.mjs",
     "check:repro": "node scripts/check-repro.mjs",
-    "ci": "npm run typecheck:core && npm run test:types && npm run test:source && npm run check:repro && npm run test:declarations && npm run test:dist && npm run test:coverage && npm run check:licenses && npm run size",
+    "ci": "npm run typecheck:core && npm run test:types && npm run test:source && npm run check:repro && npm run test:declarations && npm run test:dist && npm run test:examples && npm run test:coverage && npm run check:licenses && npm run size",
     "coverage": "npm run test:coverage",
     "size": "node scripts/size.mjs",
     "test:coverage": "node scripts/coverage.mjs && node scripts/check-coverage-summary.mjs",
     "typecheck:core": "tsc -p tsconfig.core.json --noEmit",
     "test:declarations": "tsc -p tsconfig.test-declarations.json --noEmit && tsc -p tsconfig.test-declarations-web.json --noEmit",
     "test:dist": "node --test test/dist/index.test.mjs",
+    "test:examples": "node scripts/test-examples.mjs",
+    "test:holm-smoke": "node scripts/holm-app-smoke.mjs",
     "test:source": "node scripts/test-source.mjs",
     "test:types": "tsc -p tsconfig.test-types.core.json --noEmit && tsc -p tsconfig.test-types.web.json --noEmit && tsc -p tsconfig.test-types.node.json --noEmit"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vite": "^6.4.3"
   }
 }

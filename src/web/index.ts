@@ -1,9 +1,21 @@
+export { createWebApp } from "./app.js";
+export type { WebApp, WebAppOptions } from "./app.js";
+
 export {
   HOLM_APP_HTTP_CAPABILITY,
   WEB_HTTP_REQUEST_OPERATION,
   webRuntime,
 } from "./runtime.js";
 export type { WebRuntimeCacheOptions, WebRuntimeOptions } from "./runtime.js";
+
+export {
+  createWebUploadService,
+  WEB_UPLOAD_PROGRESS_MODE,
+} from "./upload-service.js";
+export type {
+  WebUploadService,
+  WebUploadServiceOptions,
+} from "./upload-service.js";
 
 export {
   createWebUploadFile,
@@ -16,27 +28,36 @@ export type {
   WebUploadFileOptions,
 } from "./upload.js";
 
-import type { TransportAuthProvider, WebSessionTransportAuthProof } from "../transports/index.js";
+export { createWebSessionAuth, createWebTokenAuth } from "./auth.js";
+export type {
+  WebSessionAuthOptions,
+  WebSessionCredentials,
+  WebTokenAuthOptions,
+} from "./auth.js";
 
-export type WebSessionCredentials = "same-origin" | "include" | "omit";
+export { createWebCaller } from "./caller.js";
+export type {
+  WebCallerOptions,
+  WebCallerValueSource,
+} from "./caller.js";
 
-export interface WebSessionAuthOptions {
-  readonly credentials?: WebSessionCredentials;
-}
+export { readWebAppSurfaceBootstrap } from "./bootstrap.js";
+export type {
+  WebAppSurfaceBootstrapOptions,
+  WebSurfaceRuntimeGlobal,
+} from "./bootstrap.js";
 
-export function createWebSessionAuth(options: WebSessionAuthOptions = {}): TransportAuthProvider {
-  const credentials = normalizeCredentials(options.credentials ?? "same-origin");
-  const proof = Object.freeze({ kind: "web-session", credentials }) satisfies WebSessionTransportAuthProof;
-  return Object.freeze({
-    current(): WebSessionTransportAuthProof {
-      return proof;
-    },
-  });
-}
+export { createWebNavigation } from "./navigation.js";
+export type { WebLocationLike } from "./navigation.js";
 
-function normalizeCredentials(credentials: WebSessionCredentials): WebSessionCredentials {
-  if (credentials !== "same-origin" && credentials !== "include" && credentials !== "omit") {
-    throw new TypeError("Web session credentials must be same-origin, include, or omit.");
-  }
-  return credentials;
-}
+export { createWebLifecycle } from "./lifecycle.js";
+export type {
+  WebLifecycle,
+  WebLifecycleEvent,
+  WebLifecycleEventKind,
+  WebLifecycleEventTarget,
+  WebLifecycleListener,
+  WebLifecycleOptions,
+  WebVisibility,
+  WebVisibilitySource,
+} from "./lifecycle.js";

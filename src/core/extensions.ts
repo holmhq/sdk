@@ -13,8 +13,8 @@ import {
 } from "./lifecycle.js";
 import type { InvocationControl, OperationResponse } from "./runtime.js";
 
-export type ReadonlyDeep<T> = T extends (...args: infer Args) => infer Return
-  ? (...args: Args) => Return
+export type ReadonlyDeep<T> = T extends (...args: never[]) => unknown
+  ? T
   : T extends readonly (infer Item)[]
     ? readonly ReadonlyDeep<Item>[]
     : T extends object

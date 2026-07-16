@@ -3,10 +3,7 @@ import type { Clock, RuntimeAdapter, Scheduler } from "../core/runtime.js";
 import { type TransportAuthProvider } from "../transports/index.js";
 import { type WebRuntimeCacheOptions } from "./runtime-cache.js";
 export type { WebRuntimeCacheOptions } from "./runtime-cache.js";
-export declare const HOLM_APP_HTTP_CAPABILITY: Readonly<{
-    id: "holm.http.app";
-    major: 1;
-}>;
+export { APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
 export declare const WEB_HTTP_REQUEST_OPERATION = "request";
 export interface WebRuntimeOptions {
     readonly id?: string;

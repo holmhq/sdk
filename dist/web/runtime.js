@@ -1,14 +1,12 @@
+import { APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
 import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
 import { ProtocolError } from "../core/errors.js";
 import { LifecycleError } from "../core/lifecycle.js";
 import { isReadonlyBytes } from "../core/wire-value.js";
 import { applyTransportAuth, createTransportRequest, decodeTransportResponse, encodeTransportBody, normalizeTransportError, } from "../transports/index.js";
 import { createWebRuntimeCache, rebindResponseRequestId, waitForWebResponse, } from "./runtime-cache.js";
-export const HOLM_APP_HTTP_CAPABILITY = Object.freeze({
-    id: "holm.http.app",
-    major: 1,
-});
-export const WEB_HTTP_REQUEST_OPERATION = "request";
+export { APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
+export const WEB_HTTP_REQUEST_OPERATION = APP_HTTP_REQUEST_OPERATION;
 const appHttpOffer = Object.freeze({
     id: HOLM_APP_HTTP_CAPABILITY.id,
     version: Object.freeze({ major: HOLM_APP_HTTP_CAPABILITY.major, minor: 0 }),

@@ -7,6 +7,7 @@
   },
   "include": [
     "src/index.ts",
+    "src/app/**/*.ts",
     "src/core/**/*.ts",
     "src/transports/**/*.ts",
     "src/state/**/*.ts",

@@ -1,4 +1,8 @@
-import type { CapabilityOffer, CapabilityRequirement } from "../core/capabilities.js";
+import {
+  APP_HTTP_REQUEST_OPERATION,
+  HOLM_APP_HTTP_CAPABILITY,
+} from "../app/protocol.js";
+import type { CapabilityOffer } from "../core/capabilities.js";
 import { CancelledError, throwIfCancelled } from "../core/cancellation.js";
 import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
 import { ProtocolError } from "../core/errors.js";
@@ -39,12 +43,12 @@ import {
 
 export type { WebRuntimeCacheOptions } from "./runtime-cache.js";
 
-export const HOLM_APP_HTTP_CAPABILITY = Object.freeze({
-  id: "holm.http.app",
-  major: 1,
-}) satisfies CapabilityRequirement;
+export {
+  APP_HTTP_REQUEST_OPERATION,
+  HOLM_APP_HTTP_CAPABILITY,
+} from "../app/protocol.js";
 
-export const WEB_HTTP_REQUEST_OPERATION = "request";
+export const WEB_HTTP_REQUEST_OPERATION = APP_HTTP_REQUEST_OPERATION;
 
 const appHttpOffer = Object.freeze({
   id: HOLM_APP_HTTP_CAPABILITY.id,

@@ -20,6 +20,10 @@ import {
   serializeHolmError,
 } from "../../dist/index.js";
 import {
+  createAppExtension,
+  HOLM_APP_HTTP_CAPABILITY as APP_HTTP_CAPABILITY,
+} from "../../dist/app/index.js";
+import {
   applyTransportAuth,
   createTransportCache,
   createTransportCacheKey,
@@ -35,6 +39,7 @@ import { createNodeTokenAuth, createNodeUploadFile } from "../../dist/node/index
 import {
   HOLM_APP_HTTP_CAPABILITY,
   WEB_HTTP_REQUEST_OPERATION,
+  createWebApp,
   createWebSessionAuth,
   createWebUploadFile,
   webRuntime,
@@ -153,6 +158,33 @@ test("generated ESM artifact exposes S09 transport auth and error contracts", as
   assert.equal(JSON.stringify(redactAuthenticatedTransport(authenticated)).includes("dist-secret"), false);
   assert.equal(webAuthenticated.privateProof.credentials, "include");
   assert.deepEqual(decoded.payload, { ok: true });
+});
+
+test("generated ESM artifact exposes the Issue 007 app extension and web composition", async () => {
+  const fetch = async () => new Response('{"data":{"ok":true}}', {
+    headers: { "content-type": "application/json" },
+  });
+  const runtime = webRuntime({ fetch, cache: false });
+  const extension = createAppExtension({ requestId: (sequence) => `dist-app-${sequence}` });
+  const holm = createHolm({
+    runtime,
+    caller: createStaticCallerProvider({ surface: "web", principal: { kind: "browser-session" } }),
+    extensions: [extension],
+  });
+  const response = await holm.app.http.get("/api/check");
+  assert.deepEqual(response, { ok: true });
+  assert.equal(APP_HTTP_CAPABILITY.id, "holm.http.app");
+  await holm.dispose();
+
+  const convenience = createWebApp({
+    runtime: { fetch, cache: false },
+    navigation: false,
+    uploads: false,
+    surfaces: { analytics: "/analytics" },
+  });
+  assert.deepEqual(await convenience.app.auth.me(), { ok: true });
+  assert.equal(convenience.app.surface.analyticsUrl(), "/analytics");
+  await convenience.dispose();
 });
 
 test("generated ESM artifact exposes the Issue 007 web Fetch runtime", async () => {

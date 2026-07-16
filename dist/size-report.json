@@ -13,6 +13,94 @@
     },
     {
       "budgets": {
+        "gzipBytes": 512,
+        "rawBytes": 1024
+      },
+      "gzipBytes": 145,
+      "minifiedBytes": 174,
+      "path": "dist/app/index.js",
+      "rawBytes": 226,
+      "sha256": "2200c94ed93ba530d1f31c27f14a3de5881272c272ee2c96540f4435c8e1a925"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 2048,
+        "rawBytes": 6144
+      },
+      "gzipBytes": 780,
+      "minifiedBytes": 2227,
+      "path": "dist/app/auth.js",
+      "rawBytes": 2975,
+      "sha256": "598dcff40a4110af27579aeb3cd0924509e8330992c8abeae46cc183dd87e7fa"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 446,
+      "minifiedBytes": 1010,
+      "path": "dist/app/extension.js",
+      "rawBytes": 1331,
+      "sha256": "3279a508f94b52acb86b19f7ab2884f52adac6b8e9b4f42e35ef908b8d4beb28"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 2048,
+        "rawBytes": 6144
+      },
+      "gzipBytes": 642,
+      "minifiedBytes": 1937,
+      "path": "dist/app/http.js",
+      "rawBytes": 2663,
+      "sha256": "46abafdcabafdc2da36a6b99fb2709dc062c7f8b5d2ea5f036a638cbcd421dfa"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 448,
+      "minifiedBytes": 1073,
+      "path": "dist/app/links.js",
+      "rawBytes": 1457,
+      "sha256": "3917465b25b9582e267e08ae240c14b91fd810b57f315a4b185bd9edd295b4eb"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 510,
+      "minifiedBytes": 1098,
+      "path": "dist/app/pagination.js",
+      "rawBytes": 1698,
+      "sha256": "3bb94efd9be7e80b74c024a3fb4c9513b49d95aa7caadc3bdb3625a48797440b"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 520,
+      "minifiedBytes": 1473,
+      "path": "dist/app/surface.js",
+      "rawBytes": 1869,
+      "sha256": "c64987842f642f96dcc416dec8272553d96c8866a02833c86dcc45c515d39131"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1024,
+        "rawBytes": 2048
+      },
+      "gzipBytes": 260,
+      "minifiedBytes": 422,
+      "path": "dist/app/upload.js",
+      "rawBytes": 601,
+      "sha256": "75ae0ae3f3da295f8c7d002fa26ec7e8961df6045498c0542271649fb25e46ec"
+    },
+    {
+      "budgets": {
         "gzipBytes": 768,
         "rawBytes": 2048
       },
@@ -178,25 +266,91 @@
     },
     {
       "budgets": {
-        "gzipBytes": 512,
-        "rawBytes": 1024
+        "gzipBytes": 768,
+        "rawBytes": 2048
       },
-      "gzipBytes": 347,
-      "minifiedBytes": 622,
+      "gzipBytes": 263,
+      "minifiedBytes": 530,
       "path": "dist/web/index.js",
-      "rawBytes": 776,
-      "sha256": "01d30dce807f92fa1e39b77a3407a7d60e1a4fc0aa9dda63eb6cfbc108577c20"
+      "rawBytes": 622,
+      "sha256": "20bc18ab60cc49ea47629d02a16d6fa2ef3b6f08c40d81c7ee43db0df85821fb"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 2048,
+        "rawBytes": 6144
+      },
+      "gzipBytes": 602,
+      "minifiedBytes": 1823,
+      "path": "dist/web/app.js",
+      "rawBytes": 2367,
+      "sha256": "ed7d9d95631fc3feef43470ec310f853888dea8a5c3459f20b4fe813bfb4cad8"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 441,
+      "minifiedBytes": 1073,
+      "path": "dist/web/auth.js",
+      "rawBytes": 1399,
+      "sha256": "02e3da2a7064da58d8f16a34b9daa4c368604b28311322284389162c46aedd4f"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 439,
+      "minifiedBytes": 993,
+      "path": "dist/web/bootstrap.js",
+      "rawBytes": 1266,
+      "sha256": "7d450cbabbd7881b19f0a02d57ea53d7e031144fe057d87653380312b327718f"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 534,
+      "minifiedBytes": 1404,
+      "path": "dist/web/caller.js",
+      "rawBytes": 1945,
+      "sha256": "bed8a6781c8b33a403e9a80a8b22f59e37d477207da9dd1c6081544861b85518"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 2048,
+        "rawBytes": 6144
+      },
+      "gzipBytes": 721,
+      "minifiedBytes": 1955,
+      "path": "dist/web/lifecycle.js",
+      "rawBytes": 3070,
+      "sha256": "6b244b7cf912a075ba1770e442c0b86fc8f821b91992a8d4de00dac1e237277c"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1024,
+        "rawBytes": 2048
+      },
+      "gzipBytes": 261,
+      "minifiedBytes": 476,
+      "path": "dist/web/navigation.js",
+      "rawBytes": 710,
+      "sha256": "fb0b50be63ce2174af4978d9b6872ed5140df3cec87364245fe13aadbb393a19"
     },
     {
       "budgets": {
         "gzipBytes": 4096,
         "rawBytes": 16384
       },
-      "gzipBytes": 3314,
-      "minifiedBytes": 11319,
+      "gzipBytes": 3315,
+      "minifiedBytes": 11423,
       "path": "dist/web/runtime.js",
-      "rawBytes": 15055,
-      "sha256": "dd600871f53e74d30d9b64e1e8386a5b9161a3496379397fdfc57774170a7a48"
+      "rawBytes": 15157,
+      "sha256": "d3dd10119401857d9303329ed77e50ea796883320933262d58c626a7e6445b47"
     },
     {
       "budgets": {
@@ -208,6 +362,17 @@
       "path": "dist/web/runtime-cache.js",
       "rawBytes": 1886,
       "sha256": "9e0cd43e27c23d39ceac788434ff9c7f774b9a3b52f458bf54300bb7f1569c3d"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 4096,
+        "rawBytes": 16384
+      },
+      "gzipBytes": 2400,
+      "minifiedBytes": 7978,
+      "path": "dist/web/upload-service.js",
+      "rawBytes": 11086,
+      "sha256": "fd476ee022c94e5ef415eb04eb65da016630e5683e3ec6956c92cf47313c8387"
     },
     {
       "budgets": {
@@ -228,8 +393,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 23866,
-    "minifiedBytes": 79545,
-    "rawBytes": 107433
+    "gzipBytes": 32932,
+    "minifiedBytes": 104673,
+    "rawBytes": 142044
   }
 }

@@ -2,9 +2,14 @@ import type { CapabilityRequirement, RuntimeAdapter } from "@holmhq/sdk";
 import {
   HOLM_APP_HTTP_CAPABILITY,
   WEB_HTTP_REQUEST_OPERATION,
+  createWebApp,
+  createWebCaller,
+  createWebLifecycle,
   createWebSessionAuth,
   createWebUploadFile,
+  createWebUploadService,
   webRuntime,
+  type WebApp,
   type WebRuntimeCacheOptions,
   type WebRuntimeOptions,
   type WebUploadBlobLike,
@@ -19,6 +24,10 @@ const options: WebRuntimeOptions = {
   cache,
 };
 const runtime: RuntimeAdapter = webRuntime(options);
+const caller = createWebCaller({ appId: "app_sales", origin: window.location.origin });
+const uploadService = createWebUploadService({ baseUrl: new URL("https://app.example.test/"), fetch, auth });
+const app: WebApp = createWebApp({ runtime: options, caller, uploads: uploadService });
+const lifecycle = createWebLifecycle({ document, page: window });
 const capability: CapabilityRequirement = HOLM_APP_HTTP_CAPABILITY;
 const operation: "request" = WEB_HTTP_REQUEST_OPERATION;
 const blobLike: WebUploadBlobLike = {
@@ -34,6 +43,10 @@ const uploadFile = createWebUploadFile({ field: "web", blob: blobLike, name: "we
 createWebSessionAuth({ credentials: "always" });
 
 void runtime;
+void caller;
+void uploadService;
+void app;
+void lifecycle;
 void cache;
 void capability;
 void operation;
