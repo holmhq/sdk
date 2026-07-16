@@ -204,6 +204,48 @@ test("web runtime rejects mixed authority separators against ambient browser ori
   assert.equal(fetchCalls, 0);
 });
 
+test("web runtime fails closed on whitespace-prefixed authority requests with no ambient origin", async () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "location");
+  let authCalls = 0;
+  let fetchCalls = 0;
+  try {
+    Reflect.deleteProperty(globalThis, "location");
+    const runtime = webRuntime({
+      auth: {
+        current() {
+          authCalls += 1;
+          return { kind: "bearer", scheme: "Bearer", token: "no-ambient-secret" };
+        },
+      },
+      fetch: async () => {
+        fetchCalls += 1;
+        return new Response('{"data":{"unexpected":true}}', {
+          headers: { "content-type": "application/json" },
+        });
+      },
+    });
+    await runtime.start();
+    for (const bypass of ["\n//evil.example/api/me", " https://evil.example/api/me", "\thttp:evil.example/api/me"]) {
+      await assert.rejects(
+        () => runtime.invoke(
+          operationRequest(createTransportRequest({ method: "GET", url: bypass }), "req-no-ambient"),
+          {},
+        ),
+        (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+      );
+    }
+    await runtime.dispose();
+  } finally {
+    if (descriptor === undefined) {
+      Reflect.deleteProperty(globalThis, "location");
+    } else {
+      Object.defineProperty(globalThis, "location", descriptor);
+    }
+  }
+  assert.equal(authCalls, 0);
+  assert.equal(fetchCalls, 0);
+});
+
 test("web runtime fences cancelled shared GET loads from later cache reads", async () => {
   const cancellation = createCancellationController();
   let fetchCalls = 0;

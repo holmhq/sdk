@@ -1008,17 +1008,17 @@
     {
       "bytes": 263,
       "path": "dist/web/url.d.ts.map",
-      "sha256": "b168cb1c9f711e912c77a1cb6904485bac722a4b60ed46968ae7325eba469284"
+      "sha256": "426030ba5d304571f9f0b344eb0a380b37fdbf3d805378b0e77ce18760c9f567"
     },
     {
-      "bytes": 3084,
+      "bytes": 3583,
       "path": "dist/web/url.js",
-      "sha256": "2b48edf574cbaf19327cdd7d211ddf062f7c2e1a9e4909c274a12980486385b6"
+      "sha256": "1d129f307349f8338a0bd1b0d0911a3836408edb0616837815c7a2001ba81eec"
     },
     {
-      "bytes": 3284,
+      "bytes": 3543,
       "path": "dist/web/url.js.map",
-      "sha256": "b53002633459c5bef82afb888956fcf176941ec11ee35093c1d8819a496ffde8"
+      "sha256": "74f13658934e15f8588ae1e490893aa9ee1b727f5bd15ec4d5e9765115840707"
     }
   ],
   "package": {

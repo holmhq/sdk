@@ -2,8 +2,9 @@ import { ProtocolError } from "../core/errors.js";
 export function resolveWebRequestUrl(value, baseUrl, params = {}) {
     const ambientBase = baseUrl ?? readAmbientBaseUrl();
     if (ambientBase === undefined) {
-        if (isAbsoluteOrAuthorityUrl(value)) {
-            throw crossOriginRequest(undefined, absoluteOrigin(value));
+        const classified = stripUrlControlAndSpace(value);
+        if (isAbsoluteOrAuthorityUrl(classified)) {
+            throw crossOriginRequest(undefined, absoluteOrigin(classified));
         }
         return appendRelativeSearchParams(value, params);
     }
@@ -41,6 +42,15 @@ function readAmbientBaseUrl() {
     catch {
         return undefined;
     }
+}
+function stripUrlControlAndSpace(value) {
+    // Mirror the WHATWG URL parser's pre-parse cleanup so no-ambient authority
+    // classification sees exactly what Fetch/URL will resolve: remove all ASCII
+    // tab/newline/CR, then strip leading and trailing C0 controls or space.
+    return value
+        .replace(/[\u0009\u000a\u000d]/g, "")
+        .replace(/^[\u0000-\u0020]+/, "")
+        .replace(/[\u0000-\u0020]+$/, "");
 }
 function isAbsoluteOrAuthorityUrl(value) {
     return /^[A-Za-z][A-Za-z\d+.-]*:/.test(value) || (isAuthoritySeparator(value[0]) && isAuthoritySeparator(value[1]));

@@ -406,6 +406,49 @@ test("web upload service validates configuration, cancellation, blobs, and Holm 
   );
 });
 
+test("web upload service fails closed on whitespace-prefixed authority paths with no ambient origin", async () => {
+  const locationDescriptor = Object.getOwnPropertyDescriptor(globalThis, "location");
+  let authCalls = 0;
+  let fetchCalls = 0;
+  try {
+    Reflect.deleteProperty(globalThis, "location");
+    const service = createWebUploadService({
+      auth: {
+        current() {
+          authCalls += 1;
+          return { kind: "bearer", scheme: "Bearer", token: "upload-secret" };
+        },
+      },
+      fetch: async () => {
+        fetchCalls += 1;
+        return jsonResponse({ unexpected: true });
+      },
+    });
+    for (const bypass of [
+      "\n//evil.example/import",
+      " https://evil.example/import",
+      "\thttp:evil.example/import",
+      " /\\evil.example/import",
+    ]) {
+      await assert.rejects(
+        () => service.upload({
+          path: bypass,
+          files: [createWebUploadFile({ field: "file", blob: new Blob(["x"]) })],
+        }),
+        (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+      );
+    }
+  } finally {
+    if (locationDescriptor === undefined) {
+      Reflect.deleteProperty(globalThis, "location");
+    } else {
+      Object.defineProperty(globalThis, "location", locationDescriptor);
+    }
+  }
+  assert.equal(authCalls, 0);
+  assert.equal(fetchCalls, 0);
+});
+
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify({ data }), {
     status,

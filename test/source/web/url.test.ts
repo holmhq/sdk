@@ -63,3 +63,29 @@ test("web URL resolution uses ambient location only as an explicit same-origin a
     }
   }
 });
+
+test("web URL resolution fails closed on whitespace and control prefixed authority forms with no ambient origin", () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "location");
+  try {
+    Reflect.deleteProperty(globalThis, "location");
+    for (const bypass of [
+      "\n//evil.example/api/me",
+      " /\\evil.example/api/me",
+      " https://evil.example/api/me",
+      "\thttp:evil.example/api/me",
+      "\u0000//evil.example/api/me",
+    ]) {
+      assert.throws(
+        () => resolveWebRequestUrl(bypass, undefined),
+        (error: unknown) => error instanceof ProtocolError && error.code === "web_cross_origin_request",
+      );
+    }
+    assert.doesNotThrow(() => resolveWebRequestUrl(" /api/me", undefined));
+  } finally {
+    if (descriptor === undefined) {
+      Reflect.deleteProperty(globalThis, "location");
+    } else {
+      Object.defineProperty(globalThis, "location", descriptor);
+    }
+  }
+});
