@@ -1,10 +1,10 @@
 ---
-updated_at: "17 Jul 2026 | 09:56 AM IST"
-state: READY
-active_window: "none — W4 is planned and independently approved, not authorized or queued"
-active_issue: "017 v0.1-web release candidate planned; 014 remains open"
-orchestration_mode: "none active; choose W4 mode in the restarted session"
-stop_gate: "do not create or drain Queue #005 until fresh owner W4 authorization; planned W4 must stop at private 0.1.0-rc.1 before pilot/push/tag/release"
+updated_at: "17 Jul 2026 | 10:31 AM IST"
+state: IN_PROGRESS
+active_window: "W4 active — blind unattended Queue #005 for private v0.1-web RC readiness"
+active_issue: "017 v0.1-web release candidate; 014 closes only through S05/S06 evidence"
+orchestration_mode: "blind orchestrator; primary pi/gpt-5.5; fallback codex/gpt-5.3-codex; coordinator cap 2"
+stop_gate: "complete private 0.1.0-rc.1 code/artifact readiness with eight reviewed slices, full gates, integrated SDK review, and fresh read-only Holm acceptance; stop before pilot/push/tag/publish/release/deploy"
 ---
 
 # Koder State
@@ -22,31 +22,33 @@ stop_gate: "do not create or drain Queue #005 until fresh owner W4 authorization
 
 ## Present
 
-- Owner accepted the narrow v0.1-web support recommendation: stable root,
-  `/core`, `/transports`, `/app`, `/web`, `/state`, `/test`; preview `/node` and
-  `/sobek`; reserved `/bridge`; unavailable future/admin/framework surfaces.
-- Planning-only Issue `#017` and eight thin Plan `004` slices landed at
-  `43c294e`: API freeze, boundary labels, two P3 hardening/disposition slices,
-  deterministic bundles, integrity/offline vendoring, RC docs/metadata, and the
-  integrated RC gate.
-- Independent Review `#049` approved the whole family with zero P1/P2/P3 and
-  judged it safe for one future serial Queue `#005` sweep, estimated 8-14 hours.
-  All eight plans are approved and Issue `#017` ledger rows are planned.
-- No Queue `#005` exists, W4 is not active, and no product source, tests, dist,
-  package version, dependency, release, push, deploy, or Holm file changed in
-  this planning session. Package remains private `0.0.0-dev`.
-- Future nested queue governors must use <=5-minute watch fences and reconcile
-  Harnex status, typed reports, and Git after every fence.
+- Owner explicitly authorized W4 Queue `#005` as an unattended complete drain
+  and requested final `/close`. Execution contract:
+  `koder/docs/EXECUTION.md`; queue:
+  `koder/queue/005_w4_v01_web_release_candidate/INDEX.md`.
+- Review `#049` approved Issue `#017` and Plans `004_S01`-`004_S08` at
+  `43c294e`, with `P1=0 P2=0 P3=0`. The eight serial rows are queued; the
+  planning estimate remains 8-14 hours plus review/authority wall time.
+- Typed no-change preflights passed for primary `pi/gpt-5.5` and sole fallback
+  `codex/gpt-5.3-codex`. Queue-global process failures begin `0/8`.
+- The primary is a process-only governor. Fresh coordinators own at most two
+  rows and route fresh implement/review/fix/rereview/recovery/final workers;
+  nested governor fences are <=5 minutes with status/report/Git reconciliation.
+- No W4 product implementation had landed at this authorization checkpoint.
+  Package remains private; no push, tag, publish, release, deploy, credential,
+  cloud/production, worktree, Holm write, or other-repository write is allowed.
 
 ## Future
 
-1. Restart the session, review `koder/issues/017_v01_web_release_candidate/` and
-   Review `#049`, then explicitly choose the W4 mode and authorize Queue `#005`.
-2. Build one serial queue from approved Plans `004_S01` through `004_S08`, with
-   coordinator cap 2 and fresh review at API/security/distribution boundaries.
-3. W4 done state is private `0.1.0-rc.1` code/artifact readiness with four-mode
-   CI, API drift/repro/integrity gates, integrated zero-P1/P2 SDK review, and
-   fresh Holm acceptance.
-4. Stop before the separately authorized real-app pilot, push, tag, npm publish,
-   release, deploy, credentials, cloud/production mutation, or promotion to
-   `0.1.0`.
+1. Drain Queue `#005` serially through S01 API freeze, S02 boundary labels,
+   S03-S04 Review `#033` hardening, S05-S06 BFBB distribution/integrity, S07 RC
+   docs/metadata, and S08 integrated gate.
+2. Claim W4 done only after private `0.1.0-rc.1` code/artifact readiness,
+   four-mode CI metric equality, API/repro/declaration/dist/example/size/license/
+   integrity gates, integrated zero-P1/P2 SDK review, fresh zero-P1/P2 read-only
+   Holm acceptance, and clean committed Git.
+3. Close Issue `#014` only through reviewed S05/S06 evidence; close Issue `#017`
+   only at the integrated gate. Broad Issue `#015` remains open.
+4. Stop before real-app pilot, browser/vendor soak, promotion to `0.1.0`, push,
+   tag, npm publish, release, deploy, credentials, cloud/production mutation, or
+   any cross-repository write. Run `/close` at the owner-facing stop gate.

@@ -1,40 +1,49 @@
 ---
-title: Execution boundary
+title: Active execution window
 updated: 2026-07-17
-window: none
-mode: none
-last_window: W3
-prepared_window: W4
-prepared_issue: 017
+window: W4
+mode: blind
+queue: koder/queue/005_w4_v01_web_release_candidate/INDEX.md
+active_issue: 017
 plan_review: koder/reviews/049_w4_v01_web_plan_review/INDEX.md
 ---
 
-# Execution Boundary
+# Execution Window
 
-## Current authorization
+## Authorization
 
-No execution window is active. This session was planning-only: the owner
-accepted the narrow v0.1-web support matrix and requested thin W4 plans, then
-asked to close before queue construction or implementation.
+- Owner authorization, 2026-07-17 (in-session, explicit): the owner authorized
+  Queue `#005`, stated they would be away for about five hours, requested the
+  entire approved W4 work be completed unattended, and requested final
+  `/close`.
+- W4 therefore uses temporary **blind orchestration** for Queue `#005` only.
+  The root session is a process-only governor; fresh coordinators route fresh
+  implementation, review, fix, rereview, recovery, integrated-review, and
+  authority workers.
+- Outcome disclosed before launch: product source/tests/docs plus tracked
+  generated private `0.1.0-rc.1` artifacts across eight reviewed slices,
+  normally 22-30 fresh phases including entry reviews/fixes, integrated SDK
+  review, and Holm acceptance. Review `#049` estimates 8-14 hours plus review
+  wall time, so the five-hour owner absence is an initial target rather than
+  permission to omit gates.
+- Completion authorization continues to the Queue `#005` stop gate, subject to
+  a hard no-new-product-phase deadline of 2026-07-18 00:30 IST and safe
+  closeout through 01:15 IST. Any fail-closed gate blocks instead of weakening
+  validation or crossing forbidden actions.
 
-Do not create or drain Queue `#005`, activate W4, dispatch product workers, or
-edit source/tests/dist/package metadata until the owner explicitly authorizes the
-restarted W4 execution mode and queue. Older W1-W3 authorizations do not carry
-forward.
-
-## Prepared W4 — private v0.1-web release candidate
+## Active W4 — private v0.1-web release candidate
 
 - Canonical issue: `koder/issues/017_v01_web_release_candidate/INDEX.md`.
 - Approved plans: `koder/plans/004_S01_*` through `004_S08_*`.
 - Independent Review `#049`: approved at planning commit `43c294e`, zero
-  P1/P2/P3, queueable as one future serial Queue `#005` sweep.
-- Estimated sweep: eight rows, roughly 8-14 hours plus final review/authority
-  wall time; recommended coordinator cap `2`, implementation ownership serial
-  on `main`.
+  P1/P2/P3. Active Queue: `koder/queue/005_w4_v01_web_release_candidate/INDEX.md`.
+- Sweep: eight rows, roughly 8-14 hours plus final review/authority wall time;
+  coordinator cap `2`, implementation ownership serial on `main`.
 - Monitoring requirement: governor watch fences <=5 minutes, followed every
   time by Harnex status/report/Git reconciliation and prompt session cleanup.
-- Automatic dispatch model policy must be selected/confirmed at W4
-  authorization; no out-of-policy fallback may be inferred from older windows.
+- Automatic dispatch policy is primary `pi/gpt-5.5` with sole fallback
+  `codex/gpt-5.3-codex`; both passed typed no-change preflight. No other model
+  family or adapter may be substituted.
 
 ### Locked v0.1-web support matrix
 
@@ -58,7 +67,7 @@ bindings, production desktop/mobile, and arbitrary SSR.
 Node `>=20` is the build/tooling floor; raw vendored BFBB has no Node runtime
 dependency.
 
-### Planned W4 order
+### Queue 005 order
 
 1. S01 stable API inventory and deterministic freeze gate.
 2. S02 preview/reserved labels and import isolation.
@@ -69,9 +78,9 @@ dependency.
 7. S07 private RC metadata/docs/update/rollback contract.
 8. S08 integrated validation, review, Holm acceptance, and owner handoff.
 
-### Planned W4 stop gate
+### W4 stop gate
 
-The future queue may claim completion only when private `0.1.0-rc.1` code and
+Queue `#005` may claim completion only when private `0.1.0-rc.1` code and
 artifacts are ready; stable API drift, four CI modes with identical metrics,
 clean rebuild/repro, declarations/dist/examples/size/license/integrity gates,
 Issue `#014` acceptance, independent integrated SDK review with zero P1/P2,
