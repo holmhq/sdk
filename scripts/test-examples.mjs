@@ -1,11 +1,37 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, rmSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 
 import { listFiles } from "./lib/artifacts.mjs";
 
 const { createBfbbApp } = await import("../examples/bfbb/app.js");
 const rawCalls = [];
+
+function collectEsmGraph(entry) {
+  const visited = new Set();
+  const externalSpecifiers = new Set();
+  const stack = [resolve(entry)];
+  const importPattern = /(?:import|export)\s+(?:[^"']*?\s+from\s+)?["']([^"']+)["']/g;
+
+  while (stack.length > 0) {
+    const file = stack.pop();
+    if (visited.has(file)) {
+      continue;
+    }
+    visited.add(file);
+    const source = readFileSync(file, "utf8");
+    for (const match of source.matchAll(importPattern)) {
+      const specifier = match[1];
+      if (specifier.startsWith(".")) {
+        stack.push(resolve(dirname(file), specifier));
+      } else {
+        externalSpecifiers.add(specifier);
+      }
+    }
+  }
+
+  return { visited: [...visited].sort(), externalSpecifiers: [...externalSpecifiers].sort() };
+}
 
 function jsonFetchResponse(body) {
   return {
@@ -33,6 +59,16 @@ if (rawCalls[0] !== "https://app.example.test/api/example") {
 }
 await raw.dispose();
 
+const bfbbGraph = collectEsmGraph("examples/bfbb/app.js");
+const bfbbNodeSpecifiers = bfbbGraph.externalSpecifiers.filter((specifier) => specifier === "node" || specifier.startsWith("node:"));
+if (bfbbNodeSpecifiers.length > 0) {
+  throw new Error(`Raw BFBB example must not depend on Node runtime modules: ${bfbbNodeSpecifiers.join(", ")}`);
+}
+const bfbbPreviewFiles = bfbbGraph.visited.filter((path) => /\/dist\/node\//.test(path));
+if (bfbbPreviewFiles.length > 0) {
+  throw new Error(`Raw BFBB example must not evaluate the preview Node runtime: ${bfbbPreviewFiles.map((path) => relative(process.cwd(), path)).join(", ")}`);
+}
+
 const output = resolve(".tmp/examples/vite");
 rmSync(output, { recursive: true, force: true });
 const vite = spawnSync(
@@ -58,10 +94,20 @@ if (!bundle.includes("/api/me") || !bundle.includes("holm.http.app")) {
 }
 
 const examplesReadme = readFileSync("examples/README.md", "utf8").toLowerCase();
-for (const requiredLabel of ["desktop", "mobile", "reserved", "unsupported"]) {
+for (const requiredLabel of [
+  "@holmhq/sdk/node",
+  "@holmhq/sdk/sobek",
+  "preview",
+  "not frozen",
+  "desktop",
+  "mobile",
+  "reserved",
+  "unsupported",
+  "not production",
+]) {
   if (!examplesReadme.includes(requiredLabel)) {
-    throw new Error(`Examples README must label desktop/mobile bridge imports as reserved/unsupported; missing ${requiredLabel}.`);
+    throw new Error(`Examples README must label preview/reserved imports honestly; missing ${requiredLabel}.`);
   }
 }
 
-console.log("Example checks passed: raw BFBB import, Vite production build, and reserved bridge labels.");
+console.log("Example checks passed: raw BFBB import, Vite production build, preview runtime labels, and reserved bridge labels.");

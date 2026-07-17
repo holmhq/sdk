@@ -1,5 +1,6 @@
 import { createCallerFingerprint, createInvocationContext } from "../../src/core/index.js";
 import {
+  bridgeRuntimeSupport,
   createBridgeMailbox,
   createMockBridgeRuntime,
   createMockBridgeServices,
@@ -27,6 +28,10 @@ const mock = createMockBridgeRuntime({
 });
 const mailbox = createBridgeMailbox({ post: () => undefined });
 const fingerprint: string = createCallerFingerprint(caller);
+const bridgeSupportStatus: "reserved" = bridgeRuntimeSupport.status;
+const bridgeSupportProduction: "not production" = bridgeRuntimeSupport.production;
+const bridgeSupportDesktop: "unsupported" = bridgeRuntimeSupport.desktop;
+const bridgeSupportMobile: "unsupported" = bridgeRuntimeSupport.mobile;
 
 // @ts-expect-error Bridge/core type tests compile without DOM ambient types.
 type BridgeDocument = Document;
@@ -43,5 +48,9 @@ void error;
 void mock;
 void mailbox;
 void fingerprint;
+void bridgeSupportStatus;
+void bridgeSupportProduction;
+void bridgeSupportDesktop;
+void bridgeSupportMobile;
 void bridgeProcess;
 void wrongSurface;

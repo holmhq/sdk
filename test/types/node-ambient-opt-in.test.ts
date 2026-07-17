@@ -4,6 +4,7 @@ import {
   createNodeOperatorCaller,
   createNodeTokenAuth,
   nodeRuntime,
+  nodeRuntimeSupport,
   type NodeRuntimeFetch,
 } from "../../src/node/index.js";
 import { createFakeClock } from "../../src/test/index.js";
@@ -26,6 +27,10 @@ const runtime = nodeRuntime({
   secureStore: { get: () => undefined },
 });
 const caller = createNodeOperatorCaller({ operatorId: "node-type-operator" });
+const nodeSupportStatus: "preview" = nodeRuntimeSupport.status;
+const nodeSupportCompatibility: "not frozen" = nodeRuntimeSupport.compatibility;
 
 void runtime;
 void caller;
+void nodeSupportStatus;
+void nodeSupportCompatibility;

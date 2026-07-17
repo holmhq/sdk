@@ -390,11 +390,11 @@
         "gzipBytes": 512,
         "rawBytes": 1024
       },
-      "gzipBytes": 197,
-      "minifiedBytes": 329,
+      "gzipBytes": 296,
+      "minifiedBytes": 482,
       "path": "dist/node/index.js",
-      "rawBytes": 387,
-      "sha256": "724c3c967493166c8db7ecdb07cd5d3b1d908569e847d6b6e524f224b9a249e1"
+      "rawBytes": 863,
+      "sha256": "a655b4a19f3a39298b833c85267bc6fff365ae26dde9f33179170781a929e585"
     },
     {
       "budgets": {
@@ -434,11 +434,11 @@
         "gzipBytes": 512,
         "rawBytes": 1024
       },
-      "gzipBytes": 165,
-      "minifiedBytes": 218,
+      "gzipBytes": 264,
+      "minifiedBytes": 373,
       "path": "dist/sobek/index.js",
-      "rawBytes": 263,
-      "sha256": "a37b76a58765a270bf3cfd8cc89ba36042a6da4b44862072a6deb96f9a54a6b5"
+      "rawBytes": 705,
+      "sha256": "d5b3fd18abfb3cb74f4a7048575e2f59b9db1a75615863f99b1a147a338b0427"
     },
     {
       "budgets": {
@@ -467,11 +467,11 @@
         "gzipBytes": 6144,
         "rawBytes": 32768
       },
-      "gzipBytes": 3379,
-      "minifiedBytes": 16312,
+      "gzipBytes": 3477,
+      "minifiedBytes": 16543,
       "path": "dist/bridge/index.js",
-      "rawBytes": 22763,
-      "sha256": "eabda8b1e36d74ab586f45fb038fa5f78ae446c578276683ec3db0513c6a4895"
+      "rawBytes": 23312,
+      "sha256": "e2375051a151a7b22c44228000e907f5a0879787ac1c1cfff3a8e8599e3afe43"
     }
   ],
   "package": {
@@ -481,8 +481,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 48830,
-    "minifiedBytes": 165824,
-    "rawBytes": 225933
+    "gzipBytes": 49126,
+    "minifiedBytes": 166363,
+    "rawBytes": 227400
   }
 }

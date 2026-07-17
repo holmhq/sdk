@@ -1,3 +1,17 @@
+/**
+ * v0.1-web support label for the Node adapter subpath.
+ *
+ * `@holmhq/sdk/node` ships for tests and operator-oriented composition, but it
+ * is preview/not frozen; higher-level CLI ergonomics and cross-Node-version
+ * compatibility are intentionally outside the stable `0.1.x` surface.
+ */
+export const nodeRuntimeSupport = Object.freeze({
+  packageName: "@holmhq/sdk/node",
+  status: "preview",
+  compatibility: "not frozen",
+  production: "not production",
+} as const);
+
 export { createNodeUploadFile } from "./upload.js";
 export type { NodeUploadFileOptions } from "./upload.js";
 

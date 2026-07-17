@@ -3,6 +3,21 @@ import { HolmError, type SerializedHolmError } from "../core/errors.js";
 import type { Clock, InvocationControl, OperationRequest, OperationResponse, RuntimeAdapter, Scheduler } from "../core/runtime.js";
 import { type WireValue } from "../core/wire-value.js";
 export declare const bridgeMailboxProtocol = "holm.sdk.bridge.mailbox/1";
+/**
+ * v0.1-web support label for the bridge subpath.
+ *
+ * `@holmhq/sdk/bridge` is reserved/not production. It exposes mocks, copied
+ * mailbox contracts, and service slots only; desktop and mobile production
+ * runtimes are unsupported in this release-candidate boundary.
+ */
+export declare const bridgeRuntimeSupport: Readonly<{
+    readonly packageName: "@holmhq/sdk/bridge";
+    readonly status: "reserved";
+    readonly production: "not production";
+    readonly desktop: "unsupported";
+    readonly mobile: "unsupported";
+    readonly scope: "mocks, mailbox contracts, and service slots only";
+}>;
 export type BridgeSurface = "desktop" | "mobile";
 export type BridgeRuntimeServiceName = "mailbox" | "clock" | "scheduler" | "secureStorage" | "lifecycle" | "connectivity" | "deepLink" | "navigation" | "background";
 export interface BridgeRuntimeServiceErrorOptions {

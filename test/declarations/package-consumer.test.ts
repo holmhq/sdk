@@ -58,12 +58,14 @@ import {
   createNodeTokenAuth,
   createNodeUploadFile,
   nodeRuntime,
+  nodeRuntimeSupport,
   UnsupportedNodeRuntimeServiceError,
   type NodeRuntimeFetch,
 } from "@holmhq/sdk/node";
 import {
   createFakeSobekInjectedRuntime,
   sobekRuntime,
+  sobekRuntimeSupport,
   UnsupportedSobekRuntimeServiceError,
   type SobekInjectedRequest,
 } from "@holmhq/sdk/sobek";
@@ -246,6 +248,10 @@ const uploadAdapter: ResumableUploadAdapter<UploadHandoff> = {
 const uploaded = composeResumableUpload({ path: "/api/upload", files: [uploadFile] }, uploadAdapter);
 const uploadDiagnostic = redactUploadRequest({ path: "/api/upload", files: [uploadFile] });
 const nodeUploadFile = createNodeUploadFile({ field: "node", name: "node.bin", bytes: [1, 2, 3] });
+const declarationNodeStatus: "preview" = nodeRuntimeSupport.status;
+const declarationNodeCompatibility: "not frozen" = nodeRuntimeSupport.compatibility;
+const declarationSobekStatus: "preview" = sobekRuntimeSupport.status;
+const declarationSobekCompatibility: "not frozen" = sobekRuntimeSupport.compatibility;
 
 // @ts-expect-error Declaration consumers must not widen the core fixture value.
 const invalidEnvironment: CoreEnvironment = "browser";
@@ -298,4 +304,8 @@ void uploadProgress;
 void uploaded;
 void uploadDiagnostic;
 void nodeUploadFile;
+void declarationNodeStatus;
+void declarationNodeCompatibility;
+void declarationSobekStatus;
+void declarationSobekCompatibility;
 void invalidEnvironment;

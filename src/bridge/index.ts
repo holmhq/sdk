@@ -21,6 +21,22 @@ import { copyWireValue, type WireValue } from "../core/wire-value.js";
 
 export const bridgeMailboxProtocol = "holm.sdk.bridge.mailbox/1";
 
+/**
+ * v0.1-web support label for the bridge subpath.
+ *
+ * `@holmhq/sdk/bridge` is reserved/not production. It exposes mocks, copied
+ * mailbox contracts, and service slots only; desktop and mobile production
+ * runtimes are unsupported in this release-candidate boundary.
+ */
+export const bridgeRuntimeSupport = Object.freeze({
+  packageName: "@holmhq/sdk/bridge",
+  status: "reserved",
+  production: "not production",
+  desktop: "unsupported",
+  mobile: "unsupported",
+  scope: "mocks, mailbox contracts, and service slots only",
+} as const);
+
 export type BridgeSurface = "desktop" | "mobile";
 export type BridgeRuntimeServiceName =
   | "mailbox"

@@ -41,6 +41,7 @@ import {
   createNodeTokenAuth,
   createNodeUploadFile,
   nodeRuntime,
+  nodeRuntimeSupport,
   UnsupportedNodeRuntimeServiceError,
 } from "../../dist/node/index.js";
 import {
@@ -48,10 +49,12 @@ import {
   HOLM_APP_HTTP_CAPABILITY as SOBEK_APP_HTTP_CAPABILITY,
   SOBEK_HTTP_REQUEST_OPERATION,
   sobekRuntime,
+  sobekRuntimeSupport,
   UnsupportedSobekRuntimeServiceError,
 } from "../../dist/sobek/index.js";
 import {
   bridgeMailboxProtocol,
+  bridgeRuntimeSupport,
   copyBridgeMailboxEnvelope,
   createBridgeMailbox,
   createMockBridgeRuntime,
@@ -85,6 +88,33 @@ async function readJsonArtifact(relativePath) {
 
 async function readTextArtifact(relativePath) {
   return readFile(new URL(relativePath, import.meta.url), "utf8");
+}
+
+async function collectGeneratedEsmGraph(relativeEntry) {
+  const visited = new Set();
+  const externalSpecifiers = new Set();
+  const stack = [new URL(relativeEntry, import.meta.url)];
+  const importPattern = /(?:import|export)\s+(?:[^"']*?\s+from\s+)?["']([^"']+)["']/g;
+
+  while (stack.length > 0) {
+    const url = stack.pop();
+    const path = url.pathname;
+    if (visited.has(path)) {
+      continue;
+    }
+    visited.add(path);
+    const source = await readFile(url, "utf8");
+    for (const match of source.matchAll(importPattern)) {
+      const specifier = match[1];
+      if (specifier.startsWith(".")) {
+        stack.push(new URL(specifier, url));
+      } else {
+        externalSpecifiers.add(specifier);
+      }
+    }
+  }
+
+  return { visited: [...visited].sort(), externalSpecifiers: [...externalSpecifiers].sort() };
 }
 
 function jsonFetchResponse(body, options = {}) {
@@ -137,6 +167,53 @@ test("generated package artifacts expose isolated Issue 009 runtime subpaths", a
 
   const rootEsm = await readTextArtifact("../../dist/index.js");
   assert.equal(/\.\/(web|node|sobek|bridge|test)\//.test(rootEsm), false, "root import must not pull runtime subpaths implicitly");
+});
+
+test("generated ESM artifact exposes the S02 preview/reserved support labels", () => {
+  assert.deepEqual(nodeRuntimeSupport, {
+    packageName: "@holmhq/sdk/node",
+    status: "preview",
+    compatibility: "not frozen",
+    production: "not production",
+  });
+  assert.deepEqual(sobekRuntimeSupport, {
+    packageName: "@holmhq/sdk/sobek",
+    status: "preview",
+    compatibility: "not frozen",
+    production: "not production",
+  });
+  assert.deepEqual(bridgeRuntimeSupport, {
+    packageName: "@holmhq/sdk/bridge",
+    status: "reserved",
+    production: "not production",
+    desktop: "unsupported",
+    mobile: "unsupported",
+    scope: "mocks, mailbox contracts, and service slots only",
+  });
+});
+
+test("stable generated ESM subpaths do not import preview or reserved runtimes", async () => {
+  for (const entry of [
+    "../../dist/index.js",
+    "../../dist/core/index.js",
+    "../../dist/transports/index.js",
+    "../../dist/app/index.js",
+    "../../dist/web/index.js",
+    "../../dist/state/index.js",
+    "../../dist/test/index.js",
+  ]) {
+    const graph = await collectGeneratedEsmGraph(entry);
+    assert.deepEqual(
+      graph.externalSpecifiers.filter((specifier) => specifier === "node" || specifier.startsWith("node:")),
+      [],
+      `${entry} must not import Node built-ins`,
+    );
+    assert.deepEqual(
+      graph.visited.filter((path) => /\/dist\/(?:node|sobek|bridge)\//.test(path)),
+      [],
+      `${entry} must not evaluate preview/reserved runtime modules`,
+    );
+  }
 });
 
 test("generated ESM artifact exposes the S01 core fixture", () => {

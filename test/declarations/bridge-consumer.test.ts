@@ -1,5 +1,6 @@
 import {
   bridgeMailboxProtocol,
+  bridgeRuntimeSupport,
   copyBridgeMailboxEnvelope,
   createBridgeMailbox,
   createMockBridgeRuntime,
@@ -56,6 +57,10 @@ const eventEnvelope = copyBridgeMailboxEnvelope({
   payload: { online: true },
 });
 const fingerprint: string = createCallerFingerprint(caller);
+const declarationBridgeStatus: "reserved" = bridgeRuntimeSupport.status;
+const declarationBridgeProduction: "not production" = bridgeRuntimeSupport.production;
+const declarationBridgeDesktop: "unsupported" = bridgeRuntimeSupport.desktop;
+const declarationBridgeMobile: "unsupported" = bridgeRuntimeSupport.mobile;
 
 // @ts-expect-error Bridge runtime surfaces are reserved desktop/mobile, not web.
 const wrongSurface: "web" = mobile.surface;
@@ -68,4 +73,8 @@ void request;
 void accepted;
 void eventEnvelope;
 void fingerprint;
+void declarationBridgeStatus;
+void declarationBridgeProduction;
+void declarationBridgeDesktop;
+void declarationBridgeMobile;
 void wrongSurface;

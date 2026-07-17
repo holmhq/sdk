@@ -2,6 +2,7 @@ import { createCallerFingerprint, createInvocationContext } from "../../src/core
 import {
   createFakeSobekInjectedRuntime,
   sobekRuntime,
+  sobekRuntimeSupport,
   UnsupportedSobekRuntimeServiceError,
   type SobekInjectedRequest,
   type SobekRuntimeAdapter,
@@ -25,6 +26,8 @@ const fake = createFakeSobekInjectedRuntime({ handler: () => ({ status: 200, bod
 const runtime: SobekRuntimeAdapter = sobekRuntime({ runtime: fake });
 const fingerprint: string = createCallerFingerprint(caller);
 const error = new UnsupportedSobekRuntimeServiceError({ adapter: runtime.id, service: "runtime" });
+const sobekSupportStatus: "preview" = sobekRuntimeSupport.status;
+const sobekSupportCompatibility: "not frozen" = sobekRuntimeSupport.compatibility;
 
 // @ts-expect-error Sobek/core type tests compile without DOM ambient types.
 type SobekDocument = Document;
@@ -40,5 +43,7 @@ void fake;
 void runtime;
 void fingerprint;
 void error;
+void sobekSupportStatus;
+void sobekSupportCompatibility;
 void sobekProcess;
 void wrongSurface;
