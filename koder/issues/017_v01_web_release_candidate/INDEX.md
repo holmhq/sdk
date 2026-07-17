@@ -1,15 +1,16 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-17
 updated: 2026-07-17
+resolved: 2026-07-17
 tags: release-candidate, v0.1-web, bfbb, api-freeze, distribution
 parent: 001
 depends_on: [007, 009, 014]
 type: feature
 issue_kind: track
 slice_count: 8
-slices_done: 7
+slices_done: 8
 planning_status: approved
 plan_review: ../../reviews/049_w4_v01_web_plan_review/INDEX.md
 context: Prepare a private v0.1-web release-candidate code/artifact state without publishing, tagging, deploying, or claiming production pilot proof.
@@ -84,11 +85,9 @@ results after this track stops.
 
 - Builds on resolved Issue `#007` web/app client and resolved Issue `#009`
   runtime/surface adapters.
-- Depends on open Issue `#014` for BFBB distribution. Plans `004_S05` and
-  `004_S06` are the intended thin implementation slices that satisfy Issue
-  `#014`'s bundle, manifest, integrity, offline vendoring, and compatibility
-  fixture acceptance gates without duplicating `#014` as a separate source of
-  truth.
+- Resolved Issue `#014` through Plans `004_S05` and `004_S06`, which satisfy
+  its bundle, manifest, integrity, offline vendoring, and compatibility fixture
+  acceptance gates without duplicating `#014` as a separate source of truth.
 - Broad Issue `#015` remains future documentation/migration closeout. This
   track writes only the scoped v0.1-web RC metadata and handoff needed for the
   narrow release candidate.
@@ -121,40 +120,45 @@ browser/pilot proof, or taking release actions.
 | Deterministic v0.1 web/BFBB bundles | done | [`004_S05`](../../plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md) | `005` | Deterministic bundle composition, maps/declarations/license/size/manifest gates passed with fresh distribution review approval. |
 | Integrity, offline vendoring, and compatibility fixture | done | [`004_S06`](../../plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md) | `005` | Artifact hashes/altered-byte rejection/offline vendored BFBB and Vite compatibility fixtures passed; Issue `#014` resolved. |
 | RC metadata, docs, upgrade/rollback contract | done | [`004_S07`](../../plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md) | `005` | Private `0.1.0-rc.1` metadata/support/compatibility/vendoring/update/rollback docs passed fresh product review. |
-| Integrated RC gate and owner handoff | queued | [`004_S08`](../../plans/004_S08_integrated_rc_gate_handoff/INDEX.md) | `005` | Four CI modes, reproducibility, review, fresh Holm acceptance, clean Git, and stop-before-pilot handoff pass. |
+| Integrated RC gate and owner handoff | done | [`004_S08`](../../plans/004_S08_integrated_rc_gate_handoff/INDEX.md) | `005` | Four CI modes, reproducibility, Review `#058`, fresh Holm Review `#059`, clean Git, and stop-before-pilot handoff passed. |
 
-## Queue #005 checkpoint
+## Resolution
 
-- 2026-07-17 `q005-coordinator-04`: S05 is blocked before product delta. No S05
-  commit, distribution review, generated bundle proof, or Issue `#014` closure
-  evidence exists; `slices_done` remains `4` and S06-S08 must not start until
-  S05 implementation is safely recovered and approved.
+Queue `#005` completed all eight slices at private product checkpoint
+`dc4af0d`. Four CI modes passed with identical metrics (`98.02` statements,
+`98.91` lines, `98.58` functions, `95.45` branches, `100.00`
+changed-reachable), 220 source tests, 22 dist tests, 235 reproducible dist
+artifacts, and 232 verified manifest artifacts. Integrated SDK Review `#058`
+approved `P1=0 P2=0 P3=0`; fresh read-only Holm-authority Review `#059`
+accepted `P1=0 P2=0 P3=0` against Holm `748cbe5` (`v0.185.1`) with identical
+clean pre/post fingerprints. Package state is private `0.1.0-rc.1`; stop before
+pilot, push, tag, publish, release, deploy, credentials, or promotion.
 
 ## Acceptance criteria
 
-- [ ] Stable entry points have an exact public export/declaration inventory and
+- [x] Stable entry points have an exact public export/declaration inventory and
       deterministic drift gate; implementation-detail exports are blocked.
-- [ ] Preview `/node` and `/sobek` plus reserved `/bridge` boundaries are
+- [x] Preview `/node` and `/sobek` plus reserved `/bridge` boundaries are
       labelled, typed, documented, and isolated from stable entry points.
-- [ ] All nine Review `#033` P3 advisories are fixed, tested, documented, or
+- [x] All nine Review `#033` P3 advisories are fixed, tested, documented, or
       explicitly accepted with bounded rationale.
-- [ ] Issue `#014` is closed through the S05/S06 bundle and vendoring gates, not
+- [x] Issue `#014` is closed through the S05/S06 bundle and vendoring gates, not
       by redefining its acceptance criteria.
-- [ ] `0.1.0-rc.1` metadata and docs clearly state private RC status, support
+- [x] `0.1.0-rc.1` metadata and docs clearly state private RC status, support
       matrix, compatibility policy, update/rollback workflow, and non-goals.
-- [ ] Stable API compatibility policy is enforced for `0.1.x`: no breaking
+- [x] Stable API compatibility policy is enforced for `0.1.x`: no breaking
       removal/rename/behavioral contract changes; additive changes only;
       deprecate before any future removal. Preview/reserved surfaces are
       explicitly exempt.
-- [ ] Capability-based web baseline is documented; real browser/vendor soak is
+- [x] Capability-based web baseline is documented; real browser/vendor soak is
       left to a separately authorized pilot.
-- [ ] Full validation is green in normal, FORCE_COLOR, TAP, and TAP+color modes
+- [x] Full validation is green in normal, FORCE_COLOR, TAP, and TAP+color modes
       with identical required metrics; build reproducibility, declarations,
       dist, examples, size, license, API drift, and package smokes pass.
-- [ ] Independent integrated SDK review reports zero P1/P2 findings and fresh
+- [x] Independent integrated SDK review reports zero P1/P2 findings and fresh
       read-only Holm authority acceptance reports zero P1/P2 at a named Holm
       commit.
-- [ ] Git is clean after tracked artifacts and reports are committed; no push,
+- [x] Git is clean after tracked artifacts and reports are committed; no push,
       tag, publish, release, deploy, credential, cloud/production, worktree, or
       Holm write occurred.
 

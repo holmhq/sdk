@@ -1,7 +1,7 @@
 ---
 queue: 005
 title: W4 - private v0.1-web release candidate
-status: active
+status: drained
 orchestration_mode: blind
 review_granularity: entry
 coordinator_entry_cap: 2
@@ -55,7 +55,7 @@ initial target, not permission to omit gates.
 | 5 | `koder/plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md` | done | 90-120m | yellow/red | All plan commands; deterministic bundles/maps/declarations/manifests/size/license; fresh distribution review 0 P1/P2 | Issue `#014` cannot stay thin, dependency/status change, size/repro failure, authority conflict, or release action blocks |
 | 6 | `koder/plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md` | done | 90-120m | yellow | All plan commands; hashes, tamper failure, copied offline BFBB and Vite fixtures; fresh integrity review 0 P1/P2 | Offline/immutable proof fails, Issue `#014` expands, dependency/release/pilot need, or authority drift blocks |
 | 7 | `koder/plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md` | done | 60-90m | yellow | All plan commands; private RC metadata/support/update/rollback wording; fresh docs/product review 0 P1/P2 | Public-release implication, support change, unsupported promise, broad Issue `#015` rewrite, or release action blocks |
-| 8 | `koder/plans/004_S08_integrated_rc_gate_handoff/INDEX.md` | queued | 60-120m + CI/reviews | yellow/red | Four identical CI modes; API/repro/declaration/dist/example/size/license gates; integrated SDK review and fresh Holm acceptance 0 P1/P2; clean Git | Any red gate, P1/P2, large late product fix, authority drift, incomplete Issue `#014`, or pilot/release action blocks |
+| 8 | `koder/plans/004_S08_integrated_rc_gate_handoff/INDEX.md` | done | 60-120m + CI/reviews | yellow/red | Four identical CI modes; API/repro/declaration/dist/example/size/license gates; integrated SDK review and fresh Holm acceptance 0 P1/P2; clean Git | Any red gate, P1/P2, large late product fix, authority drift, incomplete Issue `#014`, or pilot/release action blocks |
 
 Entries run strictly in order on `main`. Every implementation and every fix is
 committed, validated, and independently reviewed by a fresh worker before the
@@ -199,3 +199,18 @@ cycle.
   generated output is reproducible. Fresh review `q005-gov-e07-review-a01`
   approved `P1=0 P2=0 P3=0`; no process failure/fix was used. Process failures
   remain `7/8`. Next eligible phase is S08 integrated gate.
+- S08 gate `q005-gov-e08-gate-a01` accepted a no-change integrated candidate at
+  product checkpoint `dc4af0d924c5a9b8e7989e924e0046dd5bcb0b38`. Four CI modes
+  passed with identical metrics (`statements=98.02 lines=98.91 functions=98.58
+  branches=95.45 changed_reachable=100.00`), 220 source tests, 22 dist tests,
+  235 reproducible dist artifacts, 232 verified manifest artifacts, and green
+  API/declaration/dist/example/RC-doc/integrity/size/license gates.
+- Fresh integrated SDK Review `#058` committed at `59614d5` and approved the
+  W4 candidate with `P1=0 P2=0 P3=0`. Fresh read-only Holm-authority Review
+  `#059` committed at `5acda19` and accepted `P1=0 P2=0 P3=0` against Holm
+  `748cbe5e8f673d9a5a3d276e6826eecac32b8612` (`v0.185.1`); Holm pre/post
+  fingerprints were identical and clean.
+- Queue drained with S01-S08 done, Issues `#014` and `#017` resolved, package
+  private `0.1.0-rc.1`, process failures `7/8`, no unresolved blocker, and no
+  push/tag/publish/release/deploy/pilot/credential/cloud/production/worktree or
+  cross-repository write. Stop before the separately authorized pilot.
