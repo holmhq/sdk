@@ -113,12 +113,14 @@ console.log(
 
 function runInstalledPackageSmoke() {
   const root = resolve(".tmp/package-smoke");
+  const realNpmEnv = { ...process.env, npm_config_dry_run: "false" };
   const consumer = join(root, "consumer");
   rmSync(root, { recursive: true, force: true });
   mkdirSync(consumer, { recursive: true });
 
   const pack = spawnSync("npm", ["pack", "--json", "--ignore-scripts", "--pack-destination", root], {
     encoding: "utf8",
+    env: realNpmEnv,
     shell: false,
   });
   if (pack.status !== 0) {
@@ -138,7 +140,7 @@ function runInstalledPackageSmoke() {
   const install = spawnSync(
     "npm",
     ["install", "--ignore-scripts", "--no-audit", "--no-fund", join(root, filename)],
-    { cwd: consumer, encoding: "utf8", shell: false },
+    { cwd: consumer, encoding: "utf8", env: realNpmEnv, shell: false },
   );
   if (install.status !== 0) {
     failures.push(`packed package install failed: ${install.stderr.trim()}`);
