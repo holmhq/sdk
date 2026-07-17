@@ -1,8 +1,8 @@
 ---
-status: open
+status: deferred
 priority: P2
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-17
 tags: collaboration, oplog, snapshots, crdt, yjs
 parent: 001
 depends_on: [006, 011]
@@ -63,3 +63,9 @@ Define extension contracts for:
 - Implementing Holm's operation-log storage primitive.
 - Promising offline mobile database replication/conflict resolution.
 - Persisting high-frequency presence events.
+
+## Deferral (2026-07-17)
+
+Owner decision at v0.1 acceptance: this capability is demand-driven, not
+roadmap-driven. It does not count toward v0.1 completion and starts only when a
+real consumer needs it.

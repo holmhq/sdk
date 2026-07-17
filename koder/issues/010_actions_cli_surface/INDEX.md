@@ -1,8 +1,8 @@
 ---
-status: open
+status: deferred
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-17
 tags: actions, json-schema, cli, jobs, agents
 parent: 001
 depends_on: [004, 009]
@@ -57,3 +57,9 @@ fixtures without inventing a competing protocol or claiming live support.
 - Building `holm app tui`.
 - Running remote GUI surfaces.
 - Making SDK builders mandatory for authored registry JSON.
+
+## Deferral (2026-07-17)
+
+Owner decision at v0.1 acceptance: this capability is demand-driven, not
+roadmap-driven. It does not count toward v0.1 completion and starts only when a
+real consumer needs it.

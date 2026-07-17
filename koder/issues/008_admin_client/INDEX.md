@@ -1,8 +1,8 @@
 ---
-status: open
+status: deferred
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-17
 tags: admin, operator, routes, migration, audit
 parent: 001
 depends_on: [005]
@@ -61,3 +61,9 @@ core contracts, weaken types, or silently diverge from Holm.
 - Publishing npm.
 - Treating possession of a browser bundle as authorization; Holm remains the
   enforcement boundary.
+
+## Deferral (2026-07-17)
+
+Owner decision at v0.1 acceptance: this capability is demand-driven, not
+roadmap-driven. It does not count toward v0.1 completion and starts only when a
+real consumer needs it.
