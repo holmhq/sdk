@@ -9,7 +9,7 @@ depends_on: [007, 009, 014]
 type: feature
 issue_kind: track
 slice_count: 8
-slices_done: 6
+slices_done: 7
 planning_status: approved
 plan_review: ../../reviews/049_w4_v01_web_plan_review/INDEX.md
 context: Prepare a private v0.1-web release-candidate code/artifact state without publishing, tagging, deploying, or claiming production pilot proof.
@@ -120,7 +120,7 @@ browser/pilot proof, or taking release actions.
 | Remaining edge-contract P3 disposition | done | [`004_S04`](../../plans/004_S04_edge_contract_p3_disposition/INDEX.md) | `005` | Review `#033` advisories 5-9 fixed, tested, documented, or accepted with rationale. |
 | Deterministic v0.1 web/BFBB bundles | done | [`004_S05`](../../plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md) | `005` | Deterministic bundle composition, maps/declarations/license/size/manifest gates passed with fresh distribution review approval. |
 | Integrity, offline vendoring, and compatibility fixture | done | [`004_S06`](../../plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md) | `005` | Artifact hashes/altered-byte rejection/offline vendored BFBB and Vite compatibility fixtures passed; Issue `#014` resolved. |
-| RC metadata, docs, upgrade/rollback contract | queued | [`004_S07`](../../plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md) | `005` | Private `0.1.0-rc.1` docs/metadata/support/rollback notes are accurate and non-release. |
+| RC metadata, docs, upgrade/rollback contract | done | [`004_S07`](../../plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md) | `005` | Private `0.1.0-rc.1` metadata/support/compatibility/vendoring/update/rollback docs passed fresh product review. |
 | Integrated RC gate and owner handoff | queued | [`004_S08`](../../plans/004_S08_integrated_rc_gate_handoff/INDEX.md) | `005` | Four CI modes, reproducibility, review, fresh Holm acceptance, clean Git, and stop-before-pilot handoff pass. |
 
 ## Queue #005 checkpoint

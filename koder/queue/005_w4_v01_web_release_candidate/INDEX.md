@@ -54,7 +54,7 @@ initial target, not permission to omit gates.
 | 4 | `koder/plans/004_S04_edge_contract_p3_disposition/INDEX.md` | done | 60-90m | yellow | All plan commands; Review `#033` advisories 5-9 explicit disposition; fresh edge-contract review 0 P1/P2 | Breaking API, unresolved advisory, Holm request-ID contradiction, dependency, or irreproducibility blocks |
 | 5 | `koder/plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md` | done | 90-120m | yellow/red | All plan commands; deterministic bundles/maps/declarations/manifests/size/license; fresh distribution review 0 P1/P2 | Issue `#014` cannot stay thin, dependency/status change, size/repro failure, authority conflict, or release action blocks |
 | 6 | `koder/plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md` | done | 90-120m | yellow | All plan commands; hashes, tamper failure, copied offline BFBB and Vite fixtures; fresh integrity review 0 P1/P2 | Offline/immutable proof fails, Issue `#014` expands, dependency/release/pilot need, or authority drift blocks |
-| 7 | `koder/plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md` | queued | 60-90m | yellow | All plan commands; private RC metadata/support/update/rollback wording; fresh docs/product review 0 P1/P2 | Public-release implication, support change, unsupported promise, broad Issue `#015` rewrite, or release action blocks |
+| 7 | `koder/plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md` | done | 60-90m | yellow | All plan commands; private RC metadata/support/update/rollback wording; fresh docs/product review 0 P1/P2 | Public-release implication, support change, unsupported promise, broad Issue `#015` rewrite, or release action blocks |
 | 8 | `koder/plans/004_S08_integrated_rc_gate_handoff/INDEX.md` | queued | 60-120m + CI/reviews | yellow/red | Four identical CI modes; API/repro/declaration/dist/example/size/license gates; integrated SDK review and fresh Holm acceptance 0 P1/P2; clean Git | Any red gate, P1/P2, large late product fix, authority drift, incomplete Issue `#014`, or pilot/release action blocks |
 
 Entries run strictly in order on `main`. Every implementation and every fix is
@@ -190,3 +190,12 @@ cycle.
   `P1=0 P2=0 P3=0` and found Issue `#014` ready to resolve. No additional
   process failure/fix was used; process failures remain `7/8`. Next eligible
   phase is S07 implementation.
+- Governor direct phase `q005-gov-e07-implement-a01` completed S07 at
+  `cbba269df081007247dd4f558b144c15179265b2` (parent
+  `117f958dd4f30bf74bcbef8ae97937c443518b8d`): package metadata is private
+  `0.1.0-rc.1`; bounded RC docs cover the locked support matrix, stable
+  compatibility, immutable vendoring/hash/update/rollback/security workflow,
+  and stop-before-pilot/release non-goals; all S07 plan gates are green and
+  generated output is reproducible. Fresh review `q005-gov-e07-review-a01`
+  approved `P1=0 P2=0 P3=0`; no process failure/fix was used. Process failures
+  remain `7/8`. Next eligible phase is S08 integrated gate.
