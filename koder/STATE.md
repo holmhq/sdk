@@ -1,36 +1,48 @@
 ---
-updated_at: "17 Jul 2026 | afternoon IST"
+updated_at: "17 Jul 2026 | evening IST"
 state: IN_PROGRESS
-active_window: "W5 — sokoban real-app pilot at ~/Projects/zyt/sokoban + trimmed Issue #015"
-active_issue: "015 (trimmed); pilot evidence for v0.1 acceptance"
+active_window: "W5 — sokoban pilot built and verified; trimmed Issue #015 remains"
+active_issue: "015 (trimmed); pilot evidence recorded in koder/evidence/001"
 orchestration_mode: "direct owner-present; queues/blind mode retired for this phase"
-stop_gate: "no push/tag/publish/release/deploy/credentials/cloud; 0.1.0 promotion only after pilot works"
+stop_gate: "no push/tag/publish/release/deploy/credentials/cloud; 0.1.0 promotion only after owner accepts pilot"
 ---
 
 # Koder State
 
 ## Past
 
-- W1–W4 completed Issues `#016`, `#007`, `#009`, `#014`, `#017` with full
-  validation, independent reviews, and Holm-authority acceptance (`748cbe5`).
-- Product checkpoint `dc4af0d` is private `0.1.0-rc.1` with deterministic
-  reviewed `dist/` artifacts, manifests, and integrity records.
-- 2026-07-17: owner accepted the RC and adopted slim-process defaults —
-  direct execution, reviews only for stable-API/conformance changes, Issues
-  `#008`/`#010`–`#013` deferred as demand-driven, `#015` trimmed.
+- W1–W4 completed Issues `#016`, `#007`, `#009`, `#014`, `#017`; product
+  checkpoint `dc4af0d` is private `0.1.0-rc.1` with reviewed deterministic
+  `dist/` artifacts (Reviews `#058`/`#059`, Holm `748cbe5`).
+- 2026-07-17: owner accepted the RC, adopted slim-process defaults, deferred
+  Issues `#008`/`#010`–`#013`, trimmed `#015` (commit `f288534`).
+- W5 pilot built the same day: a complete Sokoban game (auth + leaderboard,
+  tetris house style) at `~/Projects/zyt/sokoban`, consuming the SDK via 232
+  vendored hash-verified artifacts pinned to `cbba269`.
 
 ## Present
 
-- W5 is active: building the sokoban pilot (auth + leaderboard) at
-  `~/Projects/zyt/sokoban/`, styled after `~/Projects/zyt/tetris/`, consuming
-  vendored `dist/` artifacts pinned to `dc4af0d` and hash-verified against
-  `dist/manifest.json`; local Holm dev server allowed, Holm repo read-only.
-- Trimmed `#015` (README, migration ledger, capability matrix, vendoring
-  guide, vanilla+React examples, ledger reconciliation) rides in this window.
+- Pilot verified end-to-end on an isolated local Holm `0.185.1` instance
+  (`sokoban.localhost:4699`, DB `~/.holm-sokoban-pilot/data.db`): real-browser
+  boot with zero console errors, auth session via SDK `auth.me()`, leaderboard
+  query resource with live snapshot re-render, mutation submit with
+  invalidate→refresh, guest daily rail. Evidence:
+  `koder/evidence/001_sokoban_web_pilot/INDEX.md`; screenshots in the app repo.
+- Four upstream-worthy findings recorded there (Holm dev-login gate defect,
+  logout-redirect behaviour, auth-transition cache invalidation doc need,
+  deploy/route rebind behaviour).
+- The sokoban app is uncommitted work inside the owner's `~/Projects/zyt` git
+  repo — left for the owner to commit with their conventions. The zyt CLI's
+  default peer is production `zyt.app`; the pilot deployed only via the
+  explicit `@pilot` local peer.
 
 ## Future
 
-1. Finish the pilot; record real browser observations as evidence.
-2. Complete trimmed `#015`; reconcile Issue `001` ledger.
+1. Owner plays the pilot (`http://sokoban.localhost:4699`, sign-in dev/dev)
+   and accepts or files gaps.
+2. Trimmed `#015`: README, migration ledger, capability matrix, vendoring
+   guide (fold in pilot findings 2–4), vanilla + React examples — the sokoban
+   app can serve as the vanilla evidence.
 3. Owner-present decision on promotion to `0.1.0` (rebuild/revalidate first);
-   push/tag/publish/release remain separately gated.
+   push/tag/publish/release remain separately gated. Optionally file the Holm
+   dev-login issue upstream (Holm repo write needs separate approval).
