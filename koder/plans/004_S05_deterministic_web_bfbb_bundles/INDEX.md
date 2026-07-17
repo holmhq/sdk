@@ -1,6 +1,6 @@
 ---
 title: W4 S05 - Deterministic v0.1 web and BFBB bundles
-status: blocked
+status: implemented
 issue: 017
 plan: 004
 slice: S05
