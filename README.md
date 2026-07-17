@@ -8,9 +8,11 @@ the CLI, and eventually on desktop and mobile. `@holmhq/sdk` is the portable
 JavaScript layer that connects those surfaces to Holm.
 
 > [!IMPORTANT]
-> This repository is in architecture/bootstrap stage. The package is not yet
-> published to npm and no production API is promised. The existing SDK under
-> the Holm repository remains the working implementation during migration.
+> This repository is at a private `0.1.0-rc.1` code/artifact checkpoint for the
+> scoped v0.1-web SDK. The package remains private and unpublished; the existing
+> SDK under the Holm repository remains live during migration. This checkpoint is
+> not an npm publication, tag, GitHub release, deployment, production proof,
+> pilot result, browser/vendor soak claim, or promotion to `0.1.0`.
 
 ## Direction
 
@@ -44,23 +46,33 @@ const usage = await holm.app.http.get('/api/usage', {
 await holm.dispose()
 ```
 
-The package remains pre-release, but the web/app slice above is executable and
-covered by source, declaration-consumer, generated-artifact, raw BFBB, and Vite
-build tests.
+The package remains pre-release and private, but the stable v0.1-web slice
+above is executable and covered by source, declaration-consumer,
+generated-artifact, raw BFBB, Vite build, RC docs/metadata, size, license, and
+reproducibility checks. See [`docs/v0.1-web-rc.md`](docs/v0.1-web-rc.md) for
+the private `0.1.0-rc.1` code/artifact checkpoint contract, including support,
+compatibility, vendoring, update, rollback, and security notes. A real
+app/browser soak and owner-present promotion to `0.1.0` are future gates;
+Issue `#015` remains open for broader README/API/framework/migration closeout.
 
 ## Surfaces
 
 Holm's universal app-runtime design treats interfaces as **surfaces**:
 
-- **Web** remains the implicit BFBB surface at root `index.html`.
-- **CLI** is first-class through structured, JSON-schema-backed app actions.
-- **Desktop** is a future native-shell target gated by runtime probes.
+- **Web** is the stable BFBB surface at root `index.html`; BFBB authored root
+  `index.html` takes precedence over generated presentation.
+- **CLI** action generation is unavailable in v0.1-web; Node adapter support is
+  preview only.
+- **Desktop** is reserved future native-shell work; current bridge mocks are not
+  production desktop support.
 - **Mobile** is a reserved future thin-client/native-bridge surface.
-- **Server/Sobek** uses Holm's injected runtime and shares the same lower
-  action/state contracts.
+- **Server/Sobek** uses Holm's injected runtime and is shipped as preview in
+  this RC.
 
 Surfaces share models and operations, not one lowest-common-denominator UI DSL.
-The SDK may bind data to many UI frameworks; it does not require one renderer.
+Holm app wire behavior remains GET/POST; the SDK does not invent a parallel
+wire contract. Future framework bindings may adapt resources to host frameworks,
+but no framework binding is available in v0.1-web.
 
 ## Planned package
 
@@ -70,23 +82,27 @@ The SDK may bind data to many UI frameworks; it does not require one renderer.
 - license: MIT
 - initial npm state: private/unpublished
 
-Expected entry points and artifacts will be validated before they are frozen:
+Stable v0.1-web entry points are frozen for `0.1.x` compatibility:
 
 ```text
 @holmhq/sdk
-@holmhq/sdk/web
+@holmhq/sdk/core
+@holmhq/sdk/transports
 @holmhq/sdk/app
-@holmhq/sdk/node
+@holmhq/sdk/web
 @holmhq/sdk/state
-@holmhq/sdk/react
-@holmhq/sdk/angular
-@holmhq/sdk/svelte
-@holmhq/sdk/vue
-
-dist/holm.js
-dist/holm-web.js
-dist/holm-node.js
+@holmhq/sdk/test
 ```
+
+Preview entry points `@holmhq/sdk/node` and `@holmhq/sdk/sobek` are shipped and
+tested but not frozen. `@holmhq/sdk/bridge` is reserved for mailbox/mock and
+future native-shell integration only. Admin, actions/generated CLI, realtime,
+collaboration, framework bindings, production desktop/mobile, and arbitrary SSR
+are unavailable in v0.1-web.
+
+Generated artifacts include tracked ESM JavaScript, declarations, maps, manifest,
+size, and license reports under `dist/`, including `dist/holm.js` and
+`dist/holm-web.js` for BFBB/web vendoring.
 
 `@holmhq/sdk/state` is the canonical clean-break entry point for immutable
 query, mutation, and derived-resource APIs. It does not preserve the legacy
@@ -124,8 +140,12 @@ import { createHolm } from './vendor/holm/holm.js'
 
 Never use `@main` for deployed apps. Use an immutable Git SHA or reviewed tag
 and record the SDK version plus SHA-256 hash from `dist/manifest.json` alongside
-the vendored file. The runtime app should load the local vendored copy; the CDN
-URL is only a download source for preparing that copy.
+the vendored file. Verify the copied file with `sha256sum -c` before committing
+an app update. Rollback means restoring the previously vendored SDK files and
+their recorded checksum metadata. The runtime app should load the local vendored
+copy; the CDN URL is only a download source for preparing that copy. Report
+suspected SDK integrity or credential-redaction issues privately through the
+owner-approved security channel; do not publish secrets or private payloads.
 
 Later npm publication is straightforward: package metadata already targets
 `@holmhq/sdk`. Publication remains blocked by `"private": true` until package

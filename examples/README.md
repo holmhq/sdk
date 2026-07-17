@@ -17,9 +17,41 @@ Fetch-compatible request/response services, URL and Headers primitives for
 adopted helpers, optional upload primitives only when upload helpers are used,
 and static-file serving for raw fixtures. This local gate does not claim browser-vendor soak; that remains a separate pilot activity.
 
+Stable v0.1-web imports:
+
+```text
+@holmhq/sdk
+@holmhq/sdk/core
+@holmhq/sdk/transports
+@holmhq/sdk/app
+@holmhq/sdk/web
+@holmhq/sdk/state
+@holmhq/sdk/test
+```
+
+Vendored BFBB usage:
+
+```bash
+SDK_REF=<immutable-commit-sha-or-reviewed-tag>
+mkdir -p vendor/holm-sdk
+curl -fL "https://cdn.jsdelivr.net/gh/holmhq/sdk@${SDK_REF}/dist/holm.js" \
+  -o vendor/holm-sdk/holm.js
+printf '%s  %s\n' '<sha256-from-dist-manifest>' 'vendor/holm-sdk/holm.js' \
+  > vendor/holm-sdk/holm.js.sha256
+sha256sum -c vendor/holm-sdk/holm.js.sha256
+```
+
+```js
+import { createHolm } from './vendor/holm-sdk/holm.js'
+```
+
 Deployed BFBB apps should vendor artifacts from an immutable Git SHA or reviewed
-tag, keep the generated checksum metadata with the copied files, and never
-`@main`.
+tag and keep the generated checksum metadata with the copied files. Use an
+immutable Git SHA or reviewed tag for updates. Never use `@main` for deployed
+apps. Rollback means restoring the previously vendored SDK files and their
+recorded checksum metadata. Report suspected SDK integrity or
+credential-redaction issues privately through the owner-approved security
+channel.
 
 `@holmhq/sdk/node` and `@holmhq/sdk/sobek` are shipped preview imports for
 bounded adapter tests and composition, but they are not frozen for `0.1.x` and
