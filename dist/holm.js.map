@@ -1,0 +1,12 @@
+{
+  "file": "holm.js",
+  "mappings": "",
+  "names": [],
+  "sources": [
+    "holm.js"
+  ],
+  "sourcesContent": [
+    "// @holmhq/sdk browser-bfbb-composition: Complete private v0.1-web browser/BFBB convenience composition for vendored ESM use.\nexport * from \"./index.js\";\nexport * as core from \"./core/index.js\";\nexport * as app from \"./app/index.js\";\nexport * as web from \"./web/index.js\";\nexport * as transports from \"./transports/index.js\";\nexport * as state from \"./state/index.js\";\nexport {\n  APP_HTTP_INVALIDATE_OPERATION,\n  APP_HTTP_REQUEST_OPERATION,\n  createAppExtension,\n  normalizeAppSurfaces,\n} from \"./app/index.js\";\nexport {\n  HOLM_APP_HTTP_CAPABILITY,\n  WEB_HTTP_REQUEST_OPERATION,\n  WEB_UPLOAD_PROGRESS_MODE,\n  createWebApp,\n  createWebCaller,\n  createWebLifecycle,\n  createWebNavigation,\n  createWebSessionAuth,\n  createWebTokenAuth,\n  createWebUploadFile,\n  createWebUploadService,\n  createWebUploadSource,\n  readWebAppSurfaceBootstrap,\n  webRuntime,\n} from \"./web/index.js\";\nexport {\n  RemoteError,\n  TransportError,\n  UploadError,\n  applyTransportAuth,\n  canonicalTransportKey,\n  composeResumableUpload,\n  createReadonlyBytesUploadSource,\n  createTransportCache,\n  createTransportCacheKey,\n  createTransportRequest,\n  createUploadFile,\n  decodeTransportResponse,\n  encodeTransportBody,\n  normalizeTransportError,\n  redactAuthenticatedTransport,\n  redactTransportRequest,\n  redactUploadChunk,\n  redactUploadRequest,\n} from \"./transports/index.js\";\nexport {\n  REALTIME_PUBLIC_SUBSCRIBE_CAPABILITY,\n  createDerivedResource,\n  createMutationResource,\n  createQueryResource,\n  createRealtimeReconcileHook,\n  createResourceController,\n  createResourceHistory,\n} from \"./state/index.js\";\nexport * as test from \"./test/index.js\";\nexport {\n  createFakeClock,\n  createInMemoryRuntimeAdapter,\n} from \"./test/index.js\";\n//# sourceMappingURL=holm.js.map\n"
+  ],
+  "version": 3
+}

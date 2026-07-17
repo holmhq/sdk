@@ -2,6 +2,7 @@ import { gzipSync } from "node:zlib";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 import { readJson, sha256, stableJson } from "./lib/artifacts.mjs";
+import { webBundleDefinitions } from "./lib/web-bundles.mjs";
 
 const budgets = new Map([
   ["dist/index.js", { rawBudget: 1024, gzipBudget: 512 }],
@@ -48,6 +49,10 @@ const budgets = new Map([
   ["dist/test/index.js", { rawBudget: 12288, gzipBudget: 2560 }],
   ["dist/bridge/index.js", { rawBudget: 32768, gzipBudget: 6144 }],
 ]);
+for (const definition of webBundleDefinitions) {
+  budgets.set(definition.path, { rawBudget: definition.rawBudget, gzipBudget: definition.gzipBudget });
+}
+
 const targets = [...budgets].map(([path, budget]) => ({ path, ...budget }));
 
 const packageJson = readJson("package.json");

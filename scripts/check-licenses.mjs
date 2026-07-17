@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 
-import { readJson, stableJson } from "./lib/artifacts.mjs";
+import { listFiles, readJson, stableJson } from "./lib/artifacts.mjs";
 
 const allowedLicenses = new Set([
   "Apache-2.0",
@@ -42,6 +42,16 @@ const packages = Object.entries(lockfile.packages ?? {})
   })
   .sort((a, b) => a.name.localeCompare(b.name));
 
+const generatedReports = new Set(["dist/license-report.json", "dist/manifest.json", "dist/size-report.json"]);
+const artifacts = listFiles("dist")
+  .filter((path) => !generatedReports.has(path))
+  .map((path) => ({
+    path,
+    license: packageJson.license,
+    notice: `${packageJson.name} ${packageJson.version} generated artifact; MIT license; package remains private.`,
+    allowed: packageJson.license === "MIT",
+  }));
+
 const report = {
   schema: "holm.sdk.license-report/1",
   package: {
@@ -52,6 +62,7 @@ const report = {
   },
   allowedLicenses: [...allowedLicenses].sort(),
   packages,
+  artifacts,
   status: failures.length === 0 ? "pass" : "fail",
 };
 

@@ -216,6 +216,76 @@ test("stable generated ESM subpaths do not import preview or reserved runtimes",
   }
 });
 
+test("deterministic v0.1 web and BFBB bundles are importable, recorded, and exclude unavailable runtimes", async () => {
+  const packageJson = await readJsonArtifact("../../package.json");
+  const manifest = await readJsonArtifact("../../dist/manifest.json");
+  const sizeReport = await readJsonArtifact("../../dist/size-report.json");
+  const licenseReport = await readJsonArtifact("../../dist/license-report.json");
+  const manifestByPath = new Map(manifest.artifacts.map((artifact) => [artifact.path, artifact]));
+  const sizeByPath = new Map(sizeReport.artifacts.map((artifact) => [artifact.path, artifact]));
+  const licenseByPath = new Map((licenseReport.artifacts ?? []).map((artifact) => [artifact.path, artifact]));
+  const bundlePaths = ["dist/holm.js", "dist/holm-web.js"];
+
+  assert.equal(packageJson.private, true, "package must remain private for the RC artifact checkpoint");
+  for (const bundlePath of bundlePaths) {
+    for (const artifactPath of [bundlePath, `${bundlePath}.map`, bundlePath.replace(/\.js$/, ".d.ts"), bundlePath.replace(/\.js$/, ".d.ts.map")]) {
+      assert.equal(manifestByPath.has(artifactPath), true, `${artifactPath} is covered by the dist manifest`);
+      assert.equal(licenseByPath.get(artifactPath)?.license, "MIT", `${artifactPath} has a license record`);
+    }
+    assert.equal(sizeByPath.has(bundlePath), true, `${bundlePath} is covered by the size gate`);
+  }
+
+  const holm = await import("../../dist/holm.js");
+  const holmWeb = await import("../../dist/holm-web.js");
+  assert.equal(typeof holm.createHolm, "function");
+  assert.equal(typeof holm.createWebApp, "function");
+  assert.equal(typeof holm.createTransportRequest, "function");
+  assert.equal(typeof holm.createQueryResource, "function");
+  assert.equal(typeof holm.createInMemoryRuntimeAdapter, "function");
+  assert.equal(typeof holm.web.webRuntime, "function");
+  assert.equal(typeof holm.node, "undefined");
+  assert.equal(typeof holm.sobek, "undefined");
+  assert.equal(typeof holm.bridge, "undefined");
+  assert.equal(typeof holmWeb.createWebApp, "function");
+  assert.equal(typeof holmWeb.createInMemoryRuntimeAdapter, "undefined", "narrow web bundle excludes test helpers");
+
+  for (const entry of ["../../dist/holm.js", "../../dist/holm-web.js"]) {
+    const graph = await collectGeneratedEsmGraph(entry);
+    assert.deepEqual(graph.externalSpecifiers.filter((specifier) => specifier === "node" || specifier.startsWith("node:")), []);
+    assert.deepEqual(graph.visited.filter((path) => /\/dist\/(?:node|sobek|bridge)\//.test(path)), []);
+  }
+
+  assert.deepEqual(manifestByPath.get("dist/holm.js")?.includedCapabilities, [
+    "core",
+    "app",
+    "web",
+    "transports",
+    "state",
+    "test",
+  ]);
+  assert.deepEqual(manifestByPath.get("dist/holm-web.js")?.includedCapabilities, [
+    "core",
+    "app",
+    "web",
+    "transports",
+    "state",
+  ]);
+  for (const bundlePath of bundlePaths) {
+    assert.deepEqual(manifestByPath.get(bundlePath)?.excludedCapabilities, [
+      "admin",
+      "actions/generated-cli",
+      "realtime-runtime",
+      "collaboration",
+      "framework-bindings",
+      "crdt-engines",
+      "node-cli",
+      "sobek-server",
+      "desktop-mobile-production-bridge",
+      "arbitrary-ssr",
+    ]);
+  }
+});
+
 test("generated ESM artifact exposes the S01 core fixture", () => {
   assert.equal(createCoreEnvironment(), "core");
 });

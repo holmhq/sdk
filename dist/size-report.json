@@ -472,6 +472,28 @@
       "path": "dist/bridge/index.js",
       "rawBytes": 23312,
       "sha256": "e2375051a151a7b22c44228000e907f5a0879787ac1c1cfff3a8e8599e3afe43"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 562,
+      "minifiedBytes": 1396,
+      "path": "dist/holm.js",
+      "rawBytes": 1743,
+      "sha256": "624c29f82d29d66b9665c3ee47ea0a90ceb5e47fcba1d94c1c0f5df2c75c4365"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 1536,
+        "rawBytes": 4096
+      },
+      "gzipBytes": 524,
+      "minifiedBytes": 1284,
+      "path": "dist/holm-web.js",
+      "rawBytes": 1641,
+      "sha256": "ac5e57aab1444bb029357e1b0fcd1a99d0d7e2b08df8b7e0a6b64bbdd7737d43"
     }
   ],
   "package": {
@@ -481,8 +503,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 49168,
-    "minifiedBytes": 166526,
-    "rawBytes": 227798
+    "gzipBytes": 50254,
+    "minifiedBytes": 169206,
+    "rawBytes": 231182
   }
 }

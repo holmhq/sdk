@@ -1,8 +1,8 @@
-import { createWebApp } from "../../dist/web/index.js";
+import { createWebApp } from "../../dist/holm.js";
 
 /**
- * Raw browser/BFBB composition using the tracked generated ESM module tree.
- * Production apps vendor the pinned dist tree rather than importing @main.
+ * Raw browser/BFBB composition using the tracked complete browser/BFBB ESM artifact.
+ * Production apps vendor the pinned dist artifacts rather than importing @main.
  */
 export function createBfbbApp(runtime) {
   return createWebApp({
