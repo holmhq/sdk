@@ -1,6 +1,6 @@
 ---
 title: W4 S05 - Deterministic v0.1 web and BFBB bundles
-status: approved
+status: blocked
 issue: 017
 plan: 004
 slice: S05
@@ -128,3 +128,14 @@ Stop if Issue `#014` cannot be satisfied thinly, bundle generation needs a new
 dependency, stable/preview/reserved status must change, size/reproducibility
 cannot be proven, Holm BFBB authority conflicts, or any publish/tag/push/deploy
 /release/credential/cloud/worktree/cross-repo action is needed.
+
+## Queue #005 checkpoint
+
+- 2026-07-17 `q005-coordinator-04`: S05 blocked before product delta after two
+  implementation process failures. Primary `q005-c04-e05-implement-a01` and
+  fallback `q005-c04-e05-implement-a02` both ended with no commit and no Git
+  delta from base `17bac60a0d17b81a02ff44ea23845a30b8316db3`.
+- No S05 acceptance proof exists yet: bundle composition, deterministic
+  generated artifacts, manifest/size/license coverage, and fresh distribution
+  review remain unproven. Next safe phase is S05 implementation only after an
+  owner/operator recovery decision or materially changed dispatch capability.

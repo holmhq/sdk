@@ -118,10 +118,17 @@ browser/pilot proof, or taking release actions.
 | Preview/reserved boundary enforcement | done | [`004_S02`](../../plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md) | `005` | Preview/reserved labels and import-isolation smokes pass. |
 | Credential/diagnostic P3 hardening | done | [`004_S03`](../../plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md) | `005` | Review `#033` advisories 1-4 fixed/tested or explicitly bounded by approved contract. |
 | Remaining edge-contract P3 disposition | done | [`004_S04`](../../plans/004_S04_edge_contract_p3_disposition/INDEX.md) | `005` | Review `#033` advisories 5-9 fixed, tested, documented, or accepted with rationale. |
-| Deterministic v0.1 web/BFBB bundles | queued | [`004_S05`](../../plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md) | `005` | Issue `#014` bundle composition, maps/declarations/license/size/manifest gates pass. |
+| Deterministic v0.1 web/BFBB bundles | blocked | [`004_S05`](../../plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md) | `005` | Blocked before product delta after two implementation process failures; Issue `#014` bundle composition, maps/declarations/license/size/manifest gates remain unproven. |
 | Integrity, offline vendoring, and compatibility fixture | queued | [`004_S06`](../../plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md) | `005` | Artifact hashes/tamper failure/offline vendored BFBB and Vite compatibility fixtures pass. |
 | RC metadata, docs, upgrade/rollback contract | queued | [`004_S07`](../../plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md) | `005` | Private `0.1.0-rc.1` docs/metadata/support/rollback notes are accurate and non-release. |
 | Integrated RC gate and owner handoff | queued | [`004_S08`](../../plans/004_S08_integrated_rc_gate_handoff/INDEX.md) | `005` | Four CI modes, reproducibility, review, fresh Holm acceptance, clean Git, and stop-before-pilot handoff pass. |
+
+## Queue #005 checkpoint
+
+- 2026-07-17 `q005-coordinator-04`: S05 is blocked before product delta. No S05
+  commit, distribution review, generated bundle proof, or Issue `#014` closure
+  evidence exists; `slices_done` remains `4` and S06-S08 must not start until
+  S05 implementation is safely recovered and approved.
 
 ## Acceptance criteria
 

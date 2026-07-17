@@ -52,7 +52,7 @@ initial target, not permission to omit gates.
 | 2 | `koder/plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md` | done | 60-90m | yellow | All plan commands; preview/reserved labels, stable import isolation, raw BFBB no-Node proof; fresh entry review 0 P1/P2 | Stable-to-preview coupling, expanded support promise, new dependency, authority drift, or irreproducibility blocks |
 | 3 | `koder/plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md` | done | 90-120m | yellow/red | All plan commands; Review `#033` advisories 1-4 disposition and credential-safe proof; fresh security review 0 P1/P2 | Sensitivity-contract/API redesign, unbounded leak, ambient/dependency need, or unauthorized credential action blocks |
 | 4 | `koder/plans/004_S04_edge_contract_p3_disposition/INDEX.md` | done | 60-90m | yellow | All plan commands; Review `#033` advisories 5-9 explicit disposition; fresh edge-contract review 0 P1/P2 | Breaking API, unresolved advisory, Holm request-ID contradiction, dependency, or irreproducibility blocks |
-| 5 | `koder/plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md` | queued | 90-120m | yellow/red | All plan commands; deterministic bundles/maps/declarations/manifests/size/license; fresh distribution review 0 P1/P2 | Issue `#014` cannot stay thin, dependency/status change, size/repro failure, authority conflict, or release action blocks |
+| 5 | `koder/plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md` | blocked | 90-120m | yellow/red | All plan commands; deterministic bundles/maps/declarations/manifests/size/license; fresh distribution review 0 P1/P2 | Blocked before product delta after two S05 implementation process failures; next safe phase requires owner/operator recovery or changed dispatch capability |
 | 6 | `koder/plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md` | queued | 90-120m | yellow | All plan commands; hashes, tamper failure, copied offline BFBB and Vite fixtures; fresh integrity review 0 P1/P2 | Offline/immutable proof fails, Issue `#014` expands, dependency/release/pilot need, or authority drift blocks |
 | 7 | `koder/plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md` | queued | 60-90m | yellow | All plan commands; private RC metadata/support/update/rollback wording; fresh docs/product review 0 P1/P2 | Public-release implication, support change, unsupported promise, broad Issue `#015` rewrite, or release action blocks |
 | 8 | `koder/plans/004_S08_integrated_rc_gate_handoff/INDEX.md` | queued | 60-120m + CI/reviews | yellow/red | Four identical CI modes; API/repro/declaration/dist/example/size/license gates; integrated SDK review and fresh Holm acceptance 0 P1/P2; clean Git | Any red gate, P1/P2, large late product fix, authority drift, incomplete Issue `#014`, or pilot/release action blocks |
@@ -162,3 +162,12 @@ cycle.
   S04 plan validation commands exit 0; review `q005-c03r-e04-review-a01`
   approved `P1=0 P2=0 P3=0`; generated artifacts were updated/reproducible;
   no fallback or fix cycle was used; process failures remain `5/8`.
+- Coordinator `q005-coordinator-04` blocked S05 before product delta after two
+  implementation process failures from clean base
+  `17bac60a0d17b81a02ff44ea23845a30b8316db3`: primary
+  `q005-c04-e05-implement-a01` failed with provider/report-invalid telemetry and
+  no Git delta; in-policy fallback `q005-c04-e05-implement-a02` failed with an
+  acknowledgement/no-final-report outcome and no Git delta. No S05 commit,
+  review, fix, generated-artifact, or Issue `#014` proof exists. Process
+  failures used `7/8`; next safe phase is S05 implementation only after an
+  owner/operator recovery decision or materially changed dispatch capability.
