@@ -4,77 +4,93 @@ updated: 2026-07-17
 window: none
 mode: none
 last_window: W3
-last_queue: koder/queue/004_w3_issue009_runtime_adapters/INDEX.md
+prepared_window: W4
+prepared_issue: 017
+plan_review: koder/reviews/049_w4_v01_web_plan_review/INDEX.md
 ---
 
 # Execution Boundary
 
 ## Current authorization
 
-No execution window is active. W3 / Queue `#004` completed Issue `#009` and its
-stop gate. Do not file or begin Issue `#014`, select a new orchestration mode,
-or dispatch implementation workers until the owner explicitly chooses the next
-window shape and `dispatch_models` policy.
+No execution window is active. This session was planning-only: the owner
+accepted the narrow v0.1-web support matrix and requested thin W4 plans, then
+asked to close before queue construction or implementation.
 
-Program order remains `#014` → `#008` → `#010` → `#011` → `#013` → `#012` →
-`#015`. Older queue and execution records are evidence, not standing
-authorization.
+Do not create or drain Queue `#005`, activate W4, dispatch product workers, or
+edit source/tests/dist/package metadata until the owner explicitly authorizes the
+restarted W4 execution mode and queue. Older W1-W3 authorizations do not carry
+forward.
 
-## Completed window: W3 — Issue #009
+## Prepared W4 — private v0.1-web release candidate
 
-- Owner authorization: 2026-07-16, unattended blind orchestration for Issue
-  `#009` only, serial on `main`, with `pi/gpt-5.5` as the sole automatic model
-  and no fallback.
-- Queue: `koder/queue/004_w3_issue009_runtime_adapters/INDEX.md`, drained.
-- Plans: `koder/plans/003_S01_*` through `003_S06_*`, all implemented.
-- Product result: common adapter conformance and deterministic in-memory/test
-  adapter; reconciled web adapter; explicit Node/CLI services; structural Sobek
-  injected runtime with no HTTP self-call; reserved desktop/mobile bridge mocks;
-  isolated exports, declarations, examples, and tracked generated artifacts.
-- Product commit: `f06d1c0ef8fd1fd2e1225ab4c60759d58a7a9c22`.
-- Validation: four full CI modes green with identical coverage metrics
-  (98.01 statements / 98.90 lines / 98.58 functions / 95.50 branches /
-  100.00 changed-reachable), 212 source tests, clean rebuild reproducibility for
-  227 dist artifacts, and size/license/example/declaration/dist gates green.
-- Integrated SDK Review `#046`: approved, zero P1/P2/P3.
-- Fresh read-only Holm-authority Review `#048`: accepted, zero P1/P2/P3 at Holm
-  `fb34d6b` (v0.185.0), with no drift in mapped authority paths.
-- Queue process failures: `4/6`; all were fail-closed and recovered within
-  policy. No fallback model, push, release, deploy, credential, cloud,
-  production, worktree, or cross-repository write occurred.
+- Canonical issue: `koder/issues/017_v01_web_release_candidate/INDEX.md`.
+- Approved plans: `koder/plans/004_S01_*` through `004_S08_*`.
+- Independent Review `#049`: approved at planning commit `43c294e`, zero
+  P1/P2/P3, queueable as one future serial Queue `#005` sweep.
+- Estimated sweep: eight rows, roughly 8-14 hours plus final review/authority
+  wall time; recommended coordinator cap `2`, implementation ownership serial
+  on `main`.
+- Monitoring requirement: governor watch fences <=5 minutes, followed every
+  time by Harnex status/report/Git reconciliation and prompt session cleanup.
+- Automatic dispatch model policy must be selected/confirmed at W4
+  authorization; no out-of-policy fallback may be inferred from older windows.
 
-## Monitoring correction
+### Locked v0.1-web support matrix
 
-The owner observed that a 60-minute outer watch made completed nested worker
-phases insufficiently visible. Any future nested blind window must use governor
-watch fences of at most five minutes, reconcile `harnex status`, typed reports,
-and Git after each fence, and stop completed sessions promptly. Do not use a
-long blocking outer watch merely because the inner coordinator has a longer wall
-cap.
+Stable/frozen throughout `0.1.x`:
 
-## W3 stop gate disposition
+- `@holmhq/sdk`
+- `@holmhq/sdk/core`
+- `@holmhq/sdk/transports`
+- `@holmhq/sdk/app`
+- `@holmhq/sdk/web`
+- `@holmhq/sdk/state`
+- `@holmhq/sdk/test`
 
-Satisfied:
+Preview/not frozen: `@holmhq/sdk/node`, `@holmhq/sdk/sobek`.
 
-1. S01-S06 implemented under strict TDD with owned source, tests, declarations,
-   maps, generated JavaScript, manifests, package smoke, reproducibility, and
-   size evidence.
-2. Every implementation/fix received fresh independent review with no
-   outstanding P1/P2.
-3. Normal, FORCE_COLOR, TAP, and TAP+color CI modes passed with identical
-   metrics and clean-tree build reproducibility.
-4. Integrated Review `#046` approved with zero P1/P2/P3.
-5. Holm-authority Review `#048` accepted with zero P1/P2/P3.
-6. Issue `#009` is resolved and Queue `#004` is drained.
+Reserved/not production: `@holmhq/sdk/bridge`.
 
-The next checkpoint is owner review of the W3 closeout and a separate W4 mode
-decision. The completed W3 contract grants no Issue `#014` implementation
-permission.
+Unavailable: admin, actions/generated CLI, realtime, collaboration, framework
+bindings, production desktop/mobile, and arbitrary SSR.
+
+Node `>=20` is the build/tooling floor; raw vendored BFBB has no Node runtime
+dependency.
+
+### Planned W4 order
+
+1. S01 stable API inventory and deterministic freeze gate.
+2. S02 preview/reserved labels and import isolation.
+3. S03 Review `#033` credential/diagnostic advisories 1-4.
+4. S04 Review `#033` edge advisories 5-9.
+5. S05 deterministic v0.1 web/BFBB bundles.
+6. S06 artifact integrity, tamper failure, and offline vendoring fixtures.
+7. S07 private RC metadata/docs/update/rollback contract.
+8. S08 integrated validation, review, Holm acceptance, and owner handoff.
+
+### Planned W4 stop gate
+
+The future queue may claim completion only when private `0.1.0-rc.1` code and
+artifacts are ready; stable API drift, four CI modes with identical metrics,
+clean rebuild/repro, declarations/dist/examples/size/license/integrity gates,
+Issue `#014` acceptance, independent integrated SDK review with zero P1/P2,
+fresh read-only Holm acceptance with zero P1/P2, and clean committed Git all
+pass.
+
+Even after that gate, stop before real-app pilot, browser/vendor soak, push, tag,
+npm publish, release, deploy, credentials, cloud/production mutation, or
+promotion to `0.1.0`. Those require separate owner authorization.
+
+## Completed W3 reference
+
+W3 / Queue `#004` resolved Issue `#009` at product commit `f06d1c0`; integrated
+Review `#046` and Holm-authority Review `#048` approved with zero P1/P2/P3.
+This is evidence for W4, not authorization.
 
 ## Standing hard limits
 
-- No npm publish, tags, releases, push, or deploy; `package.json` stays private.
-- No credentials and no cloud/production mutation.
+- `package.json` remains private until explicit owner approval changes it.
 - Holm and every repository other than this SDK remain read-only unless the
   owner explicitly approves a cross-repository change.
 - Serial on `main`; no worktrees without explicit owner approval.

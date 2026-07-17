@@ -1,6 +1,6 @@
 ---
 title: W4 S03 - Credential and diagnostic P3 hardening
-status: in_review
+status: approved
 issue: 017
 plan: 004
 slice: S03

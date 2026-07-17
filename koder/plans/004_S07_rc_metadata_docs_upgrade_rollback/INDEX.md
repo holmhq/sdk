@@ -1,6 +1,6 @@
 ---
 title: W4 S07 - RC metadata, docs, upgrade and rollback contract
-status: in_review
+status: approved
 issue: 017
 plan: 004
 slice: S07

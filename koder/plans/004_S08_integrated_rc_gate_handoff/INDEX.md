@@ -1,6 +1,6 @@
 ---
 title: W4 S08 - Integrated RC gate and owner handoff
-status: in_review
+status: approved
 issue: 017
 plan: 004
 slice: S08

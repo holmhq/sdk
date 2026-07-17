@@ -10,6 +10,8 @@ type: feature
 issue_kind: track
 slice_count: 8
 slices_done: 0
+planning_status: approved
+plan_review: ../../reviews/049_w4_v01_web_plan_review/INDEX.md
 context: Prepare a private v0.1-web release-candidate code/artifact state without publishing, tagging, deploying, or claiming production pilot proof.
 ---
 
@@ -112,14 +114,14 @@ claiming browser/pilot proof, or taking release actions.
 
 | Slice | Status | Ref | Queue | Closure gate |
 | --- | --- | --- | --- | --- |
-| Stable API inventory and freeze gate | candidate | [`004_S01`](../../plans/004_S01_stable_api_inventory_freeze_gate/INDEX.md) | candidate `005` | Deterministic stable export/declaration manifest and drift test pass. |
-| Preview/reserved boundary enforcement | candidate | [`004_S02`](../../plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md) | candidate `005` | Preview/reserved labels and import-isolation smokes pass. |
-| Credential/diagnostic P3 hardening | candidate | [`004_S03`](../../plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md) | candidate `005` | Review `#033` advisories 1-4 fixed/tested or explicitly bounded by approved contract. |
-| Remaining edge-contract P3 disposition | candidate | [`004_S04`](../../plans/004_S04_edge_contract_p3_disposition/INDEX.md) | candidate `005` | Review `#033` advisories 5-9 fixed, tested, documented, or accepted with rationale. |
-| Deterministic v0.1 web/BFBB bundles | candidate | [`004_S05`](../../plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md) | candidate `005` | Issue `#014` bundle composition, maps/declarations/license/size/manifest gates pass. |
-| Integrity, offline vendoring, and compatibility fixture | candidate | [`004_S06`](../../plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md) | candidate `005` | Artifact hashes/tamper failure/offline vendored BFBB and Vite compatibility fixtures pass. |
-| RC metadata, docs, upgrade/rollback contract | candidate | [`004_S07`](../../plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md) | candidate `005` | Private `0.1.0-rc.1` docs/metadata/support/rollback notes are accurate and non-release. |
-| Integrated RC gate and owner handoff | candidate | [`004_S08`](../../plans/004_S08_integrated_rc_gate_handoff/INDEX.md) | candidate `005` | Four CI modes, reproducibility, review, fresh Holm acceptance, clean Git, and stop-before-pilot handoff pass. |
+| Stable API inventory and freeze gate | planned | [`004_S01`](../../plans/004_S01_stable_api_inventory_freeze_gate/INDEX.md) | candidate `005` | Deterministic stable export/declaration manifest and drift test pass. |
+| Preview/reserved boundary enforcement | planned | [`004_S02`](../../plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md) | candidate `005` | Preview/reserved labels and import-isolation smokes pass. |
+| Credential/diagnostic P3 hardening | planned | [`004_S03`](../../plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md) | candidate `005` | Review `#033` advisories 1-4 fixed/tested or explicitly bounded by approved contract. |
+| Remaining edge-contract P3 disposition | planned | [`004_S04`](../../plans/004_S04_edge_contract_p3_disposition/INDEX.md) | candidate `005` | Review `#033` advisories 5-9 fixed, tested, documented, or accepted with rationale. |
+| Deterministic v0.1 web/BFBB bundles | planned | [`004_S05`](../../plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md) | candidate `005` | Issue `#014` bundle composition, maps/declarations/license/size/manifest gates pass. |
+| Integrity, offline vendoring, and compatibility fixture | planned | [`004_S06`](../../plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md) | candidate `005` | Artifact hashes/tamper failure/offline vendored BFBB and Vite compatibility fixtures pass. |
+| RC metadata, docs, upgrade/rollback contract | planned | [`004_S07`](../../plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md) | candidate `005` | Private `0.1.0-rc.1` docs/metadata/support/rollback notes are accurate and non-release. |
+| Integrated RC gate and owner handoff | planned | [`004_S08`](../../plans/004_S08_integrated_rc_gate_handoff/INDEX.md) | candidate `005` | Four CI modes, reproducibility, review, fresh Holm acceptance, clean Git, and stop-before-pilot handoff pass. |
 
 ## Acceptance criteria
 
