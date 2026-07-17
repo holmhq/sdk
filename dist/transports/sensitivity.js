@@ -71,16 +71,19 @@ function redactBody(body) {
     }
 }
 function transportBodyKey(body) {
+    // Transport keys are diagnostic/cache identities, not secret verifiers. Body
+    // contents are intentionally reduced to shape so logged keys cannot become an
+    // offline oracle for low-entropy request secrets.
     switch (body.mode) {
         case "json":
-            return Object.freeze({ mode: "json", value: body.value });
+            return Object.freeze({ mode: "json", value: redacted });
         case "raw":
-            return Object.freeze({ mode: "raw", value: body.value });
+            return Object.freeze({ mode: "raw", value: redacted });
         case "binary":
-            return Object.freeze({ mode: "binary", value: body.value });
+            return Object.freeze({ mode: "binary", byteLength: body.value.byteLength });
     }
 }
 function isSensitiveHeader(name) {
-    return /authorization|cookie|credential|password|secret|token|x-api-key/i.test(name);
+    return /authorization|auth|cookie|credential|password|secret|signature|token|x-api-key|api[-_]?key/i.test(name);
 }
 //# sourceMappingURL=sensitivity.js.map

@@ -119,6 +119,46 @@ test("transport canonical keys and redaction cover raw and binary body modes", (
 });
 
 
+test("transport canonical keys do not derive identity from low-entropy body secrets", () => {
+  const firstRaw = createTransportRequest({
+    method: "POST",
+    url: "/api/exchange-code",
+    body: { mode: "raw", value: "otp-123456" },
+    responseMode: "json",
+  });
+  const secondRaw = createTransportRequest({
+    method: "POST",
+    url: "/api/exchange-code",
+    body: { mode: "raw", value: "otp-654321" },
+    responseMode: "json",
+  });
+  const firstJson = createTransportRequest({
+    method: "POST",
+    url: "/api/exchange-code",
+    body: { mode: "json", value: { code: "123456", visible: "shape-only" } },
+    responseMode: "json",
+  });
+  const secondJson = createTransportRequest({
+    method: "POST",
+    url: "/api/exchange-code",
+    body: { mode: "json", value: { code: "654321", visible: "shape-only" } },
+    responseMode: "json",
+  });
+
+  const serialized = JSON.stringify([
+    canonicalTransportKey(firstRaw),
+    canonicalTransportKey(secondRaw),
+    canonicalTransportKey(firstJson),
+    canonicalTransportKey(secondJson),
+  ]);
+
+  assert.equal(canonicalTransportKey(firstRaw), canonicalTransportKey(secondRaw));
+  assert.equal(canonicalTransportKey(firstJson), canonicalTransportKey(secondJson));
+  assert.equal(serialized.includes("123456"), false);
+  assert.equal(serialized.includes("654321"), false);
+});
+
+
 test("transport responses unwrap Holm success envelopes and preserve meta and headers", () => {
   const decoded = decodeTransportResponse({
     requestId: "req-envelope",

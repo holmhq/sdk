@@ -129,6 +129,15 @@ Later npm publication is straightforward: package metadata already targets
 `@holmhq/sdk`. Publication remains blocked by `"private": true` until package
 ownership and release readiness are explicitly approved.
 
+## Credential diagnostics contract
+
+Transport diagnostics and hooks redact structurally marked sensitive URL, query,
+path, header, and body material. URL-borne credentials remain caller-owned: if a
+helper or app constructs signed URLs, magic links, invite paths, or query tokens,
+it must set `sensitive.url` or the relevant `sensitive.params` markers when
+creating the transport request. Header-name matching is only defense-in-depth;
+explicit structural sensitivity markers are the authority boundary.
+
 ## Compatibility principles
 
 - The action/schema/state registry is owned by Holm and remains independently

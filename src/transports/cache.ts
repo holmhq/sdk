@@ -4,7 +4,7 @@ import {
   type CacheSourceIdentity,
 } from "../core/cache-key.js";
 import type { HolmDiagnosticsSink } from "../core/diagnostics.js";
-import { serializeHolmError, type SerializedHolmError } from "../core/errors.js";
+import { HolmError, serializeHolmError, type SerializedHolmError } from "../core/errors.js";
 import type { Clock, OperationResponse, ScheduledTask, Scheduler } from "../core/runtime.js";
 import { copyWireValue } from "../core/wire-value.js";
 import type { RedactedTransportDiagnostic, TransportRequest } from "./index.js";
@@ -458,12 +458,13 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
   }
 
   function emitBackgroundError(input: NormalizedGetInput, error: unknown): void {
+    const diagnosticError = redactHolmErrorForDiagnostic(error);
     const event = Object.freeze({
       key: input.key,
       partition: input.partition,
       request: redactTransportRequestMetadata(input.request),
       tags: input.tags,
-      error: serializeHolmError(error),
+      error: serializeHolmError(diagnosticError),
     }) satisfies TransportCacheBackgroundErrorEvent;
     notifyHook("transport_cache_background_error_hook_error", () => options.onBackgroundError?.(event));
     options.diagnostics?.emit({
@@ -478,7 +479,7 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
         request: redactTransportRequestMetadata(input.request),
         tags: input.tags,
       },
-      error,
+      error: diagnosticError,
     });
   }
 
@@ -492,7 +493,7 @@ export function createTransportCache(options: TransportCacheOptions): TransportC
         severity: "error",
         message: "Transport cache hook failed.",
         at: clock.now(),
-        error,
+        error: redactHolmErrorForDiagnostic(error),
       });
     }
   }
@@ -624,6 +625,23 @@ function invokeLoader(loader: TransportCacheLoader): Promise<OperationResponse> 
   } catch (error) {
     return Promise.reject(error);
   }
+}
+
+function redactHolmErrorForDiagnostic(error: unknown): unknown {
+  if (!(error instanceof HolmError)) {
+    return error;
+  }
+  // Free-form HolmError messages are not public transport diagnostics unless a
+  // future API explicitly classifies them safe. Preserve code/kind/status/details
+  // and redact the message before hooks or diagnostics serialize it.
+  return new HolmError({
+    kind: error.kind,
+    code: error.code,
+    message: "Holm error message redacted.",
+    details: error.details,
+    ...(error.status === undefined ? {} : { status: error.status }),
+    ...(error.retryable === undefined ? {} : { retryable: error.retryable }),
+  });
 }
 
 function copyOperationResponse(response: OperationResponse): OperationResponse {

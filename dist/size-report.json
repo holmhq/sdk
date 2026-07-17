@@ -258,11 +258,11 @@
         "gzipBytes": 2560,
         "rawBytes": 8192
       },
-      "gzipBytes": 896,
-      "minifiedBytes": 2726,
+      "gzipBytes": 902,
+      "minifiedBytes": 2765,
       "path": "dist/transports/sensitivity.js",
-      "rawBytes": 3371,
-      "sha256": "3709869f34a93795d64f72b915f5f7397eea7c8b3d5b2cbb59c1242464b44961"
+      "rawBytes": 3630,
+      "sha256": "3733835706de6912f494249201d26113a9b569b6a7ba236ba166a53aef221218"
     },
     {
       "budgets": {
@@ -481,8 +481,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 49126,
-    "minifiedBytes": 166363,
-    "rawBytes": 227400
+    "gzipBytes": 49132,
+    "minifiedBytes": 166402,
+    "rawBytes": 227659
   }
 }

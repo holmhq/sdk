@@ -1,5 +1,5 @@
 import { createCallerPartitionedCacheKey, normalizeCacheSourceIdentity, } from "../core/cache-key.js";
-import { serializeHolmError } from "../core/errors.js";
+import { HolmError, serializeHolmError } from "../core/errors.js";
 import { copyWireValue } from "../core/wire-value.js";
 import { redactTransportRequestMetadata } from "./sensitivity.js";
 export function createTransportCache(options) {
@@ -271,12 +271,13 @@ export function createTransportCache(options) {
         });
     }
     function emitBackgroundError(input, error) {
+        const diagnosticError = redactHolmErrorForDiagnostic(error);
         const event = Object.freeze({
             key: input.key,
             partition: input.partition,
             request: redactTransportRequestMetadata(input.request),
             tags: input.tags,
-            error: serializeHolmError(error),
+            error: serializeHolmError(diagnosticError),
         });
         notifyHook("transport_cache_background_error_hook_error", () => options.onBackgroundError?.(event));
         options.diagnostics?.emit({
@@ -291,7 +292,7 @@ export function createTransportCache(options) {
                 request: redactTransportRequestMetadata(input.request),
                 tags: input.tags,
             },
-            error,
+            error: diagnosticError,
         });
     }
     function notifyHook(code, run) {
@@ -305,7 +306,7 @@ export function createTransportCache(options) {
                 severity: "error",
                 message: "Transport cache hook failed.",
                 at: clock.now(),
-                error,
+                error: redactHolmErrorForDiagnostic(error),
             });
         }
     }
@@ -422,6 +423,22 @@ function invokeLoader(loader) {
     catch (error) {
         return Promise.reject(error);
     }
+}
+function redactHolmErrorForDiagnostic(error) {
+    if (!(error instanceof HolmError)) {
+        return error;
+    }
+    // Free-form HolmError messages are not public transport diagnostics unless a
+    // future API explicitly classifies them safe. Preserve code/kind/status/details
+    // and redact the message before hooks or diagnostics serialize it.
+    return new HolmError({
+        kind: error.kind,
+        code: error.code,
+        message: "Holm error message redacted.",
+        details: error.details,
+        ...(error.status === undefined ? {} : { status: error.status }),
+        ...(error.retryable === undefined ? {} : { retryable: error.retryable }),
+    });
 }
 function copyOperationResponse(response) {
     return Object.freeze({

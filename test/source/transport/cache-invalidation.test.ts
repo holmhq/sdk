@@ -2,6 +2,7 @@ import { strict as assert } from "node:assert";
 import { test } from "node:test";
 
 import {
+  HolmError,
   createDiagnosticsSink,
   type HolmDiagnosticEvent,
   type OperationResponse,
@@ -203,6 +204,108 @@ test("transport cache observational hooks receive only redacted request and erro
   assert.equal(JSON.stringify([updates, backgroundErrors]).includes("header-hook-secret"), false);
   assert.equal(JSON.stringify([updates, backgroundErrors]).includes("background-error-hook-secret"), false);
 });
+
+test("transport cache marks URL-borne secrets structurally while leaving unmarked URL values caller-owned", async () => {
+  const fake = createFakeClock();
+  const updates: TransportCacheUpdateEvent[] = [];
+  const diagnostics: HolmDiagnosticEvent[] = [];
+  const cache = createTransportCache({
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    maxEntries: 4,
+    onUpdate: (event) => updates.push(event),
+    diagnostics: createDiagnosticsSink((event) => {
+      diagnostics.push(event);
+    }),
+  });
+  const marked = createTransportRequest({
+    method: "GET",
+    url: "/api/magic/path-token-secret?sig=query-token-secret",
+    params: { access: "param-token-secret", visible: "kept" },
+    headers: { "x-auth": "manual-auth-secret", "x-signature": "manual-signature-secret", apikey: "manual-api-key-secret" },
+    responseMode: "json",
+    sensitive: { url: true, params: ["access"] },
+  });
+  const unmarked = createTransportRequest({
+    method: "GET",
+    url: "/api/public/path-token-caller-owned?sig=query-token-caller-owned",
+    params: { token: "param-token-caller-owned" },
+    responseMode: "json",
+  });
+
+  await cache.getOrLoad(
+    { partition, request: marked, policy, tags: ["marked"] },
+    async () => response("req-marked-url", { ok: true }),
+  );
+  await cache.getOrLoad(
+    { partition, request: unmarked, policy, tags: ["unmarked"] },
+    async () => response("req-unmarked-url", { ok: true }),
+  );
+
+  const markedText = JSON.stringify([updates[0], diagnostics[0]]);
+  const unmarkedText = JSON.stringify([updates[1], diagnostics[1]]);
+  assert.equal(markedText.includes("path-token-secret"), false);
+  assert.equal(markedText.includes("query-token-secret"), false);
+  assert.equal(markedText.includes("param-token-secret"), false);
+  assert.equal(markedText.includes("manual-auth-secret"), false);
+  assert.equal(markedText.includes("manual-signature-secret"), false);
+  assert.equal(markedText.includes("manual-api-key-secret"), false);
+  assert.equal(updates[0]?.request.url, "[redacted]");
+  assert.deepEqual(updates[0]?.request.params, { access: "[redacted]", visible: "kept" });
+  assert.deepEqual(updates[0]?.request.headers, {
+    apikey: "[redacted]",
+    "x-auth": "[redacted]",
+    "x-signature": "[redacted]",
+  });
+  assert.equal(unmarkedText.includes("path-token-caller-owned"), true);
+  assert.equal(unmarkedText.includes("query-token-caller-owned"), true);
+  assert.equal(unmarkedText.includes("param-token-caller-owned"), true);
+});
+
+
+test("transport cache background HolmError events redact loader message content", async () => {
+  const fake = createFakeClock();
+  const backgroundErrors: TransportCacheBackgroundErrorEvent[] = [];
+  const diagnostics: HolmDiagnosticEvent[] = [];
+  const cache = createTransportCache({
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    maxEntries: 2,
+    onBackgroundError: (event) => backgroundErrors.push(event),
+    diagnostics: createDiagnosticsSink((event) => {
+      diagnostics.push(event);
+    }),
+  });
+  const cachedRequest = createTransportRequest({ method: "GET", url: "/api/background-redaction", responseMode: "json" });
+
+  await cache.getOrLoad(
+    { partition, request: cachedRequest, policy: { ttlMs: 1, swrMs: 100 } },
+    async () => response("req-background-holm-1", { version: 1 }),
+  );
+  fake.advanceBy(2);
+  await cache.getOrLoad(
+    { partition, request: cachedRequest, policy: { ttlMs: 1, swrMs: 100 } },
+    async () => {
+      throw new HolmError({
+        kind: "transport",
+        code: "loader_sensitive_message",
+        message: "loader message carries synthetic-secret-token",
+        details: { safe: "kept", token: "detail-secret-token" },
+      });
+    },
+  );
+  fake.scheduler.runDue();
+  await flushBackground();
+
+  const event = diagnostics.find((item) => item.code === "transport_cache_background_error");
+  assert.equal(backgroundErrors.length, 1);
+  assert.notEqual(event, undefined);
+  assert.equal(backgroundErrors[0]?.error.code, "loader_sensitive_message");
+  assert.equal(backgroundErrors[0]?.error.message.includes("synthetic-secret-token"), false);
+  assert.equal(event?.error?.message.includes("synthetic-secret-token"), false);
+  assert.equal(JSON.stringify([backgroundErrors, diagnostics]).includes("detail-secret-token"), false);
+});
+
 
 test("transport cache diagnostics observe background SWR errors with redacted request evidence", async () => {
   const fake = createFakeClock();
