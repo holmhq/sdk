@@ -1,6 +1,6 @@
 ---
 title: W4 S06 - Integrity, offline vendoring, and compatibility fixture
-status: approved
+status: implemented
 issue: 017
 plan: 004
 slice: S06

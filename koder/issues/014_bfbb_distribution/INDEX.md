@@ -1,8 +1,9 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
-updated: 2026-07-13
+updated: 2026-07-17
+resolved: 2026-07-17
 tags: bfbb, bundles, jsdelivr, distribution, integrity, size
 parent: 001
 depends_on: [003, 004]
@@ -38,23 +39,34 @@ Actual GitHub source for initial links:
 
 ## Acceptance Criteria
 
-- [ ] Clean build produces byte-identical tracked artifacts or documents and
+- [x] Clean build produces byte-identical tracked artifacts or documents and
       tests any unavoidable deterministic metadata normalization.
-- [ ] Source tests, declaration consumer tests, and each bundle smoke pass before
+- [x] Source tests, declaration consumer tests, and each bundle smoke pass before
       generated output can be committed.
-- [ ] Build manifest hashes match files and a vendor verification command fails
+- [x] Build manifest hashes match files and a vendor verification command fails
       on tampering.
-- [ ] Raw/minified/gzip and parse/startup measurements are recorded; CI enforces
+- [x] Raw/minified/gzip and parse/startup measurements are recorded; CI enforces
       reviewed budgets rather than an arbitrary guess.
-- [ ] Complete bundle exports all approved capabilities without bundling
+- [x] Complete bundle exports all approved capabilities without bundling
       framework runtimes or optional CRDT engines.
-- [ ] A raw no-build browser fixture works from vendored local files with
+- [x] A raw no-build browser fixture works from vendored local files with
       network disabled after load.
-- [ ] README uses a commit SHA or immutable tag and explicitly rejects `@main`
+- [x] README uses a commit SHA or immutable tag and explicitly rejects `@main`
       for deployed apps.
-- [ ] `dist/` is tracked intentionally and includes MIT/license provenance.
-- [ ] `package.json` remains private; no npm credentials or publish workflow are
+- [x] `dist/` is tracked intentionally and includes MIT/license provenance.
+- [x] `package.json` remains private; no npm credentials or publish workflow are
       introduced.
+
+## Resolution
+
+Resolved by Queue `#005` Plans `004_S05` and `004_S06`. Product commits
+`c7fb6c0` and `5242365` delivered deterministic tracked bundles, manifests,
+hashes, size/license evidence, altered-byte rejection, and copied offline BFBB
+plus Vite compatibility fixtures. Fresh independent reviews
+`q005-gov-e05-review-a01` and `q005-gov-e06-review-a01` approved with
+`P1=0 P2=0 P3=0`; the S06 review explicitly confirmed all existing Issue
+`#014` acceptance criteria without publication, release, runtime CDN, or
+browser-soak claims.
 
 ## Non-Goals
 
