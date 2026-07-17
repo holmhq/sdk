@@ -51,7 +51,7 @@ initial target, not permission to omit gates.
 | 1 | `koder/plans/004_S01_stable_api_inventory_freeze_gate/INDEX.md` | done | 90-120m | yellow | All plan commands; deterministic stable API/declaration manifest and drift gate; fresh entry review 0 P1/P2 | Support-matrix/API decision, new dependency, authority conflict, irreproducibility, or release action blocks |
 | 2 | `koder/plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md` | done | 60-90m | yellow | All plan commands; preview/reserved labels, stable import isolation, raw BFBB no-Node proof; fresh entry review 0 P1/P2 | Stable-to-preview coupling, expanded support promise, new dependency, authority drift, or irreproducibility blocks |
 | 3 | `koder/plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md` | done | 90-120m | yellow/red | All plan commands; Review `#033` advisories 1-4 disposition and credential-safe proof; fresh security review 0 P1/P2 | Sensitivity-contract/API redesign, unbounded leak, ambient/dependency need, or unauthorized credential action blocks |
-| 4 | `koder/plans/004_S04_edge_contract_p3_disposition/INDEX.md` | blocked | 60-90m | yellow | All plan commands; Review `#033` advisories 5-9 explicit disposition; fresh edge-contract review 0 P1/P2 | Breaking API, unresolved advisory, Holm request-ID contradiction, dependency, or irreproducibility blocks |
+| 4 | `koder/plans/004_S04_edge_contract_p3_disposition/INDEX.md` | done | 60-90m | yellow | All plan commands; Review `#033` advisories 5-9 explicit disposition; fresh edge-contract review 0 P1/P2 | Breaking API, unresolved advisory, Holm request-ID contradiction, dependency, or irreproducibility blocks |
 | 5 | `koder/plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md` | queued | 90-120m | yellow/red | All plan commands; deterministic bundles/maps/declarations/manifests/size/license; fresh distribution review 0 P1/P2 | Issue `#014` cannot stay thin, dependency/status change, size/repro failure, authority conflict, or release action blocks |
 | 6 | `koder/plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md` | queued | 90-120m | yellow | All plan commands; hashes, tamper failure, copied offline BFBB and Vite fixtures; fresh integrity review 0 P1/P2 | Offline/immutable proof fails, Issue `#014` expands, dependency/release/pilot need, or authority drift blocks |
 | 7 | `koder/plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md` | queued | 60-90m | yellow | All plan commands; private RC metadata/support/update/rollback wording; fresh docs/product review 0 P1/P2 | Public-release implication, support change, unsupported promise, broad Issue `#015` rewrite, or release action blocks |
@@ -154,3 +154,11 @@ cycle.
   legacy-PTY report failure with no Git delta. Process failures used `5/8`;
   next safe phase remains S04 implementation with a changed brief/config or
   owner/operator recovery decision.
+- Recovery coordinator `q005-coordinator-03r` completed S04 after the prior five
+  process failures: implement `q005-c03r-e04-implement-a06` committed
+  `7d3afec795e24580323e50a65074c6d639cb10dc` (parent
+  `11d2084cd275e04eb3b957407181a80cacfee2f5`) with targeted red
+  `npm run test:source -- "invalid descriptors"` exit 1, green exit 0, and all
+  S04 plan validation commands exit 0; review `q005-c03r-e04-review-a01`
+  approved `P1=0 P2=0 P3=0`; generated artifacts were updated/reproducible;
+  no fallback or fix cycle was used; process failures remain `5/8`.

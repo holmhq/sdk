@@ -1,6 +1,6 @@
 ---
 title: W4 S04 - Remaining edge-contract P3 disposition
-status: approved
+status: implemented
 issue: 017
 plan: 004
 slice: S04

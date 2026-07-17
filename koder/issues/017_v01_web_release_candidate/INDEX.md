@@ -9,7 +9,7 @@ depends_on: [007, 009, 014]
 type: feature
 issue_kind: track
 slice_count: 8
-slices_done: 3
+slices_done: 4
 planning_status: approved
 plan_review: ../../reviews/049_w4_v01_web_plan_review/INDEX.md
 context: Prepare a private v0.1-web release-candidate code/artifact state without publishing, tagging, deploying, or claiming production pilot proof.
@@ -117,7 +117,7 @@ browser/pilot proof, or taking release actions.
 | Stable API inventory and freeze gate | done | [`004_S01`](../../plans/004_S01_stable_api_inventory_freeze_gate/INDEX.md) | `005` | Deterministic stable export/declaration manifest and drift test pass. |
 | Preview/reserved boundary enforcement | done | [`004_S02`](../../plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md) | `005` | Preview/reserved labels and import-isolation smokes pass. |
 | Credential/diagnostic P3 hardening | done | [`004_S03`](../../plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md) | `005` | Review `#033` advisories 1-4 fixed/tested or explicitly bounded by approved contract. |
-| Remaining edge-contract P3 disposition | blocked | [`004_S04`](../../plans/004_S04_edge_contract_p3_disposition/INDEX.md) | `005` | Review `#033` advisories 5-9 fixed, tested, documented, or accepted with rationale. |
+| Remaining edge-contract P3 disposition | done | [`004_S04`](../../plans/004_S04_edge_contract_p3_disposition/INDEX.md) | `005` | Review `#033` advisories 5-9 fixed, tested, documented, or accepted with rationale. |
 | Deterministic v0.1 web/BFBB bundles | queued | [`004_S05`](../../plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md) | `005` | Issue `#014` bundle composition, maps/declarations/license/size/manifest gates pass. |
 | Integrity, offline vendoring, and compatibility fixture | queued | [`004_S06`](../../plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md) | `005` | Artifact hashes/tamper failure/offline vendored BFBB and Vite compatibility fixtures pass. |
 | RC metadata, docs, upgrade/rollback contract | queued | [`004_S07`](../../plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md) | `005` | Private `0.1.0-rc.1` docs/metadata/support/rollback notes are accurate and non-release. |
