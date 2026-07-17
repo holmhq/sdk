@@ -3,6 +3,7 @@ import { readFileSync, rmSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 
 import { listFiles } from "./lib/artifacts.mjs";
+import { verifyDistIntegrityAndOfflineFixture } from "./verify-dist-integrity.mjs";
 
 const { createBfbbApp } = await import("../examples/bfbb/app.js");
 const rawCalls = [];
@@ -59,6 +60,8 @@ if (rawCalls[0] !== "https://app.example.test/api/example") {
 }
 await raw.dispose();
 
+await verifyDistIntegrityAndOfflineFixture();
+
 const bfbbGraph = collectEsmGraph("examples/bfbb/app.js");
 const bfbbNodeSpecifiers = bfbbGraph.externalSpecifiers.filter((specifier) => specifier === "node" || specifier.startsWith("node:"));
 if (bfbbNodeSpecifiers.length > 0) {
@@ -110,4 +113,4 @@ for (const requiredLabel of [
   }
 }
 
-console.log("Example checks passed: raw BFBB import, Vite production build, preview runtime labels, and reserved bridge labels.");
+console.log("Example checks passed: raw BFBB import, offline vendored integrity fixture, Vite production build, preview runtime labels, and reserved bridge labels.");

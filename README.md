@@ -101,8 +101,8 @@ in every bundle.
 ## BFBB and jsDelivr distribution
 
 Publishing to npm is deliberately deferred. GitHub is sufficient for the first
-versioned artifacts, and jsDelivr can serve immutable commit- or tag-pinned
-files directly:
+versioned artifacts, and jsDelivr can serve immutable Git SHA- or reviewed
+tag-pinned files directly:
 
 ```text
 https://cdn.jsdelivr.net/gh/holmhq/sdk@<commit-sha>/dist/holm.js
@@ -122,8 +122,10 @@ curl -fL \
 import { createHolm } from './vendor/holm/holm.js'
 ```
 
-Do not use `@main` for deployed apps. Use an immutable commit SHA or release tag
-and record the SDK version/hash alongside the vendored file.
+Never use `@main` for deployed apps. Use an immutable Git SHA or reviewed tag
+and record the SDK version plus SHA-256 hash from `dist/manifest.json` alongside
+the vendored file. The runtime app should load the local vendored copy; the CDN
+URL is only a download source for preparing that copy.
 
 Later npm publication is straightforward: package metadata already targets
 `@holmhq/sdk`. Publication remains blocked by `"private": true` until package

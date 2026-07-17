@@ -24,7 +24,7 @@ const manifest = {
   source: {
     commit: null,
     commitPolicy:
-      "Tracked development artifacts are commit-independent; distribute them from an immutable Git SHA or reviewed tag.",
+      "Tracked development artifacts are commit-independent; distribute them from an immutable Git SHA or reviewed tag; never deploy from @main.",
   },
   artifacts,
 };
