@@ -1,0 +1,1058 @@
+{
+  "entries": [
+    {
+      "declaration": "dist/index.d.ts",
+      "declarationFiles": [
+        {
+          "path": "dist/core/cache-key.d.ts",
+          "sha256": "8954f09ac63b378ec283755eeee1d1afffc0e18bbe1dd189444969383d257451"
+        },
+        {
+          "path": "dist/core/caller.d.ts",
+          "sha256": "dfb40278e5bbae23afd64cf94e4c6a71da9aebc80a19a3fdc09d1c8f0a7f8ca0"
+        },
+        {
+          "path": "dist/core/cancellation.d.ts",
+          "sha256": "5fd4a02dfc2d8df6eb573b63bbc235d23ad863ba622d42fb29321e9467a345ad"
+        },
+        {
+          "path": "dist/core/capabilities.d.ts",
+          "sha256": "0b1281104e8118436ef71c7e5da3a491ffe03359c7cccb05f4289add9708db71"
+        },
+        {
+          "path": "dist/core/correlation.d.ts",
+          "sha256": "4c18c7f9584e3c94bcb1f27026f021b70b1da981f96b7cf681b5f12252d37fcd"
+        },
+        {
+          "path": "dist/core/create-holm.d.ts",
+          "sha256": "7b7423869647c66786167de752d963d75759011e4f66300faac3e3273744b894"
+        },
+        {
+          "path": "dist/core/diagnostics.d.ts",
+          "sha256": "717539aa0dee0a86beb93c26afee20691f6b24228d32d038074763333c71a28c"
+        },
+        {
+          "path": "dist/core/errors.d.ts",
+          "sha256": "109b65df1477e4d1cacd532ba22f791302175c3d9e2ffddb831f9db83d452824"
+        },
+        {
+          "path": "dist/core/extensions.d.ts",
+          "sha256": "a0b3285efa49344211132f669d7f7c2c63854acd035867a912064ff64b4745e3"
+        },
+        {
+          "path": "dist/core/index.d.ts",
+          "sha256": "19e8711f12b34e16778a0accbf2404dc784b32ae7f0d20fd77abfa7c8737e63a"
+        },
+        {
+          "path": "dist/core/invoke.d.ts",
+          "sha256": "40db909c94b9d04afd0b2c62dc79840b4c02d6c40f687402e18c5cb0e68e15d9"
+        },
+        {
+          "path": "dist/core/lifecycle.d.ts",
+          "sha256": "fec675777b66c5ee7982d9545722d1f64d55e1b26bf1c7b7932a1534572df9d4"
+        },
+        {
+          "path": "dist/core/runtime.d.ts",
+          "sha256": "fcc7c30a8f85fa86ce0ea2d49801bddadbea8e3258ff062523d0b3ea0ab40647"
+        },
+        {
+          "path": "dist/core/wire-value.d.ts",
+          "sha256": "a0a8c24015abb598f45d67d9a1c3f0f789e2179c65d863d599a34392d187c6b3"
+        },
+        {
+          "path": "dist/index.d.ts",
+          "sha256": "d61d88a0a212ba605cf924f01825d64b3a6f84620c409d183dd16e76b4c64d43"
+        }
+      ],
+      "exports": {
+        "types": [
+          "CacheSourceIdentity",
+          "CallerAppContext",
+          "CallerContext",
+          "CallerPartition",
+          "CallerPartitionListener",
+          "CallerPartitionedCacheKeyInput",
+          "CallerProvider",
+          "CancellationController",
+          "CancellationScope",
+          "CancellationScopeOptions",
+          "CancellationSignal",
+          "CancelledErrorOptions",
+          "CapabilityOffer",
+          "CapabilityOrigin",
+          "CapabilityRequirement",
+          "CapabilitySnapshot",
+          "CapabilitySnapshotListener",
+          "CapabilityVersion",
+          "CapabilityVersionErrorOptions",
+          "CapabilityView",
+          "Clock",
+          "CoreEnvironment",
+          "DuplicateCapabilityOfferErrorOptions",
+          "ExtensionDescriptor",
+          "ExtensionErrorOptions",
+          "ExtensionGraph",
+          "ExtensionLifecycle",
+          "ExtensionLifecycleOptions",
+          "ExtensionNamespaceMap",
+          "ExtensionNamespaces",
+          "ExtensionRequirement",
+          "ExtensionSetupContext",
+          "ExtensionSetupResult",
+          "Holm",
+          "HolmBytesTag",
+          "HolmDiagnosticEvent",
+          "HolmDiagnosticEventInput",
+          "HolmDiagnosticSeverity",
+          "HolmDiagnosticsHandler",
+          "HolmDiagnosticsSink",
+          "HolmErrorKind",
+          "HolmErrorOptions",
+          "HolmExtension",
+          "HolmInvokeOptions",
+          "HolmOptions",
+          "InvalidCapabilityRequirementErrorOptions",
+          "InvocationContext",
+          "InvocationControl",
+          "InvokeRuntimeOptions",
+          "LifecycleController",
+          "LifecycleControllerOptions",
+          "LifecycleErrorOptions",
+          "LifecycleSnapshot",
+          "LifecycleState",
+          "OperationRequest",
+          "OperationResponse",
+          "PrincipalRef",
+          "ProtocolErrorOptions",
+          "ReadonlyBytes",
+          "ReadonlyDeep",
+          "RuntimeAdapter",
+          "ScheduledTask",
+          "Scheduler",
+          "SerializedHolmError",
+          "SurfaceKind",
+          "TimeoutErrorOptions",
+          "UnsupportedCapabilityErrorOptions",
+          "WireArray",
+          "WireObject",
+          "WireScalar",
+          "WireValue"
+        ],
+        "values": [
+          "CancelledError",
+          "CapabilityVersionError",
+          "DuplicateCapabilityOfferError",
+          "ExtensionError",
+          "HolmError",
+          "InvalidCapabilityRequirementError",
+          "LifecycleError",
+          "ProtocolError",
+          "TimeoutError",
+          "UnsupportedCapabilityError",
+          "assertWireValue",
+          "canonicalEncodeWireValue",
+          "copyWireValue",
+          "createCallerFingerprint",
+          "createCallerPartitionedCacheKey",
+          "createCancellationController",
+          "createCapabilityRegistry",
+          "createCoreEnvironment",
+          "createDiagnosticsSink",
+          "createExtensionGraph",
+          "createExtensionLifecycle",
+          "createHolm",
+          "createHolmDiagnosticEvent",
+          "createInvocationContext",
+          "createLifecycleController",
+          "createReadonlyBytes",
+          "createStaticCallerProvider",
+          "invokeRuntime",
+          "isHolmError",
+          "isReadonlyBytes",
+          "isWireValue",
+          "negotiateCapability",
+          "normalizeCacheSourceIdentity",
+          "normalizeCallerContext",
+          "resolveCallerContext",
+          "runtimeEnvelopeProtocol",
+          "serializeHolmError"
+        ]
+      },
+      "import": "dist/index.js",
+      "name": "@holmhq/sdk",
+      "packageExport": "."
+    },
+    {
+      "declaration": "dist/core/index.d.ts",
+      "declarationFiles": [
+        {
+          "path": "dist/core/cache-key.d.ts",
+          "sha256": "8954f09ac63b378ec283755eeee1d1afffc0e18bbe1dd189444969383d257451"
+        },
+        {
+          "path": "dist/core/caller.d.ts",
+          "sha256": "dfb40278e5bbae23afd64cf94e4c6a71da9aebc80a19a3fdc09d1c8f0a7f8ca0"
+        },
+        {
+          "path": "dist/core/cancellation.d.ts",
+          "sha256": "5fd4a02dfc2d8df6eb573b63bbc235d23ad863ba622d42fb29321e9467a345ad"
+        },
+        {
+          "path": "dist/core/capabilities.d.ts",
+          "sha256": "0b1281104e8118436ef71c7e5da3a491ffe03359c7cccb05f4289add9708db71"
+        },
+        {
+          "path": "dist/core/correlation.d.ts",
+          "sha256": "4c18c7f9584e3c94bcb1f27026f021b70b1da981f96b7cf681b5f12252d37fcd"
+        },
+        {
+          "path": "dist/core/create-holm.d.ts",
+          "sha256": "7b7423869647c66786167de752d963d75759011e4f66300faac3e3273744b894"
+        },
+        {
+          "path": "dist/core/diagnostics.d.ts",
+          "sha256": "717539aa0dee0a86beb93c26afee20691f6b24228d32d038074763333c71a28c"
+        },
+        {
+          "path": "dist/core/errors.d.ts",
+          "sha256": "109b65df1477e4d1cacd532ba22f791302175c3d9e2ffddb831f9db83d452824"
+        },
+        {
+          "path": "dist/core/extensions.d.ts",
+          "sha256": "a0b3285efa49344211132f669d7f7c2c63854acd035867a912064ff64b4745e3"
+        },
+        {
+          "path": "dist/core/index.d.ts",
+          "sha256": "19e8711f12b34e16778a0accbf2404dc784b32ae7f0d20fd77abfa7c8737e63a"
+        },
+        {
+          "path": "dist/core/invoke.d.ts",
+          "sha256": "40db909c94b9d04afd0b2c62dc79840b4c02d6c40f687402e18c5cb0e68e15d9"
+        },
+        {
+          "path": "dist/core/lifecycle.d.ts",
+          "sha256": "fec675777b66c5ee7982d9545722d1f64d55e1b26bf1c7b7932a1534572df9d4"
+        },
+        {
+          "path": "dist/core/runtime.d.ts",
+          "sha256": "fcc7c30a8f85fa86ce0ea2d49801bddadbea8e3258ff062523d0b3ea0ab40647"
+        },
+        {
+          "path": "dist/core/wire-value.d.ts",
+          "sha256": "a0a8c24015abb598f45d67d9a1c3f0f789e2179c65d863d599a34392d187c6b3"
+        }
+      ],
+      "exports": {
+        "types": [
+          "CacheSourceIdentity",
+          "CallerAppContext",
+          "CallerContext",
+          "CallerPartition",
+          "CallerPartitionListener",
+          "CallerPartitionedCacheKeyInput",
+          "CallerProvider",
+          "CallerScopeContext",
+          "CallerTransitionListener",
+          "CancellationController",
+          "CancellationScope",
+          "CancellationScopeOptions",
+          "CancellationSignal",
+          "CancelledErrorOptions",
+          "CapabilityOffer",
+          "CapabilityOrigin",
+          "CapabilityRequirement",
+          "CapabilitySnapshot",
+          "CapabilitySnapshotListener",
+          "CapabilityVersion",
+          "CapabilityVersionErrorOptions",
+          "CapabilityView",
+          "Clock",
+          "CoreEnvironment",
+          "DiagnosticsSinkOptions",
+          "DuplicateCapabilityOfferErrorOptions",
+          "ExtensionDescriptor",
+          "ExtensionErrorOptions",
+          "ExtensionGraph",
+          "ExtensionLifecycle",
+          "ExtensionLifecycleOptions",
+          "ExtensionNamespaceMap",
+          "ExtensionNamespaces",
+          "ExtensionRequirement",
+          "ExtensionSetupContext",
+          "ExtensionSetupResult",
+          "Holm",
+          "HolmBytesTag",
+          "HolmDiagnosticEvent",
+          "HolmDiagnosticEventInput",
+          "HolmDiagnosticSeverity",
+          "HolmDiagnosticsHandler",
+          "HolmDiagnosticsSink",
+          "HolmErrorKind",
+          "HolmErrorOptions",
+          "HolmExtension",
+          "HolmInvokeOptions",
+          "HolmOptions",
+          "InvalidCapabilityRequirementErrorOptions",
+          "InvocationContext",
+          "InvocationControl",
+          "InvokeRuntimeOptions",
+          "LifecycleController",
+          "LifecycleControllerOptions",
+          "LifecycleErrorOptions",
+          "LifecycleSnapshot",
+          "LifecycleState",
+          "OperationRequest",
+          "OperationResponse",
+          "PrincipalRef",
+          "ProtocolErrorOptions",
+          "ReadonlyBytes",
+          "ReadonlyDeep",
+          "RuntimeAdapter",
+          "ScheduledTask",
+          "Scheduler",
+          "SerializedHolmError",
+          "SurfaceKind",
+          "TimeoutErrorOptions",
+          "UnsupportedCapabilityErrorOptions",
+          "WireArray",
+          "WireObject",
+          "WireScalar",
+          "WireValue"
+        ],
+        "values": [
+          "CancelledError",
+          "CapabilityVersionError",
+          "DuplicateCapabilityOfferError",
+          "ExtensionError",
+          "HolmError",
+          "InvalidCapabilityRequirementError",
+          "LifecycleError",
+          "ProtocolError",
+          "TimeoutError",
+          "UnsupportedCapabilityError",
+          "assertWireValue",
+          "canonicalEncodeWireValue",
+          "copyWireValue",
+          "createCallerFingerprint",
+          "createCallerPartitionedCacheKey",
+          "createCancellationController",
+          "createCapabilityRegistry",
+          "createCoreEnvironment",
+          "createDiagnosticsSink",
+          "createExtensionGraph",
+          "createExtensionLifecycle",
+          "createHolm",
+          "createHolmDiagnosticEvent",
+          "createInvocationContext",
+          "createLifecycleController",
+          "createReadonlyBytes",
+          "createStaticCallerProvider",
+          "invokeRuntime",
+          "isHolmError",
+          "isReadonlyBytes",
+          "isWireValue",
+          "negotiateCapability",
+          "normalizeCacheSourceIdentity",
+          "normalizeCallerContext",
+          "onCallerTransition",
+          "resolveCallerContext",
+          "runtimeEnvelopeProtocol",
+          "serializeHolmError"
+        ]
+      },
+      "import": "dist/core/index.js",
+      "name": "@holmhq/sdk/core",
+      "packageExport": "./core"
+    },
+    {
+      "declaration": "dist/transports/index.d.ts",
+      "declarationFiles": [
+        {
+          "path": "dist/core/cache-key.d.ts",
+          "sha256": "8954f09ac63b378ec283755eeee1d1afffc0e18bbe1dd189444969383d257451"
+        },
+        {
+          "path": "dist/core/caller.d.ts",
+          "sha256": "dfb40278e5bbae23afd64cf94e4c6a71da9aebc80a19a3fdc09d1c8f0a7f8ca0"
+        },
+        {
+          "path": "dist/core/capabilities.d.ts",
+          "sha256": "0b1281104e8118436ef71c7e5da3a491ffe03359c7cccb05f4289add9708db71"
+        },
+        {
+          "path": "dist/core/diagnostics.d.ts",
+          "sha256": "717539aa0dee0a86beb93c26afee20691f6b24228d32d038074763333c71a28c"
+        },
+        {
+          "path": "dist/core/errors.d.ts",
+          "sha256": "109b65df1477e4d1cacd532ba22f791302175c3d9e2ffddb831f9db83d452824"
+        },
+        {
+          "path": "dist/core/runtime.d.ts",
+          "sha256": "fcc7c30a8f85fa86ce0ea2d49801bddadbea8e3258ff062523d0b3ea0ab40647"
+        },
+        {
+          "path": "dist/core/wire-value.d.ts",
+          "sha256": "a0a8c24015abb598f45d67d9a1c3f0f789e2179c65d863d599a34392d187c6b3"
+        },
+        {
+          "path": "dist/transports/cache.d.ts",
+          "sha256": "eee085067c64ccb67b9923935554b052b5466bd138286401d313e4c97ca2729f"
+        },
+        {
+          "path": "dist/transports/index.d.ts",
+          "sha256": "96a10c00ba9a18401712e5b33f11aeea69775ca01ba2a303176d4a2df51e35da"
+        },
+        {
+          "path": "dist/transports/response.d.ts",
+          "sha256": "7234eecb0b663ba674ae3c8d4aeec1bf267cf137c3b1c94c84a842ed37599c48"
+        },
+        {
+          "path": "dist/transports/upload.d.ts",
+          "sha256": "34017c43b2c9a97f2ba8a6a993f107fb79bd40afe67afe94edfc6b19736bd810"
+        }
+      ],
+      "exports": {
+        "types": [
+          "AuthenticatedTransportRequest",
+          "BearerTransportAuthProof",
+          "BinaryTransportBody",
+          "EncodedTransportBody",
+          "HeaderTransportAuthProof",
+          "JsonTransportBody",
+          "NormalizeTransportErrorContext",
+          "ProtocolErrorOptions",
+          "RawTransportBody",
+          "RedactedTransportAuthProof",
+          "RedactedTransportDiagnostic",
+          "RedactedUploadChunkDiagnostic",
+          "RedactedUploadDiagnostic",
+          "RedactedUploadFieldDiagnostic",
+          "RedactedUploadFileDiagnostic",
+          "RemoteErrorOptions",
+          "ResumableUploadAdapter",
+          "TransportAuthProof",
+          "TransportAuthProvider",
+          "TransportBody",
+          "TransportBodyInput",
+          "TransportCache",
+          "TransportCacheBackgroundErrorEvent",
+          "TransportCacheGetInput",
+          "TransportCacheInvalidationEvent",
+          "TransportCacheInvalidationInput",
+          "TransportCacheInvalidationReason",
+          "TransportCacheInvalidationResult",
+          "TransportCacheKeyInput",
+          "TransportCacheLoader",
+          "TransportCacheMode",
+          "TransportCacheMutationInvalidation",
+          "TransportCacheOptions",
+          "TransportCachePartition",
+          "TransportCachePolicy",
+          "TransportCacheUpdateEvent",
+          "TransportErrorOptions",
+          "TransportHeaders",
+          "TransportMethod",
+          "TransportParams",
+          "TransportRequest",
+          "TransportRequestInput",
+          "TransportResponseInput",
+          "TransportResponseMode",
+          "TransportSensitivity",
+          "TransportSensitivityInput",
+          "UploadChunk",
+          "UploadChunkAck",
+          "UploadChunkBody",
+          "UploadChunkInput",
+          "UploadCompletion",
+          "UploadControl",
+          "UploadErrorOptions",
+          "UploadField",
+          "UploadFieldInput",
+          "UploadFile",
+          "UploadFileInput",
+          "UploadFinalizeInput",
+          "UploadHandoff",
+          "UploadHandoffEntry",
+          "UploadProgressEvent",
+          "UploadProgressListener",
+          "UploadRequest",
+          "UploadSession",
+          "UploadSource",
+          "UploadStatus",
+          "UploadStatusInput",
+          "UploadUnavailableSession",
+          "WebSessionTransportAuthProof"
+        ],
+        "values": [
+          "ProtocolError",
+          "RemoteError",
+          "TransportError",
+          "UploadError",
+          "applyTransportAuth",
+          "canonicalTransportKey",
+          "composeResumableUpload",
+          "createReadonlyBytesUploadSource",
+          "createTransportCache",
+          "createTransportCacheKey",
+          "createTransportRequest",
+          "createUploadFile",
+          "decodeTransportResponse",
+          "encodeTransportBody",
+          "normalizeTransportError",
+          "redactAuthenticatedTransport",
+          "redactTransportRequest",
+          "redactUploadChunk",
+          "redactUploadRequest"
+        ]
+      },
+      "import": "dist/transports/index.js",
+      "name": "@holmhq/sdk/transports",
+      "packageExport": "./transports"
+    },
+    {
+      "declaration": "dist/app/index.d.ts",
+      "declarationFiles": [
+        {
+          "path": "dist/app/auth.d.ts",
+          "sha256": "ea3223bf2eccb0ccfd3fea882d83413b3ce8928e8d4779136f4565b3ea734898"
+        },
+        {
+          "path": "dist/app/extension.d.ts",
+          "sha256": "698fb3b7e096e91dcbb48265bbb42b69f0a5e2293f9fc038c636be233850d19e"
+        },
+        {
+          "path": "dist/app/http.d.ts",
+          "sha256": "54d9c61cc042612c4621d1d8d66424bd45a0cd7acd3046951d9cf3bb2f76e7e1"
+        },
+        {
+          "path": "dist/app/index.d.ts",
+          "sha256": "62e58a74a56181e76816ed407272a8a1495db09ebbd356f15822af6eba70fefd"
+        },
+        {
+          "path": "dist/app/links.d.ts",
+          "sha256": "94afdf0ac557250b1387b2e5c052b5dc61ac499c84a7d8ffb408da6050d0dba0"
+        },
+        {
+          "path": "dist/app/pagination.d.ts",
+          "sha256": "970795cf0cd1a57eca8d4b56bd92a145b772b0df1dc0fb797900be2bf842563f"
+        },
+        {
+          "path": "dist/app/protocol.d.ts",
+          "sha256": "c92bb6d7464334703cd05d1a6c72b3856c7e298b109e02e88ee81a677bd93362"
+        },
+        {
+          "path": "dist/app/surface.d.ts",
+          "sha256": "1fb00381237092b985f23e46b3213413ca93ab7bce6860f736646735ffaae494"
+        },
+        {
+          "path": "dist/app/upload.d.ts",
+          "sha256": "1cb06d7c34d73c581151f0a084ade92348f76c32505d0ea325dafbed92f6ac27"
+        },
+        {
+          "path": "dist/core/cache-key.d.ts",
+          "sha256": "8954f09ac63b378ec283755eeee1d1afffc0e18bbe1dd189444969383d257451"
+        },
+        {
+          "path": "dist/core/caller.d.ts",
+          "sha256": "dfb40278e5bbae23afd64cf94e4c6a71da9aebc80a19a3fdc09d1c8f0a7f8ca0"
+        },
+        {
+          "path": "dist/core/capabilities.d.ts",
+          "sha256": "0b1281104e8118436ef71c7e5da3a491ffe03359c7cccb05f4289add9708db71"
+        },
+        {
+          "path": "dist/core/diagnostics.d.ts",
+          "sha256": "717539aa0dee0a86beb93c26afee20691f6b24228d32d038074763333c71a28c"
+        },
+        {
+          "path": "dist/core/errors.d.ts",
+          "sha256": "109b65df1477e4d1cacd532ba22f791302175c3d9e2ffddb831f9db83d452824"
+        },
+        {
+          "path": "dist/core/extensions.d.ts",
+          "sha256": "a0b3285efa49344211132f669d7f7c2c63854acd035867a912064ff64b4745e3"
+        },
+        {
+          "path": "dist/core/lifecycle.d.ts",
+          "sha256": "fec675777b66c5ee7982d9545722d1f64d55e1b26bf1c7b7932a1534572df9d4"
+        },
+        {
+          "path": "dist/core/runtime.d.ts",
+          "sha256": "fcc7c30a8f85fa86ce0ea2d49801bddadbea8e3258ff062523d0b3ea0ab40647"
+        },
+        {
+          "path": "dist/core/wire-value.d.ts",
+          "sha256": "a0a8c24015abb598f45d67d9a1c3f0f789e2179c65d863d599a34392d187c6b3"
+        },
+        {
+          "path": "dist/transports/cache.d.ts",
+          "sha256": "eee085067c64ccb67b9923935554b052b5466bd138286401d313e4c97ca2729f"
+        },
+        {
+          "path": "dist/transports/index.d.ts",
+          "sha256": "96a10c00ba9a18401712e5b33f11aeea69775ca01ba2a303176d4a2df51e35da"
+        },
+        {
+          "path": "dist/transports/response.d.ts",
+          "sha256": "7234eecb0b663ba674ae3c8d4aeec1bf267cf137c3b1c94c84a842ed37599c48"
+        },
+        {
+          "path": "dist/transports/upload.d.ts",
+          "sha256": "34017c43b2c9a97f2ba8a6a993f107fb79bd40afe67afe94edfc6b19736bd810"
+        }
+      ],
+      "exports": {
+        "types": [
+          "AppApi",
+          "AppAuthApi",
+          "AppAuthNavigationOptions",
+          "AppExtensionOptions",
+          "AppHttpClient",
+          "AppHttpInvocationOptions",
+          "AppHttpRequestOptions",
+          "AppLinkImportRequest",
+          "AppLinksApi",
+          "AppNavigationService",
+          "AppPage",
+          "AppPaginate",
+          "AppPaginationOptions",
+          "AppPaginator",
+          "AppQrScannerOptions",
+          "AppRequestIdFactory",
+          "AppSurfaceApi",
+          "AppSurfaceBootstrap",
+          "AppSurfaceRedirectOptions",
+          "AppUpload",
+          "AppUploadRequest",
+          "AppUploadService",
+          "CompleteMagicLinkInput",
+          "RequestMagicLinkOptions",
+          "StartAnonymousOptions"
+        ],
+        "values": [
+          "APP_HTTP_INVALIDATE_OPERATION",
+          "APP_HTTP_REQUEST_OPERATION",
+          "HOLM_APP_HTTP_CAPABILITY",
+          "createAppExtension",
+          "normalizeAppSurfaces"
+        ]
+      },
+      "import": "dist/app/index.js",
+      "name": "@holmhq/sdk/app",
+      "packageExport": "./app"
+    },
+    {
+      "declaration": "dist/web/index.d.ts",
+      "declarationFiles": [
+        {
+          "path": "dist/app/auth.d.ts",
+          "sha256": "ea3223bf2eccb0ccfd3fea882d83413b3ce8928e8d4779136f4565b3ea734898"
+        },
+        {
+          "path": "dist/app/extension.d.ts",
+          "sha256": "698fb3b7e096e91dcbb48265bbb42b69f0a5e2293f9fc038c636be233850d19e"
+        },
+        {
+          "path": "dist/app/http.d.ts",
+          "sha256": "54d9c61cc042612c4621d1d8d66424bd45a0cd7acd3046951d9cf3bb2f76e7e1"
+        },
+        {
+          "path": "dist/app/index.d.ts",
+          "sha256": "62e58a74a56181e76816ed407272a8a1495db09ebbd356f15822af6eba70fefd"
+        },
+        {
+          "path": "dist/app/links.d.ts",
+          "sha256": "94afdf0ac557250b1387b2e5c052b5dc61ac499c84a7d8ffb408da6050d0dba0"
+        },
+        {
+          "path": "dist/app/pagination.d.ts",
+          "sha256": "970795cf0cd1a57eca8d4b56bd92a145b772b0df1dc0fb797900be2bf842563f"
+        },
+        {
+          "path": "dist/app/protocol.d.ts",
+          "sha256": "c92bb6d7464334703cd05d1a6c72b3856c7e298b109e02e88ee81a677bd93362"
+        },
+        {
+          "path": "dist/app/surface.d.ts",
+          "sha256": "1fb00381237092b985f23e46b3213413ca93ab7bce6860f736646735ffaae494"
+        },
+        {
+          "path": "dist/app/upload.d.ts",
+          "sha256": "1cb06d7c34d73c581151f0a084ade92348f76c32505d0ea325dafbed92f6ac27"
+        },
+        {
+          "path": "dist/core/cache-key.d.ts",
+          "sha256": "8954f09ac63b378ec283755eeee1d1afffc0e18bbe1dd189444969383d257451"
+        },
+        {
+          "path": "dist/core/caller.d.ts",
+          "sha256": "dfb40278e5bbae23afd64cf94e4c6a71da9aebc80a19a3fdc09d1c8f0a7f8ca0"
+        },
+        {
+          "path": "dist/core/cancellation.d.ts",
+          "sha256": "5fd4a02dfc2d8df6eb573b63bbc235d23ad863ba622d42fb29321e9467a345ad"
+        },
+        {
+          "path": "dist/core/capabilities.d.ts",
+          "sha256": "0b1281104e8118436ef71c7e5da3a491ffe03359c7cccb05f4289add9708db71"
+        },
+        {
+          "path": "dist/core/correlation.d.ts",
+          "sha256": "4c18c7f9584e3c94bcb1f27026f021b70b1da981f96b7cf681b5f12252d37fcd"
+        },
+        {
+          "path": "dist/core/create-holm.d.ts",
+          "sha256": "7b7423869647c66786167de752d963d75759011e4f66300faac3e3273744b894"
+        },
+        {
+          "path": "dist/core/diagnostics.d.ts",
+          "sha256": "717539aa0dee0a86beb93c26afee20691f6b24228d32d038074763333c71a28c"
+        },
+        {
+          "path": "dist/core/errors.d.ts",
+          "sha256": "109b65df1477e4d1cacd532ba22f791302175c3d9e2ffddb831f9db83d452824"
+        },
+        {
+          "path": "dist/core/extensions.d.ts",
+          "sha256": "a0b3285efa49344211132f669d7f7c2c63854acd035867a912064ff64b4745e3"
+        },
+        {
+          "path": "dist/core/index.d.ts",
+          "sha256": "19e8711f12b34e16778a0accbf2404dc784b32ae7f0d20fd77abfa7c8737e63a"
+        },
+        {
+          "path": "dist/core/invoke.d.ts",
+          "sha256": "40db909c94b9d04afd0b2c62dc79840b4c02d6c40f687402e18c5cb0e68e15d9"
+        },
+        {
+          "path": "dist/core/lifecycle.d.ts",
+          "sha256": "fec675777b66c5ee7982d9545722d1f64d55e1b26bf1c7b7932a1534572df9d4"
+        },
+        {
+          "path": "dist/core/runtime.d.ts",
+          "sha256": "fcc7c30a8f85fa86ce0ea2d49801bddadbea8e3258ff062523d0b3ea0ab40647"
+        },
+        {
+          "path": "dist/core/wire-value.d.ts",
+          "sha256": "a0a8c24015abb598f45d67d9a1c3f0f789e2179c65d863d599a34392d187c6b3"
+        },
+        {
+          "path": "dist/transports/cache.d.ts",
+          "sha256": "eee085067c64ccb67b9923935554b052b5466bd138286401d313e4c97ca2729f"
+        },
+        {
+          "path": "dist/transports/index.d.ts",
+          "sha256": "96a10c00ba9a18401712e5b33f11aeea69775ca01ba2a303176d4a2df51e35da"
+        },
+        {
+          "path": "dist/transports/response.d.ts",
+          "sha256": "7234eecb0b663ba674ae3c8d4aeec1bf267cf137c3b1c94c84a842ed37599c48"
+        },
+        {
+          "path": "dist/transports/upload.d.ts",
+          "sha256": "34017c43b2c9a97f2ba8a6a993f107fb79bd40afe67afe94edfc6b19736bd810"
+        },
+        {
+          "path": "dist/web/app.d.ts",
+          "sha256": "086e06452b0a2697dc001b134a5eaa23e29111ff5a874b5d93db17a978da1634"
+        },
+        {
+          "path": "dist/web/auth.d.ts",
+          "sha256": "7b17e85851f8e8726159eedef172b717994fb3215a776311e0c7fc9eda147bfe"
+        },
+        {
+          "path": "dist/web/bootstrap.d.ts",
+          "sha256": "44665d254f2b51435398e66fc869fe5f22ee605fff5f1136aca08a8f9fc71bc3"
+        },
+        {
+          "path": "dist/web/caller.d.ts",
+          "sha256": "386eac1de321bb6b710d3cd77067e1b1c4c6fd69384e736071fa2864d82e984b"
+        },
+        {
+          "path": "dist/web/index.d.ts",
+          "sha256": "9805a9583941a3b6d4ce79e1310103c0228cc71f02138579fa81c079f36a40ee"
+        },
+        {
+          "path": "dist/web/lifecycle.d.ts",
+          "sha256": "c3b17b5afb28491beb3b506b9b588ca1f7a959e696282e9dc265799927397213"
+        },
+        {
+          "path": "dist/web/navigation.d.ts",
+          "sha256": "a6fdd80cf105e6d45f720c282bf7b0f60bdabf245c068a64bac340bdb09a04ba"
+        },
+        {
+          "path": "dist/web/runtime-cache.d.ts",
+          "sha256": "c1b6f53f8f62d337c53aef5a1ac48800930269cb9d7872aef7d5f9aa916514ae"
+        },
+        {
+          "path": "dist/web/runtime.d.ts",
+          "sha256": "d09a625ccdfb10c0e782b47a54ed8dbb0d1545464c89119f3715a24cdd9ee4fa"
+        },
+        {
+          "path": "dist/web/upload-service.d.ts",
+          "sha256": "a8f1a9d3c5230e43940bc9d9d2562c0043297d999dfa600a7d037f8900334e87"
+        },
+        {
+          "path": "dist/web/upload.d.ts",
+          "sha256": "7399b6ba8c243b096e78a71cd07392004661e2feed4dec9b8c7a9aed341880fc"
+        }
+      ],
+      "exports": {
+        "types": [
+          "WebApp",
+          "WebAppOptions",
+          "WebAppSurfaceBootstrapOptions",
+          "WebCallerOptions",
+          "WebCallerValueSource",
+          "WebLifecycle",
+          "WebLifecycleEvent",
+          "WebLifecycleEventKind",
+          "WebLifecycleEventTarget",
+          "WebLifecycleListener",
+          "WebLifecycleOptions",
+          "WebLocationLike",
+          "WebRuntimeCacheOptions",
+          "WebRuntimeOptions",
+          "WebSessionAuthOptions",
+          "WebSessionCredentials",
+          "WebSurfaceRuntimeGlobal",
+          "WebTokenAuthOptions",
+          "WebUploadBlobLike",
+          "WebUploadBlobPartLike",
+          "WebUploadChunkBody",
+          "WebUploadFileOptions",
+          "WebUploadService",
+          "WebUploadServiceOptions",
+          "WebVisibility",
+          "WebVisibilitySource"
+        ],
+        "values": [
+          "HOLM_APP_HTTP_CAPABILITY",
+          "WEB_HTTP_REQUEST_OPERATION",
+          "WEB_UPLOAD_PROGRESS_MODE",
+          "createWebApp",
+          "createWebCaller",
+          "createWebLifecycle",
+          "createWebNavigation",
+          "createWebSessionAuth",
+          "createWebTokenAuth",
+          "createWebUploadFile",
+          "createWebUploadService",
+          "createWebUploadSource",
+          "readWebAppSurfaceBootstrap",
+          "webRuntime"
+        ]
+      },
+      "import": "dist/web/index.js",
+      "name": "@holmhq/sdk/web",
+      "packageExport": "./web"
+    },
+    {
+      "declaration": "dist/state/index.d.ts",
+      "declarationFiles": [
+        {
+          "path": "dist/core/cache-key.d.ts",
+          "sha256": "8954f09ac63b378ec283755eeee1d1afffc0e18bbe1dd189444969383d257451"
+        },
+        {
+          "path": "dist/core/caller.d.ts",
+          "sha256": "dfb40278e5bbae23afd64cf94e4c6a71da9aebc80a19a3fdc09d1c8f0a7f8ca0"
+        },
+        {
+          "path": "dist/core/cancellation.d.ts",
+          "sha256": "5fd4a02dfc2d8df6eb573b63bbc235d23ad863ba622d42fb29321e9467a345ad"
+        },
+        {
+          "path": "dist/core/capabilities.d.ts",
+          "sha256": "0b1281104e8118436ef71c7e5da3a491ffe03359c7cccb05f4289add9708db71"
+        },
+        {
+          "path": "dist/core/correlation.d.ts",
+          "sha256": "4c18c7f9584e3c94bcb1f27026f021b70b1da981f96b7cf681b5f12252d37fcd"
+        },
+        {
+          "path": "dist/core/create-holm.d.ts",
+          "sha256": "7b7423869647c66786167de752d963d75759011e4f66300faac3e3273744b894"
+        },
+        {
+          "path": "dist/core/diagnostics.d.ts",
+          "sha256": "717539aa0dee0a86beb93c26afee20691f6b24228d32d038074763333c71a28c"
+        },
+        {
+          "path": "dist/core/errors.d.ts",
+          "sha256": "109b65df1477e4d1cacd532ba22f791302175c3d9e2ffddb831f9db83d452824"
+        },
+        {
+          "path": "dist/core/extensions.d.ts",
+          "sha256": "a0b3285efa49344211132f669d7f7c2c63854acd035867a912064ff64b4745e3"
+        },
+        {
+          "path": "dist/core/index.d.ts",
+          "sha256": "19e8711f12b34e16778a0accbf2404dc784b32ae7f0d20fd77abfa7c8737e63a"
+        },
+        {
+          "path": "dist/core/invoke.d.ts",
+          "sha256": "40db909c94b9d04afd0b2c62dc79840b4c02d6c40f687402e18c5cb0e68e15d9"
+        },
+        {
+          "path": "dist/core/lifecycle.d.ts",
+          "sha256": "fec675777b66c5ee7982d9545722d1f64d55e1b26bf1c7b7932a1534572df9d4"
+        },
+        {
+          "path": "dist/core/runtime.d.ts",
+          "sha256": "fcc7c30a8f85fa86ce0ea2d49801bddadbea8e3258ff062523d0b3ea0ab40647"
+        },
+        {
+          "path": "dist/core/wire-value.d.ts",
+          "sha256": "a0a8c24015abb598f45d67d9a1c3f0f789e2179c65d863d599a34392d187c6b3"
+        },
+        {
+          "path": "dist/state/derived.d.ts",
+          "sha256": "8cfc796115d25b680aea9a1a729d2c37baf0ae022bd941ac93383e2df0a2f94c"
+        },
+        {
+          "path": "dist/state/diagnostics.d.ts",
+          "sha256": "d95a43f41915a8ce3c9f25c9de1f3cf6243efec1bd1e6252f8dca8163c9b3404"
+        },
+        {
+          "path": "dist/state/index.d.ts",
+          "sha256": "3cb520e5479ea9ef1868f4712772e0c88b456f3ccfbceb2e83cade9f9256b0c2"
+        },
+        {
+          "path": "dist/state/mutation.d.ts",
+          "sha256": "597218fd12ae7b2ad92c96a7e4bfc09c8b493a5afdd6fd547b395788d9fbabf7"
+        },
+        {
+          "path": "dist/state/query.d.ts",
+          "sha256": "0beff58f32ba17b22f4db66a15376f6e756678ac24cdf772c84a324c8d6107e0"
+        },
+        {
+          "path": "dist/state/reconcile.d.ts",
+          "sha256": "a2315cf45b3d99c62ccdc6226b37baa7c2672501c275aabe5f9cbe190c5096ec"
+        },
+        {
+          "path": "dist/state/resource.d.ts",
+          "sha256": "7bc129ae8b5e13449ab49b180b36cd5dce47027c0bc28870946830016b30fd85"
+        }
+      ],
+      "exports": {
+        "types": [
+          "DerivedResource",
+          "DerivedResourceCompute",
+          "DerivedResourceOptions",
+          "MutationErrorNormalizer",
+          "MutationExecuteContext",
+          "MutationExecuteOptions",
+          "MutationExecutor",
+          "MutationInvalidation",
+          "MutationInvalidationDeclaration",
+          "MutationInvalidationEvent",
+          "MutationInvalidationHook",
+          "MutationOptimisticUpdate",
+          "MutationResource",
+          "MutationResourceOptions",
+          "QueryKey",
+          "QueryLoadContext",
+          "QueryLoader",
+          "QueryReconcileOptions",
+          "QueryRefreshOptions",
+          "QueryResetOptions",
+          "QueryResource",
+          "QueryResourceOptions",
+          "RealtimeHookSupports",
+          "RealtimeInvalidateAndRefreshHint",
+          "RealtimeInvalidateHint",
+          "RealtimePublicSubscribeRequirement",
+          "RealtimeReconcileHint",
+          "RealtimeReconcileHook",
+          "RealtimeReconcileHookOptions",
+          "RealtimeResourceHint",
+          "Resource",
+          "ResourceController",
+          "ResourceControllerOptions",
+          "ResourceErrorOptions",
+          "ResourceHistory",
+          "ResourceHistoryEntry",
+          "ResourceHistoryOptions",
+          "ResourceLoadingOptions",
+          "ResourcePhase",
+          "ResourceReadyOptions",
+          "ResourceSnapshot",
+          "ResourceSnapshotListener",
+          "ResourceUnsubscribe",
+          "ResourceValueCopier"
+        ],
+        "values": [
+          "REALTIME_PUBLIC_SUBSCRIBE_CAPABILITY",
+          "createDerivedResource",
+          "createMutationResource",
+          "createQueryResource",
+          "createRealtimeReconcileHook",
+          "createResourceController",
+          "createResourceHistory"
+        ]
+      },
+      "import": "dist/state/index.js",
+      "name": "@holmhq/sdk/state",
+      "packageExport": "./state"
+    },
+    {
+      "declaration": "dist/test/index.d.ts",
+      "declarationFiles": [
+        {
+          "path": "dist/core/caller.d.ts",
+          "sha256": "dfb40278e5bbae23afd64cf94e4c6a71da9aebc80a19a3fdc09d1c8f0a7f8ca0"
+        },
+        {
+          "path": "dist/core/capabilities.d.ts",
+          "sha256": "0b1281104e8118436ef71c7e5da3a491ffe03359c7cccb05f4289add9708db71"
+        },
+        {
+          "path": "dist/core/errors.d.ts",
+          "sha256": "109b65df1477e4d1cacd532ba22f791302175c3d9e2ffddb831f9db83d452824"
+        },
+        {
+          "path": "dist/core/runtime.d.ts",
+          "sha256": "fcc7c30a8f85fa86ce0ea2d49801bddadbea8e3258ff062523d0b3ea0ab40647"
+        },
+        {
+          "path": "dist/core/wire-value.d.ts",
+          "sha256": "a0a8c24015abb598f45d67d9a1c3f0f789e2179c65d863d599a34392d187c6b3"
+        },
+        {
+          "path": "dist/test/index.d.ts",
+          "sha256": "3e12d32f68c20fd165437c6960a86f37043403fc211bc070ad06133c40a152ae"
+        }
+      ],
+      "exports": {
+        "types": [
+          "FakeClock",
+          "FakeClockScheduler",
+          "FakeScheduler",
+          "InMemoryRuntimeAdapter",
+          "InMemoryRuntimeAdapterOptions",
+          "InMemoryRuntimeHandler"
+        ],
+        "values": [
+          "createFakeClock",
+          "createInMemoryRuntimeAdapter"
+        ]
+      },
+      "import": "dist/test/index.js",
+      "name": "@holmhq/sdk/test",
+      "packageExport": "./test"
+    }
+  ],
+  "packageName": "@holmhq/sdk",
+  "schema": "holm.sdk.stable-api-manifest.v1",
+  "stableEntryNames": [
+    "@holmhq/sdk",
+    "@holmhq/sdk/core",
+    "@holmhq/sdk/transports",
+    "@holmhq/sdk/app",
+    "@holmhq/sdk/web",
+    "@holmhq/sdk/state",
+    "@holmhq/sdk/test"
+  ]
+}
