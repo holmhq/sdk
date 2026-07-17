@@ -68,7 +68,22 @@ leaderboard) in the zyt house style, served by a local Holm 0.185.1 instance.
 
 ## Boundaries respected
 
-- Nothing pushed, tagged, published, released, or deployed beyond the local
-  pilot instance. The CLI's *default* peer is production `zyt.app` — deploys
-  were made only via the explicit `@pilot` peer to the isolated local
-  instance (`~/.holm-sokoban-pilot/data.db`). Holm repo untouched.
+- During the pilot itself, nothing was pushed, tagged, published, released,
+  or deployed beyond the local pilot instance. The CLI's *default* peer is
+  production `zyt.app` — pilot deploys were made only via the explicit
+  `@pilot` peer to the isolated local instance
+  (`~/.holm-sokoban-pilot/data.db`). Holm repo untouched.
+
+## Addendum — owner-directed production hosting (2026-07-17)
+
+After reviewing the pilot, the owner explicitly directed hosting the game on
+zyt: deployed via `holm @zyt app deploy` as `holm_app_R4ryNkZvbuLY`, live at
+`https://sokoban.zyt.app` (verified: page 200, `/api/health` healthy, vendored
+SDK serving, real-browser solve with zero console errors, guest score landed).
+This deploys the *game app* with its vendored, hash-pinned SDK artifacts
+(BFBB consumption per `docs/v0.1-web-rc.md` — immutable pin `cbba269`, not
+`@main`). The `@holmhq/sdk` package itself remains private and unpublished;
+the SDK repo stop gate (no push/tag/npm publish/release) is unchanged.
+Same-day follow-ups shipped with the hosting: 8 new solver-verified levels
+(19 total), stronger wall/floor contrast, dark-scheme canvas sync fix, and
+Enter/Backspace/Escape shortcuts.

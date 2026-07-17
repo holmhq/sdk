@@ -38,8 +38,9 @@ stop_gate: "no push/tag/publish/release/deploy/credentials/cloud; 0.1.0 promotio
 
 ## Future
 
-1. Owner plays the pilot (`http://sokoban.localhost:4699`, sign-in dev/dev)
-   and accepts or files gaps.
+1. Owner-directed production hosting is done: `https://sokoban.zyt.app`
+   (game app with pinned vendored SDK; the npm package stays private).
+   Owner plays and files gaps if any.
 2. Trimmed `#015`: README, migration ledger, capability matrix, vendoring
    guide (fold in pilot findings 2–4), vanilla + React examples — the sokoban
    app can serve as the vanilla evidence.
