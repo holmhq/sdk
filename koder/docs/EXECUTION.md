@@ -1,49 +1,42 @@
 ---
-title: Active execution window
+title: Execution boundary
 updated: 2026-07-17
-window: W4
-mode: blind
+window: none
+mode: none
+last_window: W4
+completed_issue: 017
 queue: koder/queue/005_w4_v01_web_release_candidate/INDEX.md
-active_issue: 017
-plan_review: koder/reviews/049_w4_v01_web_plan_review/INDEX.md
+integrated_review: koder/reviews/058_issue017_v01_web_rc_integrated_review/INDEX.md
+holm_acceptance: koder/reviews/059_issue017_holm_authority_acceptance/INDEX.md
 ---
 
-# Execution Window
+# Execution Boundary
 
-## Authorization
+## Current authorization
 
-- Owner authorization, 2026-07-17 (in-session, explicit): the owner authorized
-  Queue `#005`, stated they would be away for about five hours, requested the
-  entire approved W4 work be completed unattended, and requested final
-  `/close`.
-- W4 therefore uses temporary **blind orchestration** for Queue `#005` only.
-  The root session is a process-only governor; fresh coordinators route fresh
-  implementation, review, fix, rereview, recovery, integrated-review, and
-  authority workers.
-- Outcome disclosed before launch: product source/tests/docs plus tracked
-  generated private `0.1.0-rc.1` artifacts across eight reviewed slices,
-  normally 22-30 fresh phases including entry reviews/fixes, integrated SDK
-  review, and Holm acceptance. Review `#049` estimates 8-14 hours plus review
-  wall time, so the five-hour owner absence is an initial target rather than
-  permission to omit gates.
-- Completion authorization continues to the Queue `#005` stop gate, subject to
-  a hard no-new-product-phase deadline of 2026-07-18 00:30 IST and safe
-  closeout through 01:15 IST. Any fail-closed gate blocks instead of weakening
-  validation or crossing forbidden actions.
+No execution window is active. Owner-authorized W4 Queue `#005` completed and
+closed at the private `0.1.0-rc.1` readiness gate on 2026-07-17. The temporary
+blind orchestration mode ended with the run; it does not carry forward.
 
-## Active W4 — private v0.1-web release candidate
+The exact next review is owner acceptance of the private RC checkpoint and its
+post-RC checklist. Do not begin a real-app pilot, browser/vendor soak, promotion
+to `0.1.0`, push, tag, npm publication, release, deployment, credentials,
+cloud/production mutation, Issue `#015`, or any next window without separate
+owner authorization.
+
+## Completed W4 — private v0.1-web release candidate
 
 - Canonical issue: `koder/issues/017_v01_web_release_candidate/INDEX.md`.
 - Approved plans: `koder/plans/004_S01_*` through `004_S08_*`.
-- Independent Review `#049`: approved at planning commit `43c294e`, zero
-  P1/P2/P3. Active Queue: `koder/queue/005_w4_v01_web_release_candidate/INDEX.md`.
-- Sweep: eight rows, roughly 8-14 hours plus final review/authority wall time;
-  coordinator cap `2`, implementation ownership serial on `main`.
-- Monitoring requirement: governor watch fences <=5 minutes, followed every
-  time by Harnex status/report/Git reconciliation and prompt session cleanup.
-- Automatic dispatch policy is primary `pi/gpt-5.5` with sole fallback
-  `codex/gpt-5.3-codex`; both passed typed no-change preflight. No other model
-  family or adapter may be substituted.
+- Independent Review `#049` approved planning at `43c294e`, zero P1/P2/P3.
+  Queue `koder/queue/005_w4_v01_web_release_candidate/INDEX.md` drained all
+  eight rows serially on `main`.
+- Temporary blind run used coordinator cap `2`, primary `pi/gpt-5.5`, and sole
+  fallback `codex/gpt-5.3-codex`; both passed preflight. The queue ended with
+  process failures `7/8`, no unresolved blocker, and clean Git.
+- Issues `#014` and `#017` are resolved. Package state is private
+  `0.1.0-rc.1`; no release, pilot, credential, cloud, worktree, or cross-repo
+  action occurred.
 
 ### Locked v0.1-web support matrix
 
@@ -78,18 +71,19 @@ dependency.
 7. S07 private RC metadata/docs/update/rollback contract.
 8. S08 integrated validation, review, Holm acceptance, and owner handoff.
 
-### W4 stop gate
+### W4 completion evidence
 
-Queue `#005` may claim completion only when private `0.1.0-rc.1` code and
-artifacts are ready; stable API drift, four CI modes with identical metrics,
-clean rebuild/repro, declarations/dist/examples/size/license/integrity gates,
-Issue `#014` acceptance, independent integrated SDK review with zero P1/P2,
-fresh read-only Holm acceptance with zero P1/P2, and clean committed Git all
-pass.
-
-Even after that gate, stop before real-app pilot, browser/vendor soak, push, tag,
-npm publish, release, deploy, credentials, cloud/production mutation, or
-promotion to `0.1.0`. Those require separate owner authorization.
+- Four CI modes passed with identical metrics: `98.02` statements, `98.91`
+  lines, `98.58` functions, `95.45` branches, and `100.00` changed-reachable.
+- 220 source tests, 22 dist tests, 235 reproducible dist artifacts, 232 verified
+  manifest artifacts, and API/declaration/example/RC-doc/integrity/size/license
+  gates passed.
+- Integrated SDK Review `#058` approved `P1=0 P2=0 P3=0` at `59614d5`.
+- Fresh read-only Holm Review `#059` accepted `P1=0 P2=0 P3=0` against Holm
+  `748cbe5` (`v0.185.1`) with identical clean pre/post fingerprints.
+- Stop remains before real-app pilot, browser/vendor soak, push, tag, npm
+  publish, release, deploy, credentials, cloud/production mutation, or
+  promotion to `0.1.0`; each requires separate owner authorization.
 
 ## Completed W3 reference
 
