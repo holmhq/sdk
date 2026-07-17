@@ -50,8 +50,8 @@ initial target, not permission to omit gates.
 | ---: | --- | --- | ---: | --- | --- | --- |
 | 1 | `koder/plans/004_S01_stable_api_inventory_freeze_gate/INDEX.md` | done | 90-120m | yellow | All plan commands; deterministic stable API/declaration manifest and drift gate; fresh entry review 0 P1/P2 | Support-matrix/API decision, new dependency, authority conflict, irreproducibility, or release action blocks |
 | 2 | `koder/plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md` | done | 60-90m | yellow | All plan commands; preview/reserved labels, stable import isolation, raw BFBB no-Node proof; fresh entry review 0 P1/P2 | Stable-to-preview coupling, expanded support promise, new dependency, authority drift, or irreproducibility blocks |
-| 3 | `koder/plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md` | queued | 90-120m | yellow/red | All plan commands; Review `#033` advisories 1-4 disposition and credential-safe proof; fresh security review 0 P1/P2 | Sensitivity-contract/API redesign, unbounded leak, ambient/dependency need, or unauthorized credential action blocks |
-| 4 | `koder/plans/004_S04_edge_contract_p3_disposition/INDEX.md` | queued | 60-90m | yellow | All plan commands; Review `#033` advisories 5-9 explicit disposition; fresh edge-contract review 0 P1/P2 | Breaking API, unresolved advisory, Holm request-ID contradiction, dependency, or irreproducibility blocks |
+| 3 | `koder/plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md` | done | 90-120m | yellow/red | All plan commands; Review `#033` advisories 1-4 disposition and credential-safe proof; fresh security review 0 P1/P2 | Sensitivity-contract/API redesign, unbounded leak, ambient/dependency need, or unauthorized credential action blocks |
+| 4 | `koder/plans/004_S04_edge_contract_p3_disposition/INDEX.md` | blocked | 60-90m | yellow | All plan commands; Review `#033` advisories 5-9 explicit disposition; fresh edge-contract review 0 P1/P2 | Breaking API, unresolved advisory, Holm request-ID contradiction, dependency, or irreproducibility blocks |
 | 5 | `koder/plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md` | queued | 90-120m | yellow/red | All plan commands; deterministic bundles/maps/declarations/manifests/size/license; fresh distribution review 0 P1/P2 | Issue `#014` cannot stay thin, dependency/status change, size/repro failure, authority conflict, or release action blocks |
 | 6 | `koder/plans/004_S06_integrity_offline_vendoring_fixture/INDEX.md` | queued | 90-120m | yellow | All plan commands; hashes, tamper failure, copied offline BFBB and Vite fixtures; fresh integrity review 0 P1/P2 | Offline/immutable proof fails, Issue `#014` expands, dependency/release/pilot need, or authority drift blocks |
 | 7 | `koder/plans/004_S07_rc_metadata_docs_upgrade_rollback/INDEX.md` | queued | 60-90m | yellow | All plan commands; private RC metadata/support/update/rollback wording; fresh docs/product review 0 P1/P2 | Public-release implication, support change, unsupported promise, broad Issue `#015` rewrite, or release action blocks |
@@ -139,3 +139,18 @@ cycle.
   gates plus all S02 plan validation commands exit 0; review
   `q005-c01-e02-review-a01` approved `P1=0 P2=0 P3=0`; generated artifacts
   owned and reproducible; process failures used `0/8`.
+- Coordinator `q005-coordinator-02` completed S03: implement
+  `q005-c02-e03-implement-a01` committed
+  `525d48c7dbe28d6603d8131540d5664995fd9b6e` (parent
+  `2e07d71b0de66ccfa8d25d45fc66b06d003b51bd`) with red
+  `npm run test:source -- "low-entropy|URL-borne|background HolmError"` exit 1,
+  green exit 0, and all S03 plan validation commands exit 0; review
+  `q005-c02-e03-review-a01` approved `P1=0 P2=0 P3=0`; generated artifacts
+  owned and reproducible; no S03 fix cycles.
+- Coordinator `q005-coordinator-02` blocked S04 before product delta after five
+  process failures: `q005-c02-e04-implement-a01`, `a03`, and `a04` were Pi
+  provider boot/report failures with no Git delta; `a02` was Codex fallback
+  no-commit/no-final-report despite a completion claim; `a05` was Codex
+  legacy-PTY report failure with no Git delta. Process failures used `5/8`;
+  next safe phase remains S04 implementation with a changed brief/config or
+  owner/operator recovery decision.
