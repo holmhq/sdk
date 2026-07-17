@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Holm SDK · Vanilla session example</title>
+    <title>Holm SDK · React session example</title>
     <style>
       :root { color-scheme: light dark; font: 16px/1.5 system-ui, sans-serif; }
       body { max-width: 44rem; margin: 4rem auto; padding: 0 1.25rem; }
@@ -11,22 +11,11 @@
       nav { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
       button, a { font: inherit; }
       pre { overflow: auto; padding: 1rem; border-radius: .5rem; background: color-mix(in srgb, currentColor 8%, transparent); }
-      #message { min-height: 1.5rem; }
+      [role="status"] { min-height: 1.5rem; }
     </style>
   </head>
   <body>
-    <main>
-      <p>Vanilla TypeScript</p>
-      <h1>Current Holm session</h1>
-      <p>The same immutable resource/action model also drives the React example.</p>
-      <nav>
-        <button id="refresh" type="button">Refresh</button>
-        <button id="sign-out" type="button">Sign out</button>
-        <a id="sign-in" href="/auth/login">Sign in</a>
-      </nav>
-      <p id="message" role="status"></p>
-      <pre id="session">Loading…</pre>
-    </main>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

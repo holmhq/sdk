@@ -18,7 +18,7 @@ export const webBundleDefinitions = Object.freeze([
     sourceMap: "dist/holm.js.map",
     declarationMap: "dist/holm.d.ts.map",
     kind: "browser-bfbb-composition",
-    description: "Complete private v0.1-web browser/BFBB convenience composition for vendored ESM use.",
+    description: "Complete v0.1 browser/BFBB convenience composition for vendored ESM use.",
     includedCapabilities: Object.freeze(["core", "app", "web", "transports", "state", "test"]),
     excludedCapabilities: excludedWebBundleCapabilities,
     rawBudget: 4096,

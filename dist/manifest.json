@@ -3,14 +3,14 @@
     {
       "bytes": 1571,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/auth.d.ts",
       "sha256": "b9df7f765bb4deadcf4e86c1e0359c45df9e8236498ce45e22e637752b7dfd53"
     },
     {
       "bytes": 1564,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/auth.d.ts.map",
       "sha256": "993e2b19eb19128c1a26e8add7f982fbf6b898f9937d0115f7ad5a84d1f19c21"
     },
@@ -22,7 +22,7 @@
       "bytes": 2975,
       "gzipBytes": 780,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2227,
       "path": "dist/app/auth.js",
       "rawBytes": 2975,
@@ -31,21 +31,21 @@
     {
       "bytes": 3233,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/auth.js.map",
       "sha256": "64500bd90d96c3254fb639e02febfed14b79daad52bbbd58d26fb12370281789"
     },
     {
       "bytes": 1047,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/extension.d.ts",
       "sha256": "1c8bfd9ee8f804974481118823d239c7e0ac51e8228f251a3ed1019f553061a0"
     },
     {
       "bytes": 1046,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/extension.d.ts.map",
       "sha256": "aa1df92428d474ff300b9c8ecc06633cfaac825973e4deb435aca6ae44f97410"
     },
@@ -57,7 +57,7 @@
       "bytes": 1361,
       "gzipBytes": 464,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1037,
       "path": "dist/app/extension.js",
       "rawBytes": 1361,
@@ -66,21 +66,21 @@
     {
       "bytes": 1374,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/extension.js.map",
       "sha256": "c6e9bc1a1ca5e3c1a39bf778b7ca52326aca74864322caf07f9075df737ade75"
     },
     {
       "bytes": 1827,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/http.d.ts",
       "sha256": "cc3768ac22a3c43c3c3c16fd29a736190267bf2a8eace147efe435668cdfab3a"
     },
     {
       "bytes": 1773,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/http.d.ts.map",
       "sha256": "dcf3c227af9bf29fda347482b02d135584a9c6412475cc2c2f3fe11cca83755a"
     },
@@ -92,7 +92,7 @@
       "bytes": 3062,
       "gzipBytes": 711,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2216,
       "path": "dist/app/http.js",
       "rawBytes": 3062,
@@ -101,21 +101,21 @@
     {
       "bytes": 3165,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/http.js.map",
       "sha256": "02bb8bdb4f13434b70b3c80278b72bcf2d75a101e54a5f8a6e92d9ae02c61c3f"
     },
     {
       "bytes": 983,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/index.d.ts",
       "sha256": "0594ead8bc443da49d6ae555523b3c089b223377cce0c6e9f390056bc269581c"
     },
     {
       "bytes": 786,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/index.d.ts.map",
       "sha256": "a3270e8e790348a46eb414660bac68b0ac90fc6b69e6b90d21323a14bfa46d94"
     },
@@ -127,7 +127,7 @@
       "bytes": 257,
       "gzipBytes": 157,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 204,
       "path": "dist/app/index.js",
       "rawBytes": 257,
@@ -136,21 +136,21 @@
     {
       "bytes": 266,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/index.js.map",
       "sha256": "056cf630ec5484b52cd2e0a0c1750d124a4520b765920c8da147ce6d252745e2"
     },
     {
       "bytes": 925,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/links.d.ts",
       "sha256": "dd6641d9d9379077b439d8981dea499f30d818a5ebb61c061d6b939e299fa0b0"
     },
     {
       "bytes": 1051,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/links.d.ts.map",
       "sha256": "6606c14ae5b68d400fa7763c630997e2a76815f45871832d311c984dd1ef479f"
     },
@@ -162,7 +162,7 @@
       "bytes": 1457,
       "gzipBytes": 448,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1073,
       "path": "dist/app/links.js",
       "rawBytes": 1457,
@@ -171,21 +171,21 @@
     {
       "bytes": 1601,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/links.js.map",
       "sha256": "a9f54b61dacacddcd4a0a919dc0e8ab9619f063890f71ee2680ec97b7d8d4049"
     },
     {
       "bytes": 702,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/pagination.d.ts",
       "sha256": "0b9767c9b2c16475ff387a2e882d34a2d6d03dbef76d869df87f3d3d587eed9a"
     },
     {
       "bytes": 788,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/pagination.d.ts.map",
       "sha256": "59a2167aa1ed8ca85d3066428d4ac3ae1aa01dd6421970746c979412acb6e36f"
     },
@@ -197,7 +197,7 @@
       "bytes": 1698,
       "gzipBytes": 510,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1098,
       "path": "dist/app/pagination.js",
       "rawBytes": 1698,
@@ -206,49 +206,49 @@
     {
       "bytes": 1918,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/pagination.js.map",
       "sha256": "0c947029344fc910df2a192f92053bf94e4fc07085d8df000ea2e65d7bfdd507"
     },
     {
       "bytes": 273,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/protocol.d.ts",
       "sha256": "578648b0a750eb9489ec0f3e64be8984cd6c1fb26d2c0552859602ab6857cd6a"
     },
     {
       "bytes": 218,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/protocol.d.ts.map",
       "sha256": "d078fc8cf43b2e4aea90617fd2ae3bc5f5c434f90f4cb09b5b36805a9a11b34a"
     },
     {
       "bytes": 253,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/protocol.js",
       "sha256": "cadb88dce7cb6f60c34a480f025ce9696bd6732a62f90046645c250e99011c3e"
     },
     {
       "bytes": 312,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/protocol.js.map",
       "sha256": "c1b90570ea27c8dfcf4277a60d4f34dc1cac829e888eb908c7fcd35c1f764735"
     },
     {
       "bytes": 1283,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/surface.d.ts",
       "sha256": "a42375ec3f74104e309a14a2fe1097513b2282061792b512b7ae802253656190"
     },
     {
       "bytes": 1354,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/surface.d.ts.map",
       "sha256": "c3d22c5e92fda5eabf829c6d6bd09a7fbca769aba47f6f6d7006b2c688c2f1df"
     },
@@ -260,7 +260,7 @@
       "bytes": 1869,
       "gzipBytes": 520,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1473,
       "path": "dist/app/surface.js",
       "rawBytes": 1869,
@@ -269,21 +269,21 @@
     {
       "bytes": 2100,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/surface.js.map",
       "sha256": "52b60db74f68c46e467d8717fa5f2b2169f7722bded2d476fe0adf7926512532"
     },
     {
       "bytes": 701,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/upload.d.ts",
       "sha256": "3d3ee121d39299cf36136de5ab4afa48f3f9a2d33acc6d69dd2661f79fa3533d"
     },
     {
       "bytes": 709,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/upload.d.ts.map",
       "sha256": "b72b7f475bcba8938653c0c4a22a47bbdc1c3a54074e2c2926c81923770266ab"
     },
@@ -295,7 +295,7 @@
       "bytes": 672,
       "gzipBytes": 285,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 472,
       "path": "dist/app/upload.js",
       "rawBytes": 672,
@@ -304,21 +304,21 @@
     {
       "bytes": 636,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/app/upload.js.map",
       "sha256": "458f496b11eddd2093927be7eb094ee03b1855a5bebacf4d93850f6b240a7284"
     },
     {
       "bytes": 7206,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/bridge/index.d.ts",
       "sha256": "652cf1fac30379803e7a4ee2a96e907f61e055b6d1281737cb43dd1c5e01b3bb"
     },
     {
       "bytes": 5715,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/bridge/index.d.ts.map",
       "sha256": "5867e4f6885b509b1cfc0883d20db6af624db37e59236c554d97132696c2fc0f"
     },
@@ -330,7 +330,7 @@
       "bytes": 23312,
       "gzipBytes": 3477,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 16543,
       "path": "dist/bridge/index.js",
       "rawBytes": 23312,
@@ -339,49 +339,49 @@
     {
       "bytes": 20831,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/bridge/index.js.map",
       "sha256": "ea007ab4df4b4f2638297bb3ba16bed57eeadba08217a0f6021db43e2a232db0"
     },
     {
       "bytes": 673,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cache-key.d.ts",
       "sha256": "2326344e412109ae1b38a44f05834122c7ee4cd760e0773a08d541cc726f73b2"
     },
     {
       "bytes": 623,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cache-key.d.ts.map",
       "sha256": "8d7874867864d4a38279254cdabfd88ba10b22fddf358cdce58157920b57d7b9"
     },
     {
       "bytes": 2009,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cache-key.js",
       "sha256": "af4c7dc99e81eaa5785aa43d6ae361685205e6547c807d41cd7b25ae8c13f1dd"
     },
     {
       "bytes": 2490,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cache-key.js.map",
       "sha256": "99402051d8cbbdede8578bbba006110af0a56307b163f66ca09dec886c0719fe"
     },
     {
       "bytes": 2233,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/caller.d.ts",
       "sha256": "5ad4e556259a42502d6a0a8e97c1e14679d1ff3f419021df9012879f5f4f813e"
     },
     {
       "bytes": 2233,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/caller.d.ts.map",
       "sha256": "5a436098f51fcc5d0a8a16cbb07b8ac61924efbaa6fdbf3212ebeb64684dd7e7"
     },
@@ -393,7 +393,7 @@
       "bytes": 3849,
       "gzipBytes": 950,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2963,
       "path": "dist/core/caller.js",
       "rawBytes": 3849,
@@ -402,49 +402,49 @@
     {
       "bytes": 4665,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/caller.js.map",
       "sha256": "328dca5eb53ba19419bd3950e18e78720da99e269cf45d30f341357478165c28"
     },
     {
       "bytes": 1418,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cancellation.d.ts",
       "sha256": "07fd118592342af1ee50cdd8b6f714947bbbda536b9a3d387df08e0cf8a0325a"
     },
     {
       "bytes": 1319,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cancellation.d.ts.map",
       "sha256": "4a720478872495ba16b35cdb4deb09e3c08efbcfe4fa56393dba48d480a8abeb"
     },
     {
       "bytes": 5073,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cancellation.js",
       "sha256": "aae4746239969331665180fa77f872db845258f4a9c1939ff33940bf5540f6ed"
     },
     {
       "bytes": 4888,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/cancellation.js.map",
       "sha256": "40699881875e6e6ecc5a7722727864246b26061048ec8a4428b7b88d0c632a1f"
     },
     {
       "bytes": 3204,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/capabilities.d.ts",
       "sha256": "823f5095ccd3d66c4ac3e177632d210fbae4b0e13a940e645eec4b9a78b616ea"
     },
     {
       "bytes": 2454,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/capabilities.d.ts.map",
       "sha256": "278169baeb2536a9e22c6a1e3b120dba4236d872760220b03f0aaf81ae1f4946"
     },
@@ -456,7 +456,7 @@
       "bytes": 10228,
       "gzipBytes": 1970,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 7617,
       "path": "dist/core/capabilities.js",
       "rawBytes": 10228,
@@ -465,21 +465,21 @@
     {
       "bytes": 9622,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/capabilities.js.map",
       "sha256": "99e27f19a06d45e688098e89d6b91670a57c353ffc5dc444c7b27b8af51e130e"
     },
     {
       "bytes": 925,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/correlation.d.ts",
       "sha256": "6dfe48ceff54e50f5f3e9457caa250965bacabf09636706a82f654ac671ac2c2"
     },
     {
       "bytes": 821,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/correlation.d.ts.map",
       "sha256": "240e0ef435668f3bcb0970bb6bf205f6e8d127c3cc9cc839e1399f04cd8ee596"
     },
@@ -491,7 +491,7 @@
       "bytes": 4387,
       "gzipBytes": 954,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2861,
       "path": "dist/core/correlation.js",
       "rawBytes": 4387,
@@ -500,77 +500,77 @@
     {
       "bytes": 3441,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/correlation.js.map",
       "sha256": "1be5364775ecee28ea9a6fc136bc39ef802612e23851f7d706f2448ba83323ee"
     },
     {
       "bytes": 1668,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/create-holm.d.ts",
       "sha256": "61ea421569371b38b1abf8fd3e8c4d4a7fcbf3d569906d9def4e5782700adb5c"
     },
     {
       "bytes": 1573,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/create-holm.d.ts.map",
       "sha256": "bae3f4d921a6c2e5ff03214eb1ec8cecbabf70fba0f9b77ff155f067819b4e49"
     },
     {
       "bytes": 5716,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/create-holm.js",
       "sha256": "df384db0af06e8e8691d48512c516e6e35a92f976fc294de4461ca3940b2165b"
     },
     {
       "bytes": 5351,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/create-holm.js.map",
       "sha256": "7373bee41b1ec367917da752c0fbf010e9bfb281f5457d202b544a9392a7e534"
     },
     {
       "bytes": 1344,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/diagnostics.d.ts",
       "sha256": "66e7ba96fba82fa7944b22a8ddd8e56a06c51371e3e1d403249e3d0c1b98c58a"
     },
     {
       "bytes": 1288,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/diagnostics.d.ts.map",
       "sha256": "c45ef9b5aca6e209223f97100571a52e9cc8367e82679e50e7a28115bce7db53"
     },
     {
       "bytes": 3813,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/diagnostics.js",
       "sha256": "2ee7c1e28bc23ed22a4b602846a1ccff25dfc5e0af78e67abe985d7b88022eb3"
     },
     {
       "bytes": 3936,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/diagnostics.js.map",
       "sha256": "c912a82cebb1126d869b0a1023b29f70108624a37c33231ae5cfeac9644e3713"
     },
     {
       "bytes": 1463,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/errors.d.ts",
       "sha256": "e73b0c05013d791e84e1d6f8740357705bfc75008f469857bc7916270c1cfcc5"
     },
     {
       "bytes": 1519,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/errors.d.ts.map",
       "sha256": "6883570bfe044faf9d824e0c93246dfa8eeabb771c6ffc4b3da943de41384ca4"
     },
@@ -582,7 +582,7 @@
       "bytes": 5501,
       "gzipBytes": 1349,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 3938,
       "path": "dist/core/errors.js",
       "rawBytes": 5501,
@@ -591,21 +591,21 @@
     {
       "bytes": 5516,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/errors.js.map",
       "sha256": "ce69d62804776de3c0ed30fc488e65b23d5df5121d0a22f514de48f2e3e07f06"
     },
     {
       "bytes": 4838,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/extensions.d.ts",
       "sha256": "47354ef0dca9bb952f11b1c8eb73563d7a4f28a92913a80a0906c993429b5787"
     },
     {
       "bytes": 4195,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/extensions.d.ts.map",
       "sha256": "777218a48546eb9cffcbe3da39a99d533673eff064471bfae38a4a3c45dfa3ec"
     },
@@ -617,7 +617,7 @@
       "bytes": 18092,
       "gzipBytes": 3258,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 13297,
       "path": "dist/core/extensions.js",
       "rawBytes": 18092,
@@ -626,21 +626,21 @@
     {
       "bytes": 16745,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/extensions.js.map",
       "sha256": "d352828d96ec28ac5ca59cee999c841772d1bd2d8e0a8c54c58519dca5b14778"
     },
     {
       "bytes": 3288,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/index.d.ts",
       "sha256": "2cf6ae3e1cff3c8bf0353be006e10e7bf944f08fcc1d758dc267a7912a82423e"
     },
     {
       "bytes": 2274,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/index.d.ts.map",
       "sha256": "6fd7dec5bd11393c9189ab8da0136cdca082646b744e9816f0d17f367b60158e"
     },
@@ -652,7 +652,7 @@
       "bytes": 1312,
       "gzipBytes": 486,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1173,
       "path": "dist/core/index.js",
       "rawBytes": 1312,
@@ -661,21 +661,21 @@
     {
       "bytes": 992,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/index.js.map",
       "sha256": "18f8eb8bc2722b7eec739074fc4ae440546e3e4528b6b2b3bde961b8ba3b65d2"
     },
     {
       "bytes": 1152,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/invoke.d.ts",
       "sha256": "5afe1e7f7e5a70a4defe9fdf0515be6cb0bb079a307e72887c934429a5442e0f"
     },
     {
       "bytes": 1006,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/invoke.d.ts.map",
       "sha256": "4d521b4de7aaf39428cca213a5959673185670e65b0e96b5265c68b08618c0cb"
     },
@@ -687,7 +687,7 @@
       "bytes": 3787,
       "gzipBytes": 910,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2890,
       "path": "dist/core/invoke.js",
       "rawBytes": 3787,
@@ -696,21 +696,21 @@
     {
       "bytes": 3614,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/invoke.js.map",
       "sha256": "ca39f1bb253a4b2083fbdb9f6dd3b8ad101be73047ac754f463eb8f4cfd072bc"
     },
     {
       "bytes": 984,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/lifecycle.d.ts",
       "sha256": "e72d581e3ff0411485ae0ead73095bb8a5a84a8244d7b424c5fd23f502e75fc8"
     },
     {
       "bytes": 978,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/lifecycle.d.ts.map",
       "sha256": "b404b4d98174b958bdbc44a2537eb06f70c76ab92dad392ae2b574e2420906fc"
     },
@@ -722,7 +722,7 @@
       "bytes": 4195,
       "gzipBytes": 750,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2674,
       "path": "dist/core/lifecycle.js",
       "rawBytes": 4195,
@@ -731,21 +731,21 @@
     {
       "bytes": 3812,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/lifecycle.js.map",
       "sha256": "fbe1aa67917d2393877c7dec215967432a6823afe93d002b2084953f9dd6e924"
     },
     {
       "bytes": 1588,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/runtime.d.ts",
       "sha256": "2d62a131358b201faf18ca519ae447273effc535628d8846e7577c42bedad582"
     },
     {
       "bytes": 1610,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/runtime.d.ts.map",
       "sha256": "71ec674b365d31a5ea083fc83a5aee2d9855137640d244d950205e3e8b63b10a"
     },
@@ -757,7 +757,7 @@
       "bytes": 96,
       "gzipBytes": 73,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 58,
       "path": "dist/core/runtime.js",
       "rawBytes": 96,
@@ -766,21 +766,21 @@
     {
       "bytes": 157,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/runtime.js.map",
       "sha256": "272e32d712998b7143a56afde4ef89810ef59a3158a0225fea769d8fccce6043"
     },
     {
       "bytes": 1092,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/wire-value.d.ts",
       "sha256": "1e240deda3e017c2dd6a57ad6d2e28f81c212786520bef8d9c21fb00d18779ee"
     },
     {
       "bytes": 1112,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/wire-value.d.ts.map",
       "sha256": "c241a94cb71ab5533204d4290327444817519a6dbad922172c3de44bc9db386d"
     },
@@ -792,7 +792,7 @@
       "bytes": 7042,
       "gzipBytes": 1805,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 5438,
       "path": "dist/core/wire-value.js",
       "rawBytes": 7042,
@@ -801,21 +801,21 @@
     {
       "bytes": 8217,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/core/wire-value.js.map",
       "sha256": "70b8db071cba5c3a08b46192fcb0b9a4934adb9f07926f2c7ab5c8601e541589"
     },
     {
       "bytes": 1496,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/holm-web.d.ts",
       "sha256": "2b8faf696b405bf25a0264ed28591a82dc16968366829534e400f87f619ab12f"
     },
     {
       "bytes": 1727,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/holm-web.d.ts.map",
       "sha256": "1b97bdcf8d7c1283e4f1825265de128f96f9dce090b89b86ee6d442102f540ea"
     },
@@ -830,7 +830,7 @@
       "description": "Narrow app-focused browser composition excluding test helpers and non-web runtimes for isolation and size.",
       "distribution": {
         "addressPolicy": "Use an immutable Git SHA or reviewed tag; never deploy from @main.",
-        "packagePrivate": true,
+        "packagePrivate": false,
         "runtimeCdnRequired": false
       },
       "excludedCapabilities": [
@@ -855,7 +855,7 @@
       ],
       "kind": "browser-web-composition",
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1284,
       "path": "dist/holm-web.js",
       "rawBytes": 1641,
@@ -865,21 +865,21 @@
     {
       "bytes": 1869,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/holm-web.js.map",
       "sha256": "5bf554eda70bce06272b459fe1165680768261f4096ddf662f6b8dea16cfaf9d"
     },
     {
       "bytes": 1619,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/holm.d.ts",
       "sha256": "691b13bd57b5c90a00b8f44bfccbd72f176d788c26acb0202c8a376513816544"
     },
     {
       "bytes": 1851,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/holm.d.ts.map",
       "sha256": "c796689fc991553048721e28029878da3b0ed24971457272573edba0a628082e"
     },
@@ -888,13 +888,13 @@
         "gzipBytes": 1536,
         "rawBytes": 4096
       },
-      "bytes": 1743,
+      "bytes": 1731,
       "declaration": "dist/holm.d.ts",
       "declarationMap": "dist/holm.d.ts.map",
-      "description": "Complete private v0.1-web browser/BFBB convenience composition for vendored ESM use.",
+      "description": "Complete v0.1 browser/BFBB convenience composition for vendored ESM use.",
       "distribution": {
         "addressPolicy": "Use an immutable Git SHA or reviewed tag; never deploy from @main.",
-        "packagePrivate": true,
+        "packagePrivate": false,
         "runtimeCdnRequired": false
       },
       "excludedCapabilities": [
@@ -920,31 +920,31 @@
       ],
       "kind": "browser-bfbb-composition",
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1396,
       "path": "dist/holm.js",
-      "rawBytes": 1743,
-      "sha256": "624c29f82d29d66b9665c3ee47ea0a90ceb5e47fcba1d94c1c0f5df2c75c4365",
+      "rawBytes": 1731,
+      "sha256": "d70bce5a60b9678f43926295581ed6f1c11468af39e2992f227e113c0df4d42e",
       "sourceMap": "dist/holm.js.map"
     },
     {
-      "bytes": 1972,
+      "bytes": 1960,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/holm.js.map",
-      "sha256": "d36e779157c3290243ad27d089db404be84884314c480a6ff9bb65892a482bb4"
+      "sha256": "e3803ee2a754ebcb25b18e418956005b17593eb2375a772d62cadffff5517892"
     },
     {
       "bytes": 2335,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/index.d.ts",
       "sha256": "5e220114a262762bcfa6630c994f7cbaba53e56d1fa4065487a7e7403c263be1"
     },
     {
       "bytes": 1458,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/index.d.ts.map",
       "sha256": "20be4e4b19d5d80b049840b1a8ac9050d24feb7978ceec2ca5e8111b96ddbe64"
     },
@@ -956,7 +956,7 @@
       "bytes": 880,
       "gzipBytes": 383,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 805,
       "path": "dist/index.js",
       "rawBytes": 880,
@@ -965,21 +965,21 @@
     {
       "bytes": 575,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/index.js.map",
       "sha256": "9197ae9ace35f050b2ef1c00f672857435de547f36b717b0b8dde5bd53e163a8"
     },
     {
       "bytes": 1334,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/index.d.ts",
       "sha256": "ec5cd3200c1622e9210ba9c6973be6ec53c893de8e3b5da51031346b67fb19e6"
     },
     {
       "bytes": 655,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/index.d.ts.map",
       "sha256": "5b0f32c89896db8a37607e178cc0d934394731334e4dc3fd3d1eff1ce15a04ba"
     },
@@ -991,7 +991,7 @@
       "bytes": 863,
       "gzipBytes": 296,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 482,
       "path": "dist/node/index.js",
       "rawBytes": 863,
@@ -1000,21 +1000,21 @@
     {
       "bytes": 498,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/index.js.map",
       "sha256": "81e19d29109220e669555cdaa5bc516b26ab2cd90ada8ee8e954ea9f1a048bcd"
     },
     {
       "bytes": 2501,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/runtime.d.ts",
       "sha256": "341aee7b535207311c34f58dd81b41aa59ca6dcdd1f4d3b10a400c9d8bbb373e"
     },
     {
       "bytes": 2478,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/runtime.d.ts.map",
       "sha256": "e7d0186161d73ece935142525136c12f5d4cd69444cb77aca20077174299865b"
     },
@@ -1026,7 +1026,7 @@
       "bytes": 19708,
       "gzipBytes": 4035,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 14802,
       "path": "dist/node/runtime.js",
       "rawBytes": 19708,
@@ -1035,21 +1035,21 @@
     {
       "bytes": 19086,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/runtime.js.map",
       "sha256": "8a2f4a4d33a11fdaacfac6d2ee9d47273fec00e127fabcf9b0390dbcfe729293"
     },
     {
       "bytes": 2310,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/services.d.ts",
       "sha256": "836bfa11742e8b8b1beb9d8670ac1322244b4d91ad616e2b10826ca322f9e36f"
     },
     {
       "bytes": 2095,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/services.d.ts.map",
       "sha256": "ca4737e9b35bc5fa43b83c0ca6559e54c7e5aa0afe3c1b2525154357f8734b95"
     },
@@ -1061,7 +1061,7 @@
       "bytes": 4132,
       "gzipBytes": 953,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 3079,
       "path": "dist/node/services.js",
       "rawBytes": 4132,
@@ -1070,21 +1070,21 @@
     {
       "bytes": 3840,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/services.js.map",
       "sha256": "0aa6bfb4a23046ae8009f794cda393d2334bb78b2b8a0dfd0f6e975d4aca75dd"
     },
     {
       "bytes": 455,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/upload.d.ts",
       "sha256": "730cb9d3e43055261e8cece23bad6f1b4a8ba6811632cf8d24e850e6bd293dc9"
     },
     {
       "bytes": 509,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/upload.d.ts.map",
       "sha256": "5561864fd8e74ea30def2bca11c47ce66c30ade9f7f4fdaeddcb1c492fd91edd"
     },
@@ -1096,7 +1096,7 @@
       "bytes": 431,
       "gzipBytes": 200,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 331,
       "path": "dist/node/upload.js",
       "rawBytes": 431,
@@ -1105,21 +1105,21 @@
     {
       "bytes": 439,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/node/upload.js.map",
       "sha256": "11920e767c471a1f11523fcb8fe6048ec76953ee7edeb4f72d05bd1bc36e5d5a"
     },
     {
       "bytes": 1110,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/sobek/index.d.ts",
       "sha256": "b914c95b67a93fd846d77309f36e4b6f9c8240f40ec57802db102d6a85797e05"
     },
     {
       "bytes": 492,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/sobek/index.d.ts.map",
       "sha256": "4e7cea545df4fe26d729b7036e5696fae69a6c4d5913ee0c1c53c9f84b739f91"
     },
@@ -1131,7 +1131,7 @@
       "bytes": 705,
       "gzipBytes": 264,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 373,
       "path": "dist/sobek/index.js",
       "rawBytes": 705,
@@ -1140,21 +1140,21 @@
     {
       "bytes": 399,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/sobek/index.js.map",
       "sha256": "21e17b26e98759cab71ce31aa111f612d1386cc5104c68250033cd46d836a9df"
     },
     {
       "bytes": 3003,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/sobek/runtime.d.ts",
       "sha256": "5fbbef81dc906fa492d4914fcb05731d82390748a0ac6b4192be44ec81a67007"
     },
     {
       "bytes": 2634,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/sobek/runtime.d.ts.map",
       "sha256": "d0b21e3ec0ddf941c0acb06bdbd56f7a790366c56f0bd1496b1882c1f90d412d"
     },
@@ -1166,7 +1166,7 @@
       "bytes": 22018,
       "gzipBytes": 4235,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 16803,
       "path": "dist/sobek/runtime.js",
       "rawBytes": 22018,
@@ -1175,77 +1175,77 @@
     {
       "bytes": 21909,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/sobek/runtime.js.map",
       "sha256": "730caadb55e00d463674126dca181b23751b2da8828208ba3319fed41a1898ab"
     },
     {
       "bytes": 1457,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/derived.d.ts",
       "sha256": "9c258ed6cd9befdf5b208ea537952a75a66206c06fbdc83a2b794c5ca342cbcb"
     },
     {
       "bytes": 1471,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/derived.d.ts.map",
       "sha256": "16c723d96e78df10666292d1b4fb6b0c69c3fa0aeed52db5e31ccba830455dc7"
     },
     {
       "bytes": 5121,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/derived.js",
       "sha256": "be2a81a580a3d42c2a0be46a0a93e8bc501fd5053fe1c286f0bdecf4968b5516"
     },
     {
       "bytes": 4841,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/derived.js.map",
       "sha256": "fa9fb83113b82479f945f1d95dcd61ab86f18fd81d530f0a762b893416f2358d"
     },
     {
       "bytes": 1026,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/diagnostics.d.ts",
       "sha256": "42326e3babdd4967f9d270cc06ce1bb15ca89ccbb9339d6f7e0678eb9651be7e"
     },
     {
       "bytes": 1117,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/diagnostics.d.ts.map",
       "sha256": "8a42d7d02e894ac01f9ec740ffaf356ad6b8c57224c32771a0f18a611def9d9c"
     },
     {
       "bytes": 2920,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/diagnostics.js",
       "sha256": "9c89ec307ab9bda8b8df09575991c4901109047f0dce713c0a4c1e06ed7ea1ab"
     },
     {
       "bytes": 2929,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/diagnostics.js.map",
       "sha256": "37e85fb8b8bab20e196465fb18e790b51f0e860e6fdcc67d5d010f70835e55b6"
     },
     {
       "bytes": 1622,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/index.d.ts",
       "sha256": "e1a5fcc9f2d314a29306f04e5efc8d784d3caae49f201468a725b510f3609972"
     },
     {
       "bytes": 1133,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/index.d.ts.map",
       "sha256": "b5a2d6caa7d0ccf15f93165c71b8cf126c0b8b5f42adb839b214db21ef7eb4ce"
     },
@@ -1257,7 +1257,7 @@
       "bytes": 415,
       "gzipBytes": 187,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 345,
       "path": "dist/state/index.js",
       "rawBytes": 415,
@@ -1266,105 +1266,105 @@
     {
       "bytes": 390,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/index.js.map",
       "sha256": "2c509302e8388a056b5863ad3c519ae845d128a193b0d6f3ab15126d611d5058"
     },
     {
       "bytes": 3375,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/mutation.d.ts",
       "sha256": "c14f2410c08828aaee484aba87f68a1136923d0da54e015d219dea058a8233e3"
     },
     {
       "bytes": 3330,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/mutation.d.ts.map",
       "sha256": "e6c45000dd0fc8c6cc80835867150f1e78fa2be9386be823249c33efd4777f2e"
     },
     {
       "bytes": 11598,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/mutation.js",
       "sha256": "134562d53915f44e273ea9bc6ab1882df2f389cdc104ea16cd636dff7cf8bf5a"
     },
     {
       "bytes": 11042,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/mutation.js.map",
       "sha256": "5cb8288f3104a6bdc3b44a5cb857461b859ab91386f5c926b12bd7ed417cf99a"
     },
     {
       "bytes": 2148,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/query.d.ts",
       "sha256": "4d7b742a4880966eeed5888d7599d5dfbfa45fbfb00137f3686dfe7cd888680f"
     },
     {
       "bytes": 2374,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/query.d.ts.map",
       "sha256": "70c83ca9a584af662a2d6a8b1e3311a26198106de010951f22398ee40033951c"
     },
     {
       "bytes": 9706,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/query.js",
       "sha256": "fa5a85732d43f91e9b889e09c06112439eafdedfd90c8cf907e5c0cbafb7608a"
     },
     {
       "bytes": 9238,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/query.js.map",
       "sha256": "4c177dc615963406d7aa2c01440e3f284191258e1504bcf22d4d6866b20967f8"
     },
     {
       "bytes": 2170,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/reconcile.d.ts",
       "sha256": "d0633f481dffe4643c35529f4b69cc3dd5a8937c4ec3cb8e2b8f1be78eca8eb3"
     },
     {
       "bytes": 1952,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/reconcile.d.ts.map",
       "sha256": "c6bb3b300dc24f6a9684ce78f407b4818681e99550fc58bb5014c1dbc0b19d55"
     },
     {
       "bytes": 3470,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/reconcile.js",
       "sha256": "1081de26cca259b2077964e50496d78561466480844a0bc6a371c704f8724185"
     },
     {
       "bytes": 3056,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/reconcile.js.map",
       "sha256": "a0de4d0cdbf9eba743f6a15c80dc0a3f7cc19a5bf2cd1af61e0ddfd7ded4154f"
     },
     {
       "bytes": 2183,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/resource.d.ts",
       "sha256": "f5c02d0a323766b14cadc272de4aaf9a282395c1327ca269b6c17500da350169"
     },
     {
       "bytes": 2474,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/resource.d.ts.map",
       "sha256": "ae1bd49aae3b3782a269c6672714805920db748377edfa50ae9bb25705c584e0"
     },
@@ -1376,7 +1376,7 @@
       "bytes": 6997,
       "gzipBytes": 1338,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 4667,
       "path": "dist/state/resource.js",
       "rawBytes": 6997,
@@ -1385,21 +1385,21 @@
     {
       "bytes": 6908,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/state/resource.js.map",
       "sha256": "8192ac4523275fe1b98957a5435eef93e9d8581eb58545b3b0ff0f24ef4b900f"
     },
     {
       "bytes": 1610,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/test/index.d.ts",
       "sha256": "5fd94862843342111239944c49031e1d604c2188df5cc7952ab50e41570b9285"
     },
     {
       "bytes": 1537,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/test/index.d.ts.map",
       "sha256": "b112a640f89b453d4b3f085a195e70bc90df4eb49b449cccfb6b401e26230234"
     },
@@ -1411,7 +1411,7 @@
       "bytes": 7255,
       "gzipBytes": 1517,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 5031,
       "path": "dist/test/index.js",
       "rawBytes": 7255,
@@ -1420,49 +1420,49 @@
     {
       "bytes": 7072,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/test/index.js.map",
       "sha256": "f30dc31281870bbe025de4f8a3100ba0f2be51eb7a20542e2871a086ac432624"
     },
     {
       "bytes": 3587,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/cache.d.ts",
       "sha256": "b9c4c53a5e06be6b0b9b2b37d95176f70043a947f1a7a475e930d74bbb1213af"
     },
     {
       "bytes": 3055,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/cache.d.ts.map",
       "sha256": "dfb0983c75d6fcc11e74bd415f66850709f54e007c29ca3f4088c9bb340e6474"
     },
     {
       "bytes": 17078,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/cache.js",
       "sha256": "f68aaa2ccb78a0b74d08127e1735af42bcb8e1de51726396ab67f2aa0133542b"
     },
     {
       "bytes": 16608,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/cache.js.map",
       "sha256": "a0835f71942e45dc9d6deb0943aded9f9b59ace9b3d5d70b4102981247f067d0"
     },
     {
       "bytes": 6951,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/index.d.ts",
       "sha256": "9aa077d22ba68c40c9b917d49f6fdebcd9d05d8011ff6b5e883e05ecaac3fad5"
     },
     {
       "bytes": 6068,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/index.d.ts.map",
       "sha256": "052f7b6c0fcf7d381a01543ca47e62e3fd056c788bfc303105068ff4080b6b5b"
     },
@@ -1474,7 +1474,7 @@
       "bytes": 9948,
       "gzipBytes": 2111,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 7681,
       "path": "dist/transports/index.js",
       "rawBytes": 9948,
@@ -1483,21 +1483,21 @@
     {
       "bytes": 9489,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/index.js.map",
       "sha256": "8c0157c5f1080c3b66c83746ad5cc4590be63f643d2aa4c997502dd5e4bed979"
     },
     {
       "bytes": 465,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/response.d.ts",
       "sha256": "cdf32a365c8c71e67c90063c1cad6fb125f3d5130684a90c4da7dc2935ee84d2"
     },
     {
       "bytes": 434,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/response.d.ts.map",
       "sha256": "2a409038b3be38329a572311c24c4b3e607b4617abcf94f3510fd4ece049d07e"
     },
@@ -1509,7 +1509,7 @@
       "bytes": 9459,
       "gzipBytes": 1911,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 6905,
       "path": "dist/transports/response.js",
       "rawBytes": 9459,
@@ -1518,21 +1518,21 @@
     {
       "bytes": 9475,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/response.js.map",
       "sha256": "98f45cb6275818c28b95853d8e87e7609e4419d69403a7292918657a4f7d188d"
     },
     {
       "bytes": 604,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/sensitivity.d.ts",
       "sha256": "dcd66922e2e6330e86ccb9170caa8dc482dae61ba90f8e1279d916a459839066"
     },
     {
       "bytes": 473,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/sensitivity.d.ts.map",
       "sha256": "4cc5248592ab045eefbbe9c634713fbf9f777152ccd01f16034095eb55b231ac"
     },
@@ -1544,7 +1544,7 @@
       "bytes": 3630,
       "gzipBytes": 902,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2765,
       "path": "dist/transports/sensitivity.js",
       "rawBytes": 3630,
@@ -1553,49 +1553,49 @@
     {
       "bytes": 4018,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/sensitivity.js.map",
       "sha256": "4b3976b70b9a5f428c0de3137551259c1d3f16232217af2067cc0f72d22248f3"
     },
     {
       "bytes": 6050,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/upload.d.ts",
       "sha256": "08631f30fce6d417a1275d14a44dd7e6737ad0bb1619b2b8e303b96d3a9bb98a"
     },
     {
       "bytes": 5988,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/upload.d.ts.map",
       "sha256": "d2f99fcc2a08d1453fc41a053196cb410a675b01537e7a235fa8ccacea316ada"
     },
     {
       "bytes": 11631,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/upload.js",
       "sha256": "549f20f9105d0c1e760ede4d0f11522cc70e80f33ff342d2f94a0a9304545949"
     },
     {
       "bytes": 11776,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/transports/upload.js.map",
       "sha256": "7f67bcbba431c247076876c9bb052d42d190b5f6687674af0485ab90882f423c"
     },
     {
       "bytes": 1341,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/app.d.ts",
       "sha256": "bb89f8d6bc7f6c648ad60033bf101591e5c6ee141001a6a52309fe7f93bb9396"
     },
     {
       "bytes": 1234,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/app.d.ts.map",
       "sha256": "976d041cea811394f7049c5f073c20e60b5355428e7113ff58fc6f51a2927600"
     },
@@ -1607,7 +1607,7 @@
       "bytes": 2367,
       "gzipBytes": 602,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1823,
       "path": "dist/web/app.js",
       "rawBytes": 2367,
@@ -1616,21 +1616,21 @@
     {
       "bytes": 2577,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/app.js.map",
       "sha256": "20bed35884c23755230fd10368fa306556a0d1dfbeaf8419d6feb7db109d2cf9"
     },
     {
       "bytes": 583,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/auth.d.ts",
       "sha256": "8249abf4f68742f6af86a8f47732695e49f93a8db49d63db270a8e288a1b96b7"
     },
     {
       "bytes": 537,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/auth.d.ts.map",
       "sha256": "4e1169bfeb869fbb806b34bbc12b5e57d926210838b389d508454086261a4522"
     },
@@ -1642,7 +1642,7 @@
       "bytes": 1631,
       "gzipBytes": 483,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1174,
       "path": "dist/web/auth.js",
       "rawBytes": 1631,
@@ -1651,21 +1651,21 @@
     {
       "bytes": 1530,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/auth.js.map",
       "sha256": "a393788c31e340ba021eacdc1c56d53a380e8d98f2fb9acb221623408fc3bd9d"
     },
     {
       "bytes": 474,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/bootstrap.d.ts",
       "sha256": "fe440b237b3bad923845c56abc516e8b6f4c87128ff51a056a3e4fe4cd9d324b"
     },
     {
       "bytes": 440,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/bootstrap.d.ts.map",
       "sha256": "3b123c2029d0fd0acfdf5f861731e7229b38dd512b98b43339b21be2c36e5fa2"
     },
@@ -1677,7 +1677,7 @@
       "bytes": 1266,
       "gzipBytes": 439,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 993,
       "path": "dist/web/bootstrap.js",
       "rawBytes": 1266,
@@ -1686,21 +1686,21 @@
     {
       "bytes": 1466,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/bootstrap.js.map",
       "sha256": "a7ff9424dd610e5cacc6e00678baca3800aa9d4b002098a4d62c45cc340a0bbd"
     },
     {
       "bytes": 650,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/caller.d.ts",
       "sha256": "cd885cc06417f3fe8e86e8368543bee21b94f6fe3dcb103e607e94a47f4a8357"
     },
     {
       "bytes": 692,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/caller.d.ts.map",
       "sha256": "d707e07b3d1c939d12faa6a601909905bae693d8535bd8cf96a33bc598d2bcf2"
     },
@@ -1712,7 +1712,7 @@
       "bytes": 1945,
       "gzipBytes": 534,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1404,
       "path": "dist/web/caller.js",
       "rawBytes": 1945,
@@ -1721,21 +1721,21 @@
     {
       "bytes": 2023,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/caller.js.map",
       "sha256": "76a2c3c79e4dc3b411da2ab809b71422daa8caaa594bc08a0d91d5f7177ce841"
     },
     {
       "bytes": 1492,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/index.d.ts",
       "sha256": "6a228f301f4195166f9a2577f027ad74ecab0377b26ca9715f4772a38be8c3d9"
     },
     {
       "bytes": 1172,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/index.d.ts.map",
       "sha256": "2f92f3d0cb3c34131e8a487981867ae87522518d8ea2e6f96ad5e37c2c2699f1"
     },
@@ -1747,7 +1747,7 @@
       "bytes": 622,
       "gzipBytes": 263,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 530,
       "path": "dist/web/index.js",
       "rawBytes": 622,
@@ -1756,21 +1756,21 @@
     {
       "bytes": 562,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/index.js.map",
       "sha256": "43c16fb6d6482108e52c4f24c68a78b142fe4f1f6000d7bf65150d7e9660d73f"
     },
     {
       "bytes": 1102,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/lifecycle.d.ts",
       "sha256": "341900c01119a832d2adda82f1ea735a78d137ea382f625133433a6bb8dccd54"
     },
     {
       "bytes": 1058,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/lifecycle.d.ts.map",
       "sha256": "737c24d31a7ce49e8ec2a8c7a3e7503d712ec316b46ba35e65c7ce29e346228b"
     },
@@ -1782,7 +1782,7 @@
       "bytes": 3070,
       "gzipBytes": 721,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 1955,
       "path": "dist/web/lifecycle.js",
       "rawBytes": 3070,
@@ -1791,21 +1791,21 @@
     {
       "bytes": 3006,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/lifecycle.js.map",
       "sha256": "55d2961d14ee0efd74765db8ddb149e6e25f04db2c59856d21f363b3f632a9cf"
     },
     {
       "bytes": 302,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/navigation.d.ts",
       "sha256": "4cbc8e60b2ca02d5e2177b71fcea0203fc99e048e11609bfe7bc094ee7d56a9e"
     },
     {
       "bytes": 352,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/navigation.d.ts.map",
       "sha256": "fb7601018c6a3c68641e9cb2c6c9f47b5140cdbd36e6b515543aa2f407292918"
     },
@@ -1817,7 +1817,7 @@
       "bytes": 710,
       "gzipBytes": 261,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 476,
       "path": "dist/web/navigation.js",
       "rawBytes": 710,
@@ -1826,21 +1826,21 @@
     {
       "bytes": 725,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/navigation.js.map",
       "sha256": "403b73faad339b516dd646f8e548451c0c66defc8d81e3bede45429bf0c2cf24"
     },
     {
       "bytes": 1276,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/runtime-cache.d.ts",
       "sha256": "7f0ebb55acfe9cbe6b3b5a131bfef18e12e3c7d9ec884b15af3205c965574587"
     },
     {
       "bytes": 1178,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/runtime-cache.d.ts.map",
       "sha256": "d912b737e13fc5d25fa61b95a2a548d97bf609429fa6de9acda17342246b1bae"
     },
@@ -1852,7 +1852,7 @@
       "bytes": 3549,
       "gzipBytes": 888,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2129,
       "path": "dist/web/runtime-cache.js",
       "rawBytes": 3549,
@@ -1861,21 +1861,21 @@
     {
       "bytes": 3377,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/runtime-cache.js.map",
       "sha256": "5f09f70c92173ff2fdd2c0f49fa9e735ae43ba65f67a146bdd74052dd21d4ddc"
     },
     {
       "bytes": 991,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/runtime.d.ts",
       "sha256": "54b0d6d3805e3aaa24c14be8bea191865736f2d7d7f8596718272c85651d66cf"
     },
     {
       "bytes": 929,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/runtime.d.ts.map",
       "sha256": "96b84edfaa33354fac7528615508cbbb74b5d94dd13039bdfc67490cc79f5e57"
     },
@@ -1887,7 +1887,7 @@
       "bytes": 16377,
       "gzipBytes": 3399,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 12180,
       "path": "dist/web/runtime.js",
       "rawBytes": 16377,
@@ -1896,21 +1896,21 @@
     {
       "bytes": 15461,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/runtime.js.map",
       "sha256": "a5bbe240d64ea82dfc24195a1de24ab6e1baa82bcfd8cb60059cbf327769f244"
     },
     {
       "bytes": 787,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/upload-service.d.ts",
       "sha256": "f1758a7d0ac9cf1727c82bdd379329caf38ec7b524f1a361cbbecf5faf0005d2"
     },
     {
       "bytes": 700,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/upload-service.d.ts.map",
       "sha256": "9453e03f0e0ed1999a94fd1469260b0901780825c1fba11329c681474c0dcf52"
     },
@@ -1922,7 +1922,7 @@
       "bytes": 11085,
       "gzipBytes": 2397,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 7963,
       "path": "dist/web/upload-service.js",
       "rawBytes": 11085,
@@ -1931,49 +1931,49 @@
     {
       "bytes": 10727,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/upload-service.js.map",
       "sha256": "1a9bb88005b41a1eb17f51de0f701ad16ee147f6b41c28d63bcc0e415a6e6745"
     },
     {
       "bytes": 980,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/upload.d.ts",
       "sha256": "c2b32ab4445d3965a95f77ca7c76b0d2c97616a2675567371d9aa4b17afab44b"
     },
     {
       "bytes": 963,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/upload.d.ts.map",
       "sha256": "03b2de5f96573da4fe636560498140af0b2aad7c445859842ee4f1cd486fdb4a"
     },
     {
       "bytes": 2293,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/upload.js",
       "sha256": "58f4e65a5beff609199c12d479d32b65320dcd3713d31c0d30cf3713811d675b"
     },
     {
       "bytes": 2071,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/upload.js.map",
       "sha256": "48fcc5043bc2f78adc0b693a007b619a64e1be1bc491f700afcf03406192b3d8"
     },
     {
       "bytes": 217,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/url.d.ts",
       "sha256": "42d8ecfa8103c13aa1dfd164a914ddb12dc0f52fda704946adff6ed7ad61d96a"
     },
     {
       "bytes": 263,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/url.d.ts.map",
       "sha256": "426030ba5d304571f9f0b344eb0a380b37fdbf3d805378b0e77ce18760c9f567"
     },
@@ -1985,7 +1985,7 @@
       "bytes": 3583,
       "gzipBytes": 992,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "minifiedBytes": 2578,
       "path": "dist/web/url.js",
       "rawBytes": 3583,
@@ -1994,7 +1994,7 @@
     {
       "bytes": 3543,
       "license": "MIT",
-      "licenseNotice": "@holmhq/sdk 0.1.0-rc.1 generated artifact; MIT license; package remains private.",
+      "licenseNotice": "@holmhq/sdk 0.1.0 generated artifact; MIT license.",
       "path": "dist/web/url.js.map",
       "sha256": "74f13658934e15f8588ae1e490893aa9ee1b727f5bd15ec4d5e9765115840707"
     }
@@ -2002,8 +2002,8 @@
   "package": {
     "license": "MIT",
     "name": "@holmhq/sdk",
-    "private": true,
-    "version": "0.1.0-rc.1"
+    "private": false,
+    "version": "0.1.0"
   },
   "schema": "holm.sdk.dist-manifest/1",
   "source": {

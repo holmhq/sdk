@@ -1,4 +1,4 @@
-// @holmhq/sdk browser-bfbb-composition: Complete private v0.1-web browser/BFBB convenience composition for vendored ESM use.
+// @holmhq/sdk browser-bfbb-composition: Complete v0.1 browser/BFBB convenience composition for vendored ESM use.
 export * from "./index.js";
 export * as core from "./core/index.js";
 export * as app from "./app/index.js";

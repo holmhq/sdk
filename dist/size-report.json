@@ -481,8 +481,8 @@
       "gzipBytes": 562,
       "minifiedBytes": 1396,
       "path": "dist/holm.js",
-      "rawBytes": 1743,
-      "sha256": "624c29f82d29d66b9665c3ee47ea0a90ceb5e47fcba1d94c1c0f5df2c75c4365"
+      "rawBytes": 1731,
+      "sha256": "d70bce5a60b9678f43926295581ed6f1c11468af39e2992f227e113c0df4d42e"
     },
     {
       "budgets": {
@@ -498,13 +498,13 @@
   ],
   "package": {
     "name": "@holmhq/sdk",
-    "version": "0.1.0-rc.1"
+    "version": "0.1.0"
   },
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
     "gzipBytes": 50254,
     "minifiedBytes": 169206,
-    "rawBytes": 231182
+    "rawBytes": 231170
   }
 }

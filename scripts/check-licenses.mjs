@@ -16,8 +16,8 @@ const packageJson = readJson("package.json");
 const lockfile = readJson("package-lock.json");
 const failures = [];
 
-if (packageJson.private !== true) {
-  failures.push(`${packageJson.name}: package must remain private`);
+if (packageJson.private === true) {
+  failures.push(`${packageJson.name}: public release package must not be private`);
 }
 if (packageJson.license !== "MIT") {
   failures.push(`${packageJson.name}: expected MIT license, found ${String(packageJson.license)}`);
@@ -48,7 +48,7 @@ const artifacts = listFiles("dist")
   .map((path) => ({
     path,
     license: packageJson.license,
-    notice: `${packageJson.name} ${packageJson.version} generated artifact; MIT license; package remains private.`,
+    notice: `${packageJson.name} ${packageJson.version} generated artifact; MIT license.`,
     allowed: packageJson.license === "MIT",
   }));
 

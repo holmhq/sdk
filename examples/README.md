@@ -1,23 +1,37 @@
-# Web app examples
+# Examples
 
-- `bfbb/` imports the tracked generated ESM module tree directly. Serve the
-  repository root (or vendor the pinned `dist/` tree) and open
-  `examples/bfbb/index.html`; no package manager or build step is required.
-- `bfbb-vendored/` is the copied raw fixture used by the integrity gate. The
-  test copies tracked `dist/` files under `vendor/holm-sdk/`, verifies their
-  SHA-256 metadata from `dist/manifest.json`, rejects an altered byte, and then
-  imports only local relative ESM.
-- `vite/` imports `@holmhq/sdk/web` through package exports and is compiled by
-  the root `npm run test:examples` command.
+These examples show three ways to consume the same release without making a UI
+framework part of SDK core.
 
-Both examples use `createWebApp()`, which composes an isolated web runtime,
-caller provider, app extension, surface bootstrap, and upload service. The web
-baseline is capability-based: modern ESM loading from vendored files,
-Fetch-compatible request/response services, URL and Headers primitives for
-adopted helpers, optional upload primitives only when upload helpers are used,
-and static-file serving for raw fixtures. This local gate does not claim browser-vendor soak; that remains a separate pilot activity.
+- `bfbb/` imports the tracked complete browser ESM composition directly. Serve
+  the repository root and open `examples/bfbb/index.html`.
+- `bfbb-vendored/` is the offline integrity fixture. The test copies the whole `dist/` module graph,
+  verifies `dist/manifest.json`, rejects an altered byte,
+  and imports only local relative ESM.
+- `vite/` is the vanilla TypeScript app. It imports package exports, renders an
+  auth query resource, and exposes refresh/sign-out actions.
+- `react/` renders the same model with React and `useSyncExternalStore`; React
+  remains an example-only development dependency, not an SDK dependency.
+- `shared/session-contract.ts` is the same semantic session resource/action contract
+  used by both `vite/` and `react/`.
 
-Stable v0.1-web imports:
+Run every fixture and production build from the repository root:
+
+```bash
+npm install
+npm run build
+npm run test:examples
+```
+
+The shared model composes `app.auth.me()`, `app.auth.logout()`, app HTTP cache
+invalidation, `createQueryResource()`, and `createMutationResource()`. Both UIs
+consume immutable snapshots; neither owns transport or auth semantics. The
+logout cleanup also refreshes session state when Holm has already cleared the
+cookie but a followed redirect reports an error.
+
+## Supported imports
+
+Stable `0.1.x` imports:
 
 ```text
 @holmhq/sdk
@@ -29,35 +43,18 @@ Stable v0.1-web imports:
 @holmhq/sdk/test
 ```
 
-Vendored BFBB usage:
+`@holmhq/sdk/node` and `@holmhq/sdk/sobek` are preview imports and are not frozen
+for `0.1.x`. `@holmhq/sdk/bridge` is reserved, unsupported, and not production
+for a desktop or mobile runtime; its mailbox mocks are for tests and future native
+shell integration only. Desktop and mobile production support is unavailable.
 
-```bash
-SDK_REF=<immutable-commit-sha-or-reviewed-tag>
-mkdir -p vendor/holm-sdk
-curl -fL "https://cdn.jsdelivr.net/gh/holmhq/sdk@${SDK_REF}/dist/holm.js" \
-  -o vendor/holm-sdk/holm.js
-printf '%s  %s\n' '<sha256-from-dist-manifest>' 'vendor/holm-sdk/holm.js' \
-  > vendor/holm-sdk/holm.js.sha256
-sha256sum -c vendor/holm-sdk/holm.js.sha256
-```
+## BFBB vendoring
 
-```js
-import { createHolm } from './vendor/holm-sdk/holm.js'
-```
+A BFBB app must vendor the full relative ESM tree from an immutable Git SHA,
+reviewed tag, or immutable npm version. Never deploy from `@main`, and do not require a public
+CDN at runtime. Follow [the vendoring guide](../docs/vendoring.md) for the copy,
+SHA-256 verification, update, and rollback workflow.
 
-Deployed BFBB apps should vendor artifacts from an immutable Git SHA or reviewed
-tag and keep the generated checksum metadata with the copied files. Use an
-immutable Git SHA or reviewed tag for updates. Never use `@main` for deployed
-apps. Rollback means restoring the previously vendored SDK files and their
-recorded checksum metadata. Report suspected SDK integrity or
-credential-redaction issues privately through the owner-approved security
-channel.
-
-`@holmhq/sdk/node` and `@holmhq/sdk/sobek` are shipped preview imports for
-bounded adapter tests and composition, but they are not frozen for `0.1.x` and
-must not be treated as production/stable support in web RC apps.
-
-Desktop and mobile bridge exports from `@holmhq/sdk/bridge` are intentionally
-reserved and not production for tests and future native shell integration. Their
-current mocks are unsupported as production desktop/mobile runtimes and only
-prove copied mailbox and capability boundaries.
+The real [Sokoban pilot](https://sokoban.zyt.app) is additional vanilla evidence:
+it consumes a hash-pinned vendored SDK tree and exercises auth, app HTTP,
+query/mutation resources, and browser behavior against Holm.

@@ -29,8 +29,8 @@ function verifyGeneratedManifest(manifest) {
   if (manifest.schema !== "holm.sdk.dist-manifest/1") {
     throw new Error(`Unexpected dist manifest schema: ${String(manifest.schema)}`);
   }
-  if (manifest.package?.private !== true) {
-    throw new Error("Dist manifest must record that the package remains private.");
+  if (manifest.package?.private !== false) {
+    throw new Error("Dist manifest must record the public release package state.");
   }
   if (!/immutable Git SHA/.test(manifest.source?.commitPolicy ?? "") || !/reviewed\s+tag/.test(manifest.source?.commitPolicy ?? "")) {
     throw new Error("Dist manifest must require immutable Git SHA or reviewed tag distribution.");
@@ -61,8 +61,8 @@ function verifyGeneratedManifest(manifest) {
     }
 
     if (bundlePaths.has(record.path)) {
-      if (record.distribution?.packagePrivate !== true) {
-        throw new Error(`${record.path}: bundle distribution metadata must keep the package private.`);
+      if (record.distribution?.packagePrivate !== false) {
+        throw new Error(`${record.path}: bundle distribution metadata must record the public release package state.`);
       }
       if (record.distribution?.runtimeCdnRequired !== false) {
         throw new Error(`${record.path}: bundle distribution metadata must not require a runtime CDN.`);
@@ -95,7 +95,7 @@ function verifyGeneratedManifest(manifest) {
 }
 
 function verifyDocumentationGuidance() {
-  const docs = ["README.md", "examples/README.md", `${fixtureSourceRoot}/README.md`];
+  const docs = ["README.md", "docs/vendoring.md", "examples/README.md", `${fixtureSourceRoot}/README.md`];
   for (const path of docs) {
     const source = readFileSync(path, "utf8");
     if (!/immutable Git SHA/.test(source) || !/reviewed\s+tag/.test(source)) {
@@ -111,14 +111,16 @@ function verifyDocumentationGuidance() {
 
   const examplesReadme = readFileSync("examples/README.md", "utf8");
   for (const phrase of [
-    "modern ESM",
-    "Fetch-compatible",
-    "URL and Headers",
-    "static-file serving",
-    "does not claim browser-vendor soak",
+    "whole `dist/` module graph",
+    "`shared/session-contract.ts`",
+    "`vite/`",
+    "`react/`",
+    "not frozen",
+    "reserved",
+    "unsupported",
   ]) {
     if (!examplesReadme.includes(phrase)) {
-      throw new Error(`examples/README.md must document the capability-based web baseline; missing ${phrase}.`);
+      throw new Error(`examples/README.md must document the tested consumption boundaries; missing ${phrase}.`);
     }
   }
 }

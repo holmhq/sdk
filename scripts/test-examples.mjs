@@ -72,28 +72,41 @@ if (bfbbPreviewFiles.length > 0) {
   throw new Error(`Raw BFBB example must not evaluate the preview Node runtime: ${bfbbPreviewFiles.map((path) => relative(process.cwd(), path)).join(", ")}`);
 }
 
-const output = resolve(".tmp/examples/vite");
-rmSync(output, { recursive: true, force: true });
-const vite = spawnSync(
-  resolve("node_modules/.bin/vite"),
-  ["build", "examples/vite", "--outDir", output, "--emptyOutDir"],
+const typecheck = spawnSync(
+  resolve("node_modules/.bin/tsc"),
+  ["-p", "tsconfig.examples.json", "--noEmit"],
   { encoding: "utf8", shell: false },
 );
-process.stdout.write(vite.stdout);
-process.stderr.write(vite.stderr);
-if (vite.status !== 0) {
-  process.exit(vite.status ?? 1);
+process.stdout.write(typecheck.stdout);
+process.stderr.write(typecheck.stderr);
+if (typecheck.status !== 0) {
+  process.exit(typecheck.status ?? 1);
 }
 
-const files = listFiles(output);
-const indexPath = files.find((path) => path.endsWith("/index.html"));
-const bundlePath = files.find((path) => /\/assets\/index-[^/]+\.js$/.test(path));
-if (!indexPath || !bundlePath) {
-  throw new Error(`Vite example output is incomplete: ${files.join(", ")}`);
-}
-const bundle = readFileSync(bundlePath, "utf8");
-if (!bundle.includes("/api/me") || !bundle.includes("holm.http.app")) {
-  throw new Error("Vite example bundle does not contain the app HTTP composition.");
+for (const example of ["vite", "react"]) {
+  const output = resolve(`.tmp/examples/${example}`);
+  rmSync(output, { recursive: true, force: true });
+  const vite = spawnSync(
+    resolve("node_modules/.bin/vite"),
+    ["build", `examples/${example}`, "--outDir", output, "--emptyOutDir"],
+    { encoding: "utf8", shell: false },
+  );
+  process.stdout.write(vite.stdout);
+  process.stderr.write(vite.stderr);
+  if (vite.status !== 0) {
+    process.exit(vite.status ?? 1);
+  }
+
+  const files = listFiles(output);
+  const indexPath = files.find((path) => path.endsWith("/index.html"));
+  const bundlePath = files.find((path) => /\/assets\/index-[^/]+\.js$/.test(path));
+  if (!indexPath || !bundlePath) {
+    throw new Error(`${example} example output is incomplete: ${files.join(", ")}`);
+  }
+  const bundle = readFileSync(bundlePath, "utf8");
+  if (!bundle.includes("/api/me") || !bundle.includes("holm.example.session")) {
+    throw new Error(`${example} example bundle does not contain the shared Holm session contract.`);
+  }
 }
 
 const examplesReadme = readFileSync("examples/README.md", "utf8").toLowerCase();
@@ -113,4 +126,4 @@ for (const requiredLabel of [
   }
 }
 
-console.log("Example checks passed: raw BFBB import, offline vendored integrity fixture, Vite production build, preview runtime labels, and reserved bridge labels.");
+console.log("Example checks passed: raw BFBB import, offline vendored integrity fixture, typed vanilla + React production builds sharing one session contract, preview runtime labels, and reserved bridge labels.");

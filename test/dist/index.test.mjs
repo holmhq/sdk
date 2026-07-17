@@ -226,7 +226,13 @@ test("deterministic v0.1 web and BFBB bundles are importable, recorded, and excl
   const licenseByPath = new Map((licenseReport.artifacts ?? []).map((artifact) => [artifact.path, artifact]));
   const bundlePaths = ["dist/holm.js", "dist/holm-web.js"];
 
-  assert.equal(packageJson.private, true, "package must remain private for the RC artifact checkpoint");
+  assert.equal(packageJson.version, "0.1.0");
+  assert.notEqual(packageJson.private, true, "public 0.1.0 package must not remain private");
+  assert.equal(packageJson.publishConfig?.access, "public");
+  assert.equal(manifest.package?.version, "0.1.0");
+  assert.equal(manifest.package?.private, false);
+  assert.equal(licenseReport.package?.version, "0.1.0");
+  assert.equal(licenseReport.package?.private, false);
   for (const bundlePath of bundlePaths) {
     for (const artifactPath of [bundlePath, `${bundlePath}.map`, bundlePath.replace(/\.js$/, ".d.ts"), bundlePath.replace(/\.js$/, ".d.ts.map")]) {
       assert.equal(manifestByPath.has(artifactPath), true, `${artifactPath} is covered by the dist manifest`);
