@@ -160,6 +160,12 @@ test("extensions reject invalid descriptors and keep ready-set ordering stable",
     () => createExtensionGraph([extension({ id: "com.example.bad", namespace: "not-valid" })]),
     (error: unknown) => error instanceof ExtensionError && error.code === "invalid_extension_namespace",
   );
+  for (const namespace of ["__proto__", "constructor", "prototype", "toString"] as const) {
+    assert.throws(
+      () => createExtensionGraph([extension({ id: `com.example.${namespace.toLowerCase()}`, namespace })]),
+      (error: unknown) => error instanceof ExtensionError && error.code === "reserved_extension_namespace",
+    );
+  }
   assert.throws(
     () =>
       createExtensionGraph([

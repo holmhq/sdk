@@ -67,7 +67,7 @@ test("transport cache keys are deterministic, caller/source partitioned, and GET
   );
 });
 
-test("transport cache identity and diagnostics structurally protect sensitive URL, params, and headers", () => {
+test("Review #033 advisory 5: transport cache diagnostics redact sensitive URL params and headers while opaque keys hide plaintext", () => {
   const firstRequest = createTransportRequest({
     method: "GET",
     url: "/api/invitations/path-secret-a",

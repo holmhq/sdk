@@ -235,6 +235,39 @@ test("runtime response tracking ignores and diagnoses duplicate and late respons
   );
 });
 
+test("Review #033 advisory 8: duplicate request IDs fail closed inside the default 1024-entry terminal window", () => {
+  const tracker = createInvocationResponseTracker({ clock: { now: () => 7 } });
+  const first = tracker.begin("req-window-0");
+
+  assert.equal(first.accept({ requestId: "req-window-0", payload: null }), "accepted");
+  assert.throws(
+    () => tracker.begin("req-window-0"),
+    (error: unknown) => error instanceof ProtocolError && error.code === "runtime_request_duplicate",
+  );
+
+  for (let index = 1; index <= 1024; index += 1) {
+    const handle = tracker.begin(`req-window-${index}`);
+    assert.equal(handle.accept({ requestId: `req-window-${index}`, payload: null }), "accepted");
+  }
+
+  assert.doesNotThrow(() => tracker.begin("req-window-0"));
+});
+
+test("Review #033 advisory 9: whitespace-padded response request IDs are accepted fail-closed", () => {
+  const tracker = createInvocationResponseTracker({ clock: { now: () => 9 } });
+  const handle = tracker.begin(" req-padded ");
+
+  assert.equal(handle.requestId, "req-padded");
+  assert.throws(
+    () => handle.accept({ requestId: " req-padded ", payload: null }),
+    (error: unknown) => error instanceof ProtocolError && error.code === "runtime_response_mismatch",
+  );
+  assert.throws(
+    () => tracker.begin("req-padded"),
+    (error: unknown) => error instanceof ProtocolError && error.code === "runtime_request_duplicate",
+  );
+});
+
 test("runtime invocation diagnoses adapter responses that arrive after caller cancellation", async () => {
   const events: HolmDiagnosticEvent[] = [];
   let resolveResponse: ((response: OperationResponse) => void) | undefined;

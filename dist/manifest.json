@@ -368,17 +368,17 @@
     {
       "bytes": 4195,
       "path": "dist/core/extensions.d.ts.map",
-      "sha256": "94246f4ace3b3d555645bee7784c3bb017976b2e5ec7fa538fdeb12a6aeddcae"
+      "sha256": "777218a48546eb9cffcbe3da39a99d533673eff064471bfae38a4a3c45dfa3ec"
     },
     {
-      "bytes": 17953,
+      "bytes": 18092,
       "path": "dist/core/extensions.js",
-      "sha256": "920df49347e2471d2a08bb3db0215cce113b5f41c436ce88906d248e3a20eb15"
+      "sha256": "fc9c1de2de92a07de48cab725320933cbc55087075abb6f2a878e6a953273a4a"
     },
     {
-      "bytes": 16629,
+      "bytes": 16745,
       "path": "dist/core/extensions.js.map",
-      "sha256": "30a84fa42806ec9e808f8d7c9c06baa55b61d932a17dedfa3c1351f0e715a4b8"
+      "sha256": "d352828d96ec28ac5ca59cee999c841772d1bd2d8e0a8c54c58519dca5b14778"
     },
     {
       "bytes": 3288,

@@ -156,6 +156,7 @@ const reservedNamespaces = new Set([
   "lifecycle",
   "resources",
   "start",
+  "prototype",
 ]);
 
 export class ExtensionError extends HolmError {
@@ -639,7 +640,7 @@ function normalizeNamespace(value: unknown, extensionId: string): string {
       details: { namespace: value },
     });
   }
-  if (reservedNamespaces.has(value)) {
+  if (reservedNamespaces.has(value) || isObjectPrototypeNamespace(value)) {
     throw new ExtensionError({
       code: "reserved_extension_namespace",
       message: `Extension namespace "${value}" is reserved by the SDK core.`,
@@ -648,6 +649,10 @@ function normalizeNamespace(value: unknown, extensionId: string): string {
     });
   }
   return value;
+}
+
+function isObjectPrototypeNamespace(value: string): boolean {
+  return value in Object.prototype;
 }
 
 function deepFreeze<T>(value: T, seen: WeakSet<object> = new WeakSet<object>()): ReadonlyDeep<T> {
