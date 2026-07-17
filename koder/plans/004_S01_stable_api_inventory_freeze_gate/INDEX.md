@@ -1,6 +1,6 @@
 ---
 title: W4 S01 - Stable API inventory and freeze gate
-status: approved
+status: implemented
 issue: 017
 plan: 004
 slice: S01

@@ -48,8 +48,8 @@ initial target, not permission to omit gates.
 
 | Order | Ref | Status | Estimate | Risk | Validation | Stop |
 | ---: | --- | --- | ---: | --- | --- | --- |
-| 1 | `koder/plans/004_S01_stable_api_inventory_freeze_gate/INDEX.md` | queued | 90-120m | yellow | All plan commands; deterministic stable API/declaration manifest and drift gate; fresh entry review 0 P1/P2 | Support-matrix/API decision, new dependency, authority conflict, irreproducibility, or release action blocks |
-| 2 | `koder/plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md` | queued | 60-90m | yellow | All plan commands; preview/reserved labels, stable import isolation, raw BFBB no-Node proof; fresh entry review 0 P1/P2 | Stable-to-preview coupling, expanded support promise, new dependency, authority drift, or irreproducibility blocks |
+| 1 | `koder/plans/004_S01_stable_api_inventory_freeze_gate/INDEX.md` | done | 90-120m | yellow | All plan commands; deterministic stable API/declaration manifest and drift gate; fresh entry review 0 P1/P2 | Support-matrix/API decision, new dependency, authority conflict, irreproducibility, or release action blocks |
+| 2 | `koder/plans/004_S02_preview_reserved_boundary_enforcement/INDEX.md` | done | 60-90m | yellow | All plan commands; preview/reserved labels, stable import isolation, raw BFBB no-Node proof; fresh entry review 0 P1/P2 | Stable-to-preview coupling, expanded support promise, new dependency, authority drift, or irreproducibility blocks |
 | 3 | `koder/plans/004_S03_credential_diagnostic_p3_hardening/INDEX.md` | queued | 90-120m | yellow/red | All plan commands; Review `#033` advisories 1-4 disposition and credential-safe proof; fresh security review 0 P1/P2 | Sensitivity-contract/API redesign, unbounded leak, ambient/dependency need, or unauthorized credential action blocks |
 | 4 | `koder/plans/004_S04_edge_contract_p3_disposition/INDEX.md` | queued | 60-90m | yellow | All plan commands; Review `#033` advisories 5-9 explicit disposition; fresh edge-contract review 0 P1/P2 | Breaking API, unresolved advisory, Holm request-ID contradiction, dependency, or irreproducibility blocks |
 | 5 | `koder/plans/004_S05_deterministic_web_bfbb_bundles/INDEX.md` | queued | 90-120m | yellow/red | All plan commands; deterministic bundles/maps/declarations/manifests/size/license; fresh distribution review 0 P1/P2 | Issue `#014` cannot stay thin, dependency/status change, size/repro failure, authority conflict, or release action blocks |
@@ -123,3 +123,19 @@ cycle.
 - Preflight `q005-preflight-pi-a01` proved `pi/gpt-5.5`; preflight
   `q005-preflight-codex-a01` proved fallback `codex/gpt-5.3-codex`. Both returned
   accepted no-change typed reports; Git remained clean and synchronized.
+- Coordinator `q005-coordinator-01` completed S01: implement
+  `q005-c01-e01-implement-a01` committed
+  `f723a95749e9626ce4bbf6e54934dcf5e4ad4973` (parent
+  `3049b5410e01000a3f20234d6f5d268ab64cf758`) with red
+  `npm run test:stable-api` exit 1, green exit 0, and all S01 plan validation
+  commands exit 0; review `q005-c01-e01-review-a01` approved
+  `P1=0 P2=0 P3=0`; generated artifacts reproducible/unchanged; process
+  failures used `0/8`.
+- Coordinator `q005-coordinator-01` completed S02: implement
+  `q005-c01-e02-implement-a01` committed
+  `6f3944b8ff006e8b6821990a05518422810248e5` (parent
+  `f723a95749e9626ce4bbf6e54934dcf5e4ad4973`) with red
+  `npm run test:types` exit 2 and `npm run test:examples` exit 1, green targeted
+  gates plus all S02 plan validation commands exit 0; review
+  `q005-c01-e02-review-a01` approved `P1=0 P2=0 P3=0`; generated artifacts
+  owned and reproducible; process failures used `0/8`.

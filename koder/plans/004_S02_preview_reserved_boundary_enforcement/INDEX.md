@@ -1,6 +1,6 @@
 ---
 title: W4 S02 - Preview and reserved boundary enforcement
-status: approved
+status: implemented
 issue: 017
 plan: 004
 slice: S02
