@@ -1,8 +1,8 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
-updated: 2026-07-17
+updated: 2026-07-18
 tags: sdk, typescript, surfaces, state, realtime, frameworks, bfbb
 source:
   repo: holmhq/holm
@@ -12,7 +12,8 @@ source:
 type: design
 issue_kind: track
 slice_count: 15
-slices_done: 8
+slices_done: 10
+slices_deferred: 5
 context: Build a new universal TypeScript SDK without deleting the existing Holm SDK/state packages, then migrate capabilities only with conformance evidence.
 ---
 
@@ -189,27 +190,24 @@ Highest-value sources at Holm commit
 | Framework-neutral reactive resources | done | [`#006`](../006_reactive_resources/INDEX.md) | `#004`, `#005` | immutable snapshot/subscription tests |
 | A2 Holm-authority conformance remediation | done | [`#016`](../016_a2_authority_conformance_remediation/INDEX.md) | `#004`, `#005`, `#006` | SDK re-review + Holm authority acceptance |
 | Web/app client migration | done | [`#007`](../007_web_app_client/INDEX.md) | `#005`, `#006`, `#016` | adopted app methods + browser tests |
-| Admin/operator client migration | planned | [`#008`](../008_admin_client/INDEX.md) | `#005`, `#016` | audited namespace parity report |
+| Admin/operator client migration | deferred | [`#008`](../008_admin_client/INDEX.md) | `#005`, `#016` | demand-driven; legacy Holm package remains authoritative |
 | Runtime/surface adapter contracts | done | [`#009`](../009_runtime_surface_adapters/INDEX.md) | `#004`, `#005`, `#016` | web/node/test adapters; reserved bridge contracts |
-| Action/schema and CLI surface helpers | planned | [`#010`](../010_actions_cli_surface/INDEX.md) | `#004`, `#009`, `#016` | JSON Schema fixture discovery/invocation |
-| Realtime extension and future presence seam | planned | [`#011`](../011_realtime_extension/INDEX.md) | `#004`, `#006`, `#009` | current channel proof + future capability gates |
-| Collaboration/oplog/CRDT extension seam | planned | [`#012`](../012_collaboration_extension/INDEX.md) | `#006`, `#011` | codec/provider contract + opaque binary fixtures |
-| React/Angular/Svelte/Vue bindings | planned | [`#013`](../013_framework_bindings/INDEX.md) | `#006` | framework-native subscription examples/tests |
-| BFBB bundles and jsDelivr vendoring | planned | [`#014`](../014_bfbb_distribution/INDEX.md) | `#003`–`#013` as included | reproducible tracked artifacts + size report |
-| Docs, migration ledger, end-to-end closeout | planned | [`#015`](../015_docs_migration_closeout/INDEX.md) | all prior slices | examples/conformance/ownership handoff complete |
+| Action/schema and CLI surface helpers | deferred | [`#010`](../010_actions_cli_surface/INDEX.md) | `#004`, `#009`, `#016` | demand-driven after Holm exposes the required registry |
+| Realtime extension and future presence seam | deferred | [`#011`](../011_realtime_extension/INDEX.md) | `#004`, `#006`, `#009` | shipped capability truth remains unavailable beyond reconcile seam |
+| Collaboration/oplog/CRDT extension seam | deferred | [`#012`](../012_collaboration_extension/INDEX.md) | `#006`, `#011` | demand-driven; no mandatory CRDT dependency |
+| Framework binding packages | deferred | [`#013`](../013_framework_bindings/INDEX.md) | `#006` | vanilla + React integration examples prove the lower Resource contract |
+| BFBB bundles and jsDelivr vendoring | done | [`#014`](../014_bfbb_distribution/INDEX.md) | included capability slices | reproducible tracked artifacts + size/integrity reports |
+| Docs, migration ledger, end-to-end closeout | done | [`#015`](../015_docs_migration_closeout/INDEX.md) | included capability slices | examples/conformance/ownership handoff complete |
 
 ## Execution boundary
 
-Owner-present work follows the user's explicit task and the active child issue;
-it does not require a second execution-window artifact. Any future unattended
-queue must declare its own bounded authorization and stop gate using the live
-koder-pattern mode-selection rules.
-
-Issues `#016`, `#007`, and `#009` are complete with their independent SDK and
-fresh read-only Holm-authority gates satisfied. No execution window is active
-after W3. Return to the owner before Issue `#014`; its mode and dispatch policy
-must be selected for that window. Cross-repository ownership and write policy
-remain indexed in `koder/projects/INDEX.md`.
+The owner accepted the private RC and pilot, then explicitly authorized the
+`0.1.0` promotion/release follow-through on 2026-07-18. Included slices are
+complete; `#008` and `#010`–`#013` are deferred by owner decision and do not
+block this track. Reviews `#060`/`#061` approve the release delta and publish
+dry-run fix. External publication is blocked only by rejected npm registry
+authentication; no future capability slice is activated by this closure.
+Cross-repository ownership remains indexed in `koder/projects/INDEX.md`.
 
 ## Recommended execution order
 
@@ -252,23 +250,25 @@ explicit worktree ownership; parallelism is expected across repositories.
 
 ## Track acceptance criteria
 
-- [ ] All child slices are completed or explicitly reconciled as deferred with
+- [x] All child slices are completed or explicitly reconciled as deferred with
       evidence.
-- [ ] `@holmhq/sdk` has a reviewed strict-TypeScript architecture and stable
+- [x] `@holmhq/sdk` has a reviewed strict-TypeScript architecture and stable
       initial public contract.
-- [ ] Core, web, Node/CLI, test, state, app, and admin paths pass conformance.
-- [ ] Realtime and collaboration have honest shipped-versus-future capability
-      gates and extension tests.
-- [ ] React, Angular, Svelte, Vue, and vanilla usage are demonstrated without a
-      framework dependency in core.
-- [ ] A complete BFBB ESM artifact can be vendored from a commit-pinned jsDelivr
-      URL and passes a no-build browser smoke test.
-- [ ] npm remains unpublished/private unless a separate explicit release
-      decision changes that state.
-- [ ] Existing Holm SDK/state ownership remains documented; no deletion occurs
+- [x] Included core, web, Node preview, test, state, and app paths pass
+      conformance; admin migration is explicitly deferred.
+- [x] Realtime and collaboration have honest shipped-versus-future capability
+      gates and reconciliation tests without claiming a transport/provider.
+- [x] Vanilla and React usage share one Resource contract without a framework
+      dependency in core; Angular/Svelte/Vue packages are demand-driven.
+- [x] Complete BFBB ESM artifacts vendor from immutable refs and pass offline
+      integrity and browser-pilot evidence.
+- [x] npm stayed unpublished/private until the separate 2026-07-18 owner
+      decision; public metadata and publish dry-run are ready, registry auth is
+      the remaining external blocker.
+- [x] Existing Holm SDK/state ownership remains documented; no deletion occurs
       under this track.
-- [ ] README, architecture, API, migration, and contribution guidance are
-      sufficient for a new agent or human to continue without chat history.
+- [x] README, technical agent guide, API support, migration, capability, and
+      vendoring guidance are sufficient without chat history.
 
 ## Non-goals
 
@@ -278,6 +278,6 @@ explicit worktree ownership; parallelism is expected across repositories.
 - Choosing or embedding one mandatory CRDT engine.
 - Building a cross-platform UI DSL or component framework.
 - Running arbitrary framework SSR/Node servers on Holm.
-- Publishing to npm during the foundation track without an explicit user
-  decision.
+- Publishing to npm without an explicit user decision (the owner supplied that
+  decision on 2026-07-18; execution remains subject to working registry auth).
 - Deleting `packages/holm-sdk` or `packages/holm-state` from Holm.

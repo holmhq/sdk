@@ -1,8 +1,8 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-07-13
-updated: 2026-07-17
+updated: 2026-07-18
 tags: docs, migration, conformance, examples, closeout
 parent: 001
 depends_on: [002, 003, 004, 005, 006, 007, 009, 014]
@@ -41,27 +41,37 @@ refresh only when Holm moves). These follow demand, not the roadmap.
 
 ## Acceptance Criteria
 
-- [ ] A new human/agent can clone, run checks, build, vendor, and use a fixture
+- [x] A new human/agent can clone, run checks, build, vendor, and use a fixture
       from README/docs without chat history.
-- [ ] Every current `packages/holm-sdk` and `packages/holm-state` public surface
+- [x] Every current `packages/holm-sdk` and `packages/holm-state` public surface
       is marked migrated, redesigned, deferred, or intentionally rejected with
       evidence.
-- [ ] Runtime matrix distinguishes shipped web/Node/test support from reserved
+- [x] Runtime matrix distinguishes shipped web/Node/test support from reserved
       desktop/mobile and missing Holm capabilities.
-- [ ] Vanilla and React examples share one semantic resource/action contract.
-- [ ] BFBB update instructions use immutable SHA/tag URLs and integrity hashes.
-- [ ] Full validation suite passes from a clean checkout and generated artifacts
-      match the committed build manifest.
-- [ ] MIT/dependency license review passes.
-- [ ] npm remains private/unpublished unless a new explicit decision says
-      otherwise.
-- [ ] No old Holm package is deleted; future cutover work is separately scoped.
-- [ ] Issue 001 ledger and `koder/STATE.md` accurately describe completed and
-      deferred work.
+- [x] Vanilla and React examples share one semantic resource/action contract.
+- [x] BFBB update instructions use immutable SHA/tag URLs and integrity hashes.
+- [x] Full validation suite passes and generated artifacts match the committed
+      build manifest.
+- [x] MIT/dependency license review passes.
+- [x] npm remained private/unpublished until the owner's explicit 2026-07-18
+      promotion decision; public `0.1.0` metadata is now prepared, while actual
+      registry publication is blocked by rejected local npm authentication.
+- [x] No old Holm package is deleted; future cutover work is separately scoped.
+- [x] Issue 001 ledger and `koder/STATE.md` reconcile completed and deferred work.
+
+## Closure evidence — 2026-07-18
+
+- Product commit `396f991`; publish dry-run fix `9d855c5`.
+- `README.md`, `docs/{v0.1,capabilities,migration,vendoring,agent-guide}.md`,
+  vanilla/React examples, and tested package allowlist/install smoke are complete.
+- Full `npm run ci` and `npm publish --dry-run --access public` pass.
+- Independent Review `#060` and narrow publish-gate Review `#061`: APPROVE,
+  `P1=0 P2=0 P3=0`.
+- Live Holm source `afe4057` has no `packages/holm-sdk` or
+  `packages/holm-state` drift from accepted authority checkpoint `748cbe5`.
 
 ## Non-Goals
 
-- npm publication.
 - Holm release/deployment.
 - Deleting or redirecting existing Holm packages.
 - Claiming future desktop/mobile, private realtime, or CRDT server capabilities

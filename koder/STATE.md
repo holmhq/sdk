@@ -1,46 +1,43 @@
 ---
-updated_at: "18 Jul 2026 | 12:02 AM IST"
-state: IN_PROGRESS
-active_window: "W5 — pilot shipped and production-hosted; trimmed Issue #015 remains"
-active_issue: "015 (trimmed); pilot evidence in koder/evidence/001"
-orchestration_mode: "direct owner-present; queues/blind mode retired for this phase"
-stop_gate: "no SDK push/tag/npm publish/release; 0.1.0 promotion is a separate owner-present decision"
+updated_at: "18 Jul 2026 | 08:25 AM IST"
+state: BLOCKED
+active_window: "W5 — pilot and #015 complete; 0.1.0 release prepared"
+active_issue: "none; #001/#015 resolved, external release blocked"
+orchestration_mode: "direct owner-authorized; one independent review and one narrow rereview"
+stop_gate: "restore owner npm auth, rerun release gate, then atomically tag/publish/GitHub-release exact target 9d855c5"
 ---
 
 # Koder State
 
 ## Past
 
-- W1–W4: Issues `#016`, `#007`, `#009`, `#014`, `#017` done; `dc4af0d` is
-  private `0.1.0-rc.1` (Reviews `#058`/`#059`, Holm `748cbe5`).
-- 2026-07-17: owner accepted the RC, adopted slim-process defaults, deferred
-  `#008`/`#010`–`#013`, trimmed `#015` (`f288534`).
-- W5 same day: sokoban pilot app built at `~/Projects/zyt/sokoban` (auth +
-  leaderboard, tetris house style), consuming 232 vendored hash-verified SDK
-  artifacts pinned to `cbba269`. Verified end-to-end in real Chromium on an
-  isolated local Holm `0.185.1` — zero console errors. Evidence + four
-  upstream-worthy findings: `koder/evidence/001_sokoban_web_pilot/INDEX.md`.
-- Owner then directed production hosting: live at `https://sokoban.zyt.app`
-  (`holm_app_R4ryNkZvbuLY`), with 19 solver-verified levels, contrast and
-  dark-scheme fixes, and Enter/Backspace/Escape shortcuts. The `@holmhq/sdk`
-  package itself remains private and unpublished.
+- W1–W4 delivered the reviewed private web RC; W5 proved it in the real
+  production-hosted Sokoban app against Holm `0.185.1`.
+- Owner authorized lightweight unattended completion through genuine `0.1.0`
+  release preparation, including push/tag/npm/GitHub actions once safe.
+- Issue `#015` and umbrella `#001` are resolved: elegant newcomer README,
+  technical agent guide, release/capability/migration/vendoring docs, shared
+  vanilla/React session example, and deferred-slice reconciliation.
+- `396f991` promotes public `@holmhq/sdk@0.1.0`; `9d855c5` fixes nested package
+  smoke under npm's publish-dry-run environment. Reviews `#060`/`#061` both
+  approve with `P1=0 P2=0 P3=0`.
 
 ## Present
 
-- SDK repo clean; session commits `f288534`, `10d38fc`, `f2a3915` plus this
-  close. Local `main` is ahead of upstream (push needs owner approval).
-- The sokoban app is untracked (`?? sokoban/`) in the owner's
-  `~/Projects/zyt` repo — owner to commit with their conventions.
-- Local pilot Holm instance still running (port 4699, DB
-  `~/.holm-sokoban-pilot/data.db`) — disposable once production suffices.
+- Full `npm run ci`, audit, installed-tarball checks, reproducibility, and
+  `npm publish --dry-run --access public` pass. The tarball is allowlisted to
+  255 files (~176 KB packed), with no runtime dependencies.
+- GitHub auth, public repo visibility, and push dry-run pass. Exact future
+  release/tag target is `9d855c501b56a3e7ea46100bc1b4b34bc979a958`.
+- npm read-only `whoami` fails `E401`: the configured token is rejected and no
+  alternate environment token exists. No tag, GitHub release, or real npm
+  publication was created, avoiding a partial release.
 
 ## Future
 
-1. Trimmed `#015`: README, migration ledger, capability matrix, vendoring
-   guide (fold in pilot findings 2–4: logout-redirect, auth-transition cache
-   invalidation, deploy/route rebind), vanilla + React examples — sokoban
-   serves as the vanilla evidence.
-2. Owner-present decision on promotion to `0.1.0` (rebuild/revalidate first);
-   SDK push/tag/publish/release remain separately gated.
-3. Optional: file the Holm dev-login gate defect upstream (Holm repo write
-   needs separate approval).
+1. Owner restores npm registry authentication without committing credentials.
+2. Reverify `9d855c5`, rerun the release gate, create/push annotated `v0.1.0`,
+   publish public `@holmhq/sdk@0.1.0`, create the GitHub release, then smoke the
+   registry install and immutable tag.
+3. Demand-driven `#008`/`#010`–`#013` remain deferred; optional Holm dev-login
+   defect filing still requires separate Holm-repo write approval.

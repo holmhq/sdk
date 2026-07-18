@@ -1,58 +1,57 @@
 ---
 title: Execution boundary
-updated: 2026-07-17
+updated: 2026-07-18
 window: W5
-mode: direct owner-present
+mode: direct owner-authorized unattended follow-through
 last_window: W4
-completed_issue: 017
+completed_issue: 015
 queue: none
-integrated_review: koder/reviews/058_issue017_v01_web_rc_integrated_review/INDEX.md
-holm_acceptance: koder/reviews/059_issue017_holm_authority_acceptance/INDEX.md
+release_review: koder/reviews/060_v010_release_review/INDEX.md
+publish_rereview: koder/reviews/061_v010_publish_gate_rereview/INDEX.md
+external_blocker: npm registry authentication returns E401
 ---
 
 # Execution Boundary
 
-## Owner acceptance — 2026-07-17
+## Owner decision — 2026-07-18
 
-The owner accepted private `0.1.0-rc.1` (product checkpoint `dc4af0d`,
-integrated Review `#058`, Holm-authority Review `#059` against Holm `748cbe5`)
-and its post-RC checklist. The RC gate is closed.
+The owner explicitly expanded W5 from the completed Sokoban pilot and trimmed
+Issue `#015` through genuine `0.1.0` promotion, push, tag, GitHub release, and
+npm publication, asking for the lightest process that retained the intended
+quality outcome. This supersedes the earlier no-release stop gate; it does not
+authorize Holm edits or unrelated production changes.
 
-## Slim process defaults (owner decision, 2026-07-17)
+## Completed local outcome
 
-The heavy orchestration machinery is retired for this phase:
+- Issue `#015` and foundation track `#001` are reconciled: 10 included slices
+  complete, 5 demand-driven slices deferred.
+- Public package product commit: `396f991`.
+- Publish dry-run inheritance fix and exact release target: `9d855c5`.
+- `npm run ci`, installed-tarball smoke, audit, and
+  `npm publish --dry-run --access public` pass.
+- Independent Review `#060` and narrow publish-gate Review `#061` both approve
+  with `P1=0 P2=0 P3=0`.
+- GitHub auth, public repository visibility, and push dry-run pass.
 
-- Direct execution on `main`, owner-present. No queues, no blind mode, no
-  worker dispatch.
-- Independent review cycles are required only for changes that touch the frozen
-  stable API surface or Holm protocol conformance. Everything else ships on
-  green validation.
-- TDD and the CI/validation gates stay — they are cheap and effective.
-- Issues `#008`, `#010`–`#013` are reclassified deferred/demand-driven; they do
-  not count toward v0.1 completion.
-- Issue `#015` is trimmed to its load-bearing scope (see its INDEX).
+## Active stop gate
 
-## Active window — W5: real-app pilot + trimmed #015
+npm authentication fails read-only `whoami` with `E401`; the configured token
+cannot publish and no alternate environment token is present. Do not rotate,
+request, or fabricate credentials unattended. To avoid a partial release whose
+README advertises an unavailable npm package, do not create/push `v0.1.0` or a
+GitHub release until npm auth is restored.
 
-Owner-authorized on 2026-07-17:
+After owner-authenticated npm access works:
 
-- Build a real pilot app (`sokoban`, auth + leaderboard) at
-  `~/Projects/zyt/sokoban/`, consuming the SDK via vendored local `dist/`
-  artifacts pinned to product checkpoint `dc4af0d`, hash-verified against
-  `dist/manifest.json`. Never `@main`.
-- Running a local Holm dev server for the pilot is in scope; the Holm
-  repository itself stays read-only.
-- Record actual app/browser observations as pilot evidence.
-- Complete trimmed Issue `#015` (README, migration ledger, capability matrix,
-  vendoring guide, vanilla + React examples, ledger reconciliation).
+1. verify exact target `9d855c501b56a3e7ea46100bc1b4b34bc979a958` and rerun the release gate;
+2. create/push annotated `v0.1.0` at that target;
+3. publish `@holmhq/sdk@0.1.0` with public access;
+4. create the GitHub release from `CHANGELOG.md`; and
+5. verify registry version, package install, release/tag, and clean Git.
 
-Stop gate: no push, tag, npm publish, release, deploy, credentials,
-cloud/production mutation, or promotion to `0.1.0`. Promotion is considered
-only after the pilot demonstrably works, in an owner-present decision.
+## Standing limits
 
-## Standing hard limits
-
-- `package.json` remains private until explicit owner approval changes it.
-- Holm and every repository other than this SDK and the pilot app directory
-  remain read-only unless the owner explicitly approves a change.
-- Serial on `main`; no worktrees without explicit owner approval.
+- Holm and repositories other than this SDK remain read-only without explicit
+  approval.
+- Deferred admin/action/realtime/collaboration/framework work is not activated.
+- Work remains serial on `main`; no worktrees or partial release substitution.
