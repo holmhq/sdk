@@ -1,5 +1,5 @@
 ---
-updated_at: "20 Jul 2026 | 11:30 AM IST"
+updated_at: "20 Jul 2026 | 11:32 AM IST"
 state: BLOCKED
 active_window: "W6 — Issue #008 admin/operator preview and conditional 0.2.0 release"
 active_issue: "#008"
