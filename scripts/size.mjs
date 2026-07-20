@@ -6,6 +6,13 @@ import { webBundleDefinitions } from "./lib/web-bundles.mjs";
 
 const budgets = new Map([
   ["dist/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/admin/index.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/admin/client.js", { rawBudget: 12288, gzipBudget: 3328 }],
+  ["dist/admin/extension.js", { rawBudget: 1024, gzipBudget: 512 }],
+  ["dist/admin/factory.js", { rawBudget: 1536, gzipBudget: 768 }],
+  ["dist/admin/generated.js", { rawBudget: 55296, gzipBudget: 4096 }],
+  ["dist/admin/http.js", { rawBudget: 2048, gzipBudget: 768 }],
+  ["dist/admin/protocol.js", { rawBudget: 512, gzipBudget: 256 }],
   ["dist/app/index.js", { rawBudget: 1024, gzipBudget: 512 }],
   ["dist/app/auth.js", { rawBudget: 6144, gzipBudget: 2048 }],
   ["dist/app/extension.js", { rawBudget: 4096, gzipBudget: 1536 }],
@@ -36,7 +43,7 @@ const budgets = new Map([
   ["dist/web/caller.js", { rawBudget: 4096, gzipBudget: 1536 }],
   ["dist/web/lifecycle.js", { rawBudget: 6144, gzipBudget: 2048 }],
   ["dist/web/navigation.js", { rawBudget: 2048, gzipBudget: 1024 }],
-  ["dist/web/runtime.js", { rawBudget: 16384, gzipBudget: 4096 }],
+  ["dist/web/runtime.js", { rawBudget: 18432, gzipBudget: 4096 }],
   ["dist/web/runtime-cache.js", { rawBudget: 4096, gzipBudget: 1536 }],
   ["dist/web/upload-service.js", { rawBudget: 16384, gzipBudget: 4096 }],
   ["dist/web/url.js", { rawBudget: 4096, gzipBudget: 1536 }],

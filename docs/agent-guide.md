@@ -38,6 +38,7 @@ Non-negotiable boundaries:
 | --- | --- |
 | Browser app composition | `@holmhq/sdk/web` |
 | Auth/HTTP/links/pagination/upload API types | `@holmhq/sdk/app` |
+| Audited operator/admin client (preview) | `@holmhq/sdk/admin` |
 | Query, mutation, derived resources | `@holmhq/sdk/state` |
 | Requests, cache, response/error helpers | `@holmhq/sdk/transports` |
 | Capability/runtime/lifecycle contracts | `@holmhq/sdk/core` |
@@ -66,6 +67,15 @@ await holm.dispose()
 
 `createWebApp()` owns an isolated runtime, extension graph, app API, and
 lifecycle. Do not create a process-global default client.
+
+## Admin/operator contract
+
+Admin code uses `createAdminClient({ runtime, caller })` with an explicit
+operator caller and adapter-private auth. Generated methods take one operation
+object; route parameters live under `path`, while body/query/header/upload
+controls use the shared transport types. The client context never grants
+permission—Holm authorizes every request. Consult [admin.md](admin.md) and do not
+reconstruct positional legacy calls from method names.
 
 ## Resource contract
 
@@ -158,6 +168,6 @@ unless the owner explicitly authorizes a change. Pin protocol claims to a Holm
 commit. Existing Holm packages remain operational; consult
 [migration.md](migration.md) before claiming an old namespace is replaced.
 
-For release scope and compatibility, read [v0.1.md](v0.1.md). For current repo
+For release scope and compatibility, read [v0.2.md](v0.2.md). For current repo
 handoff, read `koder/STATE.md`; `koder/` is operator memory and is not part of
 the npm package contract.

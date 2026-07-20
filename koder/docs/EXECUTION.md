@@ -1,14 +1,14 @@
 ---
 title: Execution boundary
 updated: 2026-07-20
-window: W5-complete
-mode: direct owner-authorized release follow-through
-last_window: W4
-completed_issue: 015
+window: W6-issue008-admin
+mode: direct owner-authorized autonomous execution
+last_window: W5
+active_issue: 008
 queue: none
-release_review: koder/reviews/060_v010_release_review/INDEX.md
-publish_rereview: koder/reviews/061_v010_publish_gate_rereview/INDEX.md
-release: v0.1.0
+release_target: v0.2.0-conditional
+release_review: pending
+holm_authority_review: pending
 external_blocker: none
 ---
 
@@ -38,16 +38,27 @@ outcome. This did not authorize Holm edits or unrelated production changes.
 
 ## Current boundary
 
-W5 is closed. No implementation or release blocker remains, and no next product
-window is active. Deferred admin/action/realtime/collaboration/framework work is
-not implicitly authorized by this release.
+W6 activates only Issue `#008`: implement the source-pinned admin/operator
+preview, preserve stable entry points, run full validation, obtain one
+independent SDK review and fresh read-only Holm-authority acceptance, then
+release `0.2.0` only if those gates justify confidence. Actions, realtime,
+collaboration, framework bindings, and Holm-side cutover remain deferred.
+
+## Owner decision — 2026-07-20
+
+The owner selected the admin migration as the next significant autonomous track
+and explicitly authorized release rather than an unreleased checkpoint when
+quality is proven. Direct serial execution is the selected mode; blind
+orchestration was not activated. Conditional release includes push, annotated
+`v0.2.0`, GitHub release assets, and npm publication after—not before—the review
+and authority gates.
 
 ## Standing limits
 
 - Holm and repositories other than this SDK remain read-only without explicit
   approval.
 - Work remains serial on `main`; no worktrees without explicit approval.
-- A future npm release must use a new semver version; published `0.1.0` is
-  immutable, and its reviewed tag/checksummed assets must not be mutated.
+- This release uses new version `0.2.0`; published `0.1.0` and its reviewed
+  tag/checksummed assets remain immutable and must not be mutated.
 - Trusted publishing/OIDC, organization recovery, and GitHub release
   immutability are optional owner decisions, not prerequisites retroactively.

@@ -7,9 +7,9 @@ state package; it is not a removal plan.
 ## Source verification
 
 - Runtime/protocol authority: `holmhq/holm`
-- Live read-only verification: `afe4057f7ea98012d843717216675dd1a1043771`
-- Previously accepted Holm-authority checkpoint: `748cbe5`
-- `git diff 748cbe5..afe4057 -- packages/holm-sdk packages/holm-state` is empty.
+- Live read-only verification: `3d229a414a0379d0a24221e975b8b4f1588f494d`
+- Previously accepted web-release Holm-authority checkpoint: `748cbe5`
+- `git diff 748cbe5..3d229a4 -- packages/holm-sdk packages/holm-state` is empty.
 - Main SDK export source: `packages/holm-sdk/index.js`
 - State export source: `packages/holm-state/src/index.js`
 
@@ -24,7 +24,7 @@ preserved.
 | --- | --- | --- |
 | `VERSION` | redesigned | Package/version metadata and the immutable release ref are authoritative; no mutable runtime constant is exported. |
 | `createAppClient()` | adopted | `createWebApp()` plus `app.auth`, `app.http`, `app.links`, `app.paginate`, `app.upload`, and `app.surface`. |
-| `createClient()` | deferred | The broad operator/admin namespace remains in Holm; no partial admin client is presented as stable. |
+| `createClient()` | adopted/redesigned as preview | `createAdminClient({ runtime, caller })` plus generated `admin.*` namespaces. Runtime and operator caller are explicit; no ambient singleton/auth inference is preserved. |
 | `getClient()` | rejected | A process-global singleton conflicts with isolated runtimes, callers, caches, and lifecycle disposal. |
 | `ApiError` | redesigned | `HolmError`, `ProtocolError`, `TransportError`, `RemoteError`, `UploadError`, serialization, and safe diagnostics. |
 | `createCache()` | redesigned | `createTransportCache()` with canonical caller/source partitioning, invalidation, deduplication, SWR, and diagnostics. |
@@ -48,6 +48,22 @@ The exact app route inventory remains pinned in
 wire behavior remains GET/POST-authoritative even though the low-level typed
 HTTP client can represent other methods used by adopted routes.
 
+### Admin namespace (`packages/holm-sdk/admin.js`)
+
+The `0.2.0` preview classifies all 174 audited inventory keys from
+`packages/holm-sdk/admin.audit.js`, 189 expanded route/method contracts, 216
+unique method names, and 18 intentional exclusions
+at the named Holm verification commit. `@holmhq/sdk/admin` preserves route and
+command-envelope behavior while redesigning invocation around one typed
+operation object, explicit operator caller context, adapter-private auth,
+runtime-neutral uploads, SDK bytes, and immutable generated descriptors.
+
+This is conformance-led migration, not shape compatibility. For example,
+`apps.get({ path: { id } })` replaces positional path arguments, deploy callers
+provide prepared upload files rather than a universal ZIP/`FormData` helper,
+and attachment bytes use `ReadonlyBytes`. See [admin.md](admin.md) and
+`koder/evidence/004_issue008_admin_routes/route-audit.json`.
+
 ### Other Holm SDK modules
 
 | Source module | Disposition |
@@ -58,8 +74,8 @@ HTTP client can represent other methods used by adopted routes.
 | `types.js` | redesigned as strict TypeScript declarations and declaration-consumer tests. |
 | `errors.js` | redesigned into the typed error hierarchy. |
 | `entry.js` / `build.sh` | redesigned as reproducible ESM, declarations, maps, BFBB compositions, size/license reports, and `dist/manifest.json`. |
-| `admin.js` and its namespaces | deferred in full; still owned by the Holm package. |
-| `deploy.js` | deferred with the admin client; the SDK does not become a deployment authority. |
+| `admin.js` and its namespaces | adopted/redesigned as the isolated preview `@holmhq/sdk/admin` entry point with generated route parity. |
+| `deploy.js` | redesigned as injected, runtime-neutral upload input; deployment policy and authorization remain Holm-owned. |
 | `analytics.js` | deferred except for general diagnostics seams. |
 | `debug.js` | redesigned without ambient credential discovery. |
 | `mock.js` and fixtures | redesigned under stable test utilities. |
@@ -86,6 +102,6 @@ The detailed legacy state evidence is in
 
 Existing Holm `packages/holm-sdk` and `packages/holm-state` remains live and
 unmodified by this release. No file is deleted, redirected, or silently
-re-exported. New web apps may adopt `@holmhq/sdk`; old package cutover, admin
-migration, template changes, and deprecation notices require separate Holm-side
+re-exported. New web and operator clients may adopt `@holmhq/sdk`; old package
+cutover, template changes, and deprecation notices require separate Holm-side
 work and evidence.

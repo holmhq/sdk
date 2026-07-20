@@ -54,6 +54,15 @@ import {
   type CompleteMagicLinkInput,
 } from "@holmhq/sdk/app";
 import {
+  HOLM_ADMIN_HTTP_CAPABILITY,
+  adminMethodDescriptors,
+  adminSupport,
+  createAdminClient,
+  createAdminExtension,
+  type AdminApi,
+  type AdminUploadService,
+} from "@holmhq/sdk/admin";
+import {
   createNodeOperatorCaller,
   createNodeTokenAuth,
   createNodeUploadFile,
@@ -121,6 +130,21 @@ const appUploadService: AppUploadService = {
   upload: (request) => ({ path: request.path }),
 };
 const appExtension = createAppExtension({ uploads: appUploadService });
+const adminUploadService: AdminUploadService = {
+  upload: (request) => ({ path: request.path }),
+};
+const adminExtension = createAdminExtension({ uploads: adminUploadService });
+const adminClient = createAdminClient({ runtime, caller, uploads: adminUploadService });
+declare const adminApi: AdminApi;
+const adminHealth = adminApi.system.health<{ readonly status: string }>();
+const adminApp = adminApi.apps.get<{ readonly id: string }>({ path: { id: "decl-app" } });
+const adminCapability: CapabilityOffer = {
+  id: HOLM_ADMIN_HTTP_CAPABILITY.id,
+  origin: "runtime",
+  version: { major: 1, minor: 0 },
+};
+const adminStatus: "preview" = adminSupport.status;
+const adminMethodCount: number = adminMethodDescriptors.length;
 const appCapability: CapabilityOffer = {
   id: HOLM_APP_HTTP_CAPABILITY.id,
   origin: "runtime",
@@ -270,6 +294,14 @@ void runtime;
 void runtimeEnvelopeProtocol;
 void extensionLifecycle;
 void appExtension;
+void adminExtension;
+void adminClient;
+void adminApi;
+void adminHealth;
+void adminApp;
+void adminCapability;
+void adminStatus;
+void adminMethodCount;
 void appCapability;
 void magicInput;
 void holm;

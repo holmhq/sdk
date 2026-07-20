@@ -79,6 +79,11 @@ test("web runtime invokes Holm app HTTP through Fetch with private session crede
       origin: "runtime",
       version: { major: 1, minor: 0 },
     },
+    {
+      id: "holm.http.admin",
+      origin: "runtime",
+      version: { major: 1, minor: 0 },
+    },
   ]);
   assert.equal(runtime.id, "web-fetch");
   assert.equal(runtime.surface, "web");

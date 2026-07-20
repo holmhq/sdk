@@ -1,5 +1,4 @@
-export const excludedWebBundleCapabilities = Object.freeze([
-  "admin",
+const commonExcludedCapabilities = Object.freeze([
   "actions/generated-cli",
   "realtime-runtime",
   "collaboration",
@@ -11,6 +10,11 @@ export const excludedWebBundleCapabilities = Object.freeze([
   "arbitrary-ssr",
 ]);
 
+export const excludedWebBundleCapabilities = Object.freeze([
+  "admin",
+  ...commonExcludedCapabilities,
+]);
+
 export const webBundleDefinitions = Object.freeze([
   Object.freeze({
     path: "dist/holm.js",
@@ -18,11 +22,12 @@ export const webBundleDefinitions = Object.freeze([
     sourceMap: "dist/holm.js.map",
     declarationMap: "dist/holm.d.ts.map",
     kind: "browser-bfbb-composition",
-    description: "Complete v0.1 browser/BFBB convenience composition for vendored ESM use.",
-    includedCapabilities: Object.freeze(["core", "app", "web", "transports", "state", "test"]),
-    excludedCapabilities: excludedWebBundleCapabilities,
-    rawBudget: 4096,
-    gzipBudget: 1536,
+    description: "Complete v0.2 browser/BFBB convenience composition with the preview admin extension.",
+    includedCapabilities: Object.freeze(["core", "app", "admin", "web", "transports", "state", "test"]),
+    excludedCapabilities: commonExcludedCapabilities,
+    rawBudget: 5120,
+    gzipBudget: 1792,
+    includeAdmin: true,
     includeTest: true,
   }),
   Object.freeze({
@@ -36,6 +41,7 @@ export const webBundleDefinitions = Object.freeze([
     excludedCapabilities: excludedWebBundleCapabilities,
     rawBudget: 4096,
     gzipBudget: 1536,
+    includeAdmin: false,
     includeTest: false,
   }),
 ]);

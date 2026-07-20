@@ -55,6 +55,17 @@ export {
   createResourceController,
   createResourceHistory,
 } from "./state/index.js";
+export * as admin from "./admin/index.js";
+export {
+  ADMIN_HTTP_INVALIDATE_OPERATION,
+  ADMIN_HTTP_REQUEST_OPERATION,
+  HOLM_ADMIN_HTTP_CAPABILITY,
+  adminMethodDescriptors,
+  adminOperationProtocol,
+  adminSupport,
+  createAdminClient,
+  createAdminExtension,
+} from "./admin/index.js";
 export * as test from "./test/index.js";
 export {
   createFakeClock,

@@ -16,6 +16,83 @@
         "gzipBytes": 512,
         "rawBytes": 1024
       },
+      "gzipBytes": 306,
+      "minifiedBytes": 472,
+      "path": "dist/admin/index.js",
+      "rawBytes": 874,
+      "sha256": "483cade5e43d4d349f207bac72e43f63b7d4fd35b89d4d03d40ff38fc08a52de"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 3328,
+        "rawBytes": 12288
+      },
+      "gzipBytes": 2640,
+      "minifiedBytes": 8365,
+      "path": "dist/admin/client.js",
+      "rawBytes": 10067,
+      "sha256": "23746482874251bb8a1601befa04bd9339e8c2f868370336adab694ca03266a5"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 512,
+        "rawBytes": 1024
+      },
+      "gzipBytes": 331,
+      "minifiedBytes": 596,
+      "path": "dist/admin/extension.js",
+      "rawBytes": 782,
+      "sha256": "45dbcdbad44e9567cdfd100995118942768b748da49031242f0bfcd274c17358"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 768,
+        "rawBytes": 1536
+      },
+      "gzipBytes": 253,
+      "minifiedBytes": 569,
+      "path": "dist/admin/factory.js",
+      "rawBytes": 743,
+      "sha256": "5ac9ae6bbb1179fef346f9423ce942f886d1b11a3879f86d1eb6ba308118a83b"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 4096,
+        "rawBytes": 55296
+      },
+      "gzipBytes": 3414,
+      "minifiedBytes": 42397,
+      "path": "dist/admin/generated.js",
+      "rawBytes": 46897,
+      "sha256": "7bf3eae1aa0cf58dc290fab3803afae626351b2aee3936a3702375c524b40264"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 768,
+        "rawBytes": 2048
+      },
+      "gzipBytes": 508,
+      "minifiedBytes": 1249,
+      "path": "dist/admin/http.js",
+      "rawBytes": 1694,
+      "sha256": "e30b8b134ef5258d6d660d7ec465efa5cbef4e73a0ff084402057b98a4ef1c76"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 256,
+        "rawBytes": 512
+      },
+      "gzipBytes": 166,
+      "minifiedBytes": 203,
+      "path": "dist/admin/protocol.js",
+      "rawBytes": 261,
+      "sha256": "871bf3437fbe43b26e9f4dd1b3860b6712b202f630902a28649bdab4289ab2bf"
+    },
+    {
+      "budgets": {
+        "gzipBytes": 512,
+        "rawBytes": 1024
+      },
       "gzipBytes": 157,
       "minifiedBytes": 204,
       "path": "dist/app/index.js",
@@ -344,13 +421,13 @@
     {
       "budgets": {
         "gzipBytes": 4096,
-        "rawBytes": 16384
+        "rawBytes": 18432
       },
-      "gzipBytes": 3399,
-      "minifiedBytes": 12180,
+      "gzipBytes": 3573,
+      "minifiedBytes": 13026,
       "path": "dist/web/runtime.js",
-      "rawBytes": 16377,
-      "sha256": "db74b4007c0d0a4a3770ad7967748563487170b16d2bb9b469c3ff4d916f80a9"
+      "rawBytes": 17395,
+      "sha256": "bb920006520644b53af78ac55a53d2cf5c94a8ee1295f2e6a1eb0ff967a50d3b"
     },
     {
       "budgets": {
@@ -401,11 +478,11 @@
         "gzipBytes": 6144,
         "rawBytes": 24576
       },
-      "gzipBytes": 4035,
-      "minifiedBytes": 14802,
+      "gzipBytes": 4203,
+      "minifiedBytes": 15653,
       "path": "dist/node/runtime.js",
-      "rawBytes": 19708,
-      "sha256": "1f2677833fbd87051e31822d98100e96e085b0b622eb2d4c2ae6aaa0f9e9c353"
+      "rawBytes": 20731,
+      "sha256": "fc59302aa48adcda03625f5435573b66ce6a2a04f2c463e9657f70a678d88311"
     },
     {
       "budgets": {
@@ -475,14 +552,14 @@
     },
     {
       "budgets": {
-        "gzipBytes": 1536,
-        "rawBytes": 4096
+        "gzipBytes": 1792,
+        "rawBytes": 5120
       },
-      "gzipBytes": 562,
-      "minifiedBytes": 1396,
+      "gzipBytes": 635,
+      "minifiedBytes": 1652,
       "path": "dist/holm.js",
-      "rawBytes": 1731,
-      "sha256": "d70bce5a60b9678f43926295581ed6f1c11468af39e2992f227e113c0df4d42e"
+      "rawBytes": 2032,
+      "sha256": "d0af6edb95d88d1190bbc5e269b7d6f02ee77e43f8849087c454445ec11c4e57"
     },
     {
       "budgets": {
@@ -498,13 +575,13 @@
   ],
   "package": {
     "name": "@holmhq/sdk",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 50254,
-    "minifiedBytes": 169206,
-    "rawBytes": 231170
+    "gzipBytes": 58287,
+    "minifiedBytes": 225010,
+    "rawBytes": 294830
   }
 }

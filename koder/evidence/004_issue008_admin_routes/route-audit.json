@@ -1,0 +1,2257 @@
+{
+  "entries": [
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/login",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.login"
+      ],
+      "sourceKey": "/api/login"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/auth/status",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.status"
+      ],
+      "sourceKey": "/api/auth/status"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/user/me",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.me"
+      ],
+      "sourceKey": "/api/user/me"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/users/{id}/status",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "users.status"
+      ],
+      "sourceKey": "GET /api/users/{id}/status"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/auth/providers",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.providers"
+      ],
+      "sourceKey": "GET /api/auth/providers"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/auth/providers/{name}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.configureProvider"
+      ],
+      "sourceKey": "PUT /api/auth/providers/{name}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/auth/provider-default-host",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.providerDefaultHost.get"
+      ],
+      "sourceKey": "GET /api/auth/provider-default-host"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/auth/provider-default-host",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.providerDefaultHost.set"
+      ],
+      "sourceKey": "PUT /api/auth/provider-default-host"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/auth/provider-default-host",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.providerDefaultHost.clear"
+      ],
+      "sourceKey": "DELETE /api/auth/provider-default-host"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/session",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.session"
+      ],
+      "sourceKey": "GET /auth/session"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/auth/logout",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "auth.signOut"
+      ],
+      "sourceKey": "POST /auth/logout"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/members",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.list"
+      ],
+      "sourceKey": "GET /auth/members"
+    },
+    {
+      "classification": "redesigned",
+      "methods": [
+        "POST"
+      ],
+      "path": "/auth/members/native",
+      "rationale": "Redesigned around runtime-neutral upload or binary services while preserving the audited Holm route.",
+      "sdk": [
+        "members.createNative",
+        "members.createNativeGeneratedAvatar",
+        "members.createNativeWithPicture"
+      ],
+      "sourceKey": "POST /auth/members/native"
+    },
+    {
+      "classification": "redesigned",
+      "methods": [
+        "POST"
+      ],
+      "path": "/auth/members/uploads",
+      "rationale": "Redesigned around runtime-neutral upload or binary services while preserving the audited Holm route.",
+      "sdk": [
+        "members.uploadPicture",
+        "members.createNativeWithPicture"
+      ],
+      "sourceKey": "POST /auth/members/uploads"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/members/{identifier}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.get"
+      ],
+      "sourceKey": "GET /auth/members/{identifier}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/members/{identifier}/profile",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.getProfile"
+      ],
+      "sourceKey": "GET /auth/members/{identifier}/profile"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PATCH"
+      ],
+      "path": "/auth/members/{identifier}/profile",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.updateProfile"
+      ],
+      "sourceKey": "PATCH /auth/members/{identifier}/profile"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PATCH"
+      ],
+      "path": "/auth/members/{identifier}/status",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.updateStatus"
+      ],
+      "sourceKey": "PATCH /auth/members/{identifier}/status"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/auth/members/{identifier}/approve",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.approve"
+      ],
+      "sourceKey": "POST /auth/members/{identifier}/approve"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/auth/members/{identifier}/tokens",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.issueToken"
+      ],
+      "sourceKey": "POST /auth/members/{identifier}/tokens"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/users",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "users.list"
+      ],
+      "sourceKey": "GET /auth/users"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/users/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "users.get"
+      ],
+      "sourceKey": "GET /auth/users/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PATCH"
+      ],
+      "path": "/auth/users/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "users.update"
+      ],
+      "sourceKey": "PATCH /auth/users/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/auth/users/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "users.delete"
+      ],
+      "sourceKey": "DELETE /auth/users/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/auth/invite",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "invites.create"
+      ],
+      "sourceKey": "POST /auth/invite"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/invites",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "invites.list"
+      ],
+      "sourceKey": "GET /auth/invites"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/auth/invite/{code}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "invites.get"
+      ],
+      "sourceKey": "GET /auth/invite/{code}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/auth/invite/{code}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "invites.redeem"
+      ],
+      "sourceKey": "POST /auth/invite/{code}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/stats",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "stats.analytics"
+      ],
+      "sourceKey": "/api/stats"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "path": "/api/redirects",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "redirects.list",
+        "redirects.create"
+      ],
+      "sourceKey": "/api/redirects"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/redirects/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "redirects.delete"
+      ],
+      "sourceKey": "DELETE /api/redirects/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "path": "/api/webhooks",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "webhooks.list",
+        "webhooks.create"
+      ],
+      "sourceKey": "/api/webhooks"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/webhooks/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "webhooks.delete"
+      ],
+      "sourceKey": "DELETE /api/webhooks/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/webhooks/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "webhooks.update"
+      ],
+      "sourceKey": "PUT /api/webhooks/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "path": "/api/webhook-subscriptions",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "webhookSubscriptions.list",
+        "webhookSubscriptions.create"
+      ],
+      "sourceKey": "/api/webhook-subscriptions"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/webhook-subscriptions/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "webhookSubscriptions.delete"
+      ],
+      "sourceKey": "DELETE /api/webhook-subscriptions/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/webhook-subscriptions/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "webhookSubscriptions.update"
+      ],
+      "sourceKey": "PUT /api/webhook-subscriptions/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "path": "/api/notifications",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "notifications.list",
+        "notifications.send"
+      ],
+      "sourceKey": "/api/notifications"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/notifications/{id}/ack",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "notifications.ack"
+      ],
+      "sourceKey": "POST /api/notifications/{id}/ack"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/notifications/{id}/attempts",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "notifications.attempts"
+      ],
+      "sourceKey": "GET /api/notifications/{id}/attempts"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/policy",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.policy"
+      ],
+      "sourceKey": "GET /api/system/policy"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/policy/schema",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.policySchema"
+      ],
+      "sourceKey": "GET /api/system/policy/schema"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/sql",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.sql"
+      ],
+      "sourceKey": "POST /api/sql"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/cache",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.cache"
+      ],
+      "sourceKey": "GET /api/system/cache"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/db",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.db"
+      ],
+      "sourceKey": "GET /api/system/db"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/db/inspect",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.dbInspect"
+      ],
+      "sourceKey": "GET /api/system/db/inspect"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/benchmark",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.benchmark"
+      ],
+      "sourceKey": "GET /api/system/benchmark"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/stats",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.stats"
+      ],
+      "sourceKey": "GET /api/system/stats"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/config",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.config"
+      ],
+      "sourceKey": "GET /api/system/config"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/health",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.health"
+      ],
+      "sourceKey": "GET /api/system/health"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/.holm/status",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "system.status"
+      ],
+      "sourceKey": "GET /.holm/status"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "PUT",
+        "DELETE"
+      ],
+      "path": "/api/security-txt",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "securityTxt.show",
+        "securityTxt.set",
+        "securityTxt.disable"
+      ],
+      "sourceKey": "/api/security-txt"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/logs",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "logs.list",
+        "logs.app"
+      ],
+      "sourceKey": "GET /api/system/logs"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/logs/stats",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "logs.stats"
+      ],
+      "sourceKey": "GET /api/system/logs/stats"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/system/logs/cleanup",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "logs.cleanup"
+      ],
+      "sourceKey": "POST /api/system/logs/cleanup"
+    },
+    {
+      "classification": "redesigned",
+      "helper": true,
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/system/logs/stream",
+      "rationale": "Redesigned as a deterministic URL helper over the audited stream route.",
+      "sdk": [
+        "logs.streamUrl"
+      ],
+      "sourceKey": "GET /api/system/logs/stream"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/email/send",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "email.send"
+      ],
+      "sourceKey": "POST /api/email/send"
+    },
+    {
+      "classification": "redesigned",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/email/receipts/{id}/attachment",
+      "rationale": "Redesigned around runtime-neutral upload or binary services while preserving the audited Holm route.",
+      "sdk": [
+        "email.receiptAttachment"
+      ],
+      "sourceKey": "GET /api/email/receipts/{id}/attachment"
+    },
+    {
+      "classification": "redesigned",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/deploy",
+      "rationale": "Redesigned around runtime-neutral upload or binary services while preserving the audited Holm route.",
+      "sdk": [
+        "apps.deploy",
+        "deploy.upload"
+      ],
+      "sourceKey": "/api/deploy"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.list"
+      ],
+      "sourceKey": "GET /api/apps"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.create"
+      ],
+      "sourceKey": "POST /api/apps"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/install",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.install"
+      ],
+      "sourceKey": "POST /api/apps/install"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "notes": "Backend currently exposes only templates.list(); additional template mutations remain a backend gap.",
+      "path": "/api/templates",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "templates.list"
+      ],
+      "sourceKey": "GET /api/templates"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.get"
+      ],
+      "sourceKey": "GET /api/apps/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/status",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.status"
+      ],
+      "sourceKey": "GET /api/apps/{id}/status"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/apps/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.update"
+      ],
+      "sourceKey": "PUT /api/apps/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.delete"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/files",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.files"
+      ],
+      "sourceKey": "GET /api/apps/{id}/files"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/source",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.source"
+      ],
+      "sourceKey": "GET /api/apps/{id}/source"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/files/{path...}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.file"
+      ],
+      "sourceKey": "GET /api/apps/{id}/files/{path...}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "path": "/api/apps/{id}/members",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.list",
+        "members.add"
+      ],
+      "sourceKey": "/api/apps/{id}/members"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/members/{memberID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "members.remove"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/members/{memberID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/links",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "links.list",
+        "links.create",
+        "links.revokeExpired"
+      ],
+      "sourceKey": "/api/apps/{id}/links"
+    },
+    {
+      "classification": "redesigned",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/links/import",
+      "rationale": "Redesigned around runtime-neutral upload or binary services while preserving the audited Holm route.",
+      "sdk": [
+        "links.import"
+      ],
+      "sourceKey": "POST /api/apps/{id}/links/import"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "PATCH",
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/links/{idOrSlug}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "links.get",
+        "links.update",
+        "links.delete"
+      ],
+      "sourceKey": "/api/apps/{id}/links/{idOrSlug}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/links/{idOrSlug}/suspend",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "links.suspend"
+      ],
+      "sourceKey": "POST /api/apps/{id}/links/{idOrSlug}/suspend"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/fork",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.fork"
+      ],
+      "sourceKey": "POST /api/apps/{id}/fork"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/lineage",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.lineage"
+      ],
+      "sourceKey": "GET /api/apps/{id}/lineage"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/forks",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "apps.forks"
+      ],
+      "sourceKey": "GET /api/apps/{id}/forks"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/hosts",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "hosts.list"
+      ],
+      "sourceKey": "GET /api/hosts"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/hosts",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "hosts.create",
+        "hosts.add"
+      ],
+      "sourceKey": "POST /api/hosts"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/hosts/unknown",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "hosts.unknown"
+      ],
+      "sourceKey": "GET /api/hosts/unknown"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/hosts/{host}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "hosts.get"
+      ],
+      "sourceKey": "GET /api/hosts/{host}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/hosts/{host}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "hosts.update"
+      ],
+      "sourceKey": "PUT /api/hosts/{host}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/hosts/{host}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "hosts.delete"
+      ],
+      "sourceKey": "DELETE /api/hosts/{host}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/spaces/{space}/invites",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.invites.list"
+      ],
+      "sourceKey": "GET /api/spaces/{space}/invites"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/spaces/{space}/invites",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.invites.create"
+      ],
+      "sourceKey": "POST /api/spaces/{space}/invites"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/spaces/{space}/invites/{invite}/revoke",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.invites.revoke"
+      ],
+      "sourceKey": "POST /api/spaces/{space}/invites/{invite}/revoke"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/spaces/{space}/keys",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.keys.list"
+      ],
+      "sourceKey": "GET /api/spaces/{space}/keys"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/spaces/{space}/keys",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.keys.create"
+      ],
+      "sourceKey": "POST /api/spaces/{space}/keys"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/spaces/{space}/keys/{key}/revoke",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.keys.revoke"
+      ],
+      "sourceKey": "POST /api/spaces/{space}/keys/{key}/revoke"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/spaces/{space}/suspend",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.suspend"
+      ],
+      "sourceKey": "POST /api/spaces/{space}/suspend"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/spaces/{space}/resume",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.resume"
+      ],
+      "sourceKey": "POST /api/spaces/{space}/resume"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/invites/{token}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.member.lookupInvite"
+      ],
+      "sourceKey": "GET /api/invites/{token}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/invites/{token}/accept",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.member.acceptInvite"
+      ],
+      "sourceKey": "POST /api/invites/{token}/accept"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/dashboard",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "spaces.member.dashboard"
+      ],
+      "sourceKey": "GET /api/dashboard"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/labels",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "labels.list"
+      ],
+      "sourceKey": "GET /api/labels"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/labels",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "labels.create"
+      ],
+      "sourceKey": "POST /api/labels"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/labels/{label}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "labels.info"
+      ],
+      "sourceKey": "GET /api/labels/{label}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/labels/{label}/bindings",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "labels.bind"
+      ],
+      "sourceKey": "POST /api/labels/{label}/bindings"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/labels/{label}/bindings/{member}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "labels.unbind"
+      ],
+      "sourceKey": "DELETE /api/labels/{label}/bindings/{member}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/labels/{label}/watches",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "labels.watch"
+      ],
+      "sourceKey": "POST /api/labels/{label}/watches"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/labels/{label}/watches/{member}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "labels.unwatch"
+      ],
+      "sourceKey": "DELETE /api/labels/{label}/watches/{member}"
+    },
+    {
+      "classification": "redesigned",
+      "methods": [
+        "POST"
+      ],
+      "notes": "Raw escape hatch plus typed gateway-backed admin wrappers.",
+      "path": "/api/cmd",
+      "rationale": "Redesigned as typed command/argument helpers over Holm’s canonical command gateway envelope.",
+      "sdk": [
+        "system.cmd",
+        "secrets.set",
+        "secrets.list",
+        "secrets.remove",
+        "provider.set",
+        "provider.list",
+        "provider.remove",
+        "net.allow",
+        "net.allowAny",
+        "net.list",
+        "net.remove",
+        "net.removeAny",
+        "presentation.inspect",
+        "delivery.list",
+        "delivery.retry",
+        "dataset.status",
+        "dataset.source",
+        "dataset.sync",
+        "peer.list",
+        "peer.add",
+        "peer.remove",
+        "peer.updateToken",
+        "peer.check",
+        "peer.default"
+      ],
+      "sourceKey": "POST /api/cmd"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/_holm/info",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.info"
+      ],
+      "sourceKey": "GET /_holm/info"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/_holm/storage",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.storage.list"
+      ],
+      "sourceKey": "GET /_holm/storage"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/_holm/storage/{key}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.storage.get"
+      ],
+      "sourceKey": "GET /_holm/storage/{key}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/_holm/snapshot",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.snapshot.create"
+      ],
+      "sourceKey": "POST /_holm/snapshot"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/_holm/restore/{name}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.snapshot.restore"
+      ],
+      "sourceKey": "POST /_holm/restore/{name}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/_holm/snapshots",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.snapshot.list"
+      ],
+      "sourceKey": "GET /_holm/snapshots"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/_holm/logs",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.logs"
+      ],
+      "sourceKey": "GET /_holm/logs"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/_holm/errors",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.errors"
+      ],
+      "sourceKey": "GET /_holm/errors"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/message",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.message"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/message"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/pause",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.pause"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/pause"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/resume",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.resume"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/resume"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/agents/ai-arrest",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.aiArrest"
+      ],
+      "sourceKey": "POST /api/agents/ai-arrest"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/agents/ai-arrest/release",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.aiRelease"
+      ],
+      "sourceKey": "POST /api/agents/ai-arrest/release"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/inspect",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.inspect"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/inspect"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/delegate",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.delegate"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/delegate"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/delegations/{delegationID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.delegation.status"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/delegations/{delegationID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/delegations/{delegationID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.delegation.cancel"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/delegations/{delegationID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/emit",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.emit"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/emit"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/usage",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.usage"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/usage"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/audit",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.audit"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/audit"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/members/lookup",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.members.lookup"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/members/lookup"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/members/{memberID}/presence",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.members.presence"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/members/{memberID}/presence"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/kv",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.kv.list"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/kv"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/kv/{key}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.kv.get"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/kv/{key}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/kv/{key}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.kv.set"
+      ],
+      "sourceKey": "PUT /api/apps/{id}/agents/{folder}/kv/{key}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/kv/{key}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.kv.delete"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/kv/{key}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/kv/{key}/increment",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.kv.increment"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/kv/{key}/increment"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/kv/{key}/cas",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.kv.cas"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/kv/{key}/cas"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.insert"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/ds/{collection}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/find",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.find"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/ds/{collection}/find"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/find-one",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.findOne"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/ds/{collection}/find-one"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/{docID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.update"
+      ],
+      "sourceKey": "PUT /api/apps/{id}/agents/{folder}/ds/{collection}/{docID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/{docID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.delete"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/ds/{collection}/{docID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/count",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.count"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/ds/{collection}/count"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/aggregate",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.aggregate"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/ds/{collection}/aggregate"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/search",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.ds.search"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/ds/{collection}/search"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/blobs",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.blobs.list"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/blobs"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/blobs/{path...}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.blobs.get"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/blobs/{path...}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/blobs/{path...}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.blobs.put"
+      ],
+      "sourceKey": "PUT /api/apps/{id}/agents/{folder}/blobs/{path...}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/blobs/{path...}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.blobs.delete"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/blobs/{path...}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/brain",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.brain.list"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/brain"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/brain/{path...}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.brain.read"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/brain/{path...}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/brain-overlay",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.brain.overlay.list"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/brain-overlay"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/brain-overlay/{name}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.brain.overlay.set"
+      ],
+      "sourceKey": "PUT /api/apps/{id}/agents/{folder}/brain-overlay/{name}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/brain-overlay/{name}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.brain.overlay.remove"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/brain-overlay/{name}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/logs",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.logs"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/logs"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/replay/{triggerID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.replay"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/replay/{triggerID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/jobs/{jobID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.job"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/jobs/{jobID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/send",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.send"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/send"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/approvals",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.approvals.create"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/approvals"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/approvals/{gateID}/decide",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.approvals.decide"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/approvals/{gateID}/decide"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.threads.list"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/threads"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.threads.annotations"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/threads/{threadID}/annotations"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.threads.annotation"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "PUT"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.threads.annotate"
+      ],
+      "sourceKey": "PUT /api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.threads.removeAnnotation"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/approvals/{gateID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.approvals.status"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/threads/{threadID}/approvals/{gateID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/approvals/{gateID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.approvals.cancel"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/threads/{threadID}/approvals/{gateID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/messages",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.threadMessages"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/threads/{threadID}/messages"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/schedules",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.schedules.list"
+      ],
+      "sourceKey": "GET /api/apps/{id}/agents/{folder}/schedules"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/schedules",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.schedules.create"
+      ],
+      "sourceKey": "POST /api/apps/{id}/agents/{folder}/schedules"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "DELETE"
+      ],
+      "path": "/api/apps/{id}/agents/{folder}/schedules/{scheduleID}",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "agents.admin.schedules.cancel"
+      ],
+      "sourceKey": "DELETE /api/apps/{id}/agents/{folder}/schedules/{scheduleID}"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "path": "/api/keys",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "keys.list",
+        "keys.create",
+        "keys.delete"
+      ],
+      "sourceKey": "/api/keys"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/deployments",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "deploy.history"
+      ],
+      "sourceKey": "/api/deployments"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "path": "/api/envvars",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "envvars.list",
+        "envvars.set",
+        "envvars.delete"
+      ],
+      "sourceKey": "/api/envvars"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/logs",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "logs.runtime"
+      ],
+      "sourceKey": "/api/logs"
+    },
+    {
+      "classification": "redesigned",
+      "helper": true,
+      "methods": [
+        "GET"
+      ],
+      "path": "/api/logs/stream",
+      "rationale": "Redesigned as a deterministic URL helper over the audited stream route.",
+      "sdk": [
+        "logs.runtimeStreamUrl"
+      ],
+      "sourceKey": "/api/logs/stream"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/upgrade",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "lifecycle.upgrade"
+      ],
+      "sourceKey": "POST /api/upgrade"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/restart",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "lifecycle.restart"
+      ],
+      "sourceKey": "POST /api/restart"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/stop",
+      "rationale": "Adopted through the explicit holm.http.admin transport capability.",
+      "sdk": [
+        "lifecycle.stop"
+      ],
+      "sourceKey": "POST /api/stop"
+    }
+  ],
+  "exclusions": [
+    {
+      "classification": "excluded",
+      "rationale": "Public login page route, not part of the admin SDK contract.",
+      "sourceKey": "GET /auth/login"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Public auth entrypoint that serves HTML GET and a simple POST fallback.",
+      "sourceKey": "/auth/login"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Legacy simple-login helper, superseded by /api/login for the SDK.",
+      "sourceKey": "/auth/simplelogin"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Browser OAuth redirect flow.",
+      "sourceKey": "GET /auth/login/{provider}"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Browser OAuth callback flow.",
+      "sourceKey": "GET /auth/callback/{provider}"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Local-only dev login page.",
+      "sourceKey": "GET /auth/dev/login"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Local-only dev login helper route for generated email collision checks.",
+      "sourceKey": "GET /auth/dev/email-available"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Local-only dev login callback.",
+      "sourceKey": "POST /auth/dev/callback"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Public login-page helper; admin SDK uses /api/auth/providers.",
+      "sourceKey": "GET /auth/providers"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Public tracking ingress, intentionally outside the admin SDK.",
+      "sourceKey": "/track"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Public tracking beacon, intentionally outside the admin SDK.",
+      "sourceKey": "/pixel.gif"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Public redirect ingress, intentionally outside the admin SDK.",
+      "sourceKey": "/r/"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Public webhook delivery ingress, intentionally outside the admin SDK.",
+      "sourceKey": "/webhook/"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Inbound email transport hook, internal delivery path.",
+      "sourceKey": "POST /_holm/email/inbound"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Inbound Telegram transport hook, internal delivery path.",
+      "sourceKey": "POST /_holm/telegram/inbound/{bot}"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Legacy alias for /api/system/config.",
+      "sourceKey": "/api/config"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Internal agent-member workflow, not part of the supported admin SDK contract.",
+      "sourceKey": "POST /api/agents/approval-gates/{id}/decide"
+    },
+    {
+      "classification": "excluded",
+      "rationale": "Liveness probe, intentionally outside the SDK.",
+      "sourceKey": "/health"
+    }
+  ],
+  "schema": "holm.sdk.admin-route-audit/1",
+  "source": {
+    "commit": "3d229a414a0379d0a24221e975b8b4f1588f494d",
+    "paths": [
+      "packages/holm-sdk/admin.audit.js",
+      "packages/holm-sdk/admin.js",
+      "packages/holm-sdk/surface.audit.js"
+    ],
+    "repository": "holmhq/holm"
+  }
+}

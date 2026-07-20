@@ -7,6 +7,8 @@ const packageJson = readJson("package.json");
 const packageLock = readJson("package-lock.json");
 const requiredDocs = [
   "docs/v0.1.md",
+  "docs/v0.2.md",
+  "docs/admin.md",
   "docs/capabilities.md",
   "docs/migration.md",
   "docs/vendoring.md",
@@ -22,20 +24,21 @@ for (const path of requiredDocs) {
 
 const readText = (path) => existsSync(path) ? readFileSync(path, "utf8") : "";
 const readme = readText("README.md");
-const release = readText("docs/v0.1.md");
+const release = readText("docs/v0.2.md");
+const admin = readText("docs/admin.md");
 const capabilities = readText("docs/capabilities.md");
 const migration = readText("docs/migration.md");
 const vendoring = readText("docs/vendoring.md");
 const agentGuide = readText("docs/agent-guide.md");
 const examplesReadme = readText("examples/README.md");
-const currentDocs = [readme, release, capabilities, migration, vendoring, agentGuide, examplesReadme].join("\n");
+const currentDocs = [readme, release, admin, capabilities, migration, vendoring, agentGuide, examplesReadme].join("\n");
 
-requireEqual("package.json version", packageJson.version, "0.1.0");
-requireEqual("package-lock root version", packageLock.version, "0.1.0");
-requireEqual("package-lock packages[''].version", packageLock.packages?.[""]?.version, "0.1.0");
+requireEqual("package.json version", packageJson.version, "0.2.0");
+requireEqual("package-lock root version", packageLock.version, "0.2.0");
+requireEqual("package-lock packages[''].version", packageLock.packages?.[""]?.version, "0.2.0");
 requireEqual("package publish access", packageJson.publishConfig?.access, "public");
 if (packageJson.private === true) {
-  failures.push("package.json: 0.1.0 release must not be private");
+  failures.push("package.json: 0.2.0 release must not be private");
 }
 
 for (const needle of [
@@ -58,6 +61,7 @@ const expectedRows = [
   ["`@holmhq/sdk/web`", "stable"],
   ["`@holmhq/sdk/state`", "stable"],
   ["`@holmhq/sdk/test`", "stable"],
+  ["`@holmhq/sdk/admin`", "preview"],
   ["`@holmhq/sdk/node`", "preview"],
   ["`@holmhq/sdk/sobek`", "preview"],
   ["`@holmhq/sdk/bridge`", "reserved"],
@@ -65,16 +69,20 @@ const expectedRows = [
 for (const [entryPoint, status] of expectedRows) {
   requireRegex(release, new RegExp(`\\|\\s*${escapeRegex(entryPoint)}\\s*\\|\\s*${status}\\s*\\|`, "i"), `${entryPoint} ${status} support row`);
 }
-for (const unavailable of ["admin client", "generated actions/CLI", "realtime transport", "collaboration/CRDT", "framework bindings", "production desktop/mobile"] ) {
+requireRegex(capabilities, /\|\s*Admin client\s*\|\s*preview\s*\|/i, "admin client preview capability row");
+for (const unavailable of ["generated actions/CLI", "realtime transport", "collaboration/CRDT", "framework bindings", "production desktop/mobile"] ) {
   requireRegex(capabilities, new RegExp(`\\|\\s*${escapeRegex(unavailable)}\\s*\\|[^\\n]*\\bunavailable\\b`, "i"), `${unavailable} unavailable capability row`);
 }
 
 for (const needle of [
-  "afe4057f7ea98012d843717216675dd1a1043771",
+  "3d229a414a0379d0a24221e975b8b4f1588f494d",
   "748cbe5",
   "packages/holm-sdk/index.js",
   "createAppClient()",
   "createClient()",
+  "createAdminClient({ runtime, caller })",
+  "@holmhq/sdk/admin",
+  "admin.audit.js",
   "getClient()",
   "ApiError",
   "createCache()",
@@ -100,6 +108,8 @@ for (const needle of [
 for (const needle of [
   "whole `dist/` tree",
   "immutable Git SHA or reviewed tag",
+  "@holmhq/sdk@0.2.0",
+  "v0.2.0",
   "Never use `@main`",
   "dist/manifest.json",
   "sha256",
@@ -112,6 +122,19 @@ for (const needle of [
 }
 
 for (const needle of [
+  "createAdminClient({ runtime, caller })",
+  "explicit operator caller",
+  "216 methods",
+  "189 HTTP",
+  "adminMethodDescriptors",
+  "AdminUploadService",
+  "ReadonlyBytes",
+  "Holm remains the authorization boundary",
+]) {
+  requireIncludes(admin, needle, `admin guide ${needle}`);
+}
+
+for (const needle of [
   "Core has no DOM or Node ambient types",
   "red → green → refactor",
   "npm run ci",
@@ -120,6 +143,8 @@ for (const needle of [
   "Holm is the protocol authority",
   "immutable snapshots",
   "caller identity",
+  "@holmhq/sdk/admin",
+  "v0.2.md",
 ]) {
   requireIncludes(agentGuide, needle, `agent guide ${needle}`);
 }
@@ -132,6 +157,7 @@ for (const stale of [
   "private `0.1.0-rc.1` code/artifact checkpoint",
   "Issue `#015` remains open",
   "future gates after this RC stops",
+  "| Admin client | unavailable |",
 ]) {
   if (currentDocs.includes(stale)) {
     failures.push(`current release docs retain stale RC boundary: ${JSON.stringify(stale)}`);
@@ -146,7 +172,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("Release docs/metadata check passed for public 0.1.0.");
+console.log("Release docs/metadata check passed for public 0.2.0.");
 
 function requireEqual(label, actual, expected) {
   if (actual !== expected) {

@@ -25,6 +25,13 @@ import {
   HOLM_APP_HTTP_CAPABILITY as APP_HTTP_CAPABILITY,
 } from "../../dist/app/index.js";
 import {
+  HOLM_ADMIN_HTTP_CAPABILITY,
+  adminMethodDescriptors,
+  adminSupport,
+  createAdminClient,
+  createAdminExtension,
+} from "../../dist/admin/index.js";
+import {
   applyTransportAuth,
   createTransportCache,
   createTransportCacheKey,
@@ -142,8 +149,19 @@ test("generated package artifacts expose isolated Issue 009 runtime subpaths", a
   const manifestPaths = new Set(manifest.artifacts.map((artifact) => artifact.path));
   const sizedPaths = new Set(sizeReport.artifacts.map((artifact) => artifact.path));
   const runtimeSubpaths = ["./web", "./node", "./sobek", "./test", "./bridge"];
+  const capabilitySubpaths = ["./admin"];
 
   for (const subpath of runtimeSubpaths) {
+    assert.deepEqual(packageJson.exports[subpath], {
+      types: `./dist/${subpath.slice(2)}/index.d.ts`,
+      import: `./dist/${subpath.slice(2)}/index.js`,
+    });
+    assert.equal(manifestPaths.has(`dist/${subpath.slice(2)}/index.js`), true, `${subpath} ESM is in the dist manifest`);
+    assert.equal(manifestPaths.has(`dist/${subpath.slice(2)}/index.d.ts`), true, `${subpath} declarations are in the dist manifest`);
+    assert.equal(sizedPaths.has(`dist/${subpath.slice(2)}/index.js`), true, `${subpath} ESM is covered by the size gate`);
+  }
+
+  for (const subpath of capabilitySubpaths) {
     assert.deepEqual(packageJson.exports[subpath], {
       types: `./dist/${subpath.slice(2)}/index.d.ts`,
       import: `./dist/${subpath.slice(2)}/index.js`,
@@ -190,11 +208,18 @@ test("generated ESM artifact exposes the S02 preview/reserved support labels", (
     mobile: "unsupported",
     scope: "mocks, mailbox contracts, and service slots only",
   });
+  assert.deepEqual(adminSupport, {
+    packageName: "@holmhq/sdk/admin",
+    status: "preview",
+    compatibility: "not frozen",
+    production: "operator authorization required",
+  });
 });
 
-test("stable generated ESM subpaths do not import preview or reserved runtimes", async () => {
+test("universal and isolated capability ESM subpaths do not import concrete preview or reserved runtimes", async () => {
   for (const entry of [
     "../../dist/index.js",
+    "../../dist/admin/index.js",
     "../../dist/core/index.js",
     "../../dist/transports/index.js",
     "../../dist/app/index.js",
@@ -216,7 +241,7 @@ test("stable generated ESM subpaths do not import preview or reserved runtimes",
   }
 });
 
-test("deterministic v0.1 web and BFBB bundles are importable, recorded, and exclude unavailable runtimes", async () => {
+test("deterministic web and BFBB bundles record preview admin inclusion without contaminating the narrow web build", async () => {
   const packageJson = await readJsonArtifact("../../package.json");
   const manifest = await readJsonArtifact("../../dist/manifest.json");
   const sizeReport = await readJsonArtifact("../../dist/size-report.json");
@@ -226,12 +251,12 @@ test("deterministic v0.1 web and BFBB bundles are importable, recorded, and excl
   const licenseByPath = new Map((licenseReport.artifacts ?? []).map((artifact) => [artifact.path, artifact]));
   const bundlePaths = ["dist/holm.js", "dist/holm-web.js"];
 
-  assert.equal(packageJson.version, "0.1.0");
-  assert.notEqual(packageJson.private, true, "public 0.1.0 package must not remain private");
+  assert.equal(packageJson.version, "0.2.0");
+  assert.notEqual(packageJson.private, true, "public 0.2.0 package must not remain private");
   assert.equal(packageJson.publishConfig?.access, "public");
-  assert.equal(manifest.package?.version, "0.1.0");
+  assert.equal(manifest.package?.version, "0.2.0");
   assert.equal(manifest.package?.private, false);
-  assert.equal(licenseReport.package?.version, "0.1.0");
+  assert.equal(licenseReport.package?.version, "0.2.0");
   assert.equal(licenseReport.package?.private, false);
   for (const bundlePath of bundlePaths) {
     for (const artifactPath of [bundlePath, `${bundlePath}.map`, bundlePath.replace(/\.js$/, ".d.ts"), bundlePath.replace(/\.js$/, ".d.ts.map")]) {
@@ -248,11 +273,15 @@ test("deterministic v0.1 web and BFBB bundles are importable, recorded, and excl
   assert.equal(typeof holm.createTransportRequest, "function");
   assert.equal(typeof holm.createQueryResource, "function");
   assert.equal(typeof holm.createInMemoryRuntimeAdapter, "function");
+  assert.equal(typeof holm.createAdminClient, "function");
+  assert.equal(typeof holm.createAdminExtension, "function");
+  assert.equal(typeof holm.admin.createAdminExtension, "function");
   assert.equal(typeof holm.web.webRuntime, "function");
   assert.equal(typeof holm.node, "undefined");
   assert.equal(typeof holm.sobek, "undefined");
   assert.equal(typeof holm.bridge, "undefined");
   assert.equal(typeof holmWeb.createWebApp, "function");
+  assert.equal(typeof holmWeb.createAdminExtension, "undefined", "narrow web bundle excludes admin helpers");
   assert.equal(typeof holmWeb.createInMemoryRuntimeAdapter, "undefined", "narrow web bundle excludes test helpers");
 
   for (const entry of ["../../dist/holm.js", "../../dist/holm-web.js"]) {
@@ -264,6 +293,7 @@ test("deterministic v0.1 web and BFBB bundles are importable, recorded, and excl
   assert.deepEqual(manifestByPath.get("dist/holm.js")?.includedCapabilities, [
     "core",
     "app",
+    "admin",
     "web",
     "transports",
     "state",
@@ -276,8 +306,18 @@ test("deterministic v0.1 web and BFBB bundles are importable, recorded, and excl
     "transports",
     "state",
   ]);
-  for (const bundlePath of bundlePaths) {
-    assert.deepEqual(manifestByPath.get(bundlePath)?.excludedCapabilities, [
+  assert.deepEqual(manifestByPath.get("dist/holm.js")?.excludedCapabilities, [
+    "actions/generated-cli",
+    "realtime-runtime",
+    "collaboration",
+    "framework-bindings",
+    "crdt-engines",
+    "node-cli",
+    "sobek-server",
+    "desktop-mobile-production-bridge",
+    "arbitrary-ssr",
+  ]);
+  assert.deepEqual(manifestByPath.get("dist/holm-web.js")?.excludedCapabilities, [
       "admin",
       "actions/generated-cli",
       "realtime-runtime",
@@ -289,7 +329,6 @@ test("deterministic v0.1 web and BFBB bundles are importable, recorded, and excl
       "desktop-mobile-production-bridge",
       "arbitrary-ssr",
     ]);
-  }
 });
 
 test("generated ESM artifact exposes the S01 core fixture", () => {
@@ -412,6 +451,26 @@ test("generated ESM artifact exposes the Issue 007 app extension and web composi
   assert.deepEqual(await convenience.app.auth.me(), { ok: true });
   assert.equal(convenience.app.surface.analyticsUrl(), "/analytics");
   await convenience.dispose();
+});
+
+test("generated ESM artifact exposes the Issue 008 audited admin extension", async () => {
+  const fake = createFakeClock(12);
+  const runtime = createInMemoryRuntimeAdapter({
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+    offers: [{ id: HOLM_ADMIN_HTTP_CAPABILITY.id, origin: "runtime", version: { major: 1, minor: 0 } }],
+  });
+  const holm = createHolm({
+    runtime,
+    caller: createStaticCallerProvider({ surface: "cli", principal: { kind: "operator", id: "dist-operator" } }),
+    extensions: [createAdminExtension()],
+  });
+
+  await holm.admin.apps.get({ path: { id: "dist app" } });
+  assert.equal(adminMethodDescriptors.length, 216);
+  assert.equal(runtime.requests[0].capability.id, "holm.http.admin");
+  assert.equal(runtime.requests[0].payload.url, "/api/apps/dist%20app");
+  await holm.dispose();
 });
 
 test("generated ESM artifact exposes the Issue 009 Sobek injected runtime contract", async () => {

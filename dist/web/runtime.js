@@ -1,3 +1,4 @@
+import { ADMIN_HTTP_INVALIDATE_OPERATION, ADMIN_HTTP_REQUEST_OPERATION, HOLM_ADMIN_HTTP_CAPABILITY, } from "../admin/protocol.js";
 import { APP_HTTP_INVALIDATE_OPERATION, APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
 import { createCallerPartitionedCacheKey } from "../core/cache-key.js";
 import { CapabilityVersionError, UnsupportedCapabilityError, } from "../core/capabilities.js";
@@ -15,7 +16,12 @@ const appHttpOffer = Object.freeze({
     version: Object.freeze({ major: HOLM_APP_HTTP_CAPABILITY.major, minor: 0 }),
     origin: "runtime",
 });
-const appHttpOffers = Object.freeze([appHttpOffer]);
+const adminHttpOffer = Object.freeze({
+    id: HOLM_ADMIN_HTTP_CAPABILITY.id,
+    version: Object.freeze({ major: HOLM_ADMIN_HTTP_CAPABILITY.major, minor: 0 }),
+    origin: "runtime",
+});
+const httpOffers = Object.freeze([appHttpOffer, adminHttpOffer]);
 const defaultWebSessionProof = Object.freeze({
     kind: "web-session",
     credentials: "same-origin",
@@ -77,7 +83,7 @@ export function webRuntime(options = {}) {
         async start() {
             assertNotDisposed(disposed, "start");
             started = true;
-            return appHttpOffers;
+            return httpOffers;
         },
         async invoke(request, control) {
             assertReady(started, disposed);
@@ -242,23 +248,40 @@ function assertReady(started, disposed) {
 }
 function assertHttpOperation(request, adapterId) {
     const capability = request.capability;
-    if (capability.id !== HOLM_APP_HTTP_CAPABILITY.id || capability.major !== HOLM_APP_HTTP_CAPABILITY.major) {
-        const context = {
-            id: capability.id,
-            requirement: capability,
-            offered: appHttpOffers,
-            adapter: adapterId,
-            surface: "web",
-        };
-        if (capability.id !== HOLM_APP_HTTP_CAPABILITY.id) {
-            throw new UnsupportedCapabilityError(context);
-        }
+    const expected = capability.id === HOLM_APP_HTTP_CAPABILITY.id
+        ? HOLM_APP_HTTP_CAPABILITY
+        : capability.id === HOLM_ADMIN_HTTP_CAPABILITY.id
+            ? HOLM_ADMIN_HTTP_CAPABILITY
+            : undefined;
+    const context = {
+        id: capability.id,
+        requirement: capability,
+        offered: httpOffers,
+        adapter: adapterId,
+        surface: "web",
+    };
+    if (expected === undefined) {
+        throw new UnsupportedCapabilityError(context);
+    }
+    if (capability.major !== expected.major) {
         throw new CapabilityVersionError(context);
     }
-    if (request.operation !== WEB_HTTP_REQUEST_OPERATION && request.operation !== APP_HTTP_INVALIDATE_OPERATION) {
+    if (expected === HOLM_ADMIN_HTTP_CAPABILITY && request.caller.principal.kind !== "operator") {
+        throw new UnsupportedCapabilityError({
+            ...context,
+            message: "The web admin transport requires an explicit operator caller context; Holm still enforces authorization.",
+        });
+    }
+    const requestOperation = expected === HOLM_ADMIN_HTTP_CAPABILITY
+        ? ADMIN_HTTP_REQUEST_OPERATION
+        : WEB_HTTP_REQUEST_OPERATION;
+    const invalidateOperation = expected === HOLM_ADMIN_HTTP_CAPABILITY
+        ? ADMIN_HTTP_INVALIDATE_OPERATION
+        : APP_HTTP_INVALIDATE_OPERATION;
+    if (request.operation !== requestOperation && request.operation !== invalidateOperation) {
         throw new ProtocolError({
             code: "unsupported_web_runtime_operation",
-            message: "The web runtime only accepts supported holm.http.app operations.",
+            message: "The web runtime only accepts supported Holm HTTP operations.",
             details: {
                 capability: request.capability.id,
                 major: request.capability.major,

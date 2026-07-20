@@ -63,6 +63,19 @@ export {
 } from "./state/index.js";
 `;
 
+const adminExports = `export * as admin from "./admin/index.js";
+export {
+  ADMIN_HTTP_INVALIDATE_OPERATION,
+  ADMIN_HTTP_REQUEST_OPERATION,
+  HOLM_ADMIN_HTTP_CAPABILITY,
+  adminMethodDescriptors,
+  adminOperationProtocol,
+  adminSupport,
+  createAdminClient,
+  createAdminExtension,
+} from "./admin/index.js";
+`;
+
 const testExports = `export * as test from "./test/index.js";
 export {
   createFakeClock,
@@ -75,7 +88,7 @@ for (const definition of webBundleDefinitions) {
 }
 
 function writeBundle(definition) {
-  const body = `${commonExports}${definition.includeTest ? testExports : ""}`;
+  const body = `${commonExports}${definition.includeAdmin ? adminExports : ""}${definition.includeTest ? testExports : ""}`;
   const header = `// @holmhq/sdk ${definition.kind}: ${definition.description}\n`;
   const source = `${header}${body}//# sourceMappingURL=${definition.path.split("/").at(-1)}.map\n`;
   const declaration = `${body}//# sourceMappingURL=${definition.declaration.split("/").at(-1)}.map\n`;

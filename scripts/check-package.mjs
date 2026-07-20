@@ -11,8 +11,8 @@ const expectedFiles = ["dist", "docs", "examples", "CHANGELOG.md", "LICENSE", "R
 if (JSON.stringify(packageJson.files) !== JSON.stringify(expectedFiles)) {
   failures.push(`package.json files must be exactly ${JSON.stringify(expectedFiles)}`);
 }
-if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.1.0") {
-  failures.push(`package identity must be @holmhq/sdk@0.1.0; found ${packageJson.name}@${packageJson.version}`);
+if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.2.0") {
+  failures.push(`package identity must be @holmhq/sdk@0.2.0; found ${packageJson.name}@${packageJson.version}`);
 }
 if (packageJson.private === true) {
   failures.push("public release package must not be private");
@@ -24,7 +24,7 @@ if (packageJson.license !== "MIT") {
   failures.push(`release package license must be MIT; found ${String(packageJson.license)}`);
 }
 if (packageJson.dependencies !== undefined && Object.keys(packageJson.dependencies).length > 0) {
-  failures.push("universal package must not add runtime dependencies for 0.1.0");
+  failures.push("universal package must not add runtime dependencies for 0.2.0");
 }
 if (packageJson.scripts?.prepublishOnly !== "npm run release:check") {
   failures.push("prepublishOnly must run the canonical release gate");
@@ -61,10 +61,14 @@ if (report !== undefined) {
     "CHANGELOG.md",
     "dist/index.js",
     "dist/index.d.ts",
+    "dist/admin/index.js",
+    "dist/admin/index.d.ts",
     "dist/holm.js",
     "dist/holm-web.js",
     "dist/manifest.json",
+    "docs/admin.md",
     "docs/agent-guide.md",
+    "docs/v0.2.md",
     "docs/vendoring.md",
     "examples/shared/session-contract.ts",
     "examples/react/src/main.tsx",
@@ -154,6 +158,7 @@ function runInstalledPackageSmoke() {
       "@holmhq/sdk/core",
       "@holmhq/sdk/transports",
       "@holmhq/sdk/app",
+      "@holmhq/sdk/admin",
       "@holmhq/sdk/web",
       "@holmhq/sdk/state",
       "@holmhq/sdk/node",
@@ -165,8 +170,12 @@ function runInstalledPackageSmoke() {
       const loaded = await import(specifier);
       if (Object.keys(loaded).length === 0) throw new Error(specifier + " has no exports");
     }
+    const admin = await import("@holmhq/sdk/admin");
+    if (typeof admin.createAdminClient !== "function" || admin.adminMethodDescriptors.length !== 216) {
+      throw new Error("installed admin entry point is incomplete");
+    }
     const packageJson = JSON.parse(await readFile(new URL("./node_modules/@holmhq/sdk/package.json", import.meta.url), "utf8"));
-    if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.1.0") {
+    if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.2.0") {
       throw new Error("installed package identity mismatch");
     }
   `;

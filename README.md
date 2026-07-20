@@ -40,16 +40,18 @@ You will probably care about this SDK if you are:
 - building a browser or BFBB app on Holm;
 - tired of duplicating auth, HTTP, cache, upload, and error handling;
 - sharing server-backed state between vanilla UI and a framework;
-- testing Holm-facing code without a live server for every test; or
+- testing Holm-facing code without a live server for every test;
+- building operator tooling against Holm's audited admin routes; or
 - planning more than one app surface and want a stable lower contract now.
 
 ## When it may not fit
 
 This release is intentionally not a general-purpose API client, a UI component
 library, or a replacement for Holm itself. It may not be the right tool if you
-need a migrated admin/operator client, generated CLI actions, production
-realtime or collaboration, a first-party React/Angular/Svelte/Vue binding, or a
-production desktop/mobile runtime today.
+need a frozen/stable admin API, generated CLI actions, production realtime or
+collaboration, a first-party React/Angular/Svelte/Vue binding, or a production
+desktop/mobile runtime today. The admin client is released as preview while its
+standardized operation-input contract receives real operator feedback.
 
 Those limits are explicit in the [capability matrix](docs/capabilities.md).
 
@@ -92,14 +94,15 @@ rollback workflow.
 
 ## Release status
 
-`0.1.0` is the stable initial **web/BFBB** release. The stable entry points are
-root, `core`, `transports`, `app`, `web`, `state`, and `test`. Node and Sobek
-adapters are preview; the native bridge is reserved.
+`0.2.0` preserves the stable **web/BFBB** contract and adds the audited
+`@holmhq/sdk/admin` operator client as preview. The stable entry points remain
+root, `core`, `transports`, `app`, `web`, `state`, and `test`; admin, Node, and
+Sobek are preview, and the native bridge is reserved.
 
-Read the [0.1 support contract](docs/v0.1.md) for compatibility and evidence, or
-the [migration ledger](docs/migration.md) if you are moving from Holm's existing
-`holm-sdk` or `holm-state` packages. Those packages remain live during
-migration.
+Read the [0.2 support contract](docs/v0.2.md), the
+[admin/operator guide](docs/admin.md), or the [migration ledger](docs/migration.md)
+if you are moving from Holm's existing `holm-sdk` or `holm-state` packages.
+Those packages remain live during migration.
 
 ## For coding agents
 

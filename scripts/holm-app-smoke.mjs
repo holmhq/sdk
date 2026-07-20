@@ -1,7 +1,10 @@
+import { createAdminClient } from "../dist/admin/index.js";
 import { RemoteError } from "../dist/transports/index.js";
 import {
   createWebApp,
+  createWebCaller,
   createWebTokenAuth,
+  webRuntime,
 } from "../dist/web/index.js";
 
 const baseUrl = process.env.HOLM_SMOKE_URL?.trim();
@@ -12,14 +15,22 @@ if (!baseUrl) {
 
 const token = process.env.HOLM_SMOKE_TOKEN?.trim();
 const auth = token ? createWebTokenAuth({ token }) : undefined;
+const runtimeOptions = {
+  baseUrl,
+  cache: false,
+  ...(auth === undefined ? {} : { auth }),
+};
 const app = createWebApp({
-  runtime: {
-    baseUrl,
-    cache: false,
-    ...(auth === undefined ? {} : { auth }),
-  },
+  runtime: runtimeOptions,
   navigation: false,
   uploads: false,
+});
+const admin = createAdminClient({
+  runtime: webRuntime(runtimeOptions),
+  caller: createWebCaller({
+    principal: { kind: "operator" },
+    origin: new URL(baseUrl).origin,
+  }),
 });
 
 try {
@@ -31,6 +42,11 @@ try {
     throw new Error("Holm health smoke returned an unexpected payload.");
   }
   console.log(`Holm health smoke passed: ${String(health.version ?? "unknown version")}.`);
+  const adminStatus = await admin.admin.system.status();
+  if (!adminStatus || typeof adminStatus !== "object" || adminStatus.status !== "healthy") {
+    throw new Error("Holm admin transport smoke returned an unexpected public status payload.");
+  }
+  console.log("Holm admin transport smoke passed: explicit operator caller reached /.holm/status.");
 
   try {
     const response = await app.app.http.requestRaw({
@@ -52,5 +68,5 @@ try {
     }
   }
 } finally {
-  await app.dispose();
+  await Promise.allSettled([app.dispose(), admin.dispose()]);
 }

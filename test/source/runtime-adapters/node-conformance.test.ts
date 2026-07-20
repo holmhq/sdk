@@ -17,6 +17,7 @@ import {
   type HolmDiagnosticEvent,
   type OperationRequest,
 } from "../../../src/core/index.js";
+import { HOLM_ADMIN_HTTP_CAPABILITY } from "../../../src/admin/index.js";
 import { HOLM_APP_HTTP_CAPABILITY } from "../../../src/app/index.js";
 import { createFakeClock } from "../../../src/test/index.js";
 import { createTransportRequest, RemoteError } from "../../../src/transports/index.js";
@@ -103,6 +104,54 @@ test("nodeRuntime uses explicit CLI operator auth and injected runtime services 
   assert.equal("credentials" in (fetchCalls[0]?.init ?? {}), false);
   assert.equal(JSON.stringify({ caller, response, events }).includes("cli-secret-token"), false);
   assert.equal(JSON.stringify({ caller, response, events }).includes("stored-secret-token"), false);
+  await runtime.dispose();
+});
+
+test("nodeRuntime advertises admin transport only for explicit operator callers with private token auth", async () => {
+  const fake = createFakeClock(275);
+  const fetchCalls: Array<{ readonly input: string; readonly authorization: string | undefined }> = [];
+  const runtime = nodeRuntime({
+    baseUrl: "https://cli.example.test/",
+    fetch: async (input, init) => {
+      fetchCalls.push({ input, authorization: init?.headers.authorization });
+      return new Response('{"data":{"ok":true}}', { headers: { "content-type": "application/json" } });
+    },
+    auth: createNodeTokenAuth({ token: "admin-secret", operatorId: "operator-1" }),
+    clock: fake.clock,
+    scheduler: fake.scheduler,
+  });
+  const offers = await runtime.start();
+  assert.equal(offers.some((offer) => offer.id === HOLM_ADMIN_HTTP_CAPABILITY.id), true);
+
+  const operatorRequest = {
+    ...makeRequest({
+      requestId: "req-node-admin",
+      payload: createTransportRequest({ method: "GET", url: "/api/system/health" }),
+    }),
+    capability: HOLM_ADMIN_HTTP_CAPABILITY,
+  };
+  assert.deepEqual((await runtime.invoke(operatorRequest, {})).payload, { ok: true });
+  assert.equal(fetchCalls[0]?.authorization, "Bearer admin-secret");
+
+  const member: CallerContext = { surface: "cli", principal: { kind: "member", id: "member-1" } };
+  await assert.rejects(
+    () => runtime.invoke({
+      ...operatorRequest,
+      requestId: "req-node-admin-member",
+      caller: createInvocationContext(member, "req-node-admin-member", 275),
+      callerFingerprint: createCallerFingerprint(member),
+    }, {}),
+    /explicit operator caller context/,
+  );
+  await assert.rejects(
+    () => runtime.invoke({ ...operatorRequest, requestId: "req-node-admin-version", capability: { id: HOLM_ADMIN_HTTP_CAPABILITY.id, major: 2 } }, {}),
+    CapabilityVersionError,
+  );
+  await assert.rejects(
+    () => runtime.invoke({ ...operatorRequest, requestId: "req-node-admin-operation", operation: "unknown" }, {}),
+    (error: unknown) => error instanceof ProtocolError && error.code === "unsupported_node_runtime_operation",
+  );
+  assert.equal(fetchCalls.length, 1);
   await runtime.dispose();
 });
 

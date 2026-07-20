@@ -1,4 +1,6 @@
 import {
+  createAdminClient,
+  createAdminExtension,
   createHolm,
   createTransportRequest,
   createWebApp,
@@ -16,6 +18,7 @@ import {
 const fetcher: typeof fetch = async () => new Response('{"data":{"ok":true}}', {
   headers: { "content-type": "application/json" },
 });
+const adminExtension = createAdminExtension();
 const runtime = webRuntime({ fetch: fetcher, cache: false });
 const app = createWebApp({ runtime: { fetch: fetcher, cache: false }, navigation: false, uploads: false });
 const request = createTransportRequest({ method: "GET", url: "/api/bundle" });
@@ -26,6 +29,10 @@ const query = createQueryResource({
   load: () => ({ ok: true }),
 });
 const testRuntime = createInMemoryRuntimeAdapter();
+const adminClient = createAdminClient({
+  runtime: testRuntime,
+  caller: { current: () => ({ surface: "test", principal: { kind: "operator" } }) },
+});
 const holm = createHolm({
   runtime: testRuntime,
   caller: { current: () => ({ surface: "test", principal: { kind: "anonymous" } }) },
@@ -35,11 +42,13 @@ const narrowRuntime = narrowWebRuntime({ fetch: fetcher, cache: false });
 const narrowApp = createNarrowWebApp({ runtime: { fetch: fetcher, cache: false }, navigation: false, uploads: false });
 const narrowRequest = createNarrowTransportRequest({ method: "POST", url: "/api/bundle", body: { mode: "json", value: { ok: true } } });
 
+void adminExtension;
 void runtime;
 void app;
 void request;
 void query;
 void testRuntime;
+void adminClient;
 void holm;
 void namespaceRuntime;
 void narrowRuntime;

@@ -1,8 +1,8 @@
 ---
-status: deferred
+status: in_progress
 priority: P1
 created: 2026-07-13
-updated: 2026-07-17
+updated: 2026-07-20
 tags: admin, operator, routes, migration, audit
 parent: 001
 depends_on: [005]
@@ -36,6 +36,20 @@ core contracts, weaken types, or silently diverge from Holm.
   convenience bundle exports them;
 - establish a repeatable Holm route-inventory refresh/conformance process.
 
+## Current candidate — 2026-07-20
+
+- Public preview subpath: `@holmhq/sdk/admin`; complete BFBB `holm.js` includes
+  it while narrow `holm-web.js` remains admin-free.
+- Authority ledger: 174 keys, 189 route/method contracts, 216 generated methods,
+  and 18 exclusions at `koder/evidence/004_issue008_admin_routes/`.
+- Explicit operator caller checks run before web/Node network I/O; auth proof
+  remains adapter-private and Holm remains the authorization authority.
+- Normal, FORCE_COLOR, TAP, and TAP+color full CI pass; 267 dist artifacts are
+  reproducible, installed-tarball smoke covers all package exports, and measured
+  coverage remains above every gate.
+- Independent SDK review and final Holm-authority acceptance are still pending;
+  no release action occurs before both approve the exact candidate.
+
 ## Acceptance Criteria
 
 - [ ] A machine-readable parity table covers every current admin audit entry and
@@ -62,8 +76,18 @@ core contracts, weaken types, or silently diverge from Holm.
 - Treating possession of a browser bundle as authorization; Holm remains the
   enforcement boundary.
 
-## Deferral (2026-07-17)
+## Activation and release boundary (2026-07-20)
 
-Owner decision at v0.1 acceptance: this capability is demand-driven, not
-roadmap-driven. It does not count toward v0.1 completion and starts only when a
-real consumer needs it.
+The owner activated this demand-driven slice and authorized a conditional
+`0.2.0` release if implementation, full validation, independent SDK review, and
+fresh read-only Holm-authority acceptance establish confidence. The target is a
+released preview entry point, not an unreviewed stability promotion.
+
+Implementation uses one explicit `createAdminClient({ runtime, caller })`
+composition and a deterministic generated namespace over a source-pinned route
+ledger. Standard operation objects replace positional legacy arguments;
+platform uploads remain injected services; existing stable entry points remain
+compatible. Holm stays read-only and existing Holm packages remain live.
+
+Release actions stop unless every gate is green. No Holm edit, deployment,
+production mutation, or unrelated capability work is authorized.

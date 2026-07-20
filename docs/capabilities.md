@@ -1,6 +1,6 @@
 # Capability matrix
 
-This matrix describes `@holmhq/sdk` `0.1.0`, not Holm's entire platform. A
+This matrix describes `@holmhq/sdk` `0.2.0`, not Holm's entire platform. A
 stable lower-level primitive does not imply that every higher-level product
 surface is shipped.
 
@@ -23,13 +23,13 @@ is shipped and tested but may change; **reserved** is a contract/probe only;
 
 ## Product capability status
 
-| Product capability | Status | What `0.1.0` provides |
+| Product capability | Status | What `0.2.0` provides |
 | --- | --- | --- |
 | Web app client | stable | Typed auth, HTTP, links, pagination, uploads, surfaces, cache invalidation, and `createWebApp()`. |
 | Framework-neutral state | stable | Immutable snapshots, subscriptions, query/mutation/derived resources, history, and reconcile hooks. |
 | Vanilla UI | stable example | Direct subscription example plus the production Sokoban pilot. |
 | React UI | stable example | A typed `useSyncExternalStore` adapter over the same model; this is an example, not a framework package. |
-| Admin client | unavailable | The legacy Holm admin namespace remains in `packages/holm-sdk`; migration is deferred. |
+| Admin client | preview | `createAdminClient()`, 216 generated typed methods over 189 audited route/method contracts, explicit operator caller gating, command/upload/binary seams, and deterministic drift checks. The legacy Holm package remains live. |
 | Generated actions/CLI | unavailable | Holm does not yet expose the stable registry needed for generated action helpers. |
 | Realtime transport | unavailable | A public reconcile seam exists, but no authenticated production subscription transport ships here. |
 | Collaboration/CRDT | unavailable | No oplog/provider package and no mandatory CRDT engine. |

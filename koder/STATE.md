@@ -1,41 +1,43 @@
 ---
-updated_at: "20 Jul 2026 | 08:39 AM IST"
-state: READY
-active_window: "none — W5 complete; 0.1.0 released"
-active_issue: "none; #001/#015 resolved"
-orchestration_mode: "direct owner-authorized; independent release review + publish-gate rereview complete"
-stop_gate: "none for 0.1.0; explicit owner decision required before deferred capability work or another release"
+updated_at: "20 Jul 2026 | 10:43 AM IST"
+state: IN_PROGRESS
+active_window: "W6 — Issue #008 admin/operator preview and conditional 0.2.0 release"
+active_issue: "#008"
+orchestration_mode: "direct owner-authorized autonomous execution"
+stop_gate: "independent SDK review + fresh read-only Holm-authority acceptance + final release gates before push/tag/GitHub/npm publication"
 ---
 
 # Koder State
 
 ## Past
 
-- W1–W4 delivered the reviewed private web RC; W5 proved it in the real
-  production-hosted Sokoban app against Holm `0.185.1`.
-- Issue `#015` and umbrella `#001` are resolved: newcomer README, technical
-  agent guide, release/capability/migration/vendoring docs, shared vanilla/React
-  example, and explicit reconciliation of 10 complete + 5 deferred slices.
-- `396f991` promoted public package metadata; `9d855c5` closed the nested publish
-  dry-run edge. Reviews `#060`/`#061` approved with `P1=0 P2=0 P3=0`.
+- W1–W5 delivered and released `@holmhq/sdk@0.1.0`: stable web/BFBB,
+  framework-neutral state, runtime adapters, reproducible artifacts, docs, and
+  production Sokoban proof.
+- Issue `#008` was explicitly activated on 2026-07-20 as the next demand-driven
+  capability, with owner authorization to release `0.2.0` only when quality is
+  proven.
 
 ## Present
 
-- `@holmhq/sdk@0.1.0` is live on npm with `latest: 0.1.0`; registry shasum
-  `fa6fa10879a130664f7725157720aad093884936` matches the reviewed tarball.
-- Annotated tag `v0.1.0` points to exact reviewed target `9d855c5`; GitHub's latest
-  release is live with tarball, checksum, and manifest assets.
-- Fresh registry install passed and imported all 10 package entry points. GitHub
-  release downloads match the local tarball and committed `dist/manifest.json`.
-- No source/generated drift remains. This close commits/pushes release state and
-  leaves `main` clean and synchronized.
+- The `0.2.0` candidate adds isolated preview `@holmhq/sdk/admin`, explicit
+  `createAdminClient({ runtime, caller })`, operator-gated web/Node transport,
+  runtime-neutral uploads/binary handling, and 216 generated methods over 189
+  source-pinned Holm route/method contracts (174 keys, 18 exclusions).
+- Normal, FORCE_COLOR, TAP, and TAP+color full CI are green. Latest measured
+  coverage is at least `98.14` statements, `98.99` lines, `98.65` functions,
+  `95.32` branches, and `100.00` changed-reachable; 267 dist artifacts reproduce
+  and installed-package smoke imports all entry points.
+- Live read-only Holm authority at `773b00f` has no relevant admin/package drift
+  from the committed ledger. Holm has unrelated dirty runtime work and remains
+  read-only.
 
 ## Future
 
-1. No required v0.1 work remains; choose the next product capability only from
-   actual demand (`#008`/`#010`–`#013` remain deferred).
-2. Optional owner decisions: configure npm trusted publishing/OIDC, add a second
-   organization recovery owner, and enable GitHub release immutability for future
-   releases after reviewing their operational trade-offs.
-3. Optional Holm dev-login defect filing still requires separate Holm-repo write
-   approval.
+1. Commit the complete product/generated/docs candidate and run one fresh
+   independent SDK review; remediate every accepted finding.
+2. Obtain fresh read-only Holm-authority acceptance against a named current
+   commit and rerun the final release/package/audit/dry-run gates.
+3. Only with all gates green: push exact reviewed target, create annotated
+   `v0.2.0`, publish GitHub release assets/checksums, publish npm `0.2.0`, and
+   verify a clean registry install. Otherwise stop without publication.

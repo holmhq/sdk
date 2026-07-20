@@ -1,4 +1,4 @@
-// @holmhq/sdk browser-bfbb-composition: Complete v0.1 browser/BFBB convenience composition for vendored ESM use.
+// @holmhq/sdk browser-bfbb-composition: Complete v0.2 browser/BFBB convenience composition with the preview admin extension.
 export * from "./index.js";
 export * as core from "./core/index.js";
 export * as app from "./app/index.js";
@@ -56,6 +56,17 @@ export {
   createResourceController,
   createResourceHistory,
 } from "./state/index.js";
+export * as admin from "./admin/index.js";
+export {
+  ADMIN_HTTP_INVALIDATE_OPERATION,
+  ADMIN_HTTP_REQUEST_OPERATION,
+  HOLM_ADMIN_HTTP_CAPABILITY,
+  adminMethodDescriptors,
+  adminOperationProtocol,
+  adminSupport,
+  createAdminClient,
+  createAdminExtension,
+} from "./admin/index.js";
 export * as test from "./test/index.js";
 export {
   createFakeClock,

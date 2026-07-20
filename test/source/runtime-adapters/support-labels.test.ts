@@ -1,11 +1,18 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
 
+import { adminSupport } from "../../../src/admin/index.js";
 import { bridgeRuntimeSupport } from "../../../src/bridge/index.js";
 import { nodeRuntimeSupport } from "../../../src/node/index.js";
 import { sobekRuntimeSupport } from "../../../src/sobek/index.js";
 
-test("preview and reserved runtime support labels are machine-checkable", () => {
+test("preview and reserved runtime/capability support labels are machine-checkable", () => {
+  assert.deepEqual(adminSupport, {
+    packageName: "@holmhq/sdk/admin",
+    status: "preview",
+    compatibility: "not frozen",
+    production: "operator authorization required",
+  });
   assert.deepEqual(nodeRuntimeSupport, {
     packageName: "@holmhq/sdk/node",
     status: "preview",
