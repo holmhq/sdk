@@ -1,15 +1,15 @@
 ---
 title: Execution boundary
-updated: 2026-07-20
-window: W6-complete
-mode: direct owner-authorized release follow-through
-last_window: W5
-completed_issue: 008
+updated: 2026-07-21
+window: none
+mode: direct owner-authorized Medialab dogfood and SDK remediation
+last_window: W6
+completed_issue: 018
 queue: none
-release: v0.2.0
-release_review: "#063 approved #062 remediation; P1=0 P2=0 P3=1 advisory"
-holm_authority_review: "#064 accepted against Holm 9a02784; P1=0 P2=0 P3=1 advisory"
-external_blocker: none
+release: v0.2.0 remains latest; Issue 018 fix is unreleased
+release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
+holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
+external_blocker: "Medialab migration awaits an explicitly approved immutable SDK release containing Issue 018"
 security_followup: "configured: token revoked; npm-release protected; stage-only trusted publisher registered; first OIDC stage awaits next genuine release"
 trusted_publishing_review: "#065 approved f1780e8; P1=0 P2=0 P3=1 environment-protection advisory"
 ---
@@ -40,11 +40,16 @@ outcome. This did not authorize Holm edits or unrelated production changes.
 
 ## Current boundary
 
-W6 is complete. Issue `#008` is resolved and `@holmhq/sdk@0.2.0` is public with
-`latest` pointing to it. Annotated tag `v0.2.0` peels to exact reviewed target
-`189eaa6`; GitHub's latest release assets and the npm registry tarball match the
-reviewed checksums byte-for-byte, and a clean registry consumer imports all 11
-entry points. Actions, realtime, collaboration, framework bindings, and
+W6 is complete. Issue `#008` is resolved and `@holmhq/sdk@0.2.0` remains public
+with `latest` pointing to it. Annotated tag `v0.2.0` peels to exact reviewed
+target `189eaa6`; those immutable npm/GitHub artifacts do not contain the later
+Issue `#018` remediation.
+
+Issue `#018` is resolved at `bb663d9`: web multipart fallback now preserves the
+declared upload MIME while resumable chunks remain octet-stream. Independent
+Review `#066` approved and fresh read-only Holm Review `#067` accepted against
+`9fbc0b4`, both with `P1=0 P2=0 P3=0`; full release checks pass. No new release
+window is active. Actions, realtime, collaboration, framework bindings, and
 Holm-side cutover remain deferred.
 
 ## Owner decision — 2026-07-20
@@ -52,9 +57,15 @@ Holm-side cutover remain deferred.
 The owner selected the admin migration as the next significant autonomous track
 and explicitly authorized release rather than an unreleased checkpoint when
 quality is proven. Direct serial execution is the selected mode; blind
-orchestration was not activated. Conditional release includes push, annotated
+orchestration was not activated. Conditional release included push, annotated
 `v0.2.0`, GitHub release assets, and npm publication after—not before—the review
 and authority gates.
+
+The owner later selected active Medialab as the next SDK adopter and authorized
+the bounded frontend migration. Dogfooding exposed Issue `#018`, which was
+remediated and reviewed in this repository. That instruction did not authorize
+a new SDK release, npm stage, push, tag, or Medialab deployment; those remain
+explicit owner decisions.
 
 ## Standing limits
 
@@ -70,8 +81,12 @@ and authority gates.
   trusted publisher is registered for exact workflow `publish.yml`, environment
   `npm-release`, and only the `npm stage publish` action.
 - Do not stage a dummy package or rerun published `v0.2.0`. The next genuine
-  reviewed release must prove its first OIDC stage; after success, require 2FA
-  and disallow tokens in npm package access.
+  reviewed release must include the approved Issue `#018` fix at or after
+  `bb663d9` and prove its first OIDC stage; after success, require 2FA and
+  disallow tokens in npm package access.
+- Do not deploy the prepared Medialab migration while it pins public `0.2.0`.
+  First publish and verify an explicitly approved immutable fixed SDK version,
+  then update the exact app pin and rerun its local gates/review.
 - Use candidate runbook `koder/skills/npm-release/` for that release. Pi, Claude
   Code, and Codex compatibility paths are symlinks to this canonical copy; mark
   it proven only after recording a successful genuine OIDC run.

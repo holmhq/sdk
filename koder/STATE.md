@@ -1,59 +1,51 @@
 ---
-updated_at: "20 Jul 2026 | 07:56 PM IST"
+updated_at: "21 Jul 2026 | 12:47 AM IST"
 state: READY
-active_window: "none — W6 complete; 0.2.0 released and publishing hardening configured"
-active_issue: "none; #008 resolved"
-orchestration_mode: "direct owner-assisted external hardening complete"
-stop_gate: "none now; first genuine OIDC stage must pass before token-disallow package access"
+active_window: "none — Issue #018 remediated and reviewed; release decision deferred"
+active_issue: "none; #018 resolved at bb663d9"
+orchestration_mode: "direct SDK remediation plus read-only Medialab/Holm validation"
+stop_gate: "owner approval of a genuine new SDK version/release before npm staging or Medialab deploy"
 ---
 
 # Koder State
 
 ## Past
 
-- W1–W5 delivered and released `@holmhq/sdk@0.1.0`: stable web/BFBB,
-  framework-neutral state, runtime adapters, reproducible artifacts, docs, and
-  production Sokoban proof.
-- W6 resolved Issue `#008`: preview `@holmhq/sdk/admin`, explicit
-  `createAdminClient({ runtime, caller })`, operator-gated web/Node transport,
-  runtime-neutral uploads/binary behavior, and 216 generated methods over 189
-  source-pinned Holm route/method contracts.
-- Review `#062` found one upload-preflight P1; TDD remediation landed at
-  `96485b7`, and Review `#063` approved with `P1=0 P2=0 P3=1`. Fresh read-only
-  Holm Review `#064` accepted against `9a02784`, `P1=0 P2=0 P3=1`.
+- W1–W5 delivered stable web/BFBB, framework-neutral state, runtime adapters,
+  reproducible artifacts, docs, and public `@holmhq/sdk@0.1.0`.
+- W6 delivered the audited preview admin/operator client and public `0.2.0`;
+  Reviews `#063` and `#064` accepted the remediated SDK/Holm boundaries.
+- Stage-only npm OIDC publishing is configured and Review `#065` approved it.
+  The old publish token is revoked, npm CLI auth is removed, and the protected
+  `npm-release` environment awaits its first genuine release run.
 
 ## Present
 
-- `@holmhq/sdk@0.2.0` is public on npm and `latest` points to it. Registry SHA-1
-  `6fb216caa5502a80f0b568119b0727d6ba96d46c` and downloaded tarball bytes match
-  the reviewed package; a clean registry install imports all 11 entry points.
-- Annotated tag `v0.2.0` peels to exact reviewed target `189eaa6`. GitHub's
-  latest release is live with tarball, `SHA256SUMS`, and `dist-manifest.json`;
-  downloaded assets match prepared checksums byte-for-byte.
-- Exact-target normal release check plus FORCE_COLOR/TAP/TAP+color CI passed
-  with identical metrics (`98.09` statements, `98.95` lines, `98.65` functions,
-  `95.31` branches, `100.00` changed-reachable), 230 source tests, 24 dist tests,
-  and 267 reproducible artifacts.
-- Stage-only OIDC workflow `publish.yml` is implemented at `f1780e8`; full CI is
-  green and independent Review `#065` approves with `P1=0 P2=0 P3=1`.
-- GitHub environment `npm-release` now requires reviewer `jikkuatwork` and only
-  permits `v*` tag deployments. npm Trusted Publisher is registered for
-  `holmhq/sdk`, `publish.yml`, `npm-release`, with only `npm stage publish`.
-- The scoped bypass-2FA token `holm-sdk-linux` is revoked, npm's active token
-  list is empty, the local npm CLI is logged out, and its stored registry auth
-  key is removed. No staging workflow was dispatched.
-- Candidate skill `koder/skills/npm-release/` captures the owner-present OIDC
-  runbook at `7244c4e`; tracked symlinks expose the one canonical copy to Pi,
-  Claude Code, and Codex. Validation and the published-`0.2.0` stop route pass,
-  but only the next genuine release can prove the live stage/approval path.
+- Medialab dogfooding found Issue `#018`: public `0.2.0` changed declared file
+  MIME to `application/octet-stream` in the supported web multipart fallback.
+- Strict-TDD fix `bb663d9` preserves declared multipart MIME while resumable
+  chunks remain octet-stream. Generated ESM/maps/manifests are current.
+- Independent Review `#066` approved with `P1=0 P2=0 P3=0`; fresh read-only
+  Holm Review `#067` accepted against `9fbc0b4`, also `P1=0 P2=0 P3=0`.
+- Final `release:check` is green: 230 source tests, 25 dist tests, 267
+  reproducible artifacts, 290-file installed-package smoke, `100.00`
+  changed-reachable coverage, and size `296327` raw / `226159` minified /
+  `58504` gzip. FORCE_COLOR, TAP, and TAP+color CI also pass.
+- Published `0.2.0`, tag `v0.2.0`, and its release assets remain immutable and
+  do not contain Issue `#018`. No version bump, push, tag, stage, release,
+  publication, or deployment occurred.
+- The external Medialab frontend migration is prepared and reviewed locally,
+  but remains blocked on an immutable fixed SDK release before production use.
 
 ## Future
 
-1. At the next genuine reviewed release, use the `npm-release` skill with its
-   exact annotated tag, approve the protected environment, and verify OIDC
-   stages the unpublished package. Do not create a dummy release merely to test.
-2. Review and WebAuthn-approve that staged package, set npm package access to
-   require 2FA and disallow tokens, then update the candidate skill with proven
-   run evidence.
-3. Choose further capability work only from actual demand; Issues `#010`–`#013`
-   remain deferred.
+1. Decide the genuine next SDK version and release scope. If approved, use the
+   `npm-release` skill with the exact reviewed annotated tag; never create a
+   dummy release or rerun `v0.2.0`.
+2. After the fixed package is public and verified, update Medialab's exact pin,
+   rerun its adapter/build/upload smokes and review, then separately authorize
+   any app deployment.
+3. After the first successful OIDC stage, require npm package 2FA and disallow
+   tokens, then mark the release skill proven with run evidence.
+4. Keep Issues `#010`–`#013` demand-driven; do not activate them merely to fill
+   a release.
