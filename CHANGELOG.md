@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Preserve each declared upload MIME type when the web adapter falls back from
+  resumable upload to multipart form data. Resumable chunk bodies remain
+  `application/octet-stream`.
+
 ## 0.2.0 — 2026-07-20
 
 Adds the audited admin/operator client as an isolated preview while preserving

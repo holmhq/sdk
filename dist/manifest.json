@@ -2192,21 +2192,21 @@
         "gzipBytes": 4096,
         "rawBytes": 16384
       },
-      "bytes": 11085,
-      "gzipBytes": 2397,
+      "bytes": 11230,
+      "gzipBytes": 2436,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.0 generated artifact; MIT license.",
-      "minifiedBytes": 7963,
+      "minifiedBytes": 8089,
       "path": "dist/web/upload-service.js",
-      "rawBytes": 11085,
-      "sha256": "f3ee287542e43f2d9d6f59dd22ea9528595669017c2bbf1654735d27768c8316"
+      "rawBytes": 11230,
+      "sha256": "6afa231c16632366eb18286ce3986bcdca68c0a4dbfe08a0254a00cdb4695c3f"
     },
     {
-      "bytes": 10727,
+      "bytes": 10920,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.0 generated artifact; MIT license.",
       "path": "dist/web/upload-service.js.map",
-      "sha256": "1a9bb88005b41a1eb17f51de0f701ad16ee147f6b41c28d63bcc0e415a6e6745"
+      "sha256": "efd07b1ee0d2c06f4f1eac207ba68e62f440792f05c3ab338d3e4496c3dbb693"
     },
     {
       "bytes": 980,

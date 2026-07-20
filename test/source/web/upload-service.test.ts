@@ -121,6 +121,7 @@ test("web upload service isolates unavailable resumable routes behind multipart 
       caption: form.get("caption"),
       fileName: uploaded instanceof File ? uploaded.name : null,
       fileSize: uploaded instanceof Blob ? uploaded.size : null,
+      fileType: uploaded instanceof Blob ? uploaded.type : null,
     });
   };
   const service = createWebUploadService({ fetch: fixtureFetch });
@@ -138,7 +139,12 @@ test("web upload service isolates unavailable resumable routes behind multipart 
     onProgress: (event: UploadProgressEvent) => progress.push(event.loaded),
   });
 
-  assert.deepEqual(result, { caption: "Fallback", fileName: "fallback.txt", fileSize: 8 });
+  assert.deepEqual(result, {
+    caption: "Fallback",
+    fileName: "fallback.txt",
+    fileSize: 8,
+    fileType: "text/plain",
+  });
   assert.deepEqual(progress, [0, 8]);
   assert.equal(service.progressMode, "acknowledged-resumable+coarse-multipart-fallback");
   assert.deepEqual(calls.map((call) => `${call.method} ${call.path}`), [

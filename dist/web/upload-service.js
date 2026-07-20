@@ -176,7 +176,7 @@ async function uploadMultipartFallback(input, send) {
     for (const file of input.files) {
         const chunk = await file.source.slice(0, file.size);
         throwIfCancelled(input.signal);
-        form.append(file.field, webChunkBlob(chunk.body), file.name);
+        form.append(file.field, webMultipartFileBlob(chunk.body, file.type), file.name);
     }
     const result = await send("POST", input.path, form, input.signal);
     throwIfCancelled(input.signal);
@@ -203,6 +203,10 @@ function webChunkBlob(body) {
         });
     }
     return body.blob;
+}
+function webMultipartFileBlob(body, type) {
+    const blob = webChunkBlob(body);
+    return blob.slice(0, blob.size, type);
 }
 function uploadSession(value) {
     const record = wireRecord(value, "upload session");

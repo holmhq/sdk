@@ -76,6 +76,7 @@ import {
   createWebApp,
   createWebSessionAuth,
   createWebUploadFile,
+  createWebUploadService,
   webRuntime,
 } from "../../dist/web/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../dist/test/index.js";
@@ -697,6 +698,44 @@ test("generated ESM artifact exposes S12 upload seam helpers", async () => {
   assert.equal(redactUploadRequest({ path: "/api/upload", fields: [{ name: "caption", value: "secret" }], files: [file] }).fields[0].value, "[redacted]");
   assert.equal(nodeUpload.size, 2);
   assert.equal(webUpload.size, 2);
+});
+
+test("generated ESM web upload fallback preserves the declared MIME type", async () => {
+  let uploadedFile;
+  const service = createWebUploadService({
+    baseUrl: "https://app.example.test/",
+    fetch: async (input, init = {}) => {
+      const url = new URL(String(input));
+      if (url.pathname === "/api/uploads") {
+        return new Response(JSON.stringify({ code: "missing" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        });
+      }
+      const form = init.body;
+      assert.equal(form instanceof FormData, true);
+      uploadedFile = form.get("file");
+      return new Response(JSON.stringify({ ok: true }), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    },
+  });
+
+  await service.upload({
+    path: "/api/import",
+    files: [createWebUploadFile({
+      field: "file",
+      name: "photo.jpg",
+      type: "image/jpeg",
+      blob: new Blob(["jpeg"], { type: "image/jpeg" }),
+    })],
+  });
+
+  assert.equal(uploadedFile instanceof Blob, true);
+  assert.equal(uploadedFile.name, "photo.jpg");
+  assert.equal(uploadedFile.type, "image/jpeg");
+  assert.equal(uploadedFile.size, 4);
 });
 
 test("generated ESM artifact exposes S11 cache invalidation and diagnostics", async () => {
