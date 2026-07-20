@@ -1,10 +1,10 @@
 ---
-updated_at: "20 Jul 2026 | 02:09 PM IST"
+updated_at: "20 Jul 2026 | 02:47 PM IST"
 state: BLOCKED
 active_window: "none — W6 complete; 0.2.0 released"
 active_issue: "none; #008 resolved"
 orchestration_mode: "direct owner-authorized release follow-through complete"
-stop_gate: "revoke temporary npm token holm-sdk-linux, then commit/push release state and clean close"
+stop_gate: "revoke npm token holm-sdk-linux, protect npm-release, and register publish.yml as stage-only npm trusted publisher"
 ---
 
 # Koder State
@@ -37,13 +37,17 @@ stop_gate: "revoke temporary npm token holm-sdk-linux, then commit/push release 
 - Local `NPM_ACCESS_TOKEN` and temporary npm config are removed. The browser-
   created no-expiry token `holm-sdk-linux` must still be revoked in npm's web UI
   before the session can close without a credential risk.
+- Stage-only OIDC workflow `publish.yml` is implemented at `f1780e8`; full CI is
+  green and independent Review `#065` approves with `P1=0 P2=0 P3=1`. Its P3:
+  GitHub environment `npm-release` exists but still has no protection rules.
 
 ## Future
 
 1. Revoke npm token `holm-sdk-linux`; do not paste it or any credential into the
    repository or chat.
-2. Commit/push this final release state and verify Git is clean and synchronized.
-3. Before another npm release, configure trusted publishing/OIDC; npm plans to
-   remove direct bypass-2FA token publishing around January 2027.
+2. Add required reviewers/protection to GitHub environment `npm-release`.
+3. Register npm trusted publisher: `holmhq` / `sdk` / `publish.yml` /
+   `npm-release`, allowed action `npm stage publish` only. After its first real
+   stage, set npm publishing access to require 2FA and disallow tokens.
 4. Choose further capability work only from actual demand; Issues `#010`–`#013`
    remain deferred.
