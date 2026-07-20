@@ -12,8 +12,8 @@ source:
 type: design
 issue_kind: track
 slice_count: 15
-slices_done: 10
-slices_deferred: 5
+slices_done: 11
+slices_deferred: 4
 context: Build a new universal TypeScript SDK without deleting the existing Holm SDK/state packages, then migrate capabilities only with conformance evidence.
 ---
 
@@ -190,7 +190,7 @@ Highest-value sources at Holm commit
 | Framework-neutral reactive resources | done | [`#006`](../006_reactive_resources/INDEX.md) | `#004`, `#005` | immutable snapshot/subscription tests |
 | A2 Holm-authority conformance remediation | done | [`#016`](../016_a2_authority_conformance_remediation/INDEX.md) | `#004`, `#005`, `#006` | SDK re-review + Holm authority acceptance |
 | Web/app client migration | done | [`#007`](../007_web_app_client/INDEX.md) | `#005`, `#006`, `#016` | adopted app methods + browser tests |
-| Admin/operator client migration | deferred | [`#008`](../008_admin_client/INDEX.md) | `#005`, `#016` | demand-driven; legacy Holm package remains authoritative |
+| Admin/operator client migration | done | [`#008`](../008_admin_client/INDEX.md) | `#005`, `#016` | released as audited preview in `0.2.0`; legacy Holm package remains live |
 | Runtime/surface adapter contracts | done | [`#009`](../009_runtime_surface_adapters/INDEX.md) | `#004`, `#005`, `#016` | web/node/test adapters; reserved bridge contracts |
 | Action/schema and CLI surface helpers | deferred | [`#010`](../010_actions_cli_surface/INDEX.md) | `#004`, `#009`, `#016` | demand-driven after Holm exposes the required registry |
 | Realtime extension and future presence seam | deferred | [`#011`](../011_realtime_extension/INDEX.md) | `#004`, `#006`, `#009` | shipped capability truth remains unavailable beyond reconcile seam |
@@ -202,13 +202,13 @@ Highest-value sources at Holm commit
 ## Execution boundary
 
 The owner accepted the private RC and pilot, then explicitly authorized the
-`0.1.0` promotion/release follow-through on 2026-07-18. Included slices are
-complete; `#008` and `#010`–`#013` are deferred by owner decision and do not
-block this track. Reviews `#060`/`#061` approve the release delta and publish
-dry-run fix. Public npm package `@holmhq/sdk@0.1.0`, immutable tag `v0.1.0`,
-and the GitHub release are live. No future capability slice is activated by
-this closure. Cross-repository ownership remains indexed in
-`koder/projects/INDEX.md`.
+`0.1.0` promotion/release follow-through on 2026-07-18. On 2026-07-20 the owner
+activated demand-driven Issue `#008`; Reviews `#063`/`#064` approved its SDK and
+Holm-authority boundaries, and public `@holmhq/sdk@0.2.0`, annotated tag
+`v0.2.0`, and the latest GitHub release now ship the audited admin client as
+preview. Issues `#010`–`#013` remain demand-driven and deferred. No future
+capability slice is activated by this closure. Cross-repository ownership
+remains indexed in `koder/projects/INDEX.md`.
 
 ## Recommended execution order
 
@@ -255,8 +255,8 @@ explicit worktree ownership; parallelism is expected across repositories.
       evidence.
 - [x] `@holmhq/sdk` has a reviewed strict-TypeScript architecture and stable
       initial public contract.
-- [x] Included core, web, Node preview, test, state, and app paths pass
-      conformance; admin migration is explicitly deferred.
+- [x] Included core, web, Node preview, test, state, app, and admin-preview paths
+      pass conformance; remaining capability slices are explicitly deferred.
 - [x] Realtime and collaboration have honest shipped-versus-future capability
       gates and reconciliation tests without claiming a transport/provider.
 - [x] Vanilla and React usage share one Resource contract without a framework
@@ -264,7 +264,8 @@ explicit worktree ownership; parallelism is expected across repositories.
 - [x] Complete BFBB ESM artifacts vendor from immutable refs and pass offline
       integrity and browser-pilot evidence.
 - [x] npm stayed unpublished/private until the separate 2026-07-18 owner
-      decision; public `@holmhq/sdk@0.1.0` is published and registry-installed.
+      decision; public `0.1.0` and reviewed additive `0.2.0` are published and
+      registry-installed from immutable release targets.
 - [x] Existing Holm SDK/state ownership remains documented; no deletion occurs
       under this track.
 - [x] README, technical agent guide, API support, migration, capability, and

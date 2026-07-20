@@ -1,15 +1,16 @@
 ---
 title: Execution boundary
 updated: 2026-07-20
-window: W6-issue008-admin
-mode: direct owner-authorized autonomous execution
+window: W6-complete
+mode: direct owner-authorized release follow-through
 last_window: W5
-active_issue: 008
+completed_issue: 008
 queue: none
-release_target: v0.2.0-conditional
+release: v0.2.0
 release_review: "#063 approved #062 remediation; P1=0 P2=0 P3=1 advisory"
 holm_authority_review: "#064 accepted against Holm 9a02784; P1=0 P2=0 P3=1 advisory"
-external_blocker: "npm authentication: npm whoami -> E401 Unauthorized"
+external_blocker: none
+security_followup: "revoke browser-created npm token holm-sdk-linux; local token removed"
 ---
 
 # Execution Boundary
@@ -38,13 +39,12 @@ outcome. This did not authorize Holm edits or unrelated production changes.
 
 ## Current boundary
 
-W6 activates only Issue `#008`: implement the source-pinned admin/operator
-preview, preserve stable entry points, run full validation, obtain one
-independent SDK review and fresh read-only Holm-authority acceptance, then
-release `0.2.0` only if those gates justify confidence. Those quality gates now
-pass at exact target `189eaa6`; publication is blocked only by npm `E401`.
-Actions, realtime, collaboration, framework bindings, and Holm-side cutover
-remain deferred.
+W6 is complete. Issue `#008` is resolved and `@holmhq/sdk@0.2.0` is public with
+`latest` pointing to it. Annotated tag `v0.2.0` peels to exact reviewed target
+`189eaa6`; GitHub's latest release assets and the npm registry tarball match the
+reviewed checksums byte-for-byte, and a clean registry consumer imports all 11
+entry points. Actions, realtime, collaboration, framework bindings, and
+Holm-side cutover remain deferred.
 
 ## Owner decision — 2026-07-20
 
@@ -62,5 +62,10 @@ and authority gates.
 - Work remains serial on `main`; no worktrees without explicit approval.
 - This release uses new version `0.2.0`; published `0.1.0` and its reviewed
   tag/checksummed assets remain immutable and must not be mutated.
-- Trusted publishing/OIDC, organization recovery, and GitHub release
-  immutability are optional owner decisions, not prerequisites retroactively.
+- Revoke the temporary browser-created `holm-sdk-linux` npm token; its local
+  `.env` value and temporary npm config are already removed.
+- Adopt trusted publishing/OIDC before the next npm release. npm has announced
+  that bypass-2FA granular tokens will lose direct publishing around January
+  2027.
+- Organization recovery and GitHub release immutability remain optional owner
+  decisions.

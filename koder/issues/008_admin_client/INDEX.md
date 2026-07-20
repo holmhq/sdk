@@ -1,8 +1,10 @@
 ---
-status: blocked
+status: resolved
 priority: P1
 created: 2026-07-13
 updated: 2026-07-20
+resolved: 2026-07-20
+release: v0.2.0
 tags: admin, operator, routes, migration, audit
 parent: 001
 depends_on: [005]
@@ -36,7 +38,7 @@ core contracts, weaken types, or silently diverge from Holm.
   convenience bundle exports them;
 - establish a repeatable Holm route-inventory refresh/conformance process.
 
-## Current candidate — 2026-07-20
+## Released outcome — 2026-07-20
 
 - Public preview subpath: `@holmhq/sdk/admin`; complete BFBB `holm.js` includes
   it while narrow `holm-web.js` remains admin-free.
@@ -56,8 +58,9 @@ core contracts, weaken types, or silently diverge from Holm.
   authoritative. Fresh Holm-authority Review `#064` accepts candidate `189eaa6`
   against Holm `9a02784`, `P1=0 P2=0 P3=1`.
 - Exact-target release/dry-run/audit/package gates and prepared asset checksums
-  pass. Real npm publication is blocked only by `npm whoami` returning `E401`;
-  no partial tag, GitHub release, or publish occurred.
+  pass. `@holmhq/sdk@0.2.0` is public with `latest` pointing to it; annotated tag
+  `v0.2.0` and the latest GitHub release point to reviewed target `189eaa6`, and
+  registry/GitHub assets verify byte-for-byte.
 
 ## Acceptance Criteria
 
@@ -98,5 +101,6 @@ ledger. Standard operation objects replace positional legacy arguments;
 platform uploads remain injected services; existing stable entry points remain
 compatible. Holm stays read-only and existing Holm packages remain live.
 
-Release actions stop unless every gate is green. No Holm edit, deployment,
-production mutation, or unrelated capability work is authorized.
+All release gates passed and the owner-authorized npm/tag/GitHub release is
+complete. No Holm edit, deployment, unrelated production mutation, old-package
+cutover, or unrelated capability work occurred.

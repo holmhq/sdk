@@ -1,10 +1,10 @@
 ---
-updated_at: "20 Jul 2026 | 11:32 AM IST"
+updated_at: "20 Jul 2026 | 02:09 PM IST"
 state: BLOCKED
-active_window: "W6 — Issue #008 admin/operator preview and conditional 0.2.0 release"
-active_issue: "#008"
-orchestration_mode: "direct owner-authorized autonomous execution"
-stop_gate: "owner restores npm authentication (`npm whoami` succeeds); then exact-target publish/tag/GitHub verification and clean close"
+active_window: "none — W6 complete; 0.2.0 released"
+active_issue: "none; #008 resolved"
+orchestration_mode: "direct owner-authorized release follow-through complete"
+stop_gate: "revoke temporary npm token holm-sdk-linux, then commit/push release state and clean close"
 ---
 
 # Koder State
@@ -14,43 +14,36 @@ stop_gate: "owner restores npm authentication (`npm whoami` succeeds); then exac
 - W1–W5 delivered and released `@holmhq/sdk@0.1.0`: stable web/BFBB,
   framework-neutral state, runtime adapters, reproducible artifacts, docs, and
   production Sokoban proof.
-- Issue `#008` was explicitly activated on 2026-07-20 as the next demand-driven
-  capability, with owner authorization to release `0.2.0` only when quality is
-  proven.
+- W6 resolved Issue `#008`: preview `@holmhq/sdk/admin`, explicit
+  `createAdminClient({ runtime, caller })`, operator-gated web/Node transport,
+  runtime-neutral uploads/binary behavior, and 216 generated methods over 189
+  source-pinned Holm route/method contracts.
+- Review `#062` found one upload-preflight P1; TDD remediation landed at
+  `96485b7`, and Review `#063` approved with `P1=0 P2=0 P3=1`. Fresh read-only
+  Holm Review `#064` accepted against `9a02784`, `P1=0 P2=0 P3=1`.
 
 ## Present
 
-- The `0.2.0` candidate adds isolated preview `@holmhq/sdk/admin`, explicit
-  `createAdminClient({ runtime, caller })`, operator-gated web/Node transport,
-  runtime-neutral uploads/binary handling, and 216 generated methods over 189
-  source-pinned Holm route/method contracts (174 keys, 18 exclusions).
-- Candidate commit `291fdaf` passed the four-mode CI matrix. Independent Review
-  `#062` then found one P1: injected upload services ran before the operator
-  caller gate. TDD remediation now preflights `holm.http.admin` before every
-  upload side effect; web/Node source tests and generated-dist tests prove a
-  non-operator produces zero upload calls.
-- The remediated normal CI is green: 230 source tests, 24 dist tests, coverage
-  `98.09` statements / `98.95` lines / `98.65` functions / `95.31` branches /
-  `100.00` changed-reachable, 267 reproducible dist artifacts, and installed
-  package smoke across all entry points. Fresh Review `#063` approves exact
-  product target `96485b7`, closing Review `#062` with `P1=0 P2=0 P3=1`; the P3
-  is a bounded caller-transition TOCTOU advisory with Holm remaining authority.
-- Fresh Holm-authority Review `#064` accepts candidate `189eaa6` against Holm
-  `9a02784`, `P1=0 P2=0 P3=1`; its P3 is an unrelated stale generated Holm
-  inventory document, while all admin route authority checks pass.
-- Exact-target normal release check plus FORCE_COLOR/TAP/TAP+color CI pass with
-  identical metrics. Dry-run publication, audit, reproducibility, package smoke,
-  and a fresh 11-entry-point tarball install pass. Release assets/checksums are
-  recorded in `koder/evidence/005_v020_release_candidate/INDEX.md`.
-- Real release is externally blocked: `npm whoami` returns `E401 Unauthorized`.
-  `0.2.0` is absent from npm; no tag, GitHub release, or real publish occurred,
-  avoiding a partial release.
+- `@holmhq/sdk@0.2.0` is public on npm and `latest` points to it. Registry SHA-1
+  `6fb216caa5502a80f0b568119b0727d6ba96d46c` and downloaded tarball bytes match
+  the reviewed package; a clean registry install imports all 11 entry points.
+- Annotated tag `v0.2.0` peels to exact reviewed target `189eaa6`. GitHub's
+  latest release is live with tarball, `SHA256SUMS`, and `dist-manifest.json`;
+  downloaded assets match prepared checksums byte-for-byte.
+- Exact-target normal release check plus FORCE_COLOR/TAP/TAP+color CI passed
+  with identical metrics (`98.09` statements, `98.95` lines, `98.65` functions,
+  `95.31` branches, `100.00` changed-reachable), 230 source tests, 24 dist tests,
+  and 267 reproducible artifacts.
+- Local `NPM_ACCESS_TOKEN` and temporary npm config are removed. The browser-
+  created no-expiry token `holm-sdk-linux` must still be revoked in npm's web UI
+  before the session can close without a credential risk.
 
 ## Future
 
-1. Owner authenticates npm (for example `npm login --auth-type=web`) and confirms
-   `npm whoami` succeeds; do not paste credentials into chat or repo files.
-2. Resume exact-target release: verify version/tag absence, publish npm `0.2.0`,
-   compare registry shasum to `6fb216c...`, create annotated `v0.2.0` and GitHub
-   release assets, then run a clean registry-consumer import of all entry points.
-3. Commit/push final release state and close only when Git is clean and synced.
+1. Revoke npm token `holm-sdk-linux`; do not paste it or any credential into the
+   repository or chat.
+2. Commit/push this final release state and verify Git is clean and synchronized.
+3. Before another npm release, configure trusted publishing/OIDC; npm plans to
+   remove direct bypass-2FA token publishing around January 2027.
+4. Choose further capability work only from actual demand; Issues `#010`–`#013`
+   remain deferred.

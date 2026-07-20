@@ -1,14 +1,15 @@
 ---
 title: 0.2.0 exact-target release candidate evidence
-status: blocked
+status: released
 sdk_candidate: 189eaa6261b9c357a6a61bf813cd9fcd1eeb372a
 product_target: 96485b7d2922893efb3477cd174a3017e3de10ce
 version: 0.2.0
-blocker: npm authentication returns E401
+release: v0.2.0
+registry_shasum: 6fb216caa5502a80f0b568119b0727d6ba96d46c
 updated: 2026-07-20
 ---
 
-# `@holmhq/sdk@0.2.0` Release Candidate
+# `@holmhq/sdk@0.2.0` Release Evidence
 
 ## Exact target
 
@@ -47,17 +48,25 @@ later package-bearing commit.
 The prepared tarball at `/tmp/sdk-v020-release/` installs cleanly and imports
 root, core, transports, app, admin, web, state, node, sobek, bridge, and test.
 
-## Blocker and continuation
+## Live publication verification
 
-`npm whoami` returns `E401 Unauthorized`. An npm credential entry exists but is
-not accepted by the registry. No tag, GitHub release, or real npm publication
-has occurred; this avoids a partial release.
+- `@holmhq/sdk@0.2.0` is public on npm and `latest` resolves to `0.2.0`.
+- Registry SHA-1 `6fb216caa5502a80f0b568119b0727d6ba96d46c`, integrity,
+  and downloaded tarball bytes match the prepared reviewed package exactly.
+- A clean registry consumer imports all 11 entry points and confirms 216 admin
+  descriptors.
+- Annotated tag `v0.2.0` peels to exact release target `189eaa6` locally and on
+  GitHub.
+- GitHub's latest release is
+  `https://github.com/holmhq/sdk/releases/tag/v0.2.0`; downloaded tarball,
+  `SHA256SUMS`, and `dist-manifest.json` match prepared assets byte-for-byte.
 
-Owner action: authenticate npm for the publishing account (for example
-`npm login --auth-type=web`) and confirm `npm whoami` succeeds. Then continue
-from this exact release target: recheck Git/tag/version absence, publish, verify
-registry shasum/install, create the annotated tag and GitHub release assets, and
-close with a clean synchronized repository.
+A short-lived granular token was required because direct npm CLI publication
+cannot perform the account's WebAuthn ceremony. The local `.env` value and
+temporary npm config were removed after publication. Revoke the browser-created
+`holm-sdk-linux` token, then adopt trusted publishing/OIDC before a future
+release; npm has announced removal of direct bypass-2FA token publishing around
+January 2027.
 
 Do not claim the full live Holm `packages/holm-sdk/test.js` suite is green:
 Review `#064` records one unrelated stale generated inventory document while all
