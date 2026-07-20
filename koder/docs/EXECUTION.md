@@ -8,8 +8,8 @@ active_issue: 008
 queue: none
 release_target: v0.2.0-conditional
 release_review: "#063 approved #062 remediation; P1=0 P2=0 P3=1 advisory"
-holm_authority_review: pending
-external_blocker: none
+holm_authority_review: "#064 accepted against Holm 9a02784; P1=0 P2=0 P3=1 advisory"
+external_blocker: "npm authentication: npm whoami -> E401 Unauthorized"
 ---
 
 # Execution Boundary
@@ -41,8 +41,10 @@ outcome. This did not authorize Holm edits or unrelated production changes.
 W6 activates only Issue `#008`: implement the source-pinned admin/operator
 preview, preserve stable entry points, run full validation, obtain one
 independent SDK review and fresh read-only Holm-authority acceptance, then
-release `0.2.0` only if those gates justify confidence. Actions, realtime,
-collaboration, framework bindings, and Holm-side cutover remain deferred.
+release `0.2.0` only if those gates justify confidence. Those quality gates now
+pass at exact target `189eaa6`; publication is blocked only by npm `E401`.
+Actions, realtime, collaboration, framework bindings, and Holm-side cutover
+remain deferred.
 
 ## Owner decision — 2026-07-20
 

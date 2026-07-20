@@ -1,10 +1,10 @@
 ---
-updated_at: "20 Jul 2026 | 11:13 AM IST"
-state: IN_PROGRESS
+updated_at: "20 Jul 2026 | 11:30 AM IST"
+state: BLOCKED
 active_window: "W6 — Issue #008 admin/operator preview and conditional 0.2.0 release"
 active_issue: "#008"
 orchestration_mode: "direct owner-authorized autonomous execution"
-stop_gate: "fresh read-only Holm-authority acceptance + final four-mode/release gates before push/tag/GitHub/npm publication"
+stop_gate: "owner restores npm authentication (`npm whoami` succeeds); then exact-target publish/tag/GitHub verification and clean close"
 ---
 
 # Koder State
@@ -35,16 +35,22 @@ stop_gate: "fresh read-only Holm-authority acceptance + final four-mode/release 
   package smoke across all entry points. Fresh Review `#063` approves exact
   product target `96485b7`, closing Review `#062` with `P1=0 P2=0 P3=1`; the P3
   is a bounded caller-transition TOCTOU advisory with Holm remaining authority.
-- Live read-only Holm authority at `773b00f` has no relevant admin/package drift
-  from the committed ledger. Holm has unrelated dirty runtime work and remains
-  read-only.
+- Fresh Holm-authority Review `#064` accepts candidate `189eaa6` against Holm
+  `9a02784`, `P1=0 P2=0 P3=1`; its P3 is an unrelated stale generated Holm
+  inventory document, while all admin route authority checks pass.
+- Exact-target normal release check plus FORCE_COLOR/TAP/TAP+color CI pass with
+  identical metrics. Dry-run publication, audit, reproducibility, package smoke,
+  and a fresh 11-entry-point tarball install pass. Release assets/checksums are
+  recorded in `koder/evidence/005_v020_release_candidate/INDEX.md`.
+- Real release is externally blocked: `npm whoami` returns `E401 Unauthorized`.
+  `0.2.0` is absent from npm; no tag, GitHub release, or real publish occurred,
+  avoiding a partial release.
 
 ## Future
 
-1. Commit Review `#063` and the reconciled issue/state metadata, then obtain
-   fresh read-only Holm-authority acceptance against a named current commit.
-2. Rerun the four-mode release/package/audit/dry-run gates from the exact final
-   candidate and prepare immutable checksum/release assets.
-3. Only with all gates green: push exact reviewed target, create annotated
-   `v0.2.0`, publish GitHub release assets/checksums, publish npm `0.2.0`, and
-   verify a clean registry install. Otherwise stop without publication.
+1. Owner authenticates npm (for example `npm login --auth-type=web`) and confirms
+   `npm whoami` succeeds; do not paste credentials into chat or repo files.
+2. Resume exact-target release: verify version/tag absence, publish npm `0.2.0`,
+   compare registry shasum to `6fb216c...`, create annotated `v0.2.0` and GitHub
+   release assets, then run a clean registry-consumer import of all entry points.
+3. Commit/push final release state and close only when Git is clean and synced.

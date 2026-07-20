@@ -1,5 +1,5 @@
 ---
-status: in_progress
+status: blocked
 priority: P1
 created: 2026-07-13
 updated: 2026-07-20
@@ -53,8 +53,11 @@ core contracts, weaken types, or silently diverge from Holm.
   tests proving non-operators produce zero upload calls.
 - Fresh Review `#063` approves the remediation with `P1=0 P2=0 P3=1`; the P3
   records bounded caller-transition TOCTOU while Holm/upload-adapter auth remains
-  authoritative. No SDK release blocker remains. Fresh Holm-authority acceptance
-  is still pending, and no release action occurs before it approves.
+  authoritative. Fresh Holm-authority Review `#064` accepts candidate `189eaa6`
+  against Holm `9a02784`, `P1=0 P2=0 P3=1`.
+- Exact-target release/dry-run/audit/package gates and prepared asset checksums
+  pass. Real npm publication is blocked only by `npm whoami` returning `E401`;
+  no partial tag, GitHub release, or publish occurred.
 
 ## Acceptance Criteria
 
