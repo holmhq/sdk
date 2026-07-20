@@ -205,9 +205,10 @@ The owner accepted the private RC and pilot, then explicitly authorized the
 `0.1.0` promotion/release follow-through on 2026-07-18. Included slices are
 complete; `#008` and `#010`–`#013` are deferred by owner decision and do not
 block this track. Reviews `#060`/`#061` approve the release delta and publish
-dry-run fix. External publication is blocked only by rejected npm registry
-authentication; no future capability slice is activated by this closure.
-Cross-repository ownership remains indexed in `koder/projects/INDEX.md`.
+dry-run fix. Public npm package `@holmhq/sdk@0.1.0`, immutable tag `v0.1.0`,
+and the GitHub release are live. No future capability slice is activated by
+this closure. Cross-repository ownership remains indexed in
+`koder/projects/INDEX.md`.
 
 ## Recommended execution order
 
@@ -263,8 +264,7 @@ explicit worktree ownership; parallelism is expected across repositories.
 - [x] Complete BFBB ESM artifacts vendor from immutable refs and pass offline
       integrity and browser-pilot evidence.
 - [x] npm stayed unpublished/private until the separate 2026-07-18 owner
-      decision; public metadata and publish dry-run are ready, registry auth is
-      the remaining external blocker.
+      decision; public `@holmhq/sdk@0.1.0` is published and registry-installed.
 - [x] Existing Holm SDK/state ownership remains documented; no deletion occurs
       under this track.
 - [x] README, technical agent guide, API support, migration, capability, and

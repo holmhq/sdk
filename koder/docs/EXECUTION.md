@@ -1,57 +1,53 @@
 ---
 title: Execution boundary
-updated: 2026-07-18
-window: W5
-mode: direct owner-authorized unattended follow-through
+updated: 2026-07-20
+window: W5-complete
+mode: direct owner-authorized release follow-through
 last_window: W4
 completed_issue: 015
 queue: none
 release_review: koder/reviews/060_v010_release_review/INDEX.md
 publish_rereview: koder/reviews/061_v010_publish_gate_rereview/INDEX.md
-external_blocker: npm registry authentication returns E401
+release: v0.1.0
+external_blocker: none
 ---
 
 # Execution Boundary
 
 ## Owner decision — 2026-07-18
 
-The owner explicitly expanded W5 from the completed Sokoban pilot and trimmed
-Issue `#015` through genuine `0.1.0` promotion, push, tag, GitHub release, and
-npm publication, asking for the lightest process that retained the intended
-quality outcome. This supersedes the earlier no-release stop gate; it does not
-authorize Holm edits or unrelated production changes.
+The owner expanded W5 from the completed Sokoban pilot and trimmed Issue `#015`
+through genuine `0.1.0` promotion, push, tag, GitHub release, and npm
+publication, asking for the lightest process that retained the intended quality
+outcome. This did not authorize Holm edits or unrelated production changes.
 
-## Completed local outcome
+## Completed outcome
 
-- Issue `#015` and foundation track `#001` are reconciled: 10 included slices
+- Issue `#015` and foundation track `#001` are resolved: 10 included slices
   complete, 5 demand-driven slices deferred.
-- Public package product commit: `396f991`.
-- Publish dry-run inheritance fix and exact release target: `9d855c5`.
-- `npm run ci`, installed-tarball smoke, audit, and
-  `npm publish --dry-run --access public` pass.
+- Public package product commit: `396f991`; publish-gate fix and release target:
+  `9d855c501b56a3e7ea46100bc1b4b34bc979a958`.
+- `npm run release:check`, audit, reproducibility, package dry-run, and installed
+  tarball gates pass.
 - Independent Review `#060` and narrow publish-gate Review `#061` both approve
   with `P1=0 P2=0 P3=0`.
-- GitHub auth, public repository visibility, and push dry-run pass.
+- `@holmhq/sdk@0.1.0` is public on npm with `latest` pointing to `0.1.0`.
+- Annotated tag `v0.1.0` and the latest GitHub release are public; the tarball,
+  `SHA256SUMS`, and `dist-manifest.json` assets download and verify byte-for-byte.
+- A clean registry consumer imported all 10 exported entry points.
 
-## Active stop gate
+## Current boundary
 
-npm authentication fails read-only `whoami` with `E401`; the configured token
-cannot publish and no alternate environment token is present. Do not rotate,
-request, or fabricate credentials unattended. To avoid a partial release whose
-README advertises an unavailable npm package, do not create/push `v0.1.0` or a
-GitHub release until npm auth is restored.
-
-After owner-authenticated npm access works:
-
-1. verify exact target `9d855c501b56a3e7ea46100bc1b4b34bc979a958` and rerun the release gate;
-2. create/push annotated `v0.1.0` at that target;
-3. publish `@holmhq/sdk@0.1.0` with public access;
-4. create the GitHub release from `CHANGELOG.md`; and
-5. verify registry version, package install, release/tag, and clean Git.
+W5 is closed. No implementation or release blocker remains, and no next product
+window is active. Deferred admin/action/realtime/collaboration/framework work is
+not implicitly authorized by this release.
 
 ## Standing limits
 
 - Holm and repositories other than this SDK remain read-only without explicit
   approval.
-- Deferred admin/action/realtime/collaboration/framework work is not activated.
-- Work remains serial on `main`; no worktrees or partial release substitution.
+- Work remains serial on `main`; no worktrees without explicit approval.
+- A future npm release must use a new semver version; published `0.1.0` is
+  immutable, and its reviewed tag/checksummed assets must not be mutated.
+- Trusted publishing/OIDC, organization recovery, and GitHub release
+  immutability are optional owner decisions, not prerequisites retroactively.

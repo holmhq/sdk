@@ -54,8 +54,7 @@ refresh only when Holm moves). These follow demand, not the roadmap.
       build manifest.
 - [x] MIT/dependency license review passes.
 - [x] npm remained private/unpublished until the owner's explicit 2026-07-18
-      promotion decision; public `0.1.0` metadata is now prepared, while actual
-      registry publication is blocked by rejected local npm authentication.
+      promotion decision; public `@holmhq/sdk@0.1.0` is now published.
 - [x] No old Holm package is deleted; future cutover work is separately scoped.
 - [x] Issue 001 ledger and `koder/STATE.md` reconcile completed and deferred work.
 
@@ -64,7 +63,8 @@ refresh only when Holm moves). These follow demand, not the roadmap.
 - Product commit `396f991`; publish dry-run fix `9d855c5`.
 - `README.md`, `docs/{v0.1,capabilities,migration,vendoring,agent-guide}.md`,
   vanilla/React examples, and tested package allowlist/install smoke are complete.
-- Full `npm run ci` and `npm publish --dry-run --access public` pass.
+- Full `npm run ci` and `npm publish --dry-run --access public` pass;
+  `@holmhq/sdk@0.1.0`, tag `v0.1.0`, and the GitHub release are live.
 - Independent Review `#060` and narrow publish-gate Review `#061`: APPROVE,
   `P1=0 P2=0 P3=0`.
 - Live Holm source `afe4057` has no `packages/holm-sdk` or

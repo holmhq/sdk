@@ -2,7 +2,7 @@
 name: Holm SDK
 status: active
 role: portable-sdk-implementation
-updated: 2026-07-18
+updated: 2026-07-20
 local_path: ~/Projects/holmhq/sdk
 remote: git@github.com-holmhq:holmhq/sdk.git
 branch: main
@@ -20,8 +20,8 @@ bindings, extension contracts, conformance fixtures, and BFBB artifacts.
 
 ## Current state
 
-- Public `@holmhq/sdk@0.1.0` metadata and package artifacts are release-ready;
-  npm registry publication is blocked by rejected local authentication.
+- Public `@holmhq/sdk@0.1.0` is live on npm; reviewed tag `v0.1.0` and the
+  checksummed GitHub release are live.
 - MIT licensed with no runtime dependencies.
 - Issue `#001` resolved 10 included slices and explicitly deferred 5.
 - Current work and stop gate are recorded in `koder/STATE.md` and the active issue.
