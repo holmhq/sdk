@@ -1,16 +1,16 @@
 ---
 title: Execution boundary
 updated: 2026-07-21
-window: genuine @holmhq/sdk@0.2.1 release
-mode: direct owner-authorized release with protected GitHub/npm approvals
+window: v0.2.1 post-release npm/GitHub security hardening
+mode: direct owner-assisted settings hardening
 last_window: W6
 completed_issue: 018
 queue: none
-release: v0.2.1 exact target 81d5732 gated and ready to tag; v0.2.0 remains latest until verified publication
+release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
-external_blocker: "Medialab migration awaits verified public @holmhq/sdk@0.2.1; deployment remains separately unauthorized"
-security_followup: "configured: token revoked; npm-release protected; stage-only trusted publisher registered; first OIDC stage awaits next genuine release"
+external_blocker: "resolved for SDK availability; Medialab exact-pin update/review and deployment remain separate authorization"
+security_followup: "npm must disallow tokens; GitHub npm-release admin bypass remains enabled and first run recorded state=skipped"
 trusted_publishing_review: "#065 approved f1780e8; P1=0 P2=0 P3=1 environment-protection advisory"
 ---
 
@@ -40,25 +40,25 @@ outcome. This did not authorize Holm edits or unrelated production changes.
 
 ## Current boundary
 
-W6 is complete. Issue `#008` is resolved and `@holmhq/sdk@0.2.0` remains public
-with `latest` pointing to it. Annotated tag `v0.2.0` peels to exact reviewed
-target `189eaa6`; those immutable npm/GitHub artifacts do not contain the later
-Issue `#018` remediation.
+W6 is complete. Published `0.1.0` and `0.2.0`, their tags, and release assets
+remain immutable.
 
-Issue `#018` is resolved at `bb663d9`: web multipart fallback now preserves the
-declared upload MIME while resumable chunks remain octet-stream. Independent
-Review `#066` approved and fresh read-only Holm Review `#067` accepted against
-`9fbc0b4`, both with `P1=0 P2=0 P3=0`.
+Issue `#018` is resolved at `bb663d9` and released in `@holmhq/sdk@0.2.1`:
+web multipart fallback preserves declared upload MIME while resumable chunks
+remain octet-stream. Independent Review `#066` approved and fresh read-only
+Holm Review `#067` accepted against `9fbc0b4`, both with `P1=0 P2=0 P3=0`.
 
-A bounded genuine `0.2.1` release window is active. Exact release target
-`81d5732f1ba71dcbe1d42a7fe52868dedada9e56` has passed normal release, color,
-TAP, TAP+color, audit, reproducibility, package, dry-run, and installed-tarball
-MIME smokes; prepared checksums are recorded in
-`koder/evidence/006_v021_release_candidate/INDEX.md`. The remaining window
-includes push, annotated tag, the protected stage-only OIDC workflow, npm
-publication verification, GitHub release assets, and first-stage npm hardening. It excludes Medialab deployment,
-Holm writes, and unrelated capability work. Actions, realtime, collaboration,
-framework bindings, and Holm-side cutover remain deferred.
+`0.2.1` is public on npm and is the latest GitHub release. Annotated `v0.2.1`
+peels to exact target `81d5732f1ba71dcbe1d42a7fe52868dedada9e56`.
+Registry and GitHub assets verify byte-for-byte; npm signature/provenance,
+installed exports, admin inventory, and release-specific MIME smoke pass.
+Evidence is in `koder/evidence/006_v021_release_candidate/INDEX.md`.
+
+The remaining bounded window is security hardening: require npm 2FA and disallow
+tokens, then explicitly decide whether to disable GitHub environment admin
+bypass. Workflow run `29773856653` proved OIDC staging/publication, but GitHub
+recorded `state=skipped` by `holmhq-admin`, not reviewer approval. Medialab
+deployment, Holm writes, and unrelated capability work remain excluded.
 
 ## Owner decision — 2026-07-20
 
@@ -95,19 +95,18 @@ Medialab deployment or writes to Holm/other repositories.
   mutated.
 - The temporary `holm-sdk-linux` token is revoked, npm's active token list is
   empty, and the local npm CLI is logged out with no stored registry auth key.
-- Review `#065` approves stage-only `publish.yml`. Environment `npm-release` now
-  requires reviewer `jikkuatwork` and permits only `v*` tag deployments. npm's
-  trusted publisher is registered for exact workflow `publish.yml`, environment
-  `npm-release`, and only the `npm stage publish` action.
-- Do not stage a dummy package or rerun published `v0.2.0`. The authorized
-  `0.2.1` release must include the approved Issue `#018` fix at or after
-  `bb663d9`, pass exact-target gates/review, and prove its first OIDC stage;
-  after success, require 2FA and disallow tokens in npm package access.
+- Review `#065` approves stage-only `publish.yml`. Environment `npm-release`
+  requires reviewer `jikkuatwork` and permits only `v*` tag deployments, but
+  live `can_admins_bypass=true`; the first run used that bypass and does not
+  prove reviewer approval. npm's trusted publisher remains exact for workflow
+  `publish.yml`, environment `npm-release`, and only `npm stage publish`.
+- Do not stage a dummy package or rerun any published tag. `0.2.1` proved OIDC
+  publication; require 2FA and disallow tokens in npm package access now.
 - Do not deploy the prepared Medialab migration while it pins public `0.2.0`.
-  First publish and verify an explicitly approved immutable fixed SDK version,
-  then update the exact app pin and rerun its local gates/review.
-- Use candidate runbook `koder/skills/npm-release/` for that release. Pi, Claude
-  Code, and Codex compatibility paths are symlinks to this canonical copy; mark
-  it proven only after recording a successful genuine OIDC run.
+  Update to exact public `0.2.1`, rerun local gates/review, and obtain separate
+  deployment authorization.
+- Use proven runbook `koder/skills/npm-release/`; Pi, Claude Code, and Codex
+  compatibility paths remain symlinks to this canonical copy. Its proof records
+  both successful OIDC publication and the unresolved admin-bypass caveat.
 - Organization recovery and GitHub release immutability remain optional owner
   decisions.

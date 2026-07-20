@@ -1,10 +1,10 @@
 ---
-updated_at: "21 Jul 2026 | 01:21 AM IST"
+updated_at: "21 Jul 2026 | 01:59 AM IST"
 state: IN_PROGRESS
-active_window: "genuine @holmhq/sdk@0.2.1 release — prepare, gate, stage, publish, and verify"
-active_issue: "#018 release promotion; product fix resolved at bb663d9"
-orchestration_mode: "direct release execution with protected GitHub/npm owner approvals"
-stop_gate: "stop on any exact-target, OIDC, staged-package, provenance, or artifact mismatch"
+active_window: "@holmhq/sdk@0.2.1 is live; complete first-OIDC security hardening and close"
+active_issue: "#018 released in v0.2.1; hardening follow-up active"
+orchestration_mode: "direct owner-assisted npm/GitHub settings hardening"
+stop_gate: "owner-authenticated npm access update and explicit decision on GitHub admin bypass before close"
 ---
 
 # Koder State
@@ -16,37 +16,37 @@ stop_gate: "stop on any exact-target, OIDC, staged-package, provenance, or artif
 - W6 delivered the audited preview admin/operator client and public `0.2.0`;
   Reviews `#063` and `#064` accepted the remediated SDK/Holm boundaries.
 - Stage-only npm OIDC publishing is configured and Review `#065` approved it.
-  The old publish token is revoked, npm CLI auth is removed, and the protected
-  `npm-release` environment awaits its first genuine release run.
+  The old publish token is revoked, npm CLI auth is removed, and genuine
+  `v0.2.1` proved OIDC staging/publication in workflow run `29773856653`.
 
 ## Present
 
-- The owner authorized a genuine `@holmhq/sdk@0.2.1` patch release containing
-  Issue `#018`, including push, annotated tag, OIDC stage, npm publication, and
-  GitHub release verification; Medialab deployment remains separately gated.
-- Strict-TDD fix `bb663d9` preserves declared multipart MIME while resumable
-  chunks remain octet-stream. Independent Review `#066` approved with
-  `P1=0 P2=0 P3=0`; fresh read-only Holm Review `#067` accepted against
-  `9fbc0b4`, also `P1=0 P2=0 P3=0`.
-- Exact release target `81d5732` contains `0.2.1`; normal release, color, TAP,
-  TAP+color, audit, reproducibility, package, dry-run, and installed-tarball
-  MIME smokes are green from a clean tree. Prepared hashes and metrics are in
-  `koder/evidence/006_v021_release_candidate/INDEX.md`.
-- Public `0.2.0`, tag `v0.2.0`, and its release assets remain immutable. No
-  push, `v0.2.1` tag, workflow dispatch, npm stage, publication, GitHub release,
-  or deployment has occurred yet.
-- The external Medialab frontend migration remains blocked until the fixed SDK
-  package is public and independently verified.
+- `@holmhq/sdk@0.2.1` is public and npm `latest` resolves to it. Annotated
+  `v0.2.1` peels to exact reviewed target `81d5732`; GitHub's latest release is
+  `https://github.com/holmhq/sdk/releases/tag/v0.2.1`.
+- Registry tarball, GitHub tarball, manifest, and checksums match the prepared
+  artifacts byte-for-byte. npm signature/SLSA provenance, all 11 exports, 216
+  admin methods, and the installed-package multipart MIME smoke verify.
+- Workflow run `29773856653` and npm stage
+  `5194865d-de9e-4e92-b698-d0c5710e4553` prove stage-only OIDC publication.
+  The release skill now records the observed npm/GitHub sequencing.
+- GitHub's required-reviewer path was bypassed rather than approved: approvals
+  API reports `holmhq-admin`, `state=skipped`, while `can_admins_bypass=true`.
+  This does not alter the verified package, but it remains a security hardening
+  item and the normal reviewer path is not yet proven.
+- npm Publishing access still needs **Require two-factor authentication and
+  disallow tokens**. Medialab may now evaluate an exact `0.2.1` pin, but app
+  changes and deployment remain separately gated.
 
 ## Future
 
-1. Commit and push the release evidence plus exact target `81d5732`, then
-   create and push annotated `v0.2.1` at that target only.
-2. Dispatch the protected stage-only OIDC workflow with ref and input both
-   `v0.2.1`; verify the exact run before owner environment approval.
-3. Verify the staged package before npm approval; after public verification,
-   create and checksum-verify the GitHub release assets.
-4. Complete first-stage npm 2FA/token hardening, mature the release runbook with
-   observed evidence, and close with clean synchronized Git.
-5. Update and revalidate Medialab's exact SDK pin only under its separate
+1. On npm, select **Require two-factor authentication and disallow tokens**,
+   update package settings, complete owner authentication, and verify token/auth
+   absence.
+2. With explicit owner authorization, disable GitHub environment administrator
+   bypass while retaining reviewer `jikkuatwork` and `v*` tag policy. Prove a
+   normal reviewer approval only on the next genuine release—never a dummy.
+3. Commit/push the matured runbook and final release evidence, then close with a
+   clean synchronized tree.
+4. Update and revalidate Medialab's exact `0.2.1` pin only under its separate
    repository/deployment authorization.

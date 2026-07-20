@@ -17,8 +17,13 @@
 
 ## Status and authority
 
-- This is a **candidate** runbook until the first genuine release succeeds
-  end-to-end through npm OIDC. A static check or dummy package is not proof.
+- This runbook is **proven for OIDC staging and publication** by genuine release
+  `@holmhq/sdk@0.2.1`, annotated tag `v0.2.1` at
+  `81d5732f1ba71dcbe1d42a7fe52868dedada9e56`, GitHub Actions run
+  `29773856653`, and npm stage `5194865d-de9e-4e92-b698-d0c5710e4553`.
+- The first run did not prove the normal required-reviewer path: GitHub recorded
+  `holmhq-admin` with approval `state=skipped` because environment admin bypass
+  was enabled. Treat that as a hardening finding, never as reviewer approval.
 - Treat `docs/releasing.md` as the detailed release source of truth. Read it
   completely on every release. Treat `.github/workflows/publish.yml` and live
   npm/GitHub state as executable authority.
@@ -45,6 +50,12 @@ When an owner must use GitHub or npm in a browser:
    key response, cookie, or WebAuthn material into chat.
 6. Never automate the owner's WebAuthn ceremony or bypass the protected GitHub
    environment. Record outcomes, not private browser payloads or screenshots.
+7. Name the exact destination before asking for a click. npm's staged queue is
+   under the account-avatar **Staged Packages** item, not the package's
+   **Settings** tab.
+8. If the owner advances past a requested inspection, do not retroactively claim
+   it happened. Re-read live state, verify every still-verifiable invariant, and
+   record the skipped checkpoint as a process deviation.
 
 Use read-only CLI/API checks around browser steps when available. npm does not
 currently expose the package's trusted-publisher configuration through public
@@ -184,13 +195,31 @@ newest. Monitor that run with `gh run watch RUN_ID --exit-status`.
 
 When it waits on `npm-release`, use the browser interaction contract. Ask the
 owner to approve only after confirming the run is for `holmhq/sdk`, the exact
-`TAG`, and the expected workflow. A successful workflow means **staged**, not
-published. Confirm the logs show `npm stage publish` and no direct publication.
+`TAG`, and the expected workflow. After the environment decision, inspect its
+immutable API record rather than inferring approval from a running job:
+
+```bash
+gh api "repos/holmhq/sdk/actions/runs/$RUN_ID/approvals" \
+  --jq '.[] | {state, actor: .user.login, environments: [.environments[].name]}'
+```
+
+Require `state=approved` from the expected accountable reviewer. `state=skipped`
+means an administrator bypassed protection; it is not approval. Stop before npm
+approval, record the deviation, and harden the environment rather than calling
+the reviewer gate proven. The `v0.2.1` run demonstrated that a skipped decision
+can still let the job stage successfully when `can_admins_bypass` is enabled.
+
+A successful workflow means **staged**, not published. Confirm the logs show
+`npm stage publish`, signed provenance, a stage ID, and no direct publication.
+Expect `npm stage publish` to invoke `prepublishOnly`, so the canonical release
+gate may run a second time during staging.
 
 ## Approve on npm
 
-Guide the owner to npm's **Staged Packages** page one action at a time. Before
-approval, compare the staged package against the prepared evidence:
+Guide the owner through account avatar → **Staged Packages** one action at a
+time. Do not send them to the package **Settings** tab for the staged queue;
+Settings owns trusted-publisher and package-access controls. Before approval,
+compare the staged package against the prepared evidence:
 
 - package is exactly `@holmhq/sdk`;
 - version is exactly `VERSION` and is not already public;
@@ -200,23 +229,39 @@ approval, compare the staged package against the prepared evidence:
 
 Reject a mismatched stage. If correct, ask the owner to click **Approve** and
 complete WebAuthn locally. Never request ceremony output. Do not claim public
-success until registry verification passes.
+success until registry verification passes. If approval happens before the
+requested inspection, say so explicitly and perform the strongest possible
+post-publication byte, identity, provenance, and smoke verification; those checks
+do not rewrite history into a pre-approval review.
 
 ## Verify publication and release assets
 
-Follow `docs/releasing.md` and the active release evidence. At minimum:
+Follow `docs/releasing.md` and the active release evidence. npm publication and
+the GitHub Release are separate external mutations: neither `npm stage publish`
+nor npm stage approval creates a GitHub Release. It is therefore expected for
+npm to show the new version while GitHub still shows the previous release
+between steps 3 and 4. Explain that temporary divergence before npm approval,
+and do not call the overall release complete until both sides verify.
+
+At minimum:
 
 1. Verify npm `latest`, exact version, shasum, integrity, and provenance.
 2. Download the registry tarball into a fresh temporary directory and compare
    it byte-for-byte/checksum-for-checksum with the reviewed prepared tarball.
-3. Install from the registry in a clean consumer and import every exported entry
-   point; run release-specific smoke assertions.
+3. Install from the registry in a clean consumer, import every exported entry
+   point, run release-specific smoke assertions, and run `npm audit signatures`
+   to verify the registry signature and attestation.
 4. Create or finalize the GitHub release only from the immutable tag and
    prepared tarball, `SHA256SUMS`, and `dist-manifest.json`.
 5. Download every GitHub release asset and verify it byte-for-byte against the
-   prepared artifacts.
+   prepared artifacts; query `repos/holmhq/sdk/releases/latest` to verify the
+   latest release. Do not request unsupported `gh release view --json isLatest`.
 6. Record exact commit, tag peel, workflow run, npm version/integrity, checksums,
    smoke results, and release URL without storing credentials or private data.
+
+Keep the irreversible `gh release create --verify-tag ...` call separate from
+subsequent verification commands. If a verification command fails after create,
+re-read live release state before retrying; the release may already exist.
 
 ## Complete first-stage hardening
 
@@ -229,6 +274,11 @@ Only after the first genuine OIDC stage and public verification succeed:
 4. Click **Update Package Settings** and complete owner authentication.
 5. Confirm all classic/granular access tokens are absent and local npm CLI auth
    remains removed. Do not create a token to test the new setting.
+6. Inspect GitHub environment `npm-release`. Require the named reviewer and tag
+   policy to remain exact, and disable **Allow administrators to bypass
+   configured protection rules** (live API field `can_admins_bypass`) with
+   explicit owner authorization. A future genuine release—not a dummy—must
+   prove an actual `state=approved` reviewer decision.
 
 Perform those browser actions one at a time. If the first OIDC stage has not
 succeeded, leave publishing access at its existing setting and preserve this
@@ -247,6 +297,13 @@ follow-up in `koder/STATE.md`.
   all affected gates, and renew reviews when the target changes.
 - **Environment approval unavailable:** leave or cancel the run. Do not bypass
   protection.
+- **Environment decision is `state=skipped`:** an admin bypass occurred. Do not
+  report reviewer approval or continue to npm approval; preserve the exact run
+  and harden `can_admins_bypass` before a future genuine release.
+- **npm is current but GitHub still shows the prior release:** this is expected
+  only during the documented post-publication/pre-GitHub-release interval.
+  Verify npm first, create the GitHub Release from the existing tag, and verify
+  assets; never rerun staging or move the tag to reconcile the display.
 - **Wrong staged package:** reject it on npm. Never approve then repair an
   immutable public version.
 - **WebAuthn unavailable:** leave or reject the stage. Never issue a bypass-2FA
@@ -263,8 +320,7 @@ At release hand-off:
 - use the repository `close` skill and finish with clean Git;
 - report remote drift separately and push only when authorized.
 
-After the first successful genuine OIDC release, revise this runbook with the
-observed GitHub/npm screens, wait states, verification commands, and recovery
-facts. Replace the candidate statement in both this file and `SKILL.md` with the
-proven tag and workflow run evidence only after reviewing that update. Keep one
-canonical skill directory; compatibility locations must remain symlinks.
+The first successful genuine OIDC release is recorded above. Future releases
+should update this runbook only for newly observed behavior, without erasing the
+`v0.2.1` proof or its admin-bypass caveat. Keep one canonical skill directory;
+compatibility locations must remain symlinks.

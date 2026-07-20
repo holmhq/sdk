@@ -8,6 +8,9 @@ description: Safely prepare, stage, approve, verify, and harden genuine @holmhq/
 Read and follow [`references/INDEX.md`](references/INDEX.md), resolving it relative
 to this skill directory.
 
-Treat this skill as a candidate runbook until a genuine release completes its
-first end-to-end OIDC stage. Do not manufacture a package version merely to test
-the runbook.
+This runbook is proven for genuine OIDC staging and publication by
+`@holmhq/sdk@0.2.1`: annotated tag `v0.2.1`, workflow run `29773856653`, and npm
+stage `5194865d-de9e-4e92-b698-d0c5710e4553`. The first run used a GitHub admin
+protection-rule bypass (`state=skipped`), so the normal required-reviewer path
+remains a hardening item and must not be described as proven. Never manufacture
+a package version merely to test the runbook.

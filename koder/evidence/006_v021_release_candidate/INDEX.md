@@ -1,11 +1,13 @@
 ---
-title: 0.2.1 exact-target release candidate evidence
-status: ready_to_tag
+title: 0.2.1 exact-target release evidence
+status: released
 sdk_candidate: 81d5732f1ba71dcbe1d42a7fe52868dedada9e56
 product_target: bb663d92361b8278ca163be4053fae54c31ca94a
 version: 0.2.1
 release: v0.2.1
-registry_shasum: pending
+registry_shasum: e280f25ce0fa6e08a4870b4f3e4e7f1360ac6010
+workflow_run: 29773856653
+npm_stage: 5194865d-de9e-4e92-b698-d0c5710e4553
 updated: 2026-07-21
 ---
 
@@ -90,10 +92,50 @@ admin descriptors, and forced the generated web upload service through the
 multipart fallback. The installed `0.2.1` package preserved `photo.jpg` as
 `image/jpeg` with 4 bytes.
 
-## Release stop conditions
+## OIDC stage and approval evidence
 
-Push and tag only this exact target. Dispatch `publish.yml` with both workflow
-ref and input equal to annotated `v0.2.1`. Reject any GitHub run, npm stage,
-provenance, package identity, file list, integrity, checksum, or source-target
-mismatch. Workflow success means staged, not public; public success requires npm
-approval and independent registry verification.
+- `main` was pushed through evidence commit `664ae51`; annotated tag `v0.2.1`
+  has tag object `22980a8f45805ca3e7edb37275e9ec96aa227f37` and peels locally and remotely
+  to exact package target `81d5732f1ba71dcbe1d42a7fe52868dedada9e56`.
+- GitHub Actions run `29773856653` used ref and input `v0.2.1`, checked out the
+  exact peeled target, passed identity/audit/release/cleanliness gates, and ran
+  only `npm stage publish . --access public --tag latest`.
+- npm stage `5194865d-de9e-4e92-b698-d0c5710e4553` was created with signed
+  provenance; transparency-log index `2207354834` was reported by the workflow.
+- The required-reviewer path was **not** exercised successfully. GitHub's
+  approvals API records actor `holmhq-admin`, `state=skipped`, environment
+  `npm-release`, with `can_admins_bypass=true`. This was an administrator bypass,
+  not approval by configured reviewer `jikkuatwork`; keep it as a hardening
+  finding and require a real approval on the next genuine release.
+- The owner approved the npm stage before the requested staged-detail screenshot
+  inspection. Post-publication verification below proves the immutable result,
+  but does not retroactively count as pre-approval stage review.
+
+## Live publication and GitHub release verification
+
+- `@holmhq/sdk@0.2.1` is public and npm `latest` resolves to `0.2.1`.
+- Registry SHA-1 is `e280f25ce0fa6e08a4870b4f3e4e7f1360ac6010`; integrity is
+  `sha512-TjXE0RVgUSABqoKHPa6mAJsUd6+3pQnlGMXTPcTOSZBD4eZzSEGJnmpaMA7iQSCHleAlTe7+kWP6509OtBrMPw==`.
+- The fresh registry tarball is byte-identical to the prepared tarball and has
+  SHA-256 `3e48d4163577df0338d9ff4de390f5152418a629a2cc3d7f65cb6ed08a587416`.
+  Its embedded `dist/manifest.json` is also byte-identical to the prepared
+  manifest.
+- npm exposes both publish and SLSA provenance attestations. A clean registry
+  consumer's `npm audit signatures` verified one registry signature and one
+  attestation.
+- The registry consumer imported all 11 exports, confirmed 216 admin methods,
+  and forced multipart fallback; `photo.jpg` remained `image/jpeg`, 4 bytes.
+- GitHub's latest release is
+  `https://github.com/holmhq/sdk/releases/tag/v0.2.1`. Downloaded tarball,
+  `SHA256SUMS`, and `dist-manifest.json` compare byte-for-byte with prepared
+  assets, and both checksums pass.
+
+## Remaining hardening
+
+- npm package Publishing access still needs **Require two-factor authentication
+  and disallow tokens**, followed by owner authentication and confirmation that
+  no classic/granular tokens or local npm auth exist.
+- GitHub environment `npm-release` still permits admin bypass. Disable it with
+  explicit owner authorization while retaining reviewer `jikkuatwork` and the
+  `v*` deployment policy. Prove the reviewer path only on a future genuine
+  release; do not create a dummy version.
