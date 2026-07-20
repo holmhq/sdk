@@ -6,7 +6,7 @@ mode: direct owner-authorized release with protected GitHub/npm approvals
 last_window: W6
 completed_issue: 018
 queue: none
-release: v0.2.1 authorized and in preparation; v0.2.0 remains latest until verified publication
+release: v0.2.1 exact target 81d5732 gated and ready to tag; v0.2.0 remains latest until verified publication
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
 external_blocker: "Medialab migration awaits verified public @holmhq/sdk@0.2.1; deployment remains separately unauthorized"
@@ -50,10 +50,13 @@ declared upload MIME while resumable chunks remain octet-stream. Independent
 Review `#066` approved and fresh read-only Holm Review `#067` accepted against
 `9fbc0b4`, both with `P1=0 P2=0 P3=0`.
 
-A bounded genuine `0.2.1` release window is active. It includes release
-metadata/artifacts, exact-target gates and review, push, annotated tag, the
-protected stage-only OIDC workflow, npm publication verification, GitHub
-release assets, and first-stage npm hardening. It excludes Medialab deployment,
+A bounded genuine `0.2.1` release window is active. Exact release target
+`81d5732f1ba71dcbe1d42a7fe52868dedada9e56` has passed normal release, color,
+TAP, TAP+color, audit, reproducibility, package, dry-run, and installed-tarball
+MIME smokes; prepared checksums are recorded in
+`koder/evidence/006_v021_release_candidate/INDEX.md`. The remaining window
+includes push, annotated tag, the protected stage-only OIDC workflow, npm
+publication verification, GitHub release assets, and first-stage npm hardening. It excludes Medialab deployment,
 Holm writes, and unrelated capability work. Actions, realtime, collaboration,
 framework bindings, and Holm-side cutover remain deferred.
 

@@ -1,5 +1,5 @@
 ---
-updated_at: "21 Jul 2026 | 01:13 AM IST"
+updated_at: "21 Jul 2026 | 01:21 AM IST"
 state: IN_PROGRESS
 active_window: "genuine @holmhq/sdk@0.2.1 release — prepare, gate, stage, publish, and verify"
 active_issue: "#018 release promotion; product fix resolved at bb663d9"
@@ -28,23 +28,24 @@ stop_gate: "stop on any exact-target, OIDC, staged-package, provenance, or artif
   chunks remain octet-stream. Independent Review `#066` approved with
   `P1=0 P2=0 P3=0`; fresh read-only Holm Review `#067` accepted against
   `9fbc0b4`, also `P1=0 P2=0 P3=0`.
-- Release identity is being advanced to `0.2.1`. Targeted release metadata,
-  dist, and installed-package gates went red after the version bump and green
-  after docs/checks and generated reports were updated.
+- Exact release target `81d5732` contains `0.2.1`; normal release, color, TAP,
+  TAP+color, audit, reproducibility, package, dry-run, and installed-tarball
+  MIME smokes are green from a clean tree. Prepared hashes and metrics are in
+  `koder/evidence/006_v021_release_candidate/INDEX.md`.
 - Public `0.2.0`, tag `v0.2.0`, and its release assets remain immutable. No
-  release commit, push, `v0.2.1` tag, workflow dispatch, npm stage,
-  publication, GitHub release, or deployment has occurred yet.
+  push, `v0.2.1` tag, workflow dispatch, npm stage, publication, GitHub release,
+  or deployment has occurred yet.
 - The external Medialab frontend migration remains blocked until the fixed SDK
   package is public and independently verified.
 
 ## Future
 
-1. Complete exact-target four-mode release gates, audit, reproducibility,
-   package/tarball evidence, and release-target review for `0.2.1`.
-2. Push the reviewed target and annotated `v0.2.1`, then dispatch only the
-   protected stage-only OIDC workflow from that immutable tag.
-3. Verify the staged package before owner GitHub/npm approvals; after public
-   verification, create and checksum-verify the GitHub release assets.
+1. Commit and push the release evidence plus exact target `81d5732`, then
+   create and push annotated `v0.2.1` at that target only.
+2. Dispatch the protected stage-only OIDC workflow with ref and input both
+   `v0.2.1`; verify the exact run before owner environment approval.
+3. Verify the staged package before npm approval; after public verification,
+   create and checksum-verify the GitHub release assets.
 4. Complete first-stage npm 2FA/token hardening, mature the release runbook with
    observed evidence, and close with clean synchronized Git.
 5. Update and revalidate Medialab's exact SDK pin only under its separate
