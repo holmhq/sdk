@@ -72,5 +72,8 @@ and authority gates.
 - Do not stage a dummy package or rerun published `v0.2.0`. The next genuine
   reviewed release must prove its first OIDC stage; after success, require 2FA
   and disallow tokens in npm package access.
+- Use candidate runbook `koder/skills/npm-release/` for that release. Pi, Claude
+  Code, and Codex compatibility paths are symlinks to this canonical copy; mark
+  it proven only after recording a successful genuine OIDC run.
 - Organization recovery and GitHub release immutability remain optional owner
   decisions.

@@ -1,5 +1,5 @@
 ---
-updated_at: "20 Jul 2026 | 06:53 PM IST"
+updated_at: "20 Jul 2026 | 07:56 PM IST"
 state: READY
 active_window: "none — W6 complete; 0.2.0 released and publishing hardening configured"
 active_issue: "none; #008 resolved"
@@ -42,13 +42,18 @@ stop_gate: "none now; first genuine OIDC stage must pass before token-disallow p
 - The scoped bypass-2FA token `holm-sdk-linux` is revoked, npm's active token
   list is empty, the local npm CLI is logged out, and its stored registry auth
   key is removed. No staging workflow was dispatched.
+- Candidate skill `koder/skills/npm-release/` captures the owner-present OIDC
+  runbook at `7244c4e`; tracked symlinks expose the one canonical copy to Pi,
+  Claude Code, and Codex. Validation and the published-`0.2.0` stop route pass,
+  but only the next genuine release can prove the live stage/approval path.
 
 ## Future
 
-1. At the next genuine reviewed release, dispatch **Stage npm release** with its
+1. At the next genuine reviewed release, use the `npm-release` skill with its
    exact annotated tag, approve the protected environment, and verify OIDC
    stages the unpublished package. Do not create a dummy release merely to test.
-2. Review and WebAuthn-approve that staged package, then set npm package access
-   to require 2FA and disallow tokens.
+2. Review and WebAuthn-approve that staged package, set npm package access to
+   require 2FA and disallow tokens, then update the candidate skill with proven
+   run evidence.
 3. Choose further capability work only from actual demand; Issues `#010`–`#013`
    remain deferred.
