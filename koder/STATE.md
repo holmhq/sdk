@@ -1,5 +1,5 @@
 ---
-updated_at: "20 Jul 2026 | 02:47 PM IST"
+updated_at: "20 Jul 2026 | 03:27 PM IST"
 state: BLOCKED
 active_window: "none — W6 complete; 0.2.0 released"
 active_issue: "none; #008 resolved"
@@ -40,6 +40,8 @@ stop_gate: "revoke npm token holm-sdk-linux, protect npm-release, and register p
 - Stage-only OIDC workflow `publish.yml` is implemented at `f1780e8`; full CI is
   green and independent Review `#065` approves with `P1=0 P2=0 P3=1`. Its P3:
   GitHub environment `npm-release` exists but still has no protection rules.
+- The owner explicitly deferred npm token/environment/trusted-publisher refresh
+  to the next session; no staging workflow has been dispatched.
 
 ## Future
 
