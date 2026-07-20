@@ -1,0 +1,4 @@
+interface:
+  display_name: "Holm SDK npm Release"
+  short_description: "Stage and verify Holm SDK releases through npm OIDC"
+  default_prompt: "Use $npm-release to operate the next genuine @holmhq/sdk release safely through npm OIDC."
