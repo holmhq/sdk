@@ -123,6 +123,7 @@ async function executeUpload<Result>(
   if (input.upload === undefined) {
     throw new TypeError("Admin upload method input.upload is required.");
   }
+  await http.preflight("admin.upload.preflight");
   const result = await uploads.upload(Object.freeze({ ...input.upload, path }));
   await http.invalidateCache();
   return result as Result;

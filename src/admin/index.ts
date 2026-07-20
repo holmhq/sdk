@@ -14,6 +14,7 @@ export const adminSupport = Object.freeze({
 
 export {
   ADMIN_HTTP_INVALIDATE_OPERATION,
+  ADMIN_HTTP_PREFLIGHT_OPERATION,
   ADMIN_HTTP_REQUEST_OPERATION,
   HOLM_ADMIN_HTTP_CAPABILITY,
 } from "./protocol.js";

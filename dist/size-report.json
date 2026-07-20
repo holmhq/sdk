@@ -16,22 +16,22 @@
         "gzipBytes": 512,
         "rawBytes": 1024
       },
-      "gzipBytes": 306,
-      "minifiedBytes": 472,
+      "gzipBytes": 315,
+      "minifiedBytes": 503,
       "path": "dist/admin/index.js",
-      "rawBytes": 874,
-      "sha256": "483cade5e43d4d349f207bac72e43f63b7d4fd35b89d4d03d40ff38fc08a52de"
+      "rawBytes": 906,
+      "sha256": "97e4a2d4f7b25883372d7a6450757b7103a7e4f57c67fa4ffa7762b57bc07506"
     },
     {
       "budgets": {
         "gzipBytes": 3328,
         "rawBytes": 12288
       },
-      "gzipBytes": 2640,
-      "minifiedBytes": 8365,
+      "gzipBytes": 2656,
+      "minifiedBytes": 8412,
       "path": "dist/admin/client.js",
-      "rawBytes": 10067,
-      "sha256": "23746482874251bb8a1601befa04bd9339e8c2f868370336adab694ca03266a5"
+      "rawBytes": 10119,
+      "sha256": "1b5589621ae4e992800a74d66907b6810344f98697c959ecee449e45e40849ed"
     },
     {
       "budgets": {
@@ -69,24 +69,24 @@
     {
       "budgets": {
         "gzipBytes": 768,
-        "rawBytes": 2048
+        "rawBytes": 2560
       },
-      "gzipBytes": 508,
-      "minifiedBytes": 1249,
+      "gzipBytes": 549,
+      "minifiedBytes": 1515,
       "path": "dist/admin/http.js",
-      "rawBytes": 1694,
-      "sha256": "e30b8b134ef5258d6d660d7ec465efa5cbef4e73a0ff084402057b98a4ef1c76"
+      "rawBytes": 2073,
+      "sha256": "045b2aaec966b8b797724989edd2b36d55f305651edbf3157f94c5d17598af31"
     },
     {
       "budgets": {
         "gzipBytes": 256,
         "rawBytes": 512
       },
-      "gzipBytes": 166,
-      "minifiedBytes": 203,
+      "gzipBytes": 185,
+      "minifiedBytes": 259,
       "path": "dist/admin/protocol.js",
-      "rawBytes": 261,
-      "sha256": "871bf3437fbe43b26e9f4dd1b3860b6712b202f630902a28649bdab4289ab2bf"
+      "rawBytes": 320,
+      "sha256": "4da0e14bf01ef64b4f643457b36fe5c1fa0272f871bd06178f7d88e9f9399011"
     },
     {
       "budgets": {
@@ -421,13 +421,13 @@
     {
       "budgets": {
         "gzipBytes": 4096,
-        "rawBytes": 18432
+        "rawBytes": 20480
       },
-      "gzipBytes": 3573,
-      "minifiedBytes": 13026,
+      "gzipBytes": 3617,
+      "minifiedBytes": 13322,
       "path": "dist/web/runtime.js",
-      "rawBytes": 17395,
-      "sha256": "bb920006520644b53af78ac55a53d2cf5c94a8ee1295f2e6a1eb0ff967a50d3b"
+      "rawBytes": 17793,
+      "sha256": "c2777caa4b826986eaa5f2780eded729bfb3b090ab1fccdb86f2b5a032f5c3d4"
     },
     {
       "budgets": {
@@ -478,11 +478,11 @@
         "gzipBytes": 6144,
         "rawBytes": 24576
       },
-      "gzipBytes": 4203,
-      "minifiedBytes": 15653,
+      "gzipBytes": 4243,
+      "minifiedBytes": 15949,
       "path": "dist/node/runtime.js",
-      "rawBytes": 20731,
-      "sha256": "fc59302aa48adcda03625f5435573b66ce6a2a04f2c463e9657f70a678d88311"
+      "rawBytes": 21129,
+      "sha256": "9420057528fd55e2d997b4ccaff043d2ad16ee4dd06d1f62e9e44706a1a5d63d"
     },
     {
       "budgets": {
@@ -555,11 +555,11 @@
         "gzipBytes": 1792,
         "rawBytes": 5120
       },
-      "gzipBytes": 635,
-      "minifiedBytes": 1652,
+      "gzipBytes": 644,
+      "minifiedBytes": 1683,
       "path": "dist/holm.js",
-      "rawBytes": 2032,
-      "sha256": "d0af6edb95d88d1190bbc5e269b7d6f02ee77e43f8849087c454445ec11c4e57"
+      "rawBytes": 2066,
+      "sha256": "909faa0b7bb9e6a69dfe34ffed2df5e1d7b9d07aff63a9e0d9395185117d93c4"
     },
     {
       "budgets": {
@@ -580,8 +580,8 @@
   "schema": "holm.sdk.size-report/1",
   "status": "pass",
   "totals": {
-    "gzipBytes": 58287,
-    "minifiedBytes": 225010,
-    "rawBytes": 294830
+    "gzipBytes": 58465,
+    "minifiedBytes": 226033,
+    "rawBytes": 296182
   }
 }

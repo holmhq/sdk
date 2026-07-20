@@ -47,8 +47,12 @@ core contracts, weaken types, or silently diverge from Holm.
 - Normal, FORCE_COLOR, TAP, and TAP+color full CI pass; 267 dist artifacts are
   reproducible, installed-tarball smoke covers all package exports, and measured
   coverage remains above every gate.
-- Independent SDK review and final Holm-authority acceptance are still pending;
-  no release action occurs before both approve the exact candidate.
+- Independent Review `#062` found one P1: upload services executed before the
+  runtime operator gate. The remediation adds a `holm.http.admin` preflight
+  before every upload side effect plus web, Node, source, and dist regression
+  tests proving non-operators produce zero upload calls.
+- Fresh SDK rereview and final Holm-authority acceptance are still pending; no
+  release action occurs before both approve the exact remediated candidate.
 
 ## Acceptance Criteria
 

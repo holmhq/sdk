@@ -8,6 +8,7 @@ import {
 } from "../transports/index.js";
 import {
   ADMIN_HTTP_INVALIDATE_OPERATION,
+  ADMIN_HTTP_PREFLIGHT_OPERATION,
   ADMIN_HTTP_REQUEST_OPERATION,
   HOLM_ADMIN_HTTP_CAPABILITY,
 } from "./protocol.js";
@@ -26,6 +27,7 @@ export interface AdminHttpClient {
     input: TransportRequestInput,
     options?: AdminHttpInvocationOptions,
   ): Promise<OperationResponse>;
+  preflight(reason?: string): Promise<void>;
   invalidateCache(): Promise<void>;
 }
 
@@ -60,6 +62,17 @@ export function createAdminHttpClient(
     return (await requestRaw(input, options)).payload as Result;
   }
 
+  async function preflight(reason = "admin.preflight"): Promise<void> {
+    sequence += 1;
+    await context.invoke({
+      capability: HOLM_ADMIN_HTTP_CAPABILITY,
+      operation: ADMIN_HTTP_PREFLIGHT_OPERATION,
+      payload: null,
+      requestId: requestIdFactory(sequence),
+      reason,
+    });
+  }
+
   async function invalidateCache(): Promise<void> {
     sequence += 1;
     await context.invoke({
@@ -71,7 +84,7 @@ export function createAdminHttpClient(
     });
   }
 
-  return Object.freeze({ request, requestRaw, invalidateCache });
+  return Object.freeze({ request, requestRaw, preflight, invalidateCache });
 }
 
 function createInvocationControl(

@@ -473,6 +473,31 @@ test("generated ESM artifact exposes the Issue 008 audited admin extension", asy
   await holm.dispose();
 });
 
+test("generated admin uploads preflight explicit operator context before injected side effects", async () => {
+  let uploads = 0;
+  const client = createAdminClient({
+    runtime: webRuntime({
+      baseUrl: "https://admin.example.test/",
+      cache: false,
+      fetch: async () => jsonFetchResponse('{"data":{"ok":true}}'),
+    }),
+    caller: createStaticCallerProvider({ surface: "web", principal: { kind: "member", id: "dist-member" } }),
+    uploads: {
+      upload() {
+        uploads += 1;
+        return { ok: true };
+      },
+    },
+  });
+
+  await assert.rejects(
+    () => client.admin.deploy.upload({ upload: { files: [] } }),
+    /explicit operator caller context/,
+  );
+  assert.equal(uploads, 0);
+  await client.dispose();
+});
+
 test("generated ESM artifact exposes the Issue 009 Sobek injected runtime contract", async () => {
   const calls = [];
   const fake = createFakeSobekInjectedRuntime({

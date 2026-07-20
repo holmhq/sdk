@@ -12,9 +12,9 @@ all stable `0.1.x` entry points.
 - Generated 216 typed namespace methods from 189 route/method contracts across
   174 Holm admin audit keys, with 18 intentional exclusions and deterministic
   drift checks.
-- Added shared command-gateway behavior, runtime-neutral upload services,
-  binary attachment responses, URL helpers, alternate-route selection, and
-  immutable method descriptors.
+- Added shared command-gateway behavior, runtime-neutral upload services with
+  operator preflight before side effects, binary attachment responses, URL
+  helpers, alternate-route selection, and immutable method descriptors.
 - Added the preview admin namespace to the complete `holm.js` BFBB composition;
   the narrow `holm-web.js` composition remains admin-free.
 

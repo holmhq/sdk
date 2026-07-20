@@ -1,10 +1,10 @@
 ---
-updated_at: "20 Jul 2026 | 10:43 AM IST"
+updated_at: "20 Jul 2026 | 11:03 AM IST"
 state: IN_PROGRESS
 active_window: "W6 — Issue #008 admin/operator preview and conditional 0.2.0 release"
 active_issue: "#008"
 orchestration_mode: "direct owner-authorized autonomous execution"
-stop_gate: "independent SDK review + fresh read-only Holm-authority acceptance + final release gates before push/tag/GitHub/npm publication"
+stop_gate: "fresh SDK rereview of Review #062 remediation + read-only Holm-authority acceptance + final release gates before push/tag/GitHub/npm publication"
 ---
 
 # Koder State
@@ -24,20 +24,25 @@ stop_gate: "independent SDK review + fresh read-only Holm-authority acceptance +
   `createAdminClient({ runtime, caller })`, operator-gated web/Node transport,
   runtime-neutral uploads/binary handling, and 216 generated methods over 189
   source-pinned Holm route/method contracts (174 keys, 18 exclusions).
-- Normal, FORCE_COLOR, TAP, and TAP+color full CI are green. Latest measured
-  coverage is at least `98.14` statements, `98.99` lines, `98.65` functions,
-  `95.32` branches, and `100.00` changed-reachable; 267 dist artifacts reproduce
-  and installed-package smoke imports all entry points.
+- Candidate commit `291fdaf` passed the four-mode CI matrix. Independent Review
+  `#062` then found one P1: injected upload services ran before the operator
+  caller gate. TDD remediation now preflights `holm.http.admin` before every
+  upload side effect; web/Node source tests and generated-dist tests prove a
+  non-operator produces zero upload calls.
+- The remediated normal CI is green: 230 source tests, 24 dist tests, coverage
+  `98.09` statements / `98.95` lines / `98.65` functions / `95.31` branches /
+  `100.00` changed-reachable, 267 reproducible dist artifacts, and installed
+  package smoke across all entry points.
 - Live read-only Holm authority at `773b00f` has no relevant admin/package drift
   from the committed ledger. Holm has unrelated dirty runtime work and remains
   read-only.
 
 ## Future
 
-1. Commit the complete product/generated/docs candidate and run one fresh
-   independent SDK review; remediate every accepted finding.
+1. Commit the Review `#062` remediation and obtain a fresh independent rereview
+   with zero outstanding P1/P2 before claiming SDK acceptance.
 2. Obtain fresh read-only Holm-authority acceptance against a named current
-   commit and rerun the final release/package/audit/dry-run gates.
+   commit and rerun the four-mode release/package/audit/dry-run gates.
 3. Only with all gates green: push exact reviewed target, create annotated
    `v0.2.0`, publish GitHub release assets/checksums, publish npm `0.2.0`, and
    verify a clean registry install. Otherwise stop without publication.

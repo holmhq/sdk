@@ -128,6 +128,7 @@ for (const needle of [
   "189 HTTP",
   "adminMethodDescriptors",
   "AdminUploadService",
+  "preflight",
   "ReadonlyBytes",
   "Holm remains the authorization boundary",
 ]) {

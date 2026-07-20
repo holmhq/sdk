@@ -141,9 +141,11 @@ normalized through the shared `RemoteError` behavior.
 ## Uploads and binary responses
 
 Admin core has no DOM or Node ambient upload type. Inject an `AdminUploadService`
-that accepts the shared transport `UploadRequest`. Web and Node applications can
-adapt their existing upload services without putting `Blob`, `FormData`, or
-filesystem APIs into the admin entry point.
+that accepts the shared transport `UploadRequest`. Before invoking that service,
+the SDK runs an admin-capability preflight through the selected runtime, so a
+non-operator web or Node caller fails before any upload side effect. Web and Node
+applications can adapt their existing upload services without putting `Blob`,
+`FormData`, or filesystem APIs into the admin entry point.
 
 The redesigned upload methods are `apps.deploy`, `deploy.upload`, `links.import`,
 `members.uploadPicture`, and the two-step `members.createNativeWithPicture`.

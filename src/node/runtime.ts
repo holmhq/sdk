@@ -1,5 +1,6 @@
 import {
   ADMIN_HTTP_INVALIDATE_OPERATION,
+  ADMIN_HTTP_PREFLIGHT_OPERATION,
   ADMIN_HTTP_REQUEST_OPERATION,
   HOLM_ADMIN_HTTP_CAPABILITY,
 } from "../admin/protocol.js";
@@ -201,6 +202,9 @@ export function nodeRuntime(options: NodeRuntimeOptions = {}): NodeRuntimeAdapte
       assertReady(started, disposed);
       throwIfCancelled(control.cancellation);
       assertHttpOperation(request, id);
+      if (request.operation === ADMIN_HTTP_PREFLIGHT_OPERATION) {
+        return Object.freeze({ requestId: request.requestId, payload: null });
+      }
       if (request.operation === APP_HTTP_INVALIDATE_OPERATION) {
         cache?.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
         return Object.freeze({ requestId: request.requestId, payload: null });
@@ -423,7 +427,14 @@ function assertHttpOperation(request: OperationRequest, adapterId: string): void
   const invalidateOperation = expected === HOLM_ADMIN_HTTP_CAPABILITY
     ? ADMIN_HTTP_INVALIDATE_OPERATION
     : APP_HTTP_INVALIDATE_OPERATION;
-  if (request.operation !== requestOperation && request.operation !== invalidateOperation) {
+  const preflightOperation = expected === HOLM_ADMIN_HTTP_CAPABILITY
+    ? ADMIN_HTTP_PREFLIGHT_OPERATION
+    : undefined;
+  if (
+    request.operation !== requestOperation &&
+    request.operation !== invalidateOperation &&
+    request.operation !== preflightOperation
+  ) {
     throw new ProtocolError({
       code: "unsupported_node_runtime_operation",
       message: "The Node/CLI runtime only accepts supported Holm HTTP operations.",

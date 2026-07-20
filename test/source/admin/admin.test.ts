@@ -16,6 +16,10 @@ import {
   createReadonlyBytes,
   createStaticCallerProvider,
 } from "../../../src/core/index.js";
+import {
+  createNodeTokenAuth,
+  nodeRuntime,
+} from "../../../src/node/index.js";
 import { createFakeClock, createInMemoryRuntimeAdapter } from "../../../src/test/index.js";
 import {
   createReadonlyBytesUploadSource,
@@ -133,6 +137,68 @@ test("web admin transport requires an explicit operator caller and preserves ser
     /explicit operator caller context/,
   );
   await member.dispose();
+});
+
+test("admin upload services never run before web and Node operator caller gates", async () => {
+  let webUploads = 0;
+  const webMember = createHolm({
+    runtime: webRuntime({
+      baseUrl: "https://admin.example.test/",
+      cache: false,
+      fetch: async () => new Response('{"data":{"ok":true}}', {
+        headers: { "content-type": "application/json" },
+      }),
+    }),
+    caller: createStaticCallerProvider({ surface: "web", principal: { kind: "member", id: "member_web" } }),
+    extensions: [createAdminExtension({
+      uploads: {
+        upload() {
+          webUploads += 1;
+          return { ok: true };
+        },
+      },
+    })] as const,
+  });
+  await assert.rejects(
+    () => webMember.admin.deploy.upload({ upload: { files: [] } }),
+    /explicit operator caller context/,
+  );
+  assert.equal(webUploads, 0);
+  await webMember.dispose();
+
+  const fake = createFakeClock(15);
+  let nodeUploads = 0;
+  let nodeFetches = 0;
+  const nodeMember = createHolm({
+    runtime: nodeRuntime({
+      baseUrl: "https://admin.example.test/",
+      fetch: async () => {
+        nodeFetches += 1;
+        return new Response('{"data":{"ok":true}}', {
+          headers: { "content-type": "application/json" },
+        });
+      },
+      auth: createNodeTokenAuth({ token: "member-fixture-token" }),
+      clock: fake.clock,
+      scheduler: fake.scheduler,
+    }),
+    caller: createStaticCallerProvider({ surface: "cli", principal: { kind: "member", id: "member_node" } }),
+    extensions: [createAdminExtension({
+      uploads: {
+        upload() {
+          nodeUploads += 1;
+          return { ok: true };
+        },
+      },
+    })] as const,
+  });
+  await assert.rejects(
+    () => nodeMember.admin.members.uploadPicture({ upload: { files: [] } }),
+    /explicit operator caller context/,
+  );
+  assert.equal(nodeUploads, 0);
+  assert.equal(nodeFetches, 0);
+  await nodeMember.dispose();
 });
 
 test("generated admin inventory provides all 216 methods plus command, upload, binary, and URL behavior", async () => {

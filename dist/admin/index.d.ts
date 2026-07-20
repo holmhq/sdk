@@ -11,7 +11,7 @@ export declare const adminSupport: Readonly<{
     readonly compatibility: "not frozen";
     readonly production: "operator authorization required";
 }>;
-export { ADMIN_HTTP_INVALIDATE_OPERATION, ADMIN_HTTP_REQUEST_OPERATION, HOLM_ADMIN_HTTP_CAPABILITY, } from "./protocol.js";
+export { ADMIN_HTTP_INVALIDATE_OPERATION, ADMIN_HTTP_PREFLIGHT_OPERATION, ADMIN_HTTP_REQUEST_OPERATION, HOLM_ADMIN_HTTP_CAPABILITY, } from "./protocol.js";
 export { createAdminClient } from "./factory.js";
 export type { AdminClient, AdminClientOptions } from "./factory.js";
 export { createAdminExtension } from "./extension.js";

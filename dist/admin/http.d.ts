@@ -9,6 +9,7 @@ export interface AdminHttpInvocationOptions {
 export interface AdminHttpClient {
     request<Result = WireValue>(input: TransportRequestInput, options?: AdminHttpInvocationOptions): Promise<Result>;
     requestRaw(input: TransportRequestInput, options?: AdminHttpInvocationOptions): Promise<OperationResponse>;
+    preflight(reason?: string): Promise<void>;
     invalidateCache(): Promise<void>;
 }
 export type AdminRequestIdFactory = (sequence: number) => string;

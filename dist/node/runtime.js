@@ -1,4 +1,4 @@
-import { ADMIN_HTTP_INVALIDATE_OPERATION, ADMIN_HTTP_REQUEST_OPERATION, HOLM_ADMIN_HTTP_CAPABILITY, } from "../admin/protocol.js";
+import { ADMIN_HTTP_INVALIDATE_OPERATION, ADMIN_HTTP_PREFLIGHT_OPERATION, ADMIN_HTTP_REQUEST_OPERATION, HOLM_ADMIN_HTTP_CAPABILITY, } from "../admin/protocol.js";
 import { APP_HTTP_INVALIDATE_OPERATION, APP_HTTP_REQUEST_OPERATION, HOLM_APP_HTTP_CAPABILITY, } from "../app/protocol.js";
 import { createCallerPartitionedCacheKey } from "../core/cache-key.js";
 import { CapabilityVersionError, UnsupportedCapabilityError, } from "../core/capabilities.js";
@@ -84,6 +84,9 @@ export function nodeRuntime(options = {}) {
             assertReady(started, disposed);
             throwIfCancelled(control.cancellation);
             assertHttpOperation(request, id);
+            if (request.operation === ADMIN_HTTP_PREFLIGHT_OPERATION) {
+                return Object.freeze({ requestId: request.requestId, payload: null });
+            }
             if (request.operation === APP_HTTP_INVALIDATE_OPERATION) {
                 cache?.invalidateForMutation({ tags: [callerCacheTag(request.callerFingerprint)] });
                 return Object.freeze({ requestId: request.requestId, payload: null });
@@ -277,7 +280,12 @@ function assertHttpOperation(request, adapterId) {
     const invalidateOperation = expected === HOLM_ADMIN_HTTP_CAPABILITY
         ? ADMIN_HTTP_INVALIDATE_OPERATION
         : APP_HTTP_INVALIDATE_OPERATION;
-    if (request.operation !== requestOperation && request.operation !== invalidateOperation) {
+    const preflightOperation = expected === HOLM_ADMIN_HTTP_CAPABILITY
+        ? ADMIN_HTTP_PREFLIGHT_OPERATION
+        : undefined;
+    if (request.operation !== requestOperation &&
+        request.operation !== invalidateOperation &&
+        request.operation !== preflightOperation) {
         throw new ProtocolError({
             code: "unsupported_node_runtime_operation",
             message: "The Node/CLI runtime only accepts supported Holm HTTP operations.",
