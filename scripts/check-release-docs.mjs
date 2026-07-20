@@ -34,12 +34,12 @@ const agentGuide = readText("docs/agent-guide.md");
 const examplesReadme = readText("examples/README.md");
 const currentDocs = [readme, release, admin, capabilities, migration, vendoring, agentGuide, examplesReadme].join("\n");
 
-requireEqual("package.json version", packageJson.version, "0.2.0");
-requireEqual("package-lock root version", packageLock.version, "0.2.0");
-requireEqual("package-lock packages[''].version", packageLock.packages?.[""]?.version, "0.2.0");
+requireEqual("package.json version", packageJson.version, "0.2.1");
+requireEqual("package-lock root version", packageLock.version, "0.2.1");
+requireEqual("package-lock packages[''].version", packageLock.packages?.[""]?.version, "0.2.1");
 requireEqual("package publish access", packageJson.publishConfig?.access, "public");
 if (packageJson.private === true) {
-  failures.push("package.json: 0.2.0 release must not be private");
+  failures.push("package.json: 0.2.1 release must not be private");
 }
 
 for (const needle of [
@@ -109,8 +109,8 @@ for (const needle of [
 for (const needle of [
   "whole `dist/` tree",
   "immutable Git SHA or reviewed tag",
-  "@holmhq/sdk@0.2.0",
-  "v0.2.0",
+  "@holmhq/sdk@0.2.1",
+  "v0.2.1",
   "Never use `@main`",
   "dist/manifest.json",
   "sha256",
@@ -174,7 +174,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("Release docs/metadata check passed for public 0.2.0.");
+console.log("Release docs/metadata check passed for public 0.2.1.");
 
 function requireEqual(label, actual, expected) {
   if (actual !== expected) {

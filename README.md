@@ -94,10 +94,11 @@ rollback workflow.
 
 ## Release status
 
-`0.2.0` preserves the stable **web/BFBB** contract and adds the audited
-`@holmhq/sdk/admin` operator client as preview. The stable entry points remain
-root, `core`, `transports`, `app`, `web`, `state`, and `test`; admin, Node, and
-Sobek are preview, and the native bridge is reserved.
+`0.2.1` preserves the stable **web/BFBB** contract, includes the audited
+`@holmhq/sdk/admin` operator client as preview, and preserves declared upload
+MIME types in web multipart fallback. The stable entry points remain root,
+`core`, `transports`, `app`, `web`, `state`, and `test`; admin, Node, and Sobek
+are preview, and the native bridge is reserved.
 
 Read the [0.2 support contract](docs/v0.2.md), the
 [admin/operator guide](docs/admin.md), or the [migration ledger](docs/migration.md)

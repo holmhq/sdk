@@ -9,9 +9,9 @@ work: it imports a relative ESM module graph.
 
 Use one of:
 
-- the immutable npm version `@holmhq/sdk@0.2.0`;
+- the immutable npm version `@holmhq/sdk@0.2.1`;
 - an immutable Git SHA; or
-- the reviewed Git tag `v0.2.0`.
+- the reviewed Git tag `v0.2.1`.
 
 Use an immutable Git SHA or reviewed tag for Git/CDN addresses. Never use `@main`
 for a deployed app. A branch can move after review and invalidate both
@@ -24,7 +24,7 @@ files.
 
 ```bash
 set -eu
-SDK_VERSION=0.2.0
+SDK_VERSION=0.2.1
 TMP="$(mktemp -d)"
 TARBALL="$(cd "$TMP" && npm pack "@holmhq/sdk@${SDK_VERSION}" --silent)"
 tar -xzf "$TMP/$TARBALL" -C "$TMP"

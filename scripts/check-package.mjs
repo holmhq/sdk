@@ -11,8 +11,8 @@ const expectedFiles = ["dist", "docs", "examples", "CHANGELOG.md", "LICENSE", "R
 if (JSON.stringify(packageJson.files) !== JSON.stringify(expectedFiles)) {
   failures.push(`package.json files must be exactly ${JSON.stringify(expectedFiles)}`);
 }
-if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.2.0") {
-  failures.push(`package identity must be @holmhq/sdk@0.2.0; found ${packageJson.name}@${packageJson.version}`);
+if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.2.1") {
+  failures.push(`package identity must be @holmhq/sdk@0.2.1; found ${packageJson.name}@${packageJson.version}`);
 }
 if (packageJson.private === true) {
   failures.push("public release package must not be private");
@@ -24,7 +24,7 @@ if (packageJson.license !== "MIT") {
   failures.push(`release package license must be MIT; found ${String(packageJson.license)}`);
 }
 if (packageJson.dependencies !== undefined && Object.keys(packageJson.dependencies).length > 0) {
-  failures.push("universal package must not add runtime dependencies for 0.2.0");
+  failures.push("universal package must not add runtime dependencies for 0.2.1");
 }
 if (packageJson.scripts?.prepublishOnly !== "npm run release:check") {
   failures.push("prepublishOnly must run the canonical release gate");
@@ -176,7 +176,7 @@ function runInstalledPackageSmoke() {
       throw new Error("installed admin entry point is incomplete");
     }
     const packageJson = JSON.parse(await readFile(new URL("./node_modules/@holmhq/sdk/package.json", import.meta.url), "utf8"));
-    if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.2.0") {
+    if (packageJson.name !== "@holmhq/sdk" || packageJson.version !== "0.2.1") {
       throw new Error("installed package identity mismatch");
     }
   `;

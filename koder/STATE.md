@@ -1,10 +1,10 @@
 ---
-updated_at: "21 Jul 2026 | 12:47 AM IST"
-state: READY
-active_window: "none — Issue #018 remediated and reviewed; release decision deferred"
-active_issue: "none; #018 resolved at bb663d9"
-orchestration_mode: "direct SDK remediation plus read-only Medialab/Holm validation"
-stop_gate: "owner approval of a genuine new SDK version/release before npm staging or Medialab deploy"
+updated_at: "21 Jul 2026 | 01:13 AM IST"
+state: IN_PROGRESS
+active_window: "genuine @holmhq/sdk@0.2.1 release — prepare, gate, stage, publish, and verify"
+active_issue: "#018 release promotion; product fix resolved at bb663d9"
+orchestration_mode: "direct release execution with protected GitHub/npm owner approvals"
+stop_gate: "stop on any exact-target, OIDC, staged-package, provenance, or artifact mismatch"
 ---
 
 # Koder State
@@ -21,31 +21,31 @@ stop_gate: "owner approval of a genuine new SDK version/release before npm stagi
 
 ## Present
 
-- Medialab dogfooding found Issue `#018`: public `0.2.0` changed declared file
-  MIME to `application/octet-stream` in the supported web multipart fallback.
+- The owner authorized a genuine `@holmhq/sdk@0.2.1` patch release containing
+  Issue `#018`, including push, annotated tag, OIDC stage, npm publication, and
+  GitHub release verification; Medialab deployment remains separately gated.
 - Strict-TDD fix `bb663d9` preserves declared multipart MIME while resumable
-  chunks remain octet-stream. Generated ESM/maps/manifests are current.
-- Independent Review `#066` approved with `P1=0 P2=0 P3=0`; fresh read-only
-  Holm Review `#067` accepted against `9fbc0b4`, also `P1=0 P2=0 P3=0`.
-- Final `release:check` is green: 230 source tests, 25 dist tests, 267
-  reproducible artifacts, 290-file installed-package smoke, `100.00`
-  changed-reachable coverage, and size `296327` raw / `226159` minified /
-  `58504` gzip. FORCE_COLOR, TAP, and TAP+color CI also pass.
-- Published `0.2.0`, tag `v0.2.0`, and its release assets remain immutable and
-  do not contain Issue `#018`. No version bump, push, tag, stage, release,
-  publication, or deployment occurred.
-- The external Medialab frontend migration is prepared and reviewed locally,
-  but remains blocked on an immutable fixed SDK release before production use.
+  chunks remain octet-stream. Independent Review `#066` approved with
+  `P1=0 P2=0 P3=0`; fresh read-only Holm Review `#067` accepted against
+  `9fbc0b4`, also `P1=0 P2=0 P3=0`.
+- Release identity is being advanced to `0.2.1`. Targeted release metadata,
+  dist, and installed-package gates went red after the version bump and green
+  after docs/checks and generated reports were updated.
+- Public `0.2.0`, tag `v0.2.0`, and its release assets remain immutable. No
+  release commit, push, `v0.2.1` tag, workflow dispatch, npm stage,
+  publication, GitHub release, or deployment has occurred yet.
+- The external Medialab frontend migration remains blocked until the fixed SDK
+  package is public and independently verified.
 
 ## Future
 
-1. Decide the genuine next SDK version and release scope. If approved, use the
-   `npm-release` skill with the exact reviewed annotated tag; never create a
-   dummy release or rerun `v0.2.0`.
-2. After the fixed package is public and verified, update Medialab's exact pin,
-   rerun its adapter/build/upload smokes and review, then separately authorize
-   any app deployment.
-3. After the first successful OIDC stage, require npm package 2FA and disallow
-   tokens, then mark the release skill proven with run evidence.
-4. Keep Issues `#010`–`#013` demand-driven; do not activate them merely to fill
-   a release.
+1. Complete exact-target four-mode release gates, audit, reproducibility,
+   package/tarball evidence, and release-target review for `0.2.1`.
+2. Push the reviewed target and annotated `v0.2.1`, then dispatch only the
+   protected stage-only OIDC workflow from that immutable tag.
+3. Verify the staged package before owner GitHub/npm approvals; after public
+   verification, create and checksum-verify the GitHub release assets.
+4. Complete first-stage npm 2FA/token hardening, mature the release runbook with
+   observed evidence, and close with clean synchronized Git.
+5. Update and revalidate Medialab's exact SDK pin only under its separate
+   repository/deployment authorization.

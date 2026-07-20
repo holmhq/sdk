@@ -1,6 +1,6 @@
 # Capability matrix
 
-This matrix describes `@holmhq/sdk` `0.2.0`, not Holm's entire platform. A
+This matrix describes `@holmhq/sdk` `0.2.1`, not Holm's entire platform. A
 stable lower-level primitive does not imply that every higher-level product
 surface is shipped.
 

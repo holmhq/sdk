@@ -1,15 +1,15 @@
 ---
 title: Execution boundary
 updated: 2026-07-21
-window: none
-mode: direct owner-authorized Medialab dogfood and SDK remediation
+window: genuine @holmhq/sdk@0.2.1 release
+mode: direct owner-authorized release with protected GitHub/npm approvals
 last_window: W6
 completed_issue: 018
 queue: none
-release: v0.2.0 remains latest; Issue 018 fix is unreleased
+release: v0.2.1 authorized and in preparation; v0.2.0 remains latest until verified publication
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
-external_blocker: "Medialab migration awaits an explicitly approved immutable SDK release containing Issue 018"
+external_blocker: "Medialab migration awaits verified public @holmhq/sdk@0.2.1; deployment remains separately unauthorized"
 security_followup: "configured: token revoked; npm-release protected; stage-only trusted publisher registered; first OIDC stage awaits next genuine release"
 trusted_publishing_review: "#065 approved f1780e8; P1=0 P2=0 P3=1 environment-protection advisory"
 ---
@@ -48,9 +48,14 @@ Issue `#018` remediation.
 Issue `#018` is resolved at `bb663d9`: web multipart fallback now preserves the
 declared upload MIME while resumable chunks remain octet-stream. Independent
 Review `#066` approved and fresh read-only Holm Review `#067` accepted against
-`9fbc0b4`, both with `P1=0 P2=0 P3=0`; full release checks pass. No new release
-window is active. Actions, realtime, collaboration, framework bindings, and
-Holm-side cutover remain deferred.
+`9fbc0b4`, both with `P1=0 P2=0 P3=0`.
+
+A bounded genuine `0.2.1` release window is active. It includes release
+metadata/artifacts, exact-target gates and review, push, annotated tag, the
+protected stage-only OIDC workflow, npm publication verification, GitHub
+release assets, and first-stage npm hardening. It excludes Medialab deployment,
+Holm writes, and unrelated capability work. Actions, realtime, collaboration,
+framework bindings, and Holm-side cutover remain deferred.
 
 ## Owner decision — 2026-07-20
 
@@ -67,23 +72,34 @@ remediated and reviewed in this repository. That instruction did not authorize
 a new SDK release, npm stage, push, tag, or Medialab deployment; those remain
 explicit owner decisions.
 
+## Owner decision — 2026-07-21
+
+The owner selected `0.2.1` as the genuine patch release for Issue `#018` and
+explicitly authorized release and publication. This authorizes the SDK release
+commit/push, immutable annotated `v0.2.1` tag, protected GitHub OIDC stage, npm
+publication approval flow, GitHub release/assets, verification, and required
+post-first-stage package-access hardening. Browser approvals remain accountable
+owner actions and every mismatch is a stop condition. This does not authorize
+Medialab deployment or writes to Holm/other repositories.
+
 ## Standing limits
 
 - Holm and repositories other than this SDK remain read-only without explicit
   approval.
 - Work remains serial on `main`; no worktrees without explicit approval.
-- This release uses new version `0.2.0`; published `0.1.0` and its reviewed
-  tag/checksummed assets remain immutable and must not be mutated.
+- This release uses new version `0.2.1`; published `0.1.0` and `0.2.0`, their
+  reviewed tags, and checksummed assets remain immutable and must not be
+  mutated.
 - The temporary `holm-sdk-linux` token is revoked, npm's active token list is
   empty, and the local npm CLI is logged out with no stored registry auth key.
 - Review `#065` approves stage-only `publish.yml`. Environment `npm-release` now
   requires reviewer `jikkuatwork` and permits only `v*` tag deployments. npm's
   trusted publisher is registered for exact workflow `publish.yml`, environment
   `npm-release`, and only the `npm stage publish` action.
-- Do not stage a dummy package or rerun published `v0.2.0`. The next genuine
-  reviewed release must include the approved Issue `#018` fix at or after
-  `bb663d9` and prove its first OIDC stage; after success, require 2FA and
-  disallow tokens in npm package access.
+- Do not stage a dummy package or rerun published `v0.2.0`. The authorized
+  `0.2.1` release must include the approved Issue `#018` fix at or after
+  `bb663d9`, pass exact-target gates/review, and prove its first OIDC stage;
+  after success, require 2FA and disallow tokens in npm package access.
 - Do not deploy the prepared Medialab migration while it pins public `0.2.0`.
   First publish and verify an explicitly approved immutable fixed SDK version,
   then update the exact app pin and rerun its local gates/review.

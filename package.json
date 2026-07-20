@@ -1,6 +1,6 @@
 {
   "name": "@holmhq/sdk",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "The universal strict-TypeScript SDK for building Holm apps.",
   "license": "MIT",

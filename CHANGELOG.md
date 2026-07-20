@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.2.1 — 2026-07-21
+
+Patch release for web upload fallback compatibility.
+
 ### Fixed
 
 - Preserve each declared upload MIME type when the web adapter falls back from
