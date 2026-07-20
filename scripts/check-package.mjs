@@ -68,6 +68,7 @@ if (report !== undefined) {
     "dist/manifest.json",
     "docs/admin.md",
     "docs/agent-guide.md",
+    "docs/releasing.md",
     "docs/v0.2.md",
     "docs/vendoring.md",
     "examples/shared/session-contract.ts",

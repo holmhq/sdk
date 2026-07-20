@@ -11,6 +11,7 @@ const requiredDocs = [
   "docs/admin.md",
   "docs/capabilities.md",
   "docs/migration.md",
+  "docs/releasing.md",
   "docs/vendoring.md",
   "docs/agent-guide.md",
   "CHANGELOG.md",

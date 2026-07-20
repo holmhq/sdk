@@ -1,0 +1,84 @@
+name: Stage npm release
+run-name: Stage npm release ${{ inputs.tag }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Immutable annotated release tag, for example v0.3.0
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-stage-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    name: Validate and stage package
+    runs-on: ubuntu-latest
+    environment: npm-release
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out the immutable release tag
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install the staged-publishing npm CLI
+        run: |
+          npm install --global npm@11.15.0 --ignore-scripts
+          test "$(npm --version)" = "11.15.0"
+
+      - name: Verify the immutable release identity
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Release tag must be an exact vMAJOR.MINOR.PATCH tag." >&2
+            exit 1
+          fi
+
+          PACKAGE_NAME="$(node -p "require('./package.json').name")"
+          VERSION="$(node -p "require('./package.json').version")"
+          test "$RELEASE_TAG" = "v$VERSION"
+          test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = "tag"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "$RELEASE_TAG^{}")"
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+          if npm view "$PACKAGE_NAME@$VERSION" version --json >/dev/null 2>&1; then
+            echo "$PACKAGE_NAME@$VERSION is already published." >&2
+            exit 1
+          fi
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      - name: Run the canonical release gate
+        run: npm run release:check
+
+      - name: Verify release regeneration stayed clean
+        run: |
+          git diff --exit-code
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+      - name: Stage package on npm through OIDC
+        run: npm stage publish . --access public --tag latest

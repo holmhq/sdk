@@ -168,6 +168,8 @@ unless the owner explicitly authorizes a change. Pin protocol claims to a Holm
 commit. Existing Holm packages remain operational; consult
 [migration.md](migration.md) before claiming an old namespace is replaced.
 
-For release scope and compatibility, read [v0.2.md](v0.2.md). For current repo
+For release scope and compatibility, read [v0.2.md](v0.2.md). Future npm
+publication uses the tag-pinned OIDC staging contract in
+[releasing.md](releasing.md), never a repository publish token. For current repo
 handoff, read `koder/STATE.md`; `koder/` is operator memory and is not part of
 the npm package contract.
