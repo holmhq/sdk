@@ -51,32 +51,34 @@ core contracts, weaken types, or silently diverge from Holm.
   runtime operator gate. The remediation adds a `holm.http.admin` preflight
   before every upload side effect plus web, Node, source, and dist regression
   tests proving non-operators produce zero upload calls.
-- Fresh SDK rereview and final Holm-authority acceptance are still pending; no
-  release action occurs before both approve the exact remediated candidate.
+- Fresh Review `#063` approves the remediation with `P1=0 P2=0 P3=1`; the P3
+  records bounded caller-transition TOCTOU while Holm/upload-adapter auth remains
+  authoritative. No SDK release blocker remains. Fresh Holm-authority acceptance
+  is still pending, and no release action occurs before it approves.
 
 ## Acceptance Criteria
 
-- [ ] A machine-readable parity table covers every current admin audit entry and
+- [x] A machine-readable parity table covers every current admin audit entry and
       records adopted/redesigned/deferred/excluded status.
-- [ ] Representative namespaces are implemented TDD-first before any generator
+- [x] Representative namespaces are implemented TDD-first before any generator
       or bulk migration is trusted.
-- [ ] Generated/declarative wrappers are deterministic and reviewable; drift
+- [x] Generated/declarative wrappers are deterministic and reviewable; drift
       causes CI failure.
-- [ ] Admin auth is explicit token/operator context, not inferred browser member
+- [x] Admin auth is explicit token/operator context, not inferred browser member
       state.
-- [ ] Errors, raw/binary responses, uploads, streams/URLs, and pagination use
+- [x] Errors, raw/binary responses, uploads, streams/URLs, and pagination use
       shared core behavior.
-- [ ] Public method payload/result types are available in generated declarations.
-- [ ] Full convenience and narrow admin artifacts report size and pass smoke
+- [x] Public method payload/result types are available in generated declarations.
+- [x] Full convenience and narrow admin artifacts report size and pass smoke
       tests.
-- [ ] No Holm route is claimed supported without conformance evidence against a
+- [x] No Holm route is claimed supported without conformance evidence against a
       named commit.
-- [ ] Existing Holm admin client remains untouched during this slice.
+- [x] Existing Holm admin client remains untouched during this slice.
 
 ## Non-Goals
 
 - Adding missing Holm backend routes.
-- Publishing npm.
+- Publishing before the independent SDK, Holm-authority, and final release gates.
 - Treating possession of a browser bundle as authorization; Holm remains the
   enforcement boundary.
 

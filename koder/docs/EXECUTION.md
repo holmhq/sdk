@@ -7,7 +7,7 @@ last_window: W5
 active_issue: 008
 queue: none
 release_target: v0.2.0-conditional
-release_review: "#062 changes requested (P1 upload preflight); remediation pending rereview"
+release_review: "#063 approved #062 remediation; P1=0 P2=0 P3=1 advisory"
 holm_authority_review: pending
 external_blocker: none
 ---
