@@ -10,7 +10,7 @@ release: v0.2.0
 release_review: "#063 approved #062 remediation; P1=0 P2=0 P3=1 advisory"
 holm_authority_review: "#064 accepted against Holm 9a02784; P1=0 P2=0 P3=1 advisory"
 external_blocker: none
-security_followup: "revoke npm token holm-sdk-linux; protect npm-release; register stage-only publish.yml trusted publisher"
+security_followup: "configured: token revoked; npm-release protected; stage-only trusted publisher registered; first OIDC stage awaits next genuine release"
 trusted_publishing_review: "#065 approved f1780e8; P1=0 P2=0 P3=1 environment-protection advisory"
 ---
 
@@ -63,12 +63,14 @@ and authority gates.
 - Work remains serial on `main`; no worktrees without explicit approval.
 - This release uses new version `0.2.0`; published `0.1.0` and its reviewed
   tag/checksummed assets remain immutable and must not be mutated.
-- Revoke the temporary browser-created `holm-sdk-linux` npm token; its local
-  `.env` value and temporary npm config are already removed.
-- Review `#065` approves stage-only `publish.yml`. Add required reviewers or
-  equivalent protection to `npm-release`, then register the exact workflow and
-  environment in npm Trusted Publisher settings before the next release.
-- npm has announced that bypass-2FA granular tokens will lose direct publishing
-  around January 2027.
+- The temporary `holm-sdk-linux` token is revoked, npm's active token list is
+  empty, and the local npm CLI is logged out with no stored registry auth key.
+- Review `#065` approves stage-only `publish.yml`. Environment `npm-release` now
+  requires reviewer `jikkuatwork` and permits only `v*` tag deployments. npm's
+  trusted publisher is registered for exact workflow `publish.yml`, environment
+  `npm-release`, and only the `npm stage publish` action.
+- Do not stage a dummy package or rerun published `v0.2.0`. The next genuine
+  reviewed release must prove its first OIDC stage; after success, require 2FA
+  and disallow tokens in npm package access.
 - Organization recovery and GitHub release immutability remain optional owner
   decisions.

@@ -1,10 +1,10 @@
 ---
-updated_at: "20 Jul 2026 | 03:27 PM IST"
-state: BLOCKED
-active_window: "none — W6 complete; 0.2.0 released"
+updated_at: "20 Jul 2026 | 06:53 PM IST"
+state: READY
+active_window: "none — W6 complete; 0.2.0 released and publishing hardening configured"
 active_issue: "none; #008 resolved"
-orchestration_mode: "direct owner-authorized release follow-through complete"
-stop_gate: "revoke npm token holm-sdk-linux, protect npm-release, and register publish.yml as stage-only npm trusted publisher"
+orchestration_mode: "direct owner-assisted external hardening complete"
+stop_gate: "none now; first genuine OIDC stage must pass before token-disallow package access"
 ---
 
 # Koder State
@@ -34,22 +34,21 @@ stop_gate: "revoke npm token holm-sdk-linux, protect npm-release, and register p
   with identical metrics (`98.09` statements, `98.95` lines, `98.65` functions,
   `95.31` branches, `100.00` changed-reachable), 230 source tests, 24 dist tests,
   and 267 reproducible artifacts.
-- Local `NPM_ACCESS_TOKEN` and temporary npm config are removed. The browser-
-  created no-expiry token `holm-sdk-linux` must still be revoked in npm's web UI
-  before the session can close without a credential risk.
 - Stage-only OIDC workflow `publish.yml` is implemented at `f1780e8`; full CI is
-  green and independent Review `#065` approves with `P1=0 P2=0 P3=1`. Its P3:
-  GitHub environment `npm-release` exists but still has no protection rules.
-- The owner explicitly deferred npm token/environment/trusted-publisher refresh
-  to the next session; no staging workflow has been dispatched.
+  green and independent Review `#065` approves with `P1=0 P2=0 P3=1`.
+- GitHub environment `npm-release` now requires reviewer `jikkuatwork` and only
+  permits `v*` tag deployments. npm Trusted Publisher is registered for
+  `holmhq/sdk`, `publish.yml`, `npm-release`, with only `npm stage publish`.
+- The scoped bypass-2FA token `holm-sdk-linux` is revoked, npm's active token
+  list is empty, the local npm CLI is logged out, and its stored registry auth
+  key is removed. No staging workflow was dispatched.
 
 ## Future
 
-1. Revoke npm token `holm-sdk-linux`; do not paste it or any credential into the
-   repository or chat.
-2. Add required reviewers/protection to GitHub environment `npm-release`.
-3. Register npm trusted publisher: `holmhq` / `sdk` / `publish.yml` /
-   `npm-release`, allowed action `npm stage publish` only. After its first real
-   stage, set npm publishing access to require 2FA and disallow tokens.
-4. Choose further capability work only from actual demand; Issues `#010`–`#013`
+1. At the next genuine reviewed release, dispatch **Stage npm release** with its
+   exact annotated tag, approve the protected environment, and verify OIDC
+   stages the unpublished package. Do not create a dummy release merely to test.
+2. Review and WebAuthn-approve that staged package, then set npm package access
+   to require 2FA and disallow tokens.
+3. Choose further capability work only from actual demand; Issues `#010`–`#013`
    remain deferred.
