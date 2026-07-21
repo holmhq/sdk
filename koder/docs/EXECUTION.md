@@ -9,7 +9,7 @@ queue: none
 release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
-external_blocker: "resolved; Medialab exact-0.2.1 migration is deployed and owner interactive acceptance is pending"
+external_blocker: "resolved; Medialab exact-0.2.1 migration and manifest fix are deployed; owner retest follows transient Holm memory-admission 503s"
 security_followup: "GitHub hardened; owner reports npm publish-only trust and package-access 2FA/token lockout appear persisted; re-confirm before the next genuine release"
 trusted_publishing_review: "#068 approved unified workflow; P1=0 P2=0 with final P3 remediated"
 ---
@@ -80,10 +80,16 @@ read-only independent review are green with `P1=0 P2=0 P3=0`.
 Owner-authorized Medialab adoption is live from pushed Zyt commit `fe81675`.
 It pins exact public `0.2.1`, removes the copied legacy SDK, preserves the custom
 WebSocket boundary, and passes adapter, syntax, temporary Vite, installed MIME
-fallback, and independent review gates. Holm redeployed existing app
-`holm_app_fBb09CTIJsIJ` at `medialab.zyt.app` with 14 files and SPA routing;
-root, hashed JS, and `/gallery` return HTTP 200. Owner interactive acceptance is
-pending.
+fallback, and independent review gates. Follow-up `b0c8f10` adds an authored
+browser-valid manifest; Holm redeployed 15 files to existing app
+`holm_app_fBb09CTIJsIJ` at `medialab.zyt.app`.
+
+The first owner test saw transient image-route `503`s matching the existing Holm
+memory-admission incident shape, not an SDK route contract. During triage the
+peer was externally restarted/upgraded to Holm `0.185.6`; current pressure and
+governor are `ok`, `/api/me` returns `200`, and an unauthenticated image request
+reaches app auth with `401` instead of `503`. Owner retest is pending. No app
+retry workaround, SQL, Holm write, or SDK change was introduced.
 
 ## Owner decision — 2026-07-20
 

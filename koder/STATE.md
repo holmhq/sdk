@@ -1,5 +1,5 @@
 ---
-updated_at: "21 Jul 2026 | 04:28 PM IST"
+updated_at: "21 Jul 2026 | 04:53 PM IST"
 state: READY
 active_window: "none; release automation ready and awaiting genuine product demand"
 active_issue: "none"
@@ -36,11 +36,14 @@ stop_gate: "before the next genuine release, re-confirm npm lockout and complete
   browser recheck before the next genuine release dispatch.
 - Owner-authorized Medialab adoption is live at `medialab.zyt.app` from pushed
   Zyt commit `fe81675`: exact `0.2.1`, 10 adapter tests, syntax/Vite/MIME gates,
-  and independent review are green with `P1=0 P2=0 P3=0`. Holm redeployed
-  existing app `holm_app_fBb09CTIJsIJ` with 14 files and SPA routing; root,
-  hashed JS, and `/gallery` return HTTP 200. Owner interactive testing is next.
-- No dummy version, SDK workflow dispatch, package release, or deployment
-  occurred.
+  and independent review are green with `P1=0 P2=0 P3=0`. Follow-up `b0c8f10`
+  adds a browser-valid manifest and is deployed with 15 files.
+- The first owner test saw transient image-route `503`s consistent with existing
+  Holm memory admission, not an SDK contract failure. After an external peer
+  restart/upgrade to `0.185.6`, pressure/governor are `ok`, `/api/me` is `200`,
+  and the image route reaches app auth (`401` unauthenticated). Owner retest is
+  pending; no app workaround or SDK change was added.
+- No dummy SDK version, SDK workflow dispatch, or package release occurred.
 
 ## Future
 

@@ -1,12 +1,12 @@
 ---
 name: Medialab
-status: live-owner-testing
+status: live-owner-retesting
 role: active-web-consumer-and-dogfood-target
 updated: 2026-07-21
 local_path: ~/Projects/zyt/medialab
 remote: git@github.com:jikkuatwork/zyt.git
 branch: main
-verified_commit: ac12e76dec1eaaeb43a710a4d26d9fec463a5530
+verified_commit: 0b08ef7202c4fd1a5f6e60101f22aa117df17579
 write_policy: explicit-authorization-only
 ---
 
@@ -36,10 +36,15 @@ and released in `0.2.1`.
   installed-package multipart fallback smoke pass.
 - Independent integrated review approved with `P1=0 P2=0 P3=0`.
 - Holm redeployed existing app `holm_app_fBb09CTIJsIJ` at
-  `medialab.zyt.app` with 14 files and SPA routing.
-- Root, hashed JavaScript, and `/gallery` return HTTP 200; owner interactive
-  auth/generation/edit acceptance is pending.
-- Zyt `main` is synchronized through deployment record commit `ac12e76`.
+  `medialab.zyt.app`; follow-up `b0c8f10` adds an authored browser-valid
+  manifest and the current deployment contains 15 files with SPA routing.
+- Root, hashed JavaScript, `/gallery`, and `manifest.webmanifest` return HTTP
+  200; the manifest has string `display: standalone` and correct MIME.
+- The first owner test saw transient image-route `503`s consistent with Holm
+  memory admission. After an external peer restart/upgrade to `0.185.6`, the
+  governor is `ok`, `/api/me` is `200`, and the image route reaches app auth.
+- Zyt `main` is synchronized through follow-up record commit `0b08ef7`; owner
+  interactive retest is pending.
 
 ## Agent policy
 
