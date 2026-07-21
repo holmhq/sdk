@@ -6,7 +6,7 @@ updated: 2026-07-21
 local_path: ~/Projects/zyt/medialab
 remote: git@github.com:jikkuatwork/zyt.git
 branch: main
-verified_commit: 0c3c73a0153ea57a7ea9af97f0aa0264b9c194d1
+verified_commit: b79d7044fda874a7e739e2021d8d07ecdab1e516
 write_policy: explicit-authorization-only
 ---
 
@@ -44,8 +44,10 @@ and released in `0.2.1`.
   responses and 5 retryable `503` envelopes with `reason: runtime_vm_pool`.
   Pressure/governor stayed `ok`, pool capacity was 3, and misses rose 25→30.
 - Browser `<img>` fan-out cannot consume the JSON retry envelope; owner
-  acceptance is blocked on a Holm runtime/delivery correction, not SDK code.
-- Zyt `main` is synchronized through blocker record commit `0c3c73a`.
+  acceptance is blocked on Holm P1 design Track `#550`, not SDK code.
+- Issue `#550` requires measured runtime memory, primary-source prior-art
+  research, architecture convergence, and small/large-node proof before code.
+- Zyt `main` records the cross-repo handoff through commit `b79d704`.
 
 ## Agent policy
 
@@ -55,5 +57,5 @@ and released in `0.2.1`.
 - Never use SQL as a migration shortcut.
 - Further Zyt writes or Medialab deployments require separate explicit scope.
 - Do not add app retries or concurrency throttles to hide `runtime_vm_pool`.
-  File/fix the Holm runtime/delivery boundary only with explicit authorization,
+  Follow Holm `#550` through its research/design gate before implementation,
   then resume browser auth/generation/edit acceptance.

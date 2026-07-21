@@ -1,5 +1,5 @@
 ---
-updated_at: "21 Jul 2026 | 06:36 PM IST"
+updated_at: "21 Jul 2026 | 07:41 PM IST"
 state: READY
 active_window: "none; release automation ready and awaiting genuine product demand"
 active_issue: "none"
@@ -53,6 +53,7 @@ stop_gate: "before the next genuine release, re-confirm npm lockout and complete
 2. At the next genuine release, use `koder/skills/npm-release/`, re-confirm the
    npm lockout in the UI, complete exact-target review and Holm acceptance, and
    require one accountable `npm-release` approval with no skipped decision.
-3. Medialab owner acceptance is blocked on Holm runtime-pool fan-out. Obtain
-   explicit authorization to file/fix a Holm issue (or reopen `#510`/`#529`);
-   do not throttle/retry around it in the app or migrate another app yet.
+3. Medialab owner acceptance is blocked on Holm P1 design Track `#550`. Begin
+   measured VM-memory and primary-source prior-art research, then independent
+   architecture convergence; do not add an app workaround or migrate another
+   app before that gate.
