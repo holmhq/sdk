@@ -1,5 +1,5 @@
-name: Stage npm release
-run-name: Stage npm release ${{ inputs.tag }}
+name: Publish SDK release
+run-name: Publish SDK release ${{ inputs.tag }}
 
 on:
   workflow_dispatch:
@@ -9,65 +9,58 @@ on:
         required: true
         type: string
 
-permissions:
-  contents: read
-  id-token: write
+permissions: {}
 
 concurrency:
-  group: npm-stage-${{ inputs.tag }}
+  group: npm-release
   cancel-in-progress: false
 
 jobs:
-  stage:
-    name: Validate and stage package
+  validate:
+    name: Validate exact release target
     runs-on: ubuntu-latest
-    environment: npm-release
-    timeout-minutes: 60
+    timeout-minutes: 45
+    permissions:
+      contents: read
 
     steps:
-      - name: Check out the immutable release tag
+      - name: Check out the dispatch-pinned commit
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          ref: ${{ inputs.tag }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
+          fetch-tags: true
           persist-credentials: false
 
-      - name: Set up Node.js
+      - name: Set up exact Node.js toolchain
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24"
+          node-version: "24.8.0"
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
-      - name: Install the staged-publishing npm CLI
-        run: |
-          npm install --global npm@11.15.0 --ignore-scripts
-          test "$(npm --version)" = "11.15.0"
-
-      - name: Verify the immutable release identity
+      - name: Verify exact toolchain and immutable release identity
         env:
           RELEASE_TAG: ${{ inputs.tag }}
         run: |
           set -euo pipefail
+          test "$(node --version)" = "v24.8.0"
+          test "$(npm --version)" = "11.6.0"
           if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Release tag must be an exact vMAJOR.MINOR.PATCH tag." >&2
             exit 1
           fi
 
-          PACKAGE_NAME="$(node -p "require('./package.json').name")"
           VERSION="$(node -p "require('./package.json').version")"
           test "$RELEASE_TAG" = "v$VERSION"
+          test "$GITHUB_REF" = "refs/tags/$RELEASE_TAG"
           test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = "tag"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "$GITHUB_SHA^{commit}")"
           test "$(git rev-parse HEAD)" = "$(git rev-parse "$RELEASE_TAG^{}")"
           test -z "$(git status --porcelain=v1 --untracked-files=all)"
 
-          if npm view "$PACKAGE_NAME@$VERSION" version --json >/dev/null 2>&1; then
-            echo "$PACKAGE_NAME@$VERSION is already published." >&2
-            exit 1
-          fi
-
-      - name: Install locked dependencies
-        run: npm ci
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
 
       - name: Audit dependencies
         run: npm audit --audit-level=high
@@ -80,5 +73,402 @@ jobs:
           git diff --exit-code
           test -z "$(git status --porcelain=v1 --untracked-files=all)"
 
-      - name: Stage package on npm through OIDC
-        run: npm stage publish . --access public --tag latest
+      - name: Prepare immutable release assets
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: node scripts/prepare-release-assets.mjs --tag "$RELEASE_TAG" --output .tmp/release
+
+      - name: Upload exact release assets for the protected job
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sdk-release-${{ inputs.tag }}
+          path: .tmp/release/*
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+  publish:
+    name: Publish npm and create GitHub release
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: npm-release
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Check out the dispatch-pinned commit
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+
+      - name: Set up exact trusted-publishing toolchain
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.8.0"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Download validated release assets
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: sdk-release-${{ inputs.tag }}
+          path: .tmp/release
+
+      - name: Reverify approved commit, tag, toolchain, and assets
+        id: prepared
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          test "$(node --version)" = "v24.8.0"
+          test "$(npm --version)" = "11.6.0"
+          test "$GITHUB_REF" = "refs/tags/$RELEASE_TAG"
+          test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = "tag"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "$GITHUB_SHA^{commit}")"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse "$RELEASE_TAG^{}")"
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+          METADATA=.tmp/release/metadata.json
+          PACKAGE_NAME="$(node -p "require('./$METADATA').package")"
+          VERSION="$(node -p "require('./$METADATA').version")"
+          TARBALL_NAME="$(node -p "require('./$METADATA').tarball.name")"
+          test "$PACKAGE_NAME" = "@holmhq/sdk"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          test "$TARBALL_NAME" = "holmhq-sdk-$VERSION.tgz"
+          test "$RELEASE_TAG" = "v$VERSION"
+          test "$(node -p "require('./$METADATA').gitTarget")" = "$(git rev-parse HEAD)"
+          test "$(node -p "require('./package.json').name")" = "$PACKAGE_NAME"
+          test "$(node -p "require('./package.json').version")" = "$VERSION"
+          cmp --silent dist/manifest.json .tmp/release/dist-manifest.json
+          (cd .tmp/release && sha256sum -c SHA256SUMS)
+          test "$(wc -l < .tmp/release/SHA256SUMS | tr -d ' ')" = "2"
+          test "$(awk '{print $2}' .tmp/release/SHA256SUMS | sort | paste -sd '|' -)" = "$(printf '%s\n' dist-manifest.json "$TARBALL_NAME" | sort | paste -sd '|' -)"
+
+          export VERSION
+          node --input-type=module <<'NODE'
+          import { readFile, writeFile } from "node:fs/promises";
+
+          const changelog = await readFile("CHANGELOG.md", "utf8");
+          const escaped = process.env.VERSION.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const heading = new RegExp(`^## ${escaped}(?:\\s+[—-]\\s+[^\\n]+)?\\s*$`, "m");
+          const match = heading.exec(changelog);
+          if (match === null) throw new Error(`missing changelog notes for ${process.env.VERSION}`);
+          const remainder = changelog.slice(match.index + match[0].length).replace(/^\r?\n/, "");
+          const nextHeading = /^##\s+/m.exec(remainder);
+          const notes = (nextHeading === null ? remainder : remainder.slice(0, nextHeading.index)).trim();
+          if (notes.length === 0) throw new Error(`empty changelog notes for ${process.env.VERSION}`);
+          await writeFile(".tmp/rederived-release-notes.md", `${notes}\n`);
+          NODE
+          cmp --silent .tmp/rederived-release-notes.md .tmp/release/RELEASE_NOTES.md
+
+          rm -rf .tmp/publish-pack
+          mkdir -p .tmp/publish-pack
+          npm pack --json --ignore-scripts --pack-destination .tmp/publish-pack > .tmp/publish-pack.json
+          PACKED_NAME="$(node -p "require('./.tmp/publish-pack.json')[0].filename")"
+          PACKED_SHASUM="$(node -p "require('./.tmp/publish-pack.json')[0].shasum")"
+          PACKED_INTEGRITY="$(node -p "require('./.tmp/publish-pack.json')[0].integrity")"
+          test "$PACKED_NAME" = "$TARBALL_NAME"
+          [[ "$PACKED_SHASUM" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PACKED_INTEGRITY" =~ ^sha512-[A-Za-z0-9+/]+={0,2}$ ]]
+          test "$(node -p "require('./$METADATA').tarball.shasum")" = "$PACKED_SHASUM"
+          test "$(node -p "require('./$METADATA').tarball.integrity")" = "$PACKED_INTEGRITY"
+          cmp --silent ".tmp/release/$TARBALL_NAME" ".tmp/publish-pack/$TARBALL_NAME"
+
+          printf 'package_name=%s\n' "$PACKAGE_NAME" >> "$GITHUB_OUTPUT"
+          printf 'version=%s\n' "$VERSION" >> "$GITHUB_OUTPUT"
+          printf 'tarball_name=%s\n' "$TARBALL_NAME" >> "$GITHUB_OUTPUT"
+          printf 'shasum=%s\n' "$PACKED_SHASUM" >> "$GITHUB_OUTPUT"
+          printf 'integrity=%s\n' "$PACKED_INTEGRITY" >> "$GITHUB_OUTPUT"
+
+      - name: Verify live immutable tag protection
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          mapfile -t RULESET_IDS < <(gh api --paginate repos/holmhq/sdk/rulesets --jq '.[] | select(.name == "Immutable SDK release tags" and .target == "tag" and .enforcement == "active") | .id')
+          test "${#RULESET_IDS[@]}" = "1"
+          gh api "repos/holmhq/sdk/rulesets/${RULESET_IDS[0]}" > .tmp/release-tag-ruleset.json
+          node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+
+          const ruleset = JSON.parse(await readFile(".tmp/release-tag-ruleset.json", "utf8"));
+          const ruleTypes = new Set(ruleset.rules.map((rule) => rule.type));
+          const includes = ruleset.conditions?.ref_name?.include ?? [];
+          const excludes = ruleset.conditions?.ref_name?.exclude ?? [];
+          if (ruleset.enforcement !== "active" || ruleset.target !== "tag" || !Array.isArray(ruleset.bypass_actors) || ruleset.bypass_actors.length !== 0) {
+            throw new Error("release tag ruleset is inactive, mis-targeted, or bypassable");
+          }
+          if (excludes.length !== 0 || !includes.includes("refs/tags/v*") || !["deletion", "update", "non_fast_forward"].every((type) => ruleTypes.has(type))) {
+            throw new Error("release tag ruleset does not make every v* tag immutable");
+          }
+          NODE
+
+          test "$(git ls-remote --tags origin "refs/tags/$RELEASE_TAG^{}" | awk '{print $1}')" = "$(git rev-parse HEAD)"
+
+      - name: Verify accountable environment approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_REVIEWER: jikkuatwork
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 6); do
+            gh api "repos/holmhq/sdk/actions/runs/$GITHUB_RUN_ID/approvals" > .tmp/environment-approvals.json
+            APPROVED="$(node -e 'const a=require("./.tmp/environment-approvals.json"); console.log(a.filter(x => x.state === "approved" && x.user?.login === process.env.EXPECTED_REVIEWER && x.environments?.some(e => e.name === "npm-release")).length)')"
+            SKIPPED="$(node -e 'const a=require("./.tmp/environment-approvals.json"); console.log(a.filter(x => x.state === "skipped" && x.environments?.some(e => e.name === "npm-release")).length)')"
+            if [[ "$APPROVED" -ge 1 && "$SKIPPED" = "0" ]]; then
+              break
+            fi
+            if [[ "$attempt" = "6" ]]; then
+              echo "npm-release requires an approval from $EXPECTED_REVIEWER and no administrator bypass." >&2
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Inspect npm publication state
+        id: registry
+        env:
+          PACKAGE_NAME: ${{ steps.prepared.outputs.package_name }}
+          VERSION: ${{ steps.prepared.outputs.version }}
+        run: |
+          set -euo pipefail
+          if PUBLISHED_VERSION="$(npm view "$PACKAGE_NAME@$VERSION" version 2>.tmp/npm-view.err)"; then
+            if [[ -z "$PUBLISHED_VERSION" ]]; then
+              echo "state=absent" >> "$GITHUB_OUTPUT"
+            else
+              test "$PUBLISHED_VERSION" = "$VERSION"
+              echo "state=published" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            if ! grep -Eq 'E404|404 Not Found|is not in this registry' .tmp/npm-view.err; then
+              cat .tmp/npm-view.err >&2
+              exit 1
+            fi
+            echo "state=absent" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish package directly through OIDC
+        if: steps.registry.outputs.state == 'absent'
+        run: |
+          npm publish . --access public --tag latest --ignore-scripts
+
+      - name: Verify npm identity, provenance, and bytes
+        env:
+          PACKAGE_NAME: ${{ steps.prepared.outputs.package_name }}
+          VERSION: ${{ steps.prepared.outputs.version }}
+          TARBALL_NAME: ${{ steps.prepared.outputs.tarball_name }}
+          EXPECTED_SHASUM: ${{ steps.prepared.outputs.shasum }}
+          EXPECTED_INTEGRITY: ${{ steps.prepared.outputs.integrity }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 18); do
+            PUBLISHED_VERSION="$(npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null || true)"
+            LATEST_VERSION="$(npm view "$PACKAGE_NAME" dist-tags.latest 2>/dev/null || true)"
+            PUBLISHED_SHASUM="$(npm view "$PACKAGE_NAME@$VERSION" dist.shasum 2>/dev/null || true)"
+            PUBLISHED_INTEGRITY="$(npm view "$PACKAGE_NAME@$VERSION" dist.integrity 2>/dev/null || true)"
+            PROVENANCE_TYPE="$(npm view "$PACKAGE_NAME@$VERSION" dist.attestations.provenance.predicateType 2>/dev/null || true)"
+            if [[ "$PUBLISHED_VERSION" = "$VERSION" &&
+                  "$LATEST_VERSION" = "$VERSION" &&
+                  "$PUBLISHED_SHASUM" = "$EXPECTED_SHASUM" &&
+                  "$PUBLISHED_INTEGRITY" = "$EXPECTED_INTEGRITY" &&
+                  "$PROVENANCE_TYPE" = "https://slsa.dev/provenance/v1" ]]; then
+              break
+            fi
+            if [[ "$attempt" = 18 ]]; then
+              echo "npm identity, latest tag, integrity, or provenance did not match the prepared release." >&2
+              exit 1
+            fi
+            sleep 5
+          done
+
+          rm -rf .tmp/registry
+          mkdir -p .tmp/registry
+          TARBALL_URL="$(npm view "$PACKAGE_NAME@$VERSION" dist.tarball)"
+          curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 5 \
+            "$TARBALL_URL" --output .tmp/registry/package.tgz
+          cmp --silent ".tmp/release/$TARBALL_NAME" .tmp/registry/package.tgz
+
+      - name: Create the GitHub Release if absent
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          PACKAGE_NAME: ${{ steps.prepared.outputs.package_name }}
+          VERSION: ${{ steps.prepared.outputs.version }}
+          TARBALL_NAME: ${{ steps.prepared.outputs.tarball_name }}
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --tags origin "refs/tags/$RELEASE_TAG^{}" | awk '{print $1}')" = "$(git rev-parse HEAD)"
+          if gh release view "$RELEASE_TAG" --json tagName >/dev/null 2>&1; then
+            echo "GitHub Release $RELEASE_TAG already exists; verifying without mutation."
+          else
+            gh release create "$RELEASE_TAG" \
+              ".tmp/release/$TARBALL_NAME" \
+              .tmp/release/SHA256SUMS \
+              .tmp/release/dist-manifest.json \
+              --verify-tag \
+              --latest \
+              --title "$PACKAGE_NAME v$VERSION" \
+              --notes-file .tmp/release/RELEASE_NOTES.md
+          fi
+
+      - name: Verify GitHub Release identity and assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          PACKAGE_NAME: ${{ steps.prepared.outputs.package_name }}
+          VERSION: ${{ steps.prepared.outputs.version }}
+          TARBALL_NAME: ${{ steps.prepared.outputs.tarball_name }}
+        run: |
+          set -euo pipefail
+          gh release view "$RELEASE_TAG" --json tagName,name,body,isDraft,isPrerelease,assets > .tmp/github-release.json
+          node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+
+          const release = JSON.parse(await readFile(".tmp/github-release.json", "utf8"));
+          const notes = (await readFile(".tmp/release/RELEASE_NOTES.md", "utf8")).trimEnd();
+          if (release.tagName !== process.env.RELEASE_TAG || release.name !== `${process.env.PACKAGE_NAME} v${process.env.VERSION}`) {
+            throw new Error("GitHub Release identity mismatch");
+          }
+          const expectedAssets = ["SHA256SUMS", "dist-manifest.json", process.env.TARBALL_NAME].sort();
+          const actualAssets = release.assets.map((asset) => asset.name).sort();
+          if (release.isDraft || release.isPrerelease || release.body.trimEnd() !== notes) {
+            throw new Error("GitHub Release state or notes mismatch");
+          }
+          if (JSON.stringify(actualAssets) !== JSON.stringify(expectedAssets)) {
+            throw new Error(`GitHub Release asset set mismatch: ${actualAssets.join(",")}`);
+          }
+          NODE
+
+          rm -rf .tmp/github-release
+          mkdir -p .tmp/github-release
+          gh release download "$RELEASE_TAG" --dir .tmp/github-release
+          cmp --silent ".tmp/release/$TARBALL_NAME" ".tmp/github-release/$TARBALL_NAME"
+          cmp --silent .tmp/release/SHA256SUMS .tmp/github-release/SHA256SUMS
+          cmp --silent .tmp/release/dist-manifest.json .tmp/github-release/dist-manifest.json
+          (cd .tmp/github-release && sha256sum -c SHA256SUMS)
+
+  verify:
+    name: Verify public release without publish authority
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Set up exact verification toolchain
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.8.0"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Download validated release assets
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: sdk-release-${{ inputs.tag }}
+          path: .tmp/release
+
+      - name: Load release identity
+        id: prepared
+        run: |
+          set -euo pipefail
+          METADATA=.tmp/release/metadata.json
+          (cd .tmp/release && sha256sum -c SHA256SUMS)
+          PACKAGE_NAME="$(node -p "require('./$METADATA').package")"
+          VERSION="$(node -p "require('./$METADATA').version")"
+          TARBALL_NAME="$(node -p "require('./$METADATA').tarball.name")"
+          SHASUM="$(node -p "require('./$METADATA').tarball.shasum")"
+          INTEGRITY="$(node -p "require('./$METADATA').tarball.integrity")"
+          test "$PACKAGE_NAME" = "@holmhq/sdk"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          test "$TARBALL_NAME" = "holmhq-sdk-$VERSION.tgz"
+          [[ "$SHASUM" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$INTEGRITY" =~ ^sha512-[A-Za-z0-9+/]+={0,2}$ ]]
+          test "$(wc -l < .tmp/release/SHA256SUMS | tr -d ' ')" = "2"
+          test "$(awk '{print $2}' .tmp/release/SHA256SUMS | sort | paste -sd '|' -)" = "$(printf '%s\n' dist-manifest.json "$TARBALL_NAME" | sort | paste -sd '|' -)"
+          printf 'package_name=%s\n' "$PACKAGE_NAME" >> "$GITHUB_OUTPUT"
+          printf 'version=%s\n' "$VERSION" >> "$GITHUB_OUTPUT"
+          printf 'tarball_name=%s\n' "$TARBALL_NAME" >> "$GITHUB_OUTPUT"
+          printf 'shasum=%s\n' "$SHASUM" >> "$GITHUB_OUTPUT"
+          printf 'integrity=%s\n' "$INTEGRITY" >> "$GITHUB_OUTPUT"
+
+      - name: Verify clean registry installation and signatures
+        env:
+          PACKAGE_NAME: ${{ steps.prepared.outputs.package_name }}
+          VERSION: ${{ steps.prepared.outputs.version }}
+        run: |
+          set -euo pipefail
+          rm -rf .tmp/registry-consumer
+          mkdir -p .tmp/registry-consumer
+          printf '{\n  "private": true,\n  "type": "module"\n}\n' > .tmp/registry-consumer/package.json
+          npm install --prefix .tmp/registry-consumer --ignore-scripts --no-audit --no-fund "$PACKAGE_NAME@$VERSION"
+
+          (
+            cd .tmp/registry-consumer
+            node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+
+          const packageName = process.env.PACKAGE_NAME;
+          const expectedVersion = process.env.VERSION;
+          const packageJson = JSON.parse(await readFile("node_modules/@holmhq/sdk/package.json", "utf8"));
+          if (packageJson.name !== packageName || packageJson.version !== expectedVersion) {
+            throw new Error(`installed identity mismatch: ${packageJson.name}@${packageJson.version}`);
+          }
+          for (const subpath of Object.keys(packageJson.exports)) {
+            if (subpath === "./package.json") continue;
+            const specifier = subpath === "." ? packageName : `${packageName}/${subpath.slice(2)}`;
+            const loaded = await import(specifier);
+            if (Object.keys(loaded).length === 0) throw new Error(`${specifier} has no exports`);
+          }
+          NODE
+            npm audit signatures
+          )
+
+      - name: Verify final npm and GitHub state
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: holmhq/sdk
+          RELEASE_TAG: ${{ inputs.tag }}
+          PACKAGE_NAME: ${{ steps.prepared.outputs.package_name }}
+          VERSION: ${{ steps.prepared.outputs.version }}
+          TARBALL_NAME: ${{ steps.prepared.outputs.tarball_name }}
+          EXPECTED_SHASUM: ${{ steps.prepared.outputs.shasum }}
+          EXPECTED_INTEGRITY: ${{ steps.prepared.outputs.integrity }}
+        run: |
+          set -euo pipefail
+          test "$(npm view "$PACKAGE_NAME@$VERSION" version)" = "$VERSION"
+          test "$(npm view "$PACKAGE_NAME" dist-tags.latest)" = "$VERSION"
+          test "$(npm view "$PACKAGE_NAME@$VERSION" dist.shasum)" = "$EXPECTED_SHASUM"
+          test "$(npm view "$PACKAGE_NAME@$VERSION" dist.integrity)" = "$EXPECTED_INTEGRITY"
+          test "$(npm view "$PACKAGE_NAME@$VERSION" dist.attestations.provenance.predicateType)" = "https://slsa.dev/provenance/v1"
+
+          test "$(gh release view "$RELEASE_TAG" --json assets --jq '[.assets[].name] | sort | join("|")')" = "$(printf '%s\n' SHA256SUMS dist-manifest.json "$TARBALL_NAME" | sort | paste -sd '|' -)"
+          for attempt in $(seq 1 12); do
+            if [[ "$(gh api repos/holmhq/sdk/releases/latest --jq .tag_name 2>/dev/null || true)" = "$RELEASE_TAG" ]]; then
+              break
+            fi
+            if [[ "$attempt" = 12 ]]; then
+              echo "GitHub did not report $RELEASE_TAG as latest." >&2
+              exit 1
+            fi
+            sleep 5
+          done
+
+          rm -rf .tmp/registry .tmp/github-release
+          mkdir -p .tmp/registry .tmp/github-release
+          curl --fail --silent --show-error --location --retry 6 --retry-all-errors --retry-delay 5 \
+            "$(npm view "$PACKAGE_NAME@$VERSION" dist.tarball)" --output .tmp/registry/package.tgz
+          gh release download "$RELEASE_TAG" --dir .tmp/github-release
+          cmp --silent ".tmp/release/$TARBALL_NAME" .tmp/registry/package.tgz
+          cmp --silent ".tmp/release/$TARBALL_NAME" ".tmp/github-release/$TARBALL_NAME"
+          cmp --silent .tmp/release/SHA256SUMS .tmp/github-release/SHA256SUMS
+          cmp --silent .tmp/release/dist-manifest.json .tmp/github-release/dist-manifest.json
+          (cd .tmp/github-release && sha256sum -c SHA256SUMS)

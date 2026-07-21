@@ -130,12 +130,17 @@ multipart fallback. The installed `0.2.1` package preserved `photo.jpg` as
   `SHA256SUMS`, and `dist-manifest.json` compare byte-for-byte with prepared
   assets, and both checksums pass.
 
-## Remaining hardening
+## Post-release hardening status
 
-- npm package Publishing access still needs **Require two-factor authentication
-  and disallow tokens**, followed by owner authentication and confirmation that
-  no classic/granular tokens or local npm auth exist.
-- GitHub environment `npm-release` still permits admin bypass. Disable it with
-  explicit owner authorization while retaining reviewer `jikkuatwork` and the
-  `v*` deployment policy. Prove the reviewer path only on a future genuine
-  release; do not create a dummy version.
+- GitHub environment admin bypass is now disabled while reviewer `jikkuatwork`
+  and `v*` deployment policy remain. Active ruleset `19324891` blocks deletion
+  and all updates to `refs/tags/v*`, with no bypass actors or exclusions.
+- Review `#068` approves a future unified one-approval workflow that publishes
+  npm directly and creates/verifies the GitHub Release. This does not alter the
+  historical `0.2.1` stage evidence above.
+- npm still needs the trusted-publisher action changed from `npm stage publish`
+  to **`npm publish` only**, plus Publishing access **Require two-factor
+  authentication and disallow tokens**. Confirm no classic/granular token or
+  local npm auth exists after the owner-authenticated update.
+- Prove accountable reviewer approval and the unified workflow only on a future
+  genuine release; never create a dummy version.

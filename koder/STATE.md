@@ -1,10 +1,10 @@
 ---
-updated_at: "21 Jul 2026 | 01:59 AM IST"
-state: IN_PROGRESS
-active_window: "@holmhq/sdk@0.2.1 is live; complete first-OIDC security hardening and close"
-active_issue: "#018 released in v0.2.1; hardening follow-up active"
-orchestration_mode: "direct owner-assisted npm/GitHub settings hardening"
-stop_gate: "owner-authenticated npm access update and explicit decision on GitHub admin bypass before close"
+updated_at: "21 Jul 2026 | 09:49 AM IST"
+state: REVIEW_READY
+active_window: "unified one-approval npm/GitHub release automation; npm settings cutover pending"
+active_issue: "none; release-process hardening after v0.2.1"
+orchestration_mode: "direct implementation plus owner-assisted npm settings cutover"
+stop_gate: "npm trusted publisher must allow only npm publish and package access must disallow tokens before close"
 ---
 
 # Koder State
@@ -21,32 +21,35 @@ stop_gate: "owner-authenticated npm access update and explicit decision on GitHu
 
 ## Present
 
-- `@holmhq/sdk@0.2.1` is public and npm `latest` resolves to it. Annotated
-  `v0.2.1` peels to exact reviewed target `81d5732`; GitHub's latest release is
-  `https://github.com/holmhq/sdk/releases/tag/v0.2.1`.
-- Registry tarball, GitHub tarball, manifest, and checksums match the prepared
-  artifacts byte-for-byte. npm signature/SLSA provenance, all 11 exports, 216
-  admin methods, and the installed-package multipart MIME smoke verify.
-- Workflow run `29773856653` and npm stage
-  `5194865d-de9e-4e92-b698-d0c5710e4553` prove stage-only OIDC publication.
-  The release skill now records the observed npm/GitHub sequencing.
-- GitHub's required-reviewer path was bypassed rather than approved: approvals
-  API reports `holmhq-admin`, `state=skipped`, while `can_admins_bypass=true`.
-  This does not alter the verified package, but it remains a security hardening
-  item and the normal reviewer path is not yet proven.
-- npm Publishing access still needs **Require two-factor authentication and
-  disallow tokens**. Medialab may now evaluate an exact `0.2.1` pin, but app
-  changes and deployment remain separately gated.
+- `@holmhq/sdk@0.2.1` remains public, verified, and immutable on npm/GitHub.
+- The owner rejected the multi-step staged process. Strict TDD replaced it with
+  one workflow and one owner action: approve protected environment
+  `npm-release`. Unprivileged validation prepares assets; the protected job
+  publishes npm and creates the GitHub Release; unprivileged verification checks
+  installation, signatures, provenance, metadata, and every byte.
+- Security Review `#068` approves with no unresolved P1/P2/P3. Exact Node
+  `24.8.0` / npm `11.6.0`, dispatch-SHA binding, live immutable-tag and approval
+  checks, global release serialization, safe same-tag resumption, and hardened
+  workflow drift tests are in place. Full `release:check` remains green.
+- Live GitHub hardening is complete: `npm-release` has
+  `can_admins_bypass=false`, reviewer `jikkuatwork`, and policy `v*`; active
+  ruleset `19324891` blocks deletion/all updates to `refs/tags/v*` with no
+  bypass actors or exclusions.
+- npm still authorizes only the old `npm stage publish` action. Before any future
+  release, the owner must edit the trusted publisher to **`npm publish` only**
+  and set Publishing access to **Require two-factor authentication and disallow
+  tokens**. No dummy version, tag, workflow run, package, release, or deployment
+  was created for this process change.
 
 ## Future
 
-1. On npm, select **Require two-factor authentication and disallow tokens**,
-   update package settings, complete owner authentication, and verify token/auth
-   absence.
-2. With explicit owner authorization, disable GitHub environment administrator
-   bypass while retaining reviewer `jikkuatwork` and `v*` tag policy. Prove a
-   normal reviewer approval only on the next genuine release—never a dummy.
-3. Commit/push the matured runbook and final release evidence, then close with a
-   clean synchronized tree.
-4. Update and revalidate Medialab's exact `0.2.1` pin only under its separate
-   repository/deployment authorization.
+1. Commit and push the approved unified workflow, docs, skill, test, and Review
+   `#068` evidence.
+2. In npm package Settings, change the trusted publisher allowed action from
+   `npm stage publish` to **`npm publish` only**.
+3. Set Publishing access to **Require two-factor authentication and disallow
+   tokens**, complete owner authentication, and verify the saved state.
+4. Close clean and synchronized. Prove the unified path only on the next genuine
+   release—never a dummy.
+5. Update/revalidate Medialab's exact `0.2.1` pin only under separate repository
+   and deployment authorization.

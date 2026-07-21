@@ -103,9 +103,9 @@ are preview, and the native bridge is reserved.
 Read the [0.2 support contract](docs/v0.2.md), the
 [admin/operator guide](docs/admin.md), or the [migration ledger](docs/migration.md)
 if you are moving from Holm's existing `holm-sdk` or `holm-state` packages.
-Those packages remain live during migration. Future npm releases use OIDC
-trusted publishing with browser-approved staging; see the
-[release guide](docs/releasing.md).
+Those packages remain live during migration. Future npm and GitHub releases use
+one protected GitHub approval with direct OIDC publishing and end-to-end
+artifact verification; see the [release guide](docs/releasing.md).
 
 ## For coding agents
 

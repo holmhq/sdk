@@ -1,8 +1,8 @@
 ---
 title: Execution boundary
 updated: 2026-07-21
-window: v0.2.1 post-release npm/GitHub security hardening
-mode: direct owner-assisted settings hardening
+window: unified one-approval npm/GitHub release automation and npm settings cutover
+mode: direct implementation plus owner-assisted npm settings
 last_window: W6
 completed_issue: 018
 queue: none
@@ -10,8 +10,8 @@ release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
 external_blocker: "resolved for SDK availability; Medialab exact-pin update/review and deployment remain separate authorization"
-security_followup: "npm must disallow tokens; GitHub npm-release admin bypass remains enabled and first run recorded state=skipped"
-trusted_publishing_review: "#065 approved f1780e8; P1=0 P2=0 P3=1 environment-protection advisory"
+security_followup: "GitHub hardened; npm trusted action must change to npm publish only and package access must disallow tokens"
+trusted_publishing_review: "#068 approved unified workflow; P1=0 P2=0 with final P3 remediated"
 ---
 
 # Execution Boundary
@@ -54,10 +54,20 @@ Registry and GitHub assets verify byte-for-byte; npm signature/provenance,
 installed exports, admin inventory, and release-specific MIME smoke pass.
 Evidence is in `koder/evidence/006_v021_release_candidate/INDEX.md`.
 
-The remaining bounded window is security hardening: require npm 2FA and disallow
-tokens, then explicitly decide whether to disable GitHub environment admin
-bypass. Workflow run `29773856653` proved OIDC staging/publication, but GitHub
-recorded `state=skipped` by `holmhq-admin`, not reviewer approval. Medialab
+The owner rejected the multi-step staged process and authorized simplification.
+The reviewed replacement uses one workflow and one owner action: approve
+`npm-release`. Unprivileged validation prepares exact assets; the protected job
+requires a live accountable approval, publishes npm directly through OIDC, and
+creates/verifies the GitHub Release; unprivileged verification checks package
+imports, signatures, provenance, metadata, and bytes. Review `#068` approves
+with no unresolved findings; full release checks pass.
+
+Live GitHub hardening is complete: environment administrator bypass is disabled,
+reviewer `jikkuatwork` and `v*` deployment policy remain, and active ruleset
+`19324891` blocks deletion/all updates to release tags with no bypass/excludes.
+The remaining stop is npm settings: trusted publisher action must change from
+`npm stage publish` to `npm publish` only, and package access must require 2FA
+and disallow tokens. No release was manufactured to test the new flow. Medialab
 deployment, Holm writes, and unrelated capability work remain excluded.
 
 ## Owner decision — 2026-07-20
@@ -85,6 +95,15 @@ post-first-stage package-access hardening. Browser approvals remain accountable
 owner actions and every mismatch is a stop condition. This does not authorize
 Medialab deployment or writes to Holm/other repositories.
 
+## Owner decision — release simplification, 2026-07-21
+
+The owner directed that future npm and GitHub publication complete through one
+protected approval rather than separate GitHub, npm-stage, and GitHub-release
+steps. This authorizes repository workflow/docs/tests/skill changes and the
+necessary GitHub/npm release-setting hardening. It does not authorize a dummy
+version, another package release, Medialab deployment, or writes to Holm/other
+repositories. The unified path remains unproven until the next genuine release.
+
 ## Standing limits
 
 - Holm and repositories other than this SDK remain read-only without explicit
@@ -95,18 +114,17 @@ Medialab deployment or writes to Holm/other repositories.
   mutated.
 - The temporary `holm-sdk-linux` token is revoked, npm's active token list is
   empty, and the local npm CLI is logged out with no stored registry auth key.
-- Review `#065` approves stage-only `publish.yml`. Environment `npm-release`
-  requires reviewer `jikkuatwork` and permits only `v*` tag deployments, but
-  live `can_admins_bypass=true`; the first run used that bypass and does not
-  prove reviewer approval. npm's trusted publisher remains exact for workflow
-  `publish.yml`, environment `npm-release`, and only `npm stage publish`.
-- Do not stage a dummy package or rerun any published tag. `0.2.1` proved OIDC
-  publication; require 2FA and disallow tokens in npm package access now.
+- Review `#068` approves unified `publish.yml`. Environment `npm-release`
+  requires reviewer `jikkuatwork`, permits only `v*` tags, and has admin bypass
+  disabled. Ruleset `19324891` makes `refs/tags/v*` immutable. npm still needs
+  owner-side trusted-publisher action `npm publish` only plus 2FA/token lockout.
+- Do not stage a dummy package, dispatch merely to test settings, or rerun any
+  published tag. Prove the unified workflow only on the next genuine release.
 - Do not deploy the prepared Medialab migration while it pins public `0.2.0`.
   Update to exact public `0.2.1`, rerun local gates/review, and obtain separate
   deployment authorization.
-- Use proven runbook `koder/skills/npm-release/`; Pi, Claude Code, and Codex
-  compatibility paths remain symlinks to this canonical copy. Its proof records
-  both successful OIDC publication and the unresolved admin-bypass caveat.
+- Use `koder/skills/npm-release/`; Pi, Claude Code, and Codex compatibility
+  paths remain symlinks. OIDC identity is proven by `0.2.1`; the unified direct
+  npm + GitHub workflow is explicitly pending genuine-release proof.
 - Organization recovery and GitHub release immutability remain optional owner
   decisions.
