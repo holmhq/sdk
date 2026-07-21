@@ -1,6 +1,6 @@
 ---
 title: SDK Cross-repository Project Registry
-updated: 2026-07-13
+updated: 2026-07-21
 ---
 
 # Project Registry
@@ -38,6 +38,7 @@ card is older than the fact being relied upon.
 | `002` | [SDK](002_sdk/INDEX.md) | Current repository and portable client implementation | Primary write target |
 | `003` | [Sobek](003_sobek/INDEX.md) | Embedded JS engine underlying Holm server/Sobek behavior | Read-only; file/coordinate engine work separately |
 | `004` | [CDN](004_cdn/INDEX.md) | Adjacent first-party browser-library distribution project | Read-only; SDK ships from its own repo |
+| `005` | [Medialab](005_medialab/INDEX.md) | Active web-app consumer and SDK dogfood target | Read-only unless separately authorized |
 
 Add a card when a repository gains a durable SDK relationship. Do not add every
 repo that is merely mentioned in research.
