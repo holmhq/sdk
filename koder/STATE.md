@@ -1,5 +1,5 @@
 ---
-updated_at: "21 Jul 2026 | 04:53 PM IST"
+updated_at: "21 Jul 2026 | 06:36 PM IST"
 state: READY
 active_window: "none; release automation ready and awaiting genuine product demand"
 active_issue: "none"
@@ -38,11 +38,12 @@ stop_gate: "before the next genuine release, re-confirm npm lockout and complete
   Zyt commit `fe81675`: exact `0.2.1`, 10 adapter tests, syntax/Vite/MIME gates,
   and independent review are green with `P1=0 P2=0 P3=0`. Follow-up `b0c8f10`
   adds a browser-valid manifest and is deployed with 15 files.
-- The first owner test saw transient image-route `503`s consistent with existing
-  Holm memory admission, not an SDK contract failure. After an external peer
-  restart/upgrade to `0.185.6`, pressure/governor are `ok`, `/api/me` is `200`,
-  and the image route reaches app auth (`401` unauthenticated). Owner retest is
-  pending; no app workaround or SDK change was added.
+- Owner retest on Holm `0.185.7` reproduced a distinct platform boundary. One
+  controlled 15-image parallel batch yielded 10 app-auth responses and 5
+  retryable `503`s with exact reason `runtime_vm_pool`; pressure/governor stayed
+  `ok`, pool capacity was 3, and misses rose 25→30. The browser cannot consume
+  the JSON retry contract for `<img>` fan-out. No app workaround or SDK change
+  was added.
 - No dummy SDK version, SDK workflow dispatch, or package release occurred.
 
 ## Future
@@ -52,6 +53,6 @@ stop_gate: "before the next genuine release, re-confirm npm lockout and complete
 2. At the next genuine release, use `koder/skills/npm-release/`, re-confirm the
    npm lockout in the UI, complete exact-target review and Holm acceptance, and
    require one accountable `npm-release` approval with no skipped decision.
-3. Await owner interactive Medialab acceptance; route any auth, generation,
-   cache, or edit-upload regression to the owning app/SDK boundary before
-   migrating another app.
+3. Medialab owner acceptance is blocked on Holm runtime-pool fan-out. Obtain
+   explicit authorization to file/fix a Holm issue (or reopen `#510`/`#529`);
+   do not throttle/retry around it in the app or migrate another app yet.

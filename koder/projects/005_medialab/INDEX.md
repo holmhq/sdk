@@ -1,12 +1,12 @@
 ---
 name: Medialab
-status: live-owner-retesting
+status: live-blocked-holm-runtime-pool
 role: active-web-consumer-and-dogfood-target
 updated: 2026-07-21
 local_path: ~/Projects/zyt/medialab
 remote: git@github.com:jikkuatwork/zyt.git
 branch: main
-verified_commit: 0b08ef7202c4fd1a5f6e60101f22aa117df17579
+verified_commit: 0c3c73a0153ea57a7ea9af97f0aa0264b9c194d1
 write_policy: explicit-authorization-only
 ---
 
@@ -40,11 +40,12 @@ and released in `0.2.1`.
   manifest and the current deployment contains 15 files with SPA routing.
 - Root, hashed JavaScript, `/gallery`, and `manifest.webmanifest` return HTTP
   200; the manifest has string `display: standalone` and correct MIME.
-- The first owner test saw transient image-route `503`s consistent with Holm
-  memory admission. After an external peer restart/upgrade to `0.185.6`, the
-  governor is `ok`, `/api/me` is `200`, and the image route reaches app auth.
-- Zyt `main` is synchronized through follow-up record commit `0b08ef7`; owner
-  interactive retest is pending.
+- On Holm `0.185.7`, one bounded 15-image parallel probe produced 10 app-auth
+  responses and 5 retryable `503` envelopes with `reason: runtime_vm_pool`.
+  Pressure/governor stayed `ok`, pool capacity was 3, and misses rose 25→30.
+- Browser `<img>` fan-out cannot consume the JSON retry envelope; owner
+  acceptance is blocked on a Holm runtime/delivery correction, not SDK code.
+- Zyt `main` is synchronized through blocker record commit `0c3c73a`.
 
 ## Agent policy
 
@@ -53,6 +54,6 @@ and released in `0.2.1`.
 - Follow `~/Projects/zyt/AGENTS.md`; preserve unrelated mono-repo work.
 - Never use SQL as a migration shortcut.
 - Further Zyt writes or Medialab deployments require separate explicit scope.
-- During owner acceptance, verify browser auth/API behavior, generation refresh,
-  edit-upload MIME, host binding, and rollback through the app's reviewed
-  process.
+- Do not add app retries or concurrency throttles to hide `runtime_vm_pool`.
+  File/fix the Holm runtime/delivery boundary only with explicit authorization,
+  then resume browser auth/generation/edit acceptance.

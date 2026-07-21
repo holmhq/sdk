@@ -9,7 +9,7 @@ queue: none
 release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
-external_blocker: "resolved; Medialab exact-0.2.1 migration and manifest fix are deployed; owner retest follows transient Holm memory-admission 503s"
+external_blocker: "Medialab owner acceptance blocked by reproducible Holm runtime_vm_pool 503s under browser image fan-out; SDK migration itself remains green"
 security_followup: "GitHub hardened; owner reports npm publish-only trust and package-access 2FA/token lockout appear persisted; re-confirm before the next genuine release"
 trusted_publishing_review: "#068 approved unified workflow; P1=0 P2=0 with final P3 remediated"
 ---
@@ -84,12 +84,14 @@ fallback, and independent review gates. Follow-up `b0c8f10` adds an authored
 browser-valid manifest; Holm redeployed 15 files to existing app
 `holm_app_fBb09CTIJsIJ` at `medialab.zyt.app`.
 
-The first owner test saw transient image-route `503`s matching the existing Holm
-memory-admission incident shape, not an SDK route contract. During triage the
-peer was externally restarted/upgraded to Holm `0.185.6`; current pressure and
-governor are `ok`, `/api/me` returns `200`, and an unauthenticated image request
-reaches app auth with `401` instead of `503`. Owner retest is pending. No app
-retry workaround, SQL, Holm write, or SDK change was introduced.
+Owner retest on Holm `0.185.7` isolated a distinct platform boundary. One
+bounded 15-request parallel image probe produced 10 app-auth responses and 5
+retryable `503` envelopes with `reason: runtime_vm_pool` and
+`retry_after_ms: 1000`. Memory pressure/governor remained `ok`, runtime pool
+capacity was 3, and pool misses rose from 25 to 30. Browser `<img>` requests do
+not consume the JSON retry contract, so gallery images remain broken under
+ordinary fan-out. No app retry/concurrency workaround, SQL, Holm write, or SDK
+change was introduced; Holm must own the runtime/delivery correction.
 
 ## Owner decision — 2026-07-20
 
