@@ -1,8 +1,8 @@
 ---
 title: Execution boundary
 updated: 2026-07-21
-window: unified release automation implemented; npm package-access lockout pending
-mode: owner-authenticated npm setting required
+window: none; release automation ready and next genuine release awaits real product demand
+mode: direct; no autonomous release window active
 last_window: W6
 completed_issue: 018
 queue: none
@@ -10,7 +10,7 @@ release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
 external_blocker: "resolved for SDK availability; Medialab exact-pin update/review and deployment remain separate authorization"
-security_followup: "GitHub hardened; owner verifies npm publish-only trust; package access token lockout remains unconfirmed"
+security_followup: "GitHub hardened; owner reports npm publish-only trust and package-access 2FA/token lockout appear persisted; re-confirm before the next genuine release"
 trusted_publishing_review: "#068 approved unified workflow; P1=0 P2=0 with final P3 remediated"
 ---
 
@@ -65,12 +65,17 @@ with no unresolved findings; full release checks pass.
 Live GitHub hardening is complete: environment administrator bypass is disabled,
 reviewer `jikkuatwork` and `v*` deployment policy remain, and active ruleset
 `19324891` blocks deletion/all updates to release tags with no bypass/excludes.
-The owner reports and verifies that npm's trusted publisher now allows
-`npm publish` only. Publishing access was not separately confirmed after the
-instruction to leave it unchanged, so **Require two-factor authentication and
-disallow tokens** remains the sole hardening stop. No release was manufactured
-to test the new flow. Medialab deployment, Holm writes, and unrelated capability
-work remain excluded.
+The owner reports that npm's trusted publisher allows `npm publish` only and
+that **Require two-factor authentication and disallow tokens** appears
+persisted. This closes the current configuration blocker on owner confirmation;
+the package setting must still be rechecked in the browser before the next
+genuine release dispatch. No release was manufactured to test the new flow.
+Medialab deployment, Holm writes, and unrelated capability work remain excluded.
+
+Commit `2352321` adds a separate Node 20 CI job that exercises tracked `dist`
+and a packed/install/import smoke without development dependencies, matching the
+published `engines.node >=20` contract. Fresh full release validation and a
+read-only independent review are green with `P1=0 P2=0 P3=0`.
 
 ## Owner decision — 2026-07-20
 
@@ -106,6 +111,13 @@ necessary GitHub/npm release-setting hardening. It does not authorize a dummy
 version, another package release, Medialab deployment, or writes to Holm/other
 repositories. The unified path remains unproven until the next genuine release.
 
+## Owner decision — package-access follow-up, 2026-07-21
+
+The owner reports that npm's 2FA/token lockout appears confirmed and directs a
+final live check during the next genuine release rather than manufacturing a
+test version. Treat release configuration as ready, but stop before dispatch if
+the browser does not show the persisted required setting.
+
 ## Standing limits
 
 - Holm and repositories other than this SDK remain read-only without explicit
@@ -118,9 +130,9 @@ repositories. The unified path remains unproven until the next genuine release.
   empty, and the local npm CLI is logged out with no stored registry auth key.
 - Review `#068` approves unified `publish.yml`. Environment `npm-release`
   requires reviewer `jikkuatwork`, permits only `v*` tags, and has admin bypass
-  disabled. Ruleset `19324891` makes `refs/tags/v*` immutable. The owner
-  verifies npm trust is `npm publish` only; package access still needs confirmed
-  2FA/token lockout.
+  disabled. Ruleset `19324891` makes `refs/tags/v*` immutable. The owner reports
+  npm trust is `npm publish` only and package access has 2FA/token lockout;
+  re-confirm both live before the next genuine release dispatch.
 - Do not stage a dummy package, dispatch merely to test settings, or rerun any
   published tag. Prove the unified workflow only on the next genuine release.
 - Do not deploy the prepared Medialab migration while it pins public `0.2.0`.
