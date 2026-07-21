@@ -28,3 +28,23 @@ jobs:
 
       - name: Run canonical CI gate
         run: npm run ci
+
+  node-20-runtime:
+    name: Shipped package compatibility on Node 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Test tracked distribution
+        run: npm run test:dist
+
+      - name: Pack, install, and import every public entry point
+        run: npm run test:package
