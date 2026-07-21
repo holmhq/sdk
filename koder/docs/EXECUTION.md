@@ -1,8 +1,8 @@
 ---
 title: Execution boundary
 updated: 2026-07-21
-window: unified one-approval npm/GitHub release automation and npm settings cutover
-mode: direct implementation plus owner-assisted npm settings
+window: unified release automation implemented; npm package-access lockout pending
+mode: owner-authenticated npm setting required
 last_window: W6
 completed_issue: 018
 queue: none
@@ -10,7 +10,7 @@ release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
 external_blocker: "resolved for SDK availability; Medialab exact-pin update/review and deployment remain separate authorization"
-security_followup: "GitHub hardened; npm trusted action must change to npm publish only and package access must disallow tokens"
+security_followup: "GitHub hardened; owner verifies npm publish-only trust; package access token lockout remains unconfirmed"
 trusted_publishing_review: "#068 approved unified workflow; P1=0 P2=0 with final P3 remediated"
 ---
 
@@ -65,10 +65,12 @@ with no unresolved findings; full release checks pass.
 Live GitHub hardening is complete: environment administrator bypass is disabled,
 reviewer `jikkuatwork` and `v*` deployment policy remain, and active ruleset
 `19324891` blocks deletion/all updates to release tags with no bypass/excludes.
-The remaining stop is npm settings: trusted publisher action must change from
-`npm stage publish` to `npm publish` only, and package access must require 2FA
-and disallow tokens. No release was manufactured to test the new flow. Medialab
-deployment, Holm writes, and unrelated capability work remain excluded.
+The owner reports and verifies that npm's trusted publisher now allows
+`npm publish` only. Publishing access was not separately confirmed after the
+instruction to leave it unchanged, so **Require two-factor authentication and
+disallow tokens** remains the sole hardening stop. No release was manufactured
+to test the new flow. Medialab deployment, Holm writes, and unrelated capability
+work remain excluded.
 
 ## Owner decision — 2026-07-20
 
@@ -116,8 +118,9 @@ repositories. The unified path remains unproven until the next genuine release.
   empty, and the local npm CLI is logged out with no stored registry auth key.
 - Review `#068` approves unified `publish.yml`. Environment `npm-release`
   requires reviewer `jikkuatwork`, permits only `v*` tags, and has admin bypass
-  disabled. Ruleset `19324891` makes `refs/tags/v*` immutable. npm still needs
-  owner-side trusted-publisher action `npm publish` only plus 2FA/token lockout.
+  disabled. Ruleset `19324891` makes `refs/tags/v*` immutable. The owner
+  verifies npm trust is `npm publish` only; package access still needs confirmed
+  2FA/token lockout.
 - Do not stage a dummy package, dispatch merely to test settings, or rerun any
   published tag. Prove the unified workflow only on the next genuine release.
 - Do not deploy the prepared Medialab migration while it pins public `0.2.0`.

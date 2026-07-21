@@ -138,9 +138,10 @@ multipart fallback. The installed `0.2.1` package preserved `photo.jpg` as
 - Review `#068` approves a future unified one-approval workflow that publishes
   npm directly and creates/verifies the GitHub Release. This does not alter the
   historical `0.2.1` stage evidence above.
-- npm still needs the trusted-publisher action changed from `npm stage publish`
-  to **`npm publish` only**, plus Publishing access **Require two-factor
-  authentication and disallow tokens**. Confirm no classic/granular token or
-  local npm auth exists after the owner-authenticated update.
+- The owner reports and verifies that npm's trusted publisher now allows
+  **`npm publish` only**. Publishing access was not separately confirmed after
+  the instruction to leave it unchanged, so **Require two-factor authentication
+  and disallow tokens** remains pending. Confirm no classic/granular token or
+  local npm auth exists after that owner-authenticated update.
 - Prove accountable reviewer approval and the unified workflow only on a future
   genuine release; never create a dummy version.
