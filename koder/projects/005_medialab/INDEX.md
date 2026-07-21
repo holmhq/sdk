@@ -1,12 +1,12 @@
 ---
 name: Medialab
-status: migration-reviewed-not-deployed
+status: live-owner-testing
 role: active-web-consumer-and-dogfood-target
 updated: 2026-07-21
 local_path: ~/Projects/zyt/medialab
 remote: git@github.com:jikkuatwork/zyt.git
 branch: main
-verified_commit: fe816757ab8fe2df7d060be60a9206bbd182a152
+verified_commit: ac12e76dec1eaaeb43a710a4d26d9fec463a5530
 write_policy: explicit-authorization-only
 ---
 
@@ -31,12 +31,15 @@ and released in `0.2.1`.
 
 ## Current checkpoint
 
-- Local Zyt commit `fe81675` contains the migration and removes the copied SDK.
+- Pushed Zyt commit `fe81675` contains the migration and removes the copied SDK.
 - Ten adapter tests, syntax checks, a clean temporary Vite bundle, and an
   installed-package multipart fallback smoke pass.
 - Independent integrated review approved with `P1=0 P2=0 P3=0`.
-- The Zyt commit is one ahead of its upstream and has not been pushed.
-- Medialab has not been deployed from this migration.
+- Holm redeployed existing app `holm_app_fBb09CTIJsIJ` at
+  `medialab.zyt.app` with 14 files and SPA routing.
+- Root, hashed JavaScript, and `/gallery` return HTTP 200; owner interactive
+  auth/generation/edit acceptance is pending.
+- Zyt `main` is synchronized through deployment record commit `ac12e76`.
 
 ## Agent policy
 
@@ -44,6 +47,7 @@ and released in `0.2.1`.
   write window.
 - Follow `~/Projects/zyt/AGENTS.md`; preserve unrelated mono-repo work.
 - Never use SQL as a migration shortcut.
-- A Zyt push and any Medialab deployment require separate explicit approval.
-- At cutover, verify exact package identity, browser auth/API behavior, upload
-  MIME, host binding, and rollback through the app's normal reviewed process.
+- Further Zyt writes or Medialab deployments require separate explicit scope.
+- During owner acceptance, verify browser auth/API behavior, generation refresh,
+  edit-upload MIME, host binding, and rollback through the app's reviewed
+  process.

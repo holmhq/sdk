@@ -1,5 +1,5 @@
 ---
-updated_at: "21 Jul 2026 | 04:13 PM IST"
+updated_at: "21 Jul 2026 | 04:28 PM IST"
 state: READY
 active_window: "none; release automation ready and awaiting genuine product demand"
 active_issue: "none"
@@ -34,10 +34,11 @@ stop_gate: "before the next genuine release, re-confirm npm lockout and complete
   **`npm publish` only** and **Require two-factor authentication and disallow
   tokens** appears persisted. Treat configuration as ready, with a mandatory
   browser recheck before the next genuine release dispatch.
-- Owner-authorized Medialab adoption is committed locally in Zyt at `fe81675`:
-  exact `0.2.1`, 10 adapter tests, syntax and Vite gates, installed-package MIME
-  smoke, and independent review are green with `P1=0 P2=0 P3=0`. It is not
-  pushed or deployed; unrelated Zyt work remains untouched.
+- Owner-authorized Medialab adoption is live at `medialab.zyt.app` from pushed
+  Zyt commit `fe81675`: exact `0.2.1`, 10 adapter tests, syntax/Vite/MIME gates,
+  and independent review are green with `P1=0 P2=0 P3=0`. Holm redeployed
+  existing app `holm_app_fBb09CTIJsIJ` with 14 files and SPA routing; root,
+  hashed JS, and `/gallery` return HTTP 200. Owner interactive testing is next.
 - No dummy version, SDK workflow dispatch, package release, or deployment
   occurred.
 
@@ -48,5 +49,6 @@ stop_gate: "before the next genuine release, re-confirm npm lockout and complete
 2. At the next genuine release, use `koder/skills/npm-release/`, re-confirm the
    npm lockout in the UI, complete exact-target review and Holm acceptance, and
    require one accountable `npm-release` approval with no skipped decision.
-3. Push Zyt commit `fe81675` and deploy Medialab only under separate explicit
-   authorization; the reviewed migration currently remains local and inactive.
+3. Await owner interactive Medialab acceptance; route any auth, generation,
+   cache, or edit-upload regression to the owning app/SDK boundary before
+   migrating another app.

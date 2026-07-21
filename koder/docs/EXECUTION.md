@@ -9,7 +9,7 @@ queue: none
 release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
 holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
-external_blocker: "resolved for SDK availability and Medialab local migration/review; Zyt push and deployment remain separate authorization"
+external_blocker: "resolved; Medialab exact-0.2.1 migration is deployed and owner interactive acceptance is pending"
 security_followup: "GitHub hardened; owner reports npm publish-only trust and package-access 2FA/token lockout appear persisted; re-confirm before the next genuine release"
 trusted_publishing_review: "#068 approved unified workflow; P1=0 P2=0 with final P3 remediated"
 ---
@@ -77,11 +77,13 @@ and a packed/install/import smoke without development dependencies, matching the
 published `engines.node >=20` contract. Fresh full release validation and a
 read-only independent review are green with `P1=0 P2=0 P3=0`.
 
-Owner-authorized Medialab adoption is complete in local Zyt commit `fe81675`.
+Owner-authorized Medialab adoption is live from pushed Zyt commit `fe81675`.
 It pins exact public `0.2.1`, removes the copied legacy SDK, preserves the custom
 WebSocket boundary, and passes adapter, syntax, temporary Vite, installed MIME
-fallback, and independent review gates. The Zyt commit is not pushed and the app
-is not deployed.
+fallback, and independent review gates. Holm redeployed existing app
+`holm_app_fBb09CTIJsIJ` at `medialab.zyt.app` with 14 files and SPA routing;
+root, hashed JS, and `/gallery` return HTTP 200. Owner interactive acceptance is
+pending.
 
 ## Owner decision — 2026-07-20
 
@@ -129,8 +131,12 @@ the browser does not show the persisted required setting.
 The owner authorized pushing the two pending SDK commits, then writing the
 bounded Medialab migration to exact `0.2.1`, validating and independently
 reviewing it, with an explicit stop before deployment. SDK `main` was pushed;
-Zyt local commit `fe81675` contains the approved migration. This did not
-authorize a Zyt push, Medialab deployment, SQL, Holm writes, or other app work.
+Zyt commit `fe81675` contains the approved migration.
+
+The owner then explicitly authorized Medialab deployment for testing. Zyt
+commits `fe81675` and `ac12e76` were pushed and the existing app was redeployed
+at `medialab.zyt.app`. This did not authorize SQL, Holm writes, unrelated app
+work, or additional deployments.
 
 ## Standing limits
 
@@ -149,9 +155,9 @@ authorize a Zyt push, Medialab deployment, SQL, Holm writes, or other app work.
   re-confirm both live before the next genuine release dispatch.
 - Do not stage a dummy package, dispatch merely to test settings, or rerun any
   published tag. Prove the unified workflow only on the next genuine release.
-- Medialab local commit `fe81675` pins exact public `0.2.1` and has green local
-  gates plus independent approval. Do not push Zyt or deploy it without separate
-  explicit authorization.
+- Medialab is live from reviewed commit `fe81675` on exact public `0.2.1`.
+  Owner interactive acceptance is pending; further Zyt writes or deployments
+  require new explicit scope.
 - Use `koder/skills/npm-release/`; Pi, Claude Code, and Codex compatibility
   paths remain symlinks. OIDC identity is proven by `0.2.1`; the unified direct
   npm + GitHub workflow is explicitly pending genuine-release proof.
