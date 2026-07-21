@@ -148,10 +148,19 @@ commits `fe81675` and `ac12e76` were pushed and the existing app was redeployed
 at `medialab.zyt.app`. This did not authorize SQL, Holm writes, unrelated app
 work, or additional deployments.
 
+## Owner decision — serverless research filing, 2026-07-21
+
+After live proof isolated `runtime_vm_pool`, the owner explicitly authorized a
+new Holm issue requesting detailed prior-art research and a better-informed
+serverless architecture. Holm P1 design Track `#550` was filed and pushed at
+`5857d5bb`; it requires measured memory, research, architecture convergence,
+and cross-profile proof before implementation. This authorized the issue filing
+only—not Holm implementation, release, peer mutation, or an app workaround.
+
 ## Standing limits
 
-- Holm and repositories other than this SDK remain read-only without explicit
-  approval; the completed Medialab write window is now closed.
+- The explicitly authorized Holm `#550` filing is complete. Holm and all other
+  repositories are read-only again without new owner scope.
 - Work remains serial on `main`; no worktrees without explicit approval.
 - This release uses new version `0.2.1`; published `0.1.0` and `0.2.0`, their
   reviewed tags, and checksummed assets remain immutable and must not be
@@ -165,9 +174,9 @@ work, or additional deployments.
   re-confirm both live before the next genuine release dispatch.
 - Do not stage a dummy package, dispatch merely to test settings, or rerun any
   published tag. Prove the unified workflow only on the next genuine release.
-- Medialab is live from reviewed commit `fe81675` on exact public `0.2.1`.
-  Owner interactive acceptance is pending; further Zyt writes or deployments
-  require new explicit scope.
+- Medialab is live from reviewed commit `fe81675` on exact public `0.2.1`, but
+  owner acceptance is blocked on Holm `#550`. Do not add an app workaround;
+  further Zyt writes or deployments require new explicit scope.
 - Use `koder/skills/npm-release/`; Pi, Claude Code, and Codex compatibility
   paths remain symlinks. OIDC identity is proven by `0.2.1`; the unified direct
   npm + GitHub workflow is explicitly pending genuine-release proof.
