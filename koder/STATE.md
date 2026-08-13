@@ -1,59 +1,59 @@
 ---
-updated_at: "21 Jul 2026 | 08:15 PM IST"
-state: READY
-active_window: "none; release automation ready and awaiting genuine product demand"
-active_issue: "none"
-orchestration_mode: "direct; no queue or blind run active"
-stop_gate: "before the next genuine release, re-confirm npm lockout and complete exact-target review, authority, and release gates"
+updated_at: "13 Aug 2026 | 11:55 PM IST"
+state: READY_FOR_EXECUTION
+active_window: "Issue #019 S1 — Holm v0.207 route-registry ingestion and drift gate"
+active_issue: "019"
+orchestration_mode: "direct; strict TDD; serial main"
+stop_gate: "commit S1, update Issue #019 and STATE, then /close before S2"
 ---
 
 # Koder State
 
-## Past
+## Current
 
-- W1–W5 delivered stable web/BFBB, framework-neutral state, runtime adapters,
-  reproducible artifacts, docs, and public `@holmhq/sdk@0.1.0`.
-- W6 delivered the audited preview admin/operator client and public `0.2.0`;
-  Reviews `#063` and `#064` accepted the remediated SDK/Holm boundaries.
-- Genuine `v0.2.1` proved npm OIDC identity in workflow run `29773856653`.
-  The old publish token is revoked and local npm CLI auth remains removed.
-- Commit `2352321` adds a no-development-dependency Node 20 CI consumer gate for
-  the tracked distribution and packed package; independent review approved it
-  with `P1=0 P2=0 P3=0`.
+- The owner activated [Issue `#019`](issues/019_holm_route_registry_refresh/INDEX.md)
+  to replace the SDK's frozen Holm route-authority link with consumption of
+  Holm's released `holm.route-registry.v1` export.
+- Local signed Holm is `v0.207.0`; `holm api routes --format json` reports exact
+  release commit `d66628674232b01e8c95d5b86617bc660d61410f` and `261` routes
+  (`151` admin/operator, `93` app-facing, `17` system/public).
+- The existing SDK admin ledger remains pinned to Holm commit `3d229a41`, with
+  `189` route/method contracts and `216` generated methods. All `189/189`
+  contracts still exist in the new export; `21` admin/operator rows are not yet
+  classified by the SDK.
+- SDK `main` is clean and synchronized. No queue, blind run, release, or
+  publication is active.
+- `@zyt` is irrelevant to this work and remains pinned to Holm `v0.206.0` for
+  its census soak. Do not contact or mutate it from the SDK refresh.
 
-## Present
+## Next session — S1 only
 
-- `@holmhq/sdk@0.2.1` remains public, verified, and immutable on npm/GitHub.
-- Commit `246ab34` provides one protected workflow and one owner action: approve
-  `npm-release`; the unified direct npm plus GitHub path remains pending proof
-  by the next genuine release.
-- Security Review `#068` has no unresolved findings. Fresh `release:check` is
-  green: 230 source tests, 25 dist tests, changed-reachable coverage `100.00`,
-  and size `296327` raw / `226159` minified / `58504` gzip.
-- GitHub hardening remains complete. The owner reports npm trust is
-  **`npm publish` only** and **Require two-factor authentication and disallow
-  tokens** appears persisted. Treat configuration as ready, with a mandatory
-  browser recheck before the next genuine release dispatch.
-- Owner-authorized Medialab adoption is live at `medialab.zyt.app` from pushed
-  Zyt commit `fe81675`: exact `0.2.1`, 10 adapter tests, syntax/Vite/MIME gates,
-  and independent review are green with `P1=0 P2=0 P3=0`. Follow-up `b0c8f10`
-  adds a browser-valid manifest and is deployed with 15 files.
-- Owner retest on Holm `0.185.7` reproduced a distinct platform boundary. One
-  controlled 15-image parallel batch yielded 10 app-auth responses and 5
-  retryable `503`s with exact reason `runtime_vm_pool`; pressure/governor stayed
-  `ok`, pool capacity was 3, and misses rose 25→30. The browser cannot consume
-  the JSON retry contract for `<img>` fan-out. No app workaround or SDK change
-  was added.
-- No dummy SDK version, SDK workflow dispatch, or package release occurred.
+1. Open this SDK repository and read only Issue `#019` plus the source/tests it
+   names.
+2. Execute S1 with strict RED → GREEN → refactor: checked-in `v0.207.0` route
+   snapshot, fail-closed validator, deterministic write/offline-check/live-check
+   tool, focused tests, and CI wiring.
+3. Do not change public SDK source, generated admin methods, `dist/`, route
+   dispositions, package version, or release state.
+4. Run focused proof and full `npm run ci`; commit S1 and update Issue `#019`.
+5. `/close` immediately after the clean S1 handoff. Reopen fresh for S2 route
+   dispositions; do not roll directly into the 21-route policy audit.
 
-## Future
+## Later
 
-1. Wait for real product demand and an owner-approved release scope; do not
-   manufacture a package merely to exercise release plumbing.
-2. At the next genuine release, use `koder/skills/npm-release/`, re-confirm the
-   npm lockout in the UI, complete exact-target review and Holm acceptance, and
-   require one accountable `npm-release` approval with no skipped decision.
-3. Medialab owner acceptance is blocked on Holm P1 design Track `#550`. Begin
-   measured VM-memory and primary-source prior-art research, then independent
-   architecture convergence; do not add an app workaround or migrate another
-   app before that gate.
+- **S2:** classify the complete Holm registry delta against the SDK, beginning
+  with the 21 unclassified admin/operator rows.
+- **S3:** implement only reviewed stable parity additions under strict TDD and
+  regenerate tracked package artifacts.
+- **S4:** map non-HTTP parity separately: authenticated WebSocket protocol,
+  Sobek `holm.*` namespaces, Node capabilities, and action/schema authority.
+- Any npm publication, SDK release, deploy, Holm edit, or production mutation
+  requires separate explicit owner approval.
+
+## Prior stable baseline
+
+- `@holmhq/sdk@0.2.1` is the current public immutable release.
+- Full release validation was green before this activation: source/dist tests,
+  reproducibility, package smoke, coverage, licenses, and size gates.
+- Medialab adoption and the unrelated Holm `#550` runtime-pool research track
+  remain historical context, not dependencies of Issue `#019`.
