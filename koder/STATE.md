@@ -1,59 +1,60 @@
 ---
-updated_at: "13 Aug 2026 | 11:55 PM IST"
-state: READY_FOR_EXECUTION
-active_window: "Issue #019 S1 — Holm v0.207 route-registry ingestion and drift gate"
+updated_at: "15 Aug 2026 | 12:43 AM IST"
+state: REVIEW_READY
+active_window: "Issue #019 S1 checkpoint — Holm v0.207 route-registry ingestion"
 active_issue: "019"
-orchestration_mode: "direct; strict TDD; serial main"
-stop_gate: "commit S1, update Issue #019 and STATE, then /close before S2"
+orchestration_mode: "direct; serial main; no queue"
+stop_gate: "fresh-session review of S1 commit de5530a and read-only Holm live check before activating S2"
 ---
 
 # Koder State
 
 ## Current
 
-- The owner activated [Issue `#019`](issues/019_holm_route_registry_refresh/INDEX.md)
-  to replace the SDK's frozen Holm route-authority link with consumption of
-  Holm's released `holm.route-registry.v1` export.
-- Local signed Holm is `v0.207.0`; `holm api routes --format json` reports exact
-  release commit `d66628674232b01e8c95d5b86617bc660d61410f` and `261` routes
-  (`151` admin/operator, `93` app-facing, `17` system/public).
-- The existing SDK admin ledger remains pinned to Holm commit `3d229a41`, with
-  `189` route/method contracts and `216` generated methods. All `189/189`
-  contracts still exist in the new export; `21` admin/operator rows are not yet
-  classified by the SDK.
-- SDK `main` is clean and synchronized. No queue, blind run, release, or
-  publication is active.
-- `@zyt` is irrelevant to this work and remains pinned to Holm `v0.206.0` for
-  its census soak. Do not contact or mutate it from the SDK refresh.
+- Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) S1 is complete
+  in commit `de5530a`; S2 was not started.
+- The SDK now checks in the canonical 261-row `holm.route-registry.v1` success
+  envelope from signed Holm `v0.207.0`, exact release commit
+  `d66628674232b01e8c95d5b86617bc660d61410f` and SHA-256
+  `4cd21d8e6f288e2c0d9cfe6ec17a96b71072bf152e52407435c3d0f1c25cdba1`.
+- `scripts/refresh-holm-route-registry.mjs` provides deterministic argv-safe
+  write, network-free offline check, and explicit live-drift modes. Normal CI
+  runs only the offline check.
+- Holm's authoritative row identity is
+  `method + path + source_group + lane`. The snapshot preserves both valid
+  `POST /api/spaces/{space}/keys` lanes; auth scope, surface class, and stability
+  remain non-identity attributes.
+- Strict RED and composite-identity refinement RED are recorded. Focused tests
+  pass 18/18, source tests pass 230/230, full `npm run ci` is green, and the
+  explicit live check matches signed Holm `v0.207.0` byte-for-byte.
+- No public SDK source, generated admin API, `dist/`, route disposition, package
+  version, release state, Holm source, or Medialab state changed.
+- No queue, blind run, release, publication, deployment, or cross-repository
+  write is active.
 
-## Next session — S1 only
+## Next session — review checkpoint only
 
-1. Open this SDK repository and read only Issue `#019` plus the source/tests it
-   names.
-2. Execute S1 with strict RED → GREEN → refactor: checked-in `v0.207.0` route
-   snapshot, fail-closed validator, deterministic write/offline-check/live-check
-   tool, focused tests, and CI wiring.
-3. Do not change public SDK source, generated admin methods, `dist/`, route
-   dispositions, package version, or release state.
-4. Run focused proof and full `npm run ci`; commit S1 and update Issue `#019`.
-5. `/close` immediately after the clean S1 handoff. Reopen fresh for S2 route
-   dispositions; do not roll directly into the 21-route policy audit.
+1. Open this SDK repository and review commit `de5530a`, especially fail-closed
+   validation, composite identity use, offline CI isolation, and drift output.
+2. Re-run the offline gate and a fresh read-only live check against signed Holm:
+   `node scripts/refresh-holm-route-registry.mjs --check` and
+   `node scripts/refresh-holm-route-registry.mjs --check-live --holm-bin "$(command -v holm)"`.
+3. If the S1 checkpoint is accepted, explicitly activate S2 in a fresh session.
+   Do not mix review remediation with the 21-route policy audit.
 
 ## Later
 
-- **S2:** classify the complete Holm registry delta against the SDK, beginning
-  with the 21 unclassified admin/operator rows.
+- **S2:** classify the complete registry delta, beginning with the 21 currently
+  unclassified admin/operator rows; do not generate methods from existence.
 - **S3:** implement only reviewed stable parity additions under strict TDD and
-  regenerate tracked package artifacts.
-- **S4:** map non-HTTP parity separately: authenticated WebSocket protocol,
-  Sobek `holm.*` namespaces, Node capabilities, and action/schema authority.
-- Any npm publication, SDK release, deploy, Holm edit, or production mutation
-  requires separate explicit owner approval.
+  regenerate all affected tracked package artifacts.
+- **S4:** map non-HTTP parity separately: authenticated WebSockets, Sobek
+  `holm.*` namespaces, Node capabilities, and action/schema authority.
+- npm publication, SDK release, deployment, Holm edits, and Medialab writes
+  require separate explicit owner approval.
 
-## Prior stable baseline
+## Stable baseline
 
-- `@holmhq/sdk@0.2.1` is the current public immutable release.
-- Full release validation was green before this activation: source/dist tests,
-  reproducibility, package smoke, coverage, licenses, and size gates.
-- Medialab adoption and the unrelated Holm `#550` runtime-pool research track
-  remain historical context, not dependencies of Issue `#019`.
+- `@holmhq/sdk@0.2.1` remains the current public immutable release.
+- The existing admin ledger remains at Holm `3d229a41`: 189 route/method
+  contracts, 216 generated methods, and 21 new admin/operator rows awaiting S2.
