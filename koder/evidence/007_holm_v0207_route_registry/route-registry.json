@@ -1,0 +1,2363 @@
+{
+  "ok": true,
+  "data": {
+    "schema": "holm.route-registry.v1",
+    "holm_version": "0.207.0",
+    "holm_commit": "d66628674232b01e8c95d5b86617bc660d61410f",
+    "routes": [
+      {
+        "method": "ANY",
+        "path": "/_app/{id}/{path...}",
+        "auth_scope": "local network check",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/apps/{id}/links",
+        "auth_scope": "API key/session/member token; app/member checks",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/apps/{id}/links/{idOrSlug}",
+        "auth_scope": "API key/session/member token; app/member checks",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/apps/{id}/members",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/auth/status",
+        "auth_scope": "session or handler-owned status rules",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/config",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/deploy",
+        "auth_scope": "API key/session with deploy scopes; handler checks app role",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/deployments",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/envvars",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/keys",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/login",
+        "auth_scope": "session or handler-owned status rules",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/logs",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/logs/stream",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/notifications",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/redirects",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/security-txt",
+        "auth_scope": "admin/owner or handler-owned scope",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/stats",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/uploads",
+        "auth_scope": "API key/session/member token",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/user/me",
+        "auth_scope": "session or handler-owned status rules",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/webhook-subscriptions",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/api/webhooks",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/auth/login",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/auth/simplelogin",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/census",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/allocs",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/block",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/cmdline",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/goroutine",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/heap",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/mutex",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/profile",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/symbol",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/threadcreate",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/debug/pprof/trace",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/health",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/pixel.gif",
+        "auth_scope": "none",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/r/",
+        "auth_scope": "none",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/track",
+        "auth_scope": "none",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/webhook/",
+        "auth_scope": "webhook secret when configured",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "ANY",
+        "path": "/{app-file-or-route}",
+        "auth_scope": "host route + app runtime policies",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/blobs/{path...}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/brain-overlay/{name}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/delegations/{delegationID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/{docID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/kv/{key}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/schedules/{scheduleID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/approvals/{gateID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/apps/{id}/members/{memberID}",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/auth/provider-default-host",
+        "auth_scope": "session/API key; handler scopes",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/hosts/{host}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/labels/{label}/bindings/{member}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/labels/{label}/watches/{member}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/redirects/{id}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/system/policy/keys/{key}",
+        "auth_scope": "admin/owner or `system:policy:write",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/system/scan-shield/rules/{id}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/uploads/{id}",
+        "auth_scope": "API key/session/member token",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/webhook-subscriptions/{id}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/webhooks/{id}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "DELETE",
+        "path": "/auth/users/{id}",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/.holm/status",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/_holm/errors",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/_holm/info",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/_holm/logs",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/_holm/snapshots",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/_holm/storage",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/_holm/storage/{key}",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/audit",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/blobs",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/blobs/{path...}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/brain",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/brain-overlay",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/brain/{path...}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/delegations/{delegationID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/inspect",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/jobs/{jobID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/kv",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/kv/{key}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/logs",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/members/lookup",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/members/{memberID}/presence",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/schedules",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/threads",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/approvals/{gateID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/messages",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/agents/{folder}/usage",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/files",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/files/{path...}",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/forks",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/lineage",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/source",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/apps/{id}/status",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/provider-default-host",
+        "auth_scope": "session/API key; handler scopes",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/providers",
+        "auth_scope": "session/API key; handler scopes",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/dashboard",
+        "auth_scope": "authenticated API key/session/member token; handler checks route-specific state",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "member-host",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/email/receipts/{id}/attachment",
+        "auth_scope": "admin/owner or handler email capability",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/hosts",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/hosts/unknown",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/hosts/{host}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/invites/{token}",
+        "auth_scope": "none; invite token lookup in handler",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "member-host",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/labels",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/labels/{label}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/notifications/{id}/attempts",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/spaces/{space}/invites",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/spaces/{space}/keys",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/benchmark",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/cache",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/census",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/config",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/db",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/db/candidates",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/db/inspect",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/db/retention/status",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/db/usage",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/health",
+        "auth_scope": "session/API key",
+        "surface_class": "system/public",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/logs",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/logs/stats",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/logs/stream",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/policy",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/policy/keys",
+        "auth_scope": "admin/owner or `system:policy:read",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/policy/keys/{key}",
+        "auth_scope": "admin/owner or `system:policy:read",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/policy/keys/{key}/default",
+        "auth_scope": "admin/owner or `system:policy:read",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/policy/registry",
+        "auth_scope": "admin/owner or `system:policy:read",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/policy/schema",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/scan-shield/events",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/scan-shield/rules",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/scan-shield/status",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/system/stats",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/templates",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/api/uploads/{id}",
+        "auth_scope": "API key/session/member token",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "GET",
+        "path": "/api/users/{id}/status",
+        "auth_scope": "session or handler-owned status rules",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/avatar",
+        "auth_scope": "none",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/callback/{provider}",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/complete",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/dev/email-available",
+        "auth_scope": "development only",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/dev/login",
+        "auth_scope": "development only",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/invite/{code}",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/invites",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/login",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/login/{provider}",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/magic/complete",
+        "auth_scope": "magic-link token; POST consumes",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/members",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/members/{identifier}",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/members/{identifier}/profile",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/providers",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/qr/challenges/{id}",
+        "auth_scope": "challenge id + matching request host",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/qr/challenges/{id}/events",
+        "auth_scope": "challenge id + matching request host",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/qr/challenges/{id}/image",
+        "auth_scope": "challenge id + matching request host",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/qr/scan",
+        "auth_scope": "valid signed challenge payload; redirects to login when phone actor missing",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/qr/scanner",
+        "auth_scope": "authenticated phone/PWA member session cookie",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/session",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/sessions",
+        "auth_scope": "authenticated member session cookie",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/sessions/manage",
+        "auth_scope": "authenticated member session cookie",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/users",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET",
+        "path": "/auth/users/{id}",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "GET,HEAD",
+        "path": "/.well-known/security.txt",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "GET,HEAD",
+        "path": "/avatars/agents/{address...}",
+        "auth_scope": "agent address/avatar lookup only",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "GET,HEAD",
+        "path": "/f/{slug}",
+        "auth_scope": "slug/access-list/lifecycle enforced by handler",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "GET,HEAD",
+        "path": "/f/{slug}/download",
+        "auth_scope": "slug/access-list/lifecycle enforced by handler",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "GET,HEAD",
+        "path": "/f/{slug}/preview",
+        "auth_scope": "slug/access-list/lifecycle enforced by handler",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "GET,HEAD",
+        "path": "/security.txt",
+        "auth_scope": "none",
+        "surface_class": "system/public",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "PATCH",
+        "path": "/auth/members/{identifier}/profile",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "PATCH",
+        "path": "/auth/members/{identifier}/status",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "PATCH",
+        "path": "/auth/users/{id}",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/_holm/email/inbound",
+        "auth_scope": "provider/bot secret or routing validation",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/_holm/restore/{name}",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/_holm/snapshot",
+        "auth_scope": "app/agent context",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/_holm/telegram/inbound/{bot}",
+        "auth_scope": "provider/bot secret or routing validation",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/agents/ai-arrest",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/agents/ai-arrest/release",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/agents/approval-gates/{id}/decide",
+        "auth_scope": "member token/session/API key; gate ownership in handler",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/install",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/approvals",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/approvals/{gateID}/decide",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/delegate",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/aggregate",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/count",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/find",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/find-one",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/search",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/emit",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/kv/{key}/cas",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/kv/{key}/increment",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/message",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/pause",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/replay/{triggerID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/resume",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/schedules",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/agents/{folder}/send",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/fork",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/links/import",
+        "auth_scope": "API key/session/member token; app/member checks",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/apps/{id}/links/{idOrSlug}/suspend",
+        "auth_scope": "API key/session/member token; app/member checks",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/cmd",
+        "auth_scope": "admin/owner or handler-owned scope",
+        "surface_class": "admin/operator",
+        "stability": "internal",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/email/send",
+        "auth_scope": "admin/owner or handler email capability",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/hosts",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/hosts/swap",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/hosts/{host}/reserve",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/hosts/{host}/split",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/invites/{token}/accept",
+        "auth_scope": "authenticated API key/session/member token; handler checks route-specific state",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "member-host",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/labels",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/labels/{label}/bindings",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/labels/{label}/watches",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/notifications/{id}/ack",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/restart",
+        "auth_scope": "admin member PAT, or service API key with `system:lifecycle:restart",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spaces/{space}/invites",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spaces/{space}/invites/{invite}/revoke",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spaces/{space}/keys",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spaces/{space}/keys",
+        "auth_scope": "authenticated API key/session/member token; handler checks space capability",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "member-host",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spaces/{space}/keys/{key}/revoke",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spaces/{space}/resume",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/spaces/{space}/suspend",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard-admin",
+        "source_group": "internal/handlers/spaces.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/sql",
+        "auth_scope": "explicit `system:sql:read` / `system:sql:write` scopes only (no admin bypass)",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/stop",
+        "auth_scope": "admin member PAT, or service API key with `system:lifecycle:stop",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/system/census/disable",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/system/census/enable",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/system/db/retention/run",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/system/logs/cleanup",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/system/scan-shield/rules",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/upgrade",
+        "auth_scope": "admin/owner authority (PAT or API key); scopes alone never grant",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "POST",
+        "path": "/api/uploads/{id}/complete",
+        "auth_scope": "API key/session/member token",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/anonymous/promote",
+        "auth_scope": "authenticated real member session, same-origin request, active anonymous proof cookie, app/host match",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/anonymous/start",
+        "auth_scope": "same-origin request, app/host match, app policy `auth.anonymous_members`, per-IP rate limit",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/dev/callback",
+        "auth_scope": "development only",
+        "surface_class": "app-facing",
+        "stability": "internal",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/invite",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/invite/{code}",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/login/qr/cancel",
+        "auth_scope": "challenge id + matching request host + login-context form fields",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/login/qr/complete",
+        "auth_scope": "approved challenge id + matching request host + login-context form fields",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/logout",
+        "auth_scope": "OAuth/session/invite flow",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/magic/complete",
+        "auth_scope": "magic-link token or email+key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/magic/request",
+        "auth_scope": "existing active human member email; generic response",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/members/native",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/members/uploads",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/members/{identifier}/approve",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/members/{identifier}/tokens",
+        "auth_scope": "admin/owner or API key",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/qr/challenges",
+        "auth_scope": "normalized host + requester IP envelope",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/qr/challenges/{id}/cancel",
+        "auth_scope": "challenge id + matching request host",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/qr/challenges/{id}/complete",
+        "auth_scope": "approved challenge id + matching request host",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/qr/decision",
+        "auth_scope": "authenticated phone member + challenge/action token + host match",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/sessions/revoke",
+        "auth_scope": "authenticated member session cookie + opaque session id",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "POST",
+        "path": "/auth/sessions/revoke-all-others",
+        "auth_scope": "authenticated member session cookie",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/apps/{id}",
+        "auth_scope": "admin/owner; app role checks where handler-owned",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/apps/{id}/agents/{folder}/blobs/{path...}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/apps/{id}/agents/{folder}/brain-overlay/{name}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/apps/{id}/agents/{folder}/ds/{collection}/{docID}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/apps/{id}/agents/{folder}/kv/{key}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/apps/{id}/agents/{folder}/threads/{threadID}/annotations/{key}",
+        "auth_scope": "admin/owner plus app/agent ownership checks in handler",
+        "surface_class": "admin/operator",
+        "stability": "preview",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/auth/provider-default-host",
+        "auth_scope": "session/API key; handler scopes",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/auth/providers/{name}",
+        "auth_scope": "session/API key; handler scopes",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "auth",
+        "source_group": "internal/auth/handlers.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/hosts/{host}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/system/policy/keys/{key}",
+        "auth_scope": "admin/owner or `system:policy:write",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/uploads/{id}/chunk",
+        "auth_scope": "API key/session/member token",
+        "surface_class": "app-facing",
+        "stability": "stable",
+        "lane": "host-routed",
+        "source_group": "syntheticHTTPRoutes()"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/webhook-subscriptions/{id}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      },
+      {
+        "method": "PUT",
+        "path": "/api/webhooks/{id}",
+        "auth_scope": "admin/owner",
+        "surface_class": "admin/operator",
+        "stability": "stable",
+        "lane": "dashboard",
+        "source_group": "cmd/server/main.go"
+      }
+    ]
+  },
+  "meta": {
+    "command": "api routes"
+  },
+  "error": null
+}

@@ -2,12 +2,12 @@
 status: open
 priority: P1
 created: 2026-08-13
-updated: 2026-08-13
+updated: 2026-08-14
 tags: holm, routes, registry, parity, admin, drift, generation
 type: feature
 issue_kind: track
 slice_count: 4
-slices_done: 0
+slices_done: 1
 source_holm_version: 0.207.0
 source_holm_commit: d66628674232b01e8c95d5b86617bc660d61410f
 context: Holm Issue #633 shipped a provenance-bearing offline route registry; the canonical SDK must replace its frozen Holm authority link with a generated snapshot and explicit parity workflow.
@@ -94,12 +94,26 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 
 | Slice | Status | Scope | Stop gate |
 | --- | --- | --- | --- |
-| S1: registry ingestion and drift gate | ready | Capture/validate canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Commit, update this ledger, `/close`; do not start S2 |
-| S2: route disposition refresh | blocked | Reconcile all registry rows with SDK supported/deferred/excluded policy, beginning with the 21 admin/operator deltas | Fresh session after S1 |
+| S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
+| S2: route disposition refresh | blocked on fresh-session checkpoint review | Reconcile all registry rows with SDK supported/deferred/excluded policy, beginning with the 21 admin/operator deltas | Fresh session after reviewing landed S1 |
 | S3: approved stable parity | blocked | TDD implementation of owner-approved stable SDK methods/types and tracked generated artifacts | Only after S2 dispositions are reviewed |
 | S4: non-HTTP parity map | blocked | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Mapping only after route parity baseline |
 
 ## S1 execution contract
+
+### Route-row identity clarification — 2026-08-14
+
+The signed 261-row export intentionally contains two
+`POST /api/spaces/{space}/keys` rows: one `dashboard-admin` / admin-operator
+row and one `member-host` / app-facing row. The owner clarified that SDK
+registry ingestion must use Holm's authoritative golden-table identity:
+`method + path + source_group + lane`.
+
+Rows sharing method + path remain distinct when source group or lane differs.
+`auth_scope`, `surface_class`, and `stability` are attributes, not identity
+fields. Validation rejects an exact duplicate composite identity, while
+normalization and live-drift added/removed/changed/order diagnostics use that
+same composite identity throughout. No Holm change is required.
 
 ### Goal
 
@@ -151,7 +165,7 @@ implementation. At minimum pin:
 | Behavior | Intended RED reason |
 | --- | --- |
 | Valid `holm.route-registry.v1` envelope normalizes deterministically | parser/normalizer absent |
-| Wrong schema, failed envelope, missing provenance, malformed commit, empty routes, unknown surface/stability, and duplicate method+path fail closed | validation absent |
+| Wrong schema, failed envelope, missing provenance, malformed commit, empty routes, unknown surface/stability, and duplicate `method + path + source_group + lane` identity fail closed; valid shared method+path rows across distinct lanes are preserved | validation absent |
 | Registry row order is preserved while object serialization is canonical and newline-terminated | canonical writer absent |
 | `--write` uses an argv-safe fake Holm executable and produces the expected snapshot | command absent |
 | `--check` succeeds without a Holm binary and rejects stale/noncanonical fixture bytes | offline check absent |
@@ -164,20 +178,37 @@ real checked-in evidence during negative cases.
 
 ### S1 acceptance criteria
 
-- [ ] Strict RED evidence exists before implementation.
-- [ ] The checked-in snapshot is generated from local signed Holm `v0.207.0`
+- [x] Strict RED evidence exists before implementation.
+- [x] The checked-in snapshot is generated from local signed Holm `v0.207.0`
       and pins full commit `d66628674232b01e8c95d5b86617bc660d61410f`.
-- [ ] Snapshot validation covers schema, success envelope, provenance, route
-      vocabulary, required fields, and duplicate method+path identities.
-- [ ] Canonical output is deterministic and preserves Holm registry row order.
-- [ ] Offline `--check` has no Holm/network/server/database dependency.
-- [ ] Explicit live check passes against local `holm v0.207.0` and detects a
+- [x] Snapshot validation covers schema, success envelope, provenance, route
+      vocabulary, required fields, and duplicate
+      `method + path + source_group + lane` identities while preserving valid
+      shared method+path rows across distinct source groups or lanes.
+- [x] Canonical output is deterministic and preserves Holm registry row order.
+- [x] Offline `--check` has no Holm/network/server/database dependency.
+- [x] Explicit live check passes against local `holm v0.207.0` and detects a
       changed fake registry/provenance.
-- [ ] SDK CI includes the offline check.
-- [ ] Focused tests, `npm run test:source`, `npm run ci`, and diff hygiene pass.
-- [ ] No public SDK source, generated API, `dist/`, package version, release,
+- [x] SDK CI includes the offline check.
+- [x] Focused tests, `npm run test:source`, `npm run ci`, and diff hygiene pass.
+- [x] No public SDK source, generated API, `dist/`, package version, release,
       publication, deployment, Holm source, or `@zyt` state changes.
-- [ ] Issue/STATE are updated, S1 is committed, and the session closes before S2.
+- [x] Issue/STATE are updated, S1 is committed, and the session closes before S2.
+
+## S1 outcome — 2026-08-14
+
+- Strict RED and the owner-approved composite-identity refinement RED are
+  recorded in `test/evidence/issue019-s1-red.md`.
+- `route-registry.json` preserves all 261 signed release rows at exact commit
+  `d66628674232b01e8c95d5b86617bc660d61410f`; its SHA-256 is
+  `4cd21d8e6f288e2c0d9cfe6ec17a96b71072bf152e52407435c3d0f1c25cdba1`.
+- The fail-closed tool provides argv-safe write, offline canonical check, and
+  explicit live drift modes. Validation and every drift diagnostic use Holm's
+  `method + path + source_group + lane` identity.
+- Focused tests pass 18/18, source tests pass 230/230, the explicit live check
+  matches signed Holm `v0.207.0`, and full `npm run ci` plus diff hygiene pass.
+- S1 changed no public SDK source, generated API, `dist/`, route dispositions,
+  version, release state, Holm source, or Medialab state.
 
 ## S2 handoff after S1
 
