@@ -7,7 +7,7 @@ tags: holm, routes, registry, parity, admin, drift, generation
 type: feature
 issue_kind: track
 slice_count: 4
-slices_done: 1
+slices_done: 2
 source_holm_version: 0.207.0
 source_holm_commit: d66628674232b01e8c95d5b86617bc660d61410f
 context: Holm Issue #633 shipped a provenance-bearing offline route registry; the canonical SDK must replace its frozen Holm authority link with a generated snapshot and explicit parity workflow.
@@ -95,8 +95,8 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | Slice | Status | Scope | Stop gate |
 | --- | --- | --- | --- |
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
-| S2: route disposition refresh | in progress | Reconcile all registry rows with SDK adopted/redesigned/deferred/excluded policy, beginning with the 21 admin/operator deltas | Stop after independent disposition review; no S3 implementation |
-| S3: approved stable parity | blocked | TDD implementation of owner-approved stable SDK methods/types and tracked generated artifacts | Only after S2 dispositions are reviewed |
+| S2: route disposition refresh | complete | Reconciled all registry rows with SDK adopted/redesigned/deferred/excluded policy; 2 S3 candidates, 19 admin deltas deferred | Review `#070` approved; stop before S3 |
+| S3: approved stable parity | ready for owner activation | TDD implementation of the two owner-approved stable retention methods/types and tracked generated artifacts | Fresh owner activation after reviewed S2; stop at reviewed S3 checkpoint |
 | S4: non-HTTP parity map | blocked | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Mapping only after route parity baseline |
 
 ## S1 execution contract
@@ -251,7 +251,7 @@ The route registry cannot specify authenticated WebSocket frames, presence,
 whispers, injected Sobek namespaces, or action input/output schemas. Those
 remain S4 parity requirements rather than invented HTTP claims.
 
-## S2 implementation checkpoint — 2026-08-15
+## S2 outcome — 2026-08-15
 
 - `koder/evidence/008_holm_v0207_route_dispositions/route-dispositions.json`
   composes the signed snapshot with the reviewed app/admin ledgers and 65 exact
@@ -272,7 +272,14 @@ remain S4 parity requirements rather than invented HTTP claims.
   S2-relevant source paths are unchanged from `v0.207.0`; the explicit live
   checker correctly reports provenance-only drift, so S2 did not rewrite S1.
 - No public SDK source, generated API, `dist/`, version, release, Holm,
-  Medialab, or `@zyt` state changed. Independent S2 review remains the stop gate.
+  Medialab, or `@zyt` state changed.
+- Independent Review
+  [`#070`](../../reviews/070_issue019_s2_route_dispositions/INDEX.md) approved
+  exact product range `82145ce..091e268` with `P1=0 P2=0 P3=0`. It repeated
+  focused validation, accepted the complete policy, and independently verified
+  the `v0.208.0` route-array equality and provenance-only live drift.
+- S2 is complete. The session stops here; S3 requires fresh explicit owner
+  activation and is not authorized by Review `#070`.
 
 ## Validation commands
 
