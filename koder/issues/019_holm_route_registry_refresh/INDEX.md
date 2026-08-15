@@ -95,7 +95,7 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | Slice | Status | Scope | Stop gate |
 | --- | --- | --- | --- |
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
-| S2: route disposition refresh | blocked on fresh-session checkpoint review | Reconcile all registry rows with SDK supported/deferred/excluded policy, beginning with the 21 admin/operator deltas | Fresh session after reviewing landed S1 |
+| S2: route disposition refresh | ready for owner activation | Reconcile all registry rows with SDK supported/deferred/excluded policy, beginning with the 21 admin/operator deltas | Fresh session; owner must explicitly activate after Review `#069` |
 | S3: approved stable parity | blocked | TDD implementation of owner-approved stable SDK methods/types and tracked generated artifacts | Only after S2 dispositions are reviewed |
 | S4: non-HTTP parity map | blocked | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Mapping only after route parity baseline |
 
@@ -209,6 +209,11 @@ real checked-in evidence during negative cases.
   matches signed Holm `v0.207.0`, and full `npm run ci` plus diff hygiene pass.
 - S1 changed no public SDK source, generated API, `dist/`, route dispositions,
   version, release state, Holm source, or Medialab state.
+- Independent checkpoint Review [`#069`](../../reviews/069_issue019_s1_route_registry_ingestion/INDEX.md)
+  approved exact product range `263bce8..de5530a` with
+  `P1=0 P2=0 P3=0`. Its fresh read-only live check matched signed Holm
+  `v0.207.0`; S2 is technically unblocked but remains inactive until explicit
+  owner activation in a fresh session.
 
 ## S2 handoff after S1
 
