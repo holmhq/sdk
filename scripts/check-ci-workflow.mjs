@@ -26,6 +26,13 @@ if (routeRegistryScript.includes("--check-live")) {
 if (!(packageJson.scripts?.ci ?? "").includes("npm run test:holm-route-registry")) {
   failures.push(`${packagePath}: canonical CI must run test:holm-route-registry`);
 }
+const routeDispositionScript = packageJson.scripts?.["test:holm-route-dispositions"] ?? "";
+if (!routeDispositionScript.includes("node scripts/check-holm-route-dispositions.mjs")) {
+  failures.push(`${packagePath}: test:holm-route-dispositions must run the offline disposition check`);
+}
+if (!(packageJson.scripts?.ci ?? "").includes("npm run test:holm-route-dispositions")) {
+  failures.push(`${packagePath}: canonical CI must run test:holm-route-dispositions`);
+}
 
 for (const [needle, label] of [
   ["node-version: \"24\"", "canonical Node 24 source gate"],
@@ -68,7 +75,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("CI workflow check passed: canonical source validation uses Node 24 with the offline Holm route-registry gate, and shipped artifacts are exercised on the declared Node 20 minimum without development dependencies.");
+console.log("CI workflow check passed: canonical source validation uses Node 24 with offline Holm route-registry and disposition gates, and shipped artifacts are exercised on the declared Node 20 minimum without development dependencies.");
 
 function workflowSection(jobName) {
   const marker = `  ${jobName}:\n`;

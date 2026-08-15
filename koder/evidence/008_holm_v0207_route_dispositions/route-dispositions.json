@@ -1,0 +1,964 @@
+{
+  "schema": "holm.sdk.route-dispositions/1",
+  "source": {
+    "registry_path": "koder/evidence/007_holm_v0207_route_registry/route-registry.json",
+    "registry_schema": "holm.route-registry.v1",
+    "holm_version": "0.207.0",
+    "holm_commit": "d66628674232b01e8c95d5b86617bc660d61410f",
+    "route_count": 261,
+    "registry_sha256": "4cd21d8e6f288e2c0d9cfe6ec17a96b71072bf152e52407435c3d0f1c25cdba1",
+    "identity_fields": [
+      "method",
+      "path",
+      "source_group",
+      "lane"
+    ]
+  },
+  "inherited_ledgers": {
+    "admin": {
+      "path": "koder/evidence/004_issue008_admin_routes/route-audit.json",
+      "schema": "holm.sdk.admin-route-audit/1",
+      "holm_commit": "3d229a414a0379d0a24221e975b8b4f1588f494d"
+    },
+    "app": {
+      "path": "koder/evidence/003_issue007_app_routes/route-audit.json",
+      "schema": "holm.sdk.app-route-audit/1",
+      "holm_commit": "8deb00b7aa1cc07f39665fde6e81c1b33d3620c4"
+    }
+  },
+  "overrides": [
+    {
+      "method": "ANY",
+      "path": "/_app/{id}/{path...}",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude host dispatch catch-alls: they route app requests but are not independently invocable SDK operations.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#authority-and-ownership"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/api/uploads",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "redesigned",
+      "implementation": "current",
+      "covered_methods": [
+        "POST"
+      ],
+      "sdk": [
+        "web:createWebUploadService"
+      ],
+      "rationale": "Retain resumable session creation behind the runtime-owned web upload service rather than expose the transport route as an app/admin method.",
+      "basis": [
+        "sdk:koder/evidence/001_issue005_transport_uploads/INDEX.md",
+        "sdk:src/web/upload-service.ts"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/auth/login",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "redesigned",
+      "implementation": "current",
+      "covered_methods": [
+        "GET"
+      ],
+      "sdk": [
+        "app:auth.login",
+        "app:auth.loginHref"
+      ],
+      "rationale": "Retain the canonical app login URL/navigation redesign for GET while keeping this browser flow excluded from the admin namespace; the explicit decision resolves the inherited cross-ledger conflict.",
+      "basis": [
+        "app:/auth/login",
+        "admin-exclusion:/auth/login"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/census",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/allocs",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/block",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/cmdline",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/goroutine",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/heap",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/mutex",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/profile",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/symbol",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/threadcreate",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/debug/pprof/trace",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude internal profiling/debug endpoints; they are conditional operator diagnostics outside the SDK contract.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/server/routes/routes.go"
+      ]
+    },
+    {
+      "method": "ANY",
+      "path": "/{app-file-or-route}",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude host dispatch catch-alls: they route app requests but are not independently invocable SDK operations.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#authority-and-ownership"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/system/policy/keys/{key}",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the durable policy registry surface: Holm v0.207.0 supports it for CLI/API operation but explicitly defers first-class SDK wrappers, and write/reset semantics need separate SDK demand and type review.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-policy-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/system/scan-shield/rules/{id}",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the preview scan-shield inspection and rule-management surface to `holm shield`; first-class SDK wrappers remain explicitly deferred in signed Holm v0.207.0.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-scan-shield-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/uploads/{id}",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer remote upload-session deletion: canonical cancellation currently aborts local work and does not claim this server operation.",
+      "basis": [
+        "sdk:koder/evidence/001_issue005_transport_uploads/INDEX.md",
+        "sdk:src/web/upload-service.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/census",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer preview live-object census diagnostics and controls to the Holm CLI; the public SDK must not stabilize a preview operational surface by inference.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/handlers/system_census.go"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/db/candidates",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer reclaim-candidate evidence because signed Holm v0.207.0 explicitly keeps first-class SDK wrappers deferred; S2 does not infer API demand from a stable route.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/db/retention/status",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "adopted",
+      "implementation": "s3-candidate",
+      "covered_methods": [
+        "GET"
+      ],
+      "sdk": [
+        "admin:system.dbRetentionStatus"
+      ],
+      "rationale": "Adopt the stable, read-only governed retention status already exposed by Holm's legacy admin SDK; S3 may add the canonical admin method without changing server authority.",
+      "basis": [
+        "holm:packages/holm-sdk/admin.audit.js#GET /api/system/db/retention/status",
+        "holm:packages/holm-sdk/admin.js#system.dbRetentionStatus",
+        "holm:docs/reference/http-api.md#GET /api/system/db/retention/status"
+      ],
+      "contract_authority": {
+        "request": [
+          "holm:internal/handlers/system.go#SystemDBRetentionStatusHandler"
+        ],
+        "result": [
+          "holm:internal/database/db_retention.go#DBRetentionStatus"
+        ]
+      },
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/db/usage",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer bounded usage reporting because signed Holm v0.207.0 explicitly keeps first-class SDK wrappers deferred; CLI support alone does not authorize a public SDK method.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/policy/keys",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the durable policy registry surface: Holm v0.207.0 supports it for CLI/API operation but explicitly defers first-class SDK wrappers, and write/reset semantics need separate SDK demand and type review.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-policy-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/policy/keys/{key}",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the durable policy registry surface: Holm v0.207.0 supports it for CLI/API operation but explicitly defers first-class SDK wrappers, and write/reset semantics need separate SDK demand and type review.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-policy-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/policy/keys/{key}/default",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the durable policy registry surface: Holm v0.207.0 supports it for CLI/API operation but explicitly defers first-class SDK wrappers, and write/reset semantics need separate SDK demand and type review.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-policy-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/policy/registry",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the durable policy registry surface: Holm v0.207.0 supports it for CLI/API operation but explicitly defers first-class SDK wrappers, and write/reset semantics need separate SDK demand and type review.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-policy-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/scan-shield/events",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the preview scan-shield inspection and rule-management surface to `holm shield`; first-class SDK wrappers remain explicitly deferred in signed Holm v0.207.0.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-scan-shield-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/scan-shield/rules",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the preview scan-shield inspection and rule-management surface to `holm shield`; first-class SDK wrappers remain explicitly deferred in signed Holm v0.207.0.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-scan-shield-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/scan-shield/status",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the preview scan-shield inspection and rule-management surface to `holm shield`; first-class SDK wrappers remain explicitly deferred in signed Holm v0.207.0.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-scan-shield-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "GET",
+      "path": "/api/uploads/{id}",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "redesigned",
+      "implementation": "current",
+      "covered_methods": [
+        "GET"
+      ],
+      "sdk": [
+        "web:createWebUploadService"
+      ],
+      "rationale": "Retain resumable offset recovery behind the runtime-owned web upload service.",
+      "basis": [
+        "sdk:koder/evidence/001_issue005_transport_uploads/INDEX.md",
+        "sdk:src/web/upload-service.ts"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/avatar",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer a typed generated-avatar URL helper as signed Holm v0.207.0 directs; direct browser resource access does not require a request method today.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/complete",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude the browser OAuth completion page; Holm owns navigation and session completion for this route.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/login",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "redesigned",
+      "implementation": "current",
+      "covered_methods": [
+        "GET"
+      ],
+      "sdk": [
+        "app:auth.login",
+        "app:auth.loginHref"
+      ],
+      "rationale": "Retain the canonical app login URL/navigation redesign for GET while keeping this browser flow excluded from the admin namespace; the explicit decision resolves the inherited cross-ledger conflict.",
+      "basis": [
+        "app:/auth/login",
+        "admin-exclusion:/auth/login"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/qr/challenges/{id}",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/qr/challenges/{id}/events",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/qr/challenges/{id}/image",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/qr/scan",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/sessions",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer member-session inventory and management until a typed app/web auth resource owns caller changes, revocation, and navigation behavior together.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/auth/sessions/manage",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer member-session inventory and management until a typed app/web auth resource owns caller changes, revocation, and navigation behavior together.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "GET,HEAD",
+      "path": "/.well-known/security.txt",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude public resource-delivery URLs from the operation ledger; callers may navigate, render, or download them directly while SDK configuration APIs remain separately classified.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#package-and-subpath-contract"
+      ]
+    },
+    {
+      "method": "GET,HEAD",
+      "path": "/avatars/agents/{address...}",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude public resource-delivery URLs from the operation ledger; callers may navigate, render, or download them directly while SDK configuration APIs remain separately classified.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#package-and-subpath-contract"
+      ]
+    },
+    {
+      "method": "GET,HEAD",
+      "path": "/f/{slug}",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude public resource-delivery URLs from the operation ledger; callers may navigate, render, or download them directly while SDK configuration APIs remain separately classified.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#package-and-subpath-contract"
+      ]
+    },
+    {
+      "method": "GET,HEAD",
+      "path": "/f/{slug}/download",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude public resource-delivery URLs from the operation ledger; callers may navigate, render, or download them directly while SDK configuration APIs remain separately classified.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#package-and-subpath-contract"
+      ]
+    },
+    {
+      "method": "GET,HEAD",
+      "path": "/f/{slug}/preview",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude public resource-delivery URLs from the operation ledger; callers may navigate, render, or download them directly while SDK configuration APIs remain separately classified.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#package-and-subpath-contract"
+      ]
+    },
+    {
+      "method": "GET,HEAD",
+      "path": "/security.txt",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "excluded",
+      "implementation": "none",
+      "rationale": "Exclude public resource-delivery URLs from the operation ledger; callers may navigate, render, or download them directly while SDK configuration APIs remain separately classified.",
+      "basis": [
+        "holm:internal/server/routes/routes.go",
+        "sdk:koder/docs/ARCHITECTURE.md#package-and-subpath-contract"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/hosts/swap",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer host topology mutation helpers as directed by Holm Plan 397; route existence and stable labeling do not establish safe public SDK behavior.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-host-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "POST",
+      "path": "/api/hosts/{host}/reserve",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer host topology mutation helpers as directed by Holm Plan 397; route existence and stable labeling do not establish safe public SDK behavior.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-host-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "POST",
+      "path": "/api/hosts/{host}/split",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer host topology mutation helpers as directed by Holm Plan 397; route existence and stable labeling do not establish safe public SDK behavior.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-host-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "POST",
+      "path": "/api/spaces/{space}/keys",
+      "source_group": "internal/handlers/spaces.go",
+      "lane": "member-host",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the member-host lane separately: canonical `admin:spaces.keys.create` covers the dashboard-admin identity, while this app-facing lane needs its own caller/capability and namespace decision.",
+      "basis": [
+        "sdk:koder/evidence/004_issue008_admin_routes/route-audit.json#POST /api/spaces/{space}/keys",
+        "holm:internal/handlers/spaces.go"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/system/census/disable",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer preview live-object census diagnostics and controls to the Holm CLI; the public SDK must not stabilize a preview operational surface by inference.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/handlers/system_census.go"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "POST",
+      "path": "/api/system/census/enable",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer preview live-object census diagnostics and controls to the Holm CLI; the public SDK must not stabilize a preview operational surface by inference.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:internal/handlers/system_census.go"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "POST",
+      "path": "/api/system/db/retention/run",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "adopted",
+      "implementation": "s3-candidate",
+      "covered_methods": [
+        "POST"
+      ],
+      "sdk": [
+        "admin:system.dbRetentionRun"
+      ],
+      "rationale": "Adopt only Holm's stable remote dry-run operation; S3 must preserve server rejection of apply or force intent and must not expose remote retention mutation.",
+      "basis": [
+        "holm:packages/holm-sdk/admin.audit.js#POST /api/system/db/retention/run",
+        "holm:packages/holm-sdk/admin.js#system.dbRetentionRun",
+        "holm:docs/reference/http-api.md#POST /api/system/db/retention/run"
+      ],
+      "contract_authority": {
+        "request": [
+          "holm:internal/handlers/system.go#SystemDBRetentionRunHandler"
+        ],
+        "result": [
+          "holm:internal/database/db_retention.go#DBRetentionReport"
+        ]
+      },
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "POST",
+      "path": "/api/system/scan-shield/rules",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the preview scan-shield inspection and rule-management surface to `holm shield`; first-class SDK wrappers remain explicitly deferred in signed Holm v0.207.0.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-scan-shield-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "POST",
+      "path": "/api/uploads/{id}/complete",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "redesigned",
+      "implementation": "current",
+      "covered_methods": [
+        "POST"
+      ],
+      "sdk": [
+        "web:createWebUploadService"
+      ],
+      "rationale": "Retain resumable completion behind the runtime-owned web upload service.",
+      "basis": [
+        "sdk:koder/evidence/001_issue005_transport_uploads/INDEX.md",
+        "sdk:src/web/upload-service.ts"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/login/qr/cancel",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/login/qr/complete",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/qr/challenges",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/qr/challenges/{id}/cancel",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/qr/challenges/{id}/complete",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/qr/decision",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer typed QR login/challenge coverage; the browser, phone-consent, SSE, and image flows require a cohesive app/web capability rather than isolated route generation.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/sessions/revoke",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer member-session inventory and management until a typed app/web auth resource owns caller changes, revocation, and navigation behavior together.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/auth/sessions/revoke-all-others",
+      "source_group": "internal/auth/handlers.go",
+      "lane": "auth",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer member-session inventory and management until a typed app/web auth resource owns caller changes, revocation, and navigation behavior together.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/system/policy/keys/{key}",
+      "source_group": "cmd/server/main.go",
+      "lane": "dashboard",
+      "classification": "deferred",
+      "implementation": "none",
+      "rationale": "Defer the durable policy registry surface: Holm v0.207.0 supports it for CLI/API operation but explicitly defers first-class SDK wrappers, and write/reset semantics need separate SDK demand and type review.",
+      "basis": [
+        "holm:packages/holm-sdk/surface.audit.js",
+        "holm:docs/reference/http-api.md#deferred-policy-routes"
+      ],
+      "group": "s2-admin-delta"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/uploads/{id}/chunk",
+      "source_group": "syntheticHTTPRoutes()",
+      "lane": "host-routed",
+      "classification": "redesigned",
+      "implementation": "current",
+      "covered_methods": [
+        "PUT"
+      ],
+      "sdk": [
+        "web:createWebUploadService"
+      ],
+      "rationale": "Retain acknowledged chunk transfer behind the runtime-owned web upload service.",
+      "basis": [
+        "sdk:koder/evidence/001_issue005_transport_uploads/INDEX.md",
+        "sdk:src/web/upload-service.ts"
+      ]
+    }
+  ],
+  "expected": {
+    "route_count": 261,
+    "classification": {
+      "adopted": 172,
+      "redesigned": 15,
+      "deferred": 36,
+      "excluded": 38
+    },
+    "implementation": {
+      "current": 185,
+      "s3-candidate": 2,
+      "none": 74
+    },
+    "groups": {
+      "s2-admin-delta": 21
+    }
+  }
+}

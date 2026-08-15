@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-08-13
-updated: 2026-08-14
+updated: 2026-08-15
 tags: holm, routes, registry, parity, admin, drift, generation
 type: feature
 issue_kind: track
@@ -22,11 +22,11 @@ repository, not in Holm: Holm already owns and ships the authority export, while
 this repository owns ingestion, SDK dispositions, generated clients, and SDK
 validation.
 
-The next SDK session is authorized for **S1 only**. Execute S1 with strict
-red → green → refactor, commit it on serial `main`, then `/close`. Do not begin
-S2 in the same session. Reopen fresh in this repository for S2 so route-policy
-decisions are made from the landed ingestion contract rather than mixed into
-tooling implementation.
+The first execution session was authorized for **S1 only** and stopped after
+its landed ingestion checkpoint. On 2026-08-15, after independent Review `#069`
+approved S1, the owner explicitly activated **S2** in a fresh session. S2 is
+route-policy work only and must stop after an independently reviewed disposition
+checkpoint; S3 implementation remains separately gated.
 
 ## Problem
 
@@ -95,7 +95,7 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | Slice | Status | Scope | Stop gate |
 | --- | --- | --- | --- |
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
-| S2: route disposition refresh | ready for owner activation | Reconcile all registry rows with SDK supported/deferred/excluded policy, beginning with the 21 admin/operator deltas | Fresh session; owner must explicitly activate after Review `#069` |
+| S2: route disposition refresh | in progress | Reconcile all registry rows with SDK adopted/redesigned/deferred/excluded policy, beginning with the 21 admin/operator deltas | Stop after independent disposition review; no S3 implementation |
 | S3: approved stable parity | blocked | TDD implementation of owner-approved stable SDK methods/types and tracked generated artifacts | Only after S2 dispositions are reviewed |
 | S4: non-HTTP parity map | blocked | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Mapping only after route parity baseline |
 
@@ -215,9 +215,25 @@ real checked-in evidence during negative cases.
   `v0.207.0`; S2 is technically unblocked but remains inactive until explicit
   owner activation in a fresh session.
 
-## S2 handoff after S1
+## S2 execution contract — activated 2026-08-15
 
-S2 consumes the landed snapshot and classifies parity; it does not redesign S1.
+S2 consumes the landed snapshot and classifies parity; it does not redesign S1
+or generate methods from route existence. Its executable policy layer must:
+
+- resolve all 261 `method + path + source_group + lane` identities exactly once;
+- inherit current reviewed app/admin decisions without flattening their surface
+  meaning;
+- classify additions as adopted, redesigned, deferred, or excluded with a
+  rationale and pinned source basis;
+- distinguish current implementation from a stable, separately gated S3
+  candidate;
+- name request/result authority for every S3 candidate;
+- fail closed on missing, duplicate, stale, conflicting, or provenance-drifted
+  decisions in normal offline CI;
+- preserve both `POST /api/spaces/{space}/keys` lane identities; and
+- change no public `src/**`, generated API, `dist/**`, version, release, Holm,
+  Medialab, or `@zyt` state.
+
 The currently visible 21-row admin/operator delta includes:
 
 - stable DB usage, reclaim-candidate, and retention routes;
@@ -226,36 +242,61 @@ The currently visible 21-row admin/operator delta includes:
 - preview census controls;
 - preview scan-shield routes.
 
-Likely policy is to consider broadly useful stable read-only APIs first, review
-mutations route-by-route, and keep diagnostics explicitly preview/deferred.
-That is a fresh-session decision, not an S1 implementation shortcut.
+S2 adopts only the two stable retention contracts as separately gated S3
+candidates: `system.dbRetentionStatus` is read-only, and
+`system.dbRetentionRun` is server-enforced dry-run only. The other 19 delta rows
+remain deferred exactly as signed Holm `v0.207.0` documents for SDK coverage.
 
 The route registry cannot specify authenticated WebSocket frames, presence,
-whispers, injected Sobek namespaces, or action input/output schemas. Record
-those as separate parity requirements rather than inventing them from HTTP rows.
+whispers, injected Sobek namespaces, or action input/output schemas. Those
+remain S4 parity requirements rather than invented HTTP claims.
+
+## S2 implementation checkpoint — 2026-08-15
+
+- `koder/evidence/008_holm_v0207_route_dispositions/route-dispositions.json`
+  composes the signed snapshot with the reviewed app/admin ledgers and 65 exact
+  identity overrides. All 261 rows resolve once: 172 adopted, 15 redesigned,
+  36 deferred, and 38 excluded.
+- The 21-row admin delta resolves to 2 stable S3 candidates and 19 deferred
+  routes. Each candidate names exact request and result authority at Holm
+  commit `d6662867…`.
+- The dashboard-admin space-key row remains current while the distinct
+  member-host row is explicitly deferred; no lane is collapsed.
+- The fail-closed offline checker rejects missing, duplicate, stale, conflicting,
+  reordered, malformed, provenance-drifted, preview-admitted, and
+  contract-authority-free policy.
+- Focused tests pass 6/6, source tests pass 230/230, `npm run ci` passes, and
+  diff hygiene is clean.
+- The installed signed Holm binary advanced to `v0.208.0` at `93606188…` during
+  S2. Its 261 route rows are byte-equivalent to the pinned route array and all
+  S2-relevant source paths are unchanged from `v0.207.0`; the explicit live
+  checker correctly reports provenance-only drift, so S2 did not rewrite S1.
+- No public SDK source, generated API, `dist/`, version, release, Holm,
+  Medialab, or `@zyt` state changed. Independent S2 review remains the stop gate.
 
 ## Validation commands
 
-S1 should end with at least:
-
 ```bash
-node scripts/refresh-holm-route-registry.mjs --check
-node scripts/refresh-holm-route-registry.mjs --check-live --holm-bin "$(command -v holm)"
+npm run test:holm-route-dispositions
+npm run test:holm-route-registry
 npm run test:source
 npm run ci
+node scripts/refresh-holm-route-registry.mjs --check-live --holm-bin "$(command -v holm)"
 git diff --check
-git status --short
 ```
 
-Use the package-script names introduced by S1 where appropriate.
+The live command is expected to report only `v0.208.0` provenance drift while
+that newer installed release remains active; direct read-only comparison proves
+its route array equals the pinned 261 rows.
 
 ## Boundaries
 
-- SDK repository is the sole write target for S1.
-- Holm is read-only authority at released commit `d6662867…`.
+- SDK repository is the sole write target for S2.
+- Holm remains read-only authority; exact S2 decisions pin released commit
+  `d6662867…`, with read-only `v0.208.0` drift evidence recorded above.
 - Do not contact, upgrade, restart, or inspect `@zyt` for SDK refresh work.
-- Do not add public methods or classify the 21-route delta during S1.
-- Do not publish npm, tag, release, deploy, or change package version.
+- Do not implement S3 methods, publish npm, tag, release, deploy, or change the
+  package version.
 - Work serially on SDK `main`; preserve unrelated work if any appears.
 
 ## Sources
