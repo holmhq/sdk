@@ -1,14 +1,14 @@
 ---
 title: Holm v0.207.0 SDK route disposition ledger
-status: active
-review: pending-S3
+status: accepted
+review: "#070 S2; #071 S3"
 issue: 019
 slice: S2-S3
 schema: holm.sdk.route-dispositions/1
 holm_version: 0.207.0
 holm_commit: d66628674232b01e8c95d5b86617bc660d61410f
 route_count: 261
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 
 # Holm v0.207.0 SDK Route Dispositions
@@ -66,11 +66,11 @@ cite multiple authority rows.
 
 The two S3 promotions are:
 
-- `GET /api/system/db/retention/status` → proposed
+- `GET /api/system/db/retention/status` →
   `admin:system.dbRetentionStatus`; request authority is
   `internal/handlers/system.go#SystemDBRetentionStatusHandler`, and result
   authority is `internal/database/db_retention.go#DBRetentionStatus`.
-- `POST /api/system/db/retention/run` → proposed
+- `POST /api/system/db/retention/run` →
   `admin:system.dbRetentionRun`; request and dry-run enforcement authority is
   `internal/handlers/system.go#SystemDBRetentionRunHandler`, and result authority
   is `internal/database/db_retention.go#DBRetentionReport`.
@@ -138,4 +138,7 @@ unchanged from `d6662867…`, and the signed `v0.208.0` registry drift remains
 provenance-only.
 
 S3 does not change the package version, publish, release, deploy, write Holm or
-Medialab, or begin S4. Independent S3 review remains the stop gate.
+Medialab, or begin S4. Independent Review
+[`#071`](../../reviews/071_issue019_s3_retention_parity/INDEX.md) approved exact
+product range `914a1e2..c7e589b` with `P1=0 P2=0 P3=0`; S3 is accepted and
+stops before S4.
