@@ -1,47 +1,49 @@
 ---
-updated_at: "15 Aug 2026 | 12:34 PM IST"
-state: READY_FOR_EXECUTION
-active_window: "none — Issue #019 S2 accepted; S3 awaits explicit owner activation"
+updated_at: "17 Aug 2026 | 12:32 AM IST"
+state: REVIEW_READY
+active_window: "Issue #019 S3 — implementation complete; independent review pending"
 active_issue: "019"
 orchestration_mode: "direct; serial main; no queue"
-stop_gate: "owner must explicitly activate Issue #019 S3 in a fresh session; no public parity implementation is active"
+stop_gate: "one independent SDK remediation review must approve S3 before close; no S4, release, publication, deployment, or cross-repository writes"
 ---
 
 # Koder State
 
 ## Current
 
-- Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) S1 remains
-  accepted by independent Review `#069` at signed Holm `v0.207.0`.
-- S2 is complete in `091e268`: all 261 route identities resolve exactly once as
-  172 adopted, 15 redesigned, 36 deferred, and 38 excluded. The 21-row admin
-  delta yields 2 stable S3 candidates—retention status and server-enforced
-  dry-run—and 19 deferred routes.
-- Independent Review
-  [`#070`](reviews/070_issue019_s2_route_dispositions/INDEX.md) approved exact
-  product range `82145ce..091e268` with `P1=0 P2=0 P3=0`.
-- Coordinator and reviewer focused checks pass; full `npm run ci` is green.
-  Dashboard-admin/member-host space-key lanes remain distinct, and no route was
-  adopted from existence alone.
-- Installed signed Holm `v0.208.0` at `93606188` has the same 261 route rows and
-  unchanged S2 authority source. The live checker correctly reports
-  provenance-only drift; the accepted `v0.207.0` snapshot was not rewritten.
-- No public SDK, generated API, `dist/`, version, release, Holm, Medialab, or
-  `@zyt` change was made.
+- Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) S3 strict-TDD
+  implementation is complete and ready for independent review. Only
+  `system.dbRetentionStatus` and `system.dbRetentionRun` were added.
+- The generated methods return exact readonly Holm `v0.207.0` retention
+  contracts. Remote run fixes `dry_run: true` / `applied: false`, exposes no
+  body/apply/force input, and rejects dynamic bodies before runtime invocation.
+- All 261 route identities still resolve exactly once: 172 adopted, 15
+  redesigned, 36 deferred, and 38 excluded. Implementation is 187 current, 0
+  candidate, and 74 none; the other 19 admin-delta rows remain deferred.
+- The checked-in admin inventory is now 176 keys, 191 route/method contracts,
+  218 methods, and 18 exclusions. All affected tracked `dist/**`, declarations,
+  maps, manifests, bundles, package smoke, and size evidence were regenerated.
+- Focused checks, 231 source tests, full `npm run ci`, 267-artifact
+  reproducibility, package install smoke, coverage, licenses, size, and diff
+  hygiene pass.
+- Fresh read-only Holm authority matches 176/191/218/18 and relevant source is
+  unchanged from `d6662867…`. Signed installed Holm `v0.208.0` still has only
+  expected version/commit provenance drift from the accepted snapshot.
+- No version, release, publication, deployment, Holm, Medialab, or `@zyt` write
+  was made. Independent S3 review is the only remaining active gate.
 
-## Next session
+## Review checkpoint
 
-1. The owner may explicitly activate Issue `#019` S3 in a fresh session.
-2. S3 is limited to strict-TDD implementation of the two accepted retention
-   methods/types and all affected tracked package artifacts. Remote retention
-   must remain dry-run only and reject apply/force intent.
-3. Stop at a reviewed S3 checkpoint. S4, release, publication, deployment, Holm
-   edits, and Medialab writes remain separately gated.
+1. Commit the exact S3 product checkpoint based on `914a1e2`.
+2. Obtain one independent SDK remediation review over that exact range; resolve
+   every accepted finding and rerun affected/full validation.
+3. Stop at the reviewed S3 checkpoint. S4 and every release/cross-repository
+   action remain separately owner-gated.
 
 ## Later
 
-- **S3:** implement only owner-approved stable parity additions under strict
-  TDD and regenerate all affected tracked package artifacts.
+- **S3:** accept only after the independent remediation review is green; do not
+  broaden beyond the two implemented retention contracts.
 - **S4:** map authenticated WebSockets, Sobek `holm.*` namespaces, Node
   capabilities, and action/schema authority separately from HTTP routes.
 - npm publication, SDK release, deployment, Holm edits, and Medialab writes
@@ -50,6 +52,6 @@ stop_gate: "owner must explicitly activate Issue #019 S3 in a fresh session; no 
 ## Stable baseline
 
 - `@holmhq/sdk@0.2.1` remains the current public immutable release.
-- The generated admin API remains 189 route/method contracts and 216 methods.
-  S2 adds no methods: 2 stable retention candidates await S3 approval and the
-  other 19 admin/operator delta rows are deferred.
+- Public `@holmhq/sdk@0.2.1` remains immutable with its released 189/216 admin
+  inventory. The unreleased checked-in source now has 191 route/method contracts
+  and 218 methods; 19 other admin/operator delta rows remain deferred.

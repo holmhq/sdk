@@ -468,9 +468,16 @@ test("generated ESM artifact exposes the Issue 008 audited admin extension", asy
   });
 
   await holm.admin.apps.get({ path: { id: "dist app" } });
-  assert.equal(adminMethodDescriptors.length, 216);
+  await holm.admin.system.dbRetentionStatus();
+  await holm.admin.system.dbRetentionRun();
+  assert.equal(adminMethodDescriptors.length, 218);
   assert.equal(runtime.requests[0].capability.id, "holm.http.admin");
-  assert.equal(runtime.requests[0].payload.url, "/api/apps/dist%20app");
+  assert.deepEqual(runtime.requests.map((request) => request.payload.url), [
+    "/api/apps/dist%20app",
+    "/api/system/db/retention/status",
+    "/api/system/db/retention/run",
+  ]);
+  assert.equal("body" in runtime.requests[2].payload, false);
   await holm.dispose();
 });
 

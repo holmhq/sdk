@@ -1,4 +1,4 @@
-import type { AdminPathValue, AdminRouteMethod, AdminUrlHelper } from "./types.js";
+import type { AdminDBRetentionRunMethod, AdminDBRetentionStatusMethod, AdminPathValue, AdminRouteMethod, AdminUrlHelper } from "./types.js";
 export declare const adminMethodDescriptors: readonly [Readonly<{
     name: "agents.admin.aiArrest";
     kind: "request";
@@ -1673,6 +1673,24 @@ export declare const adminMethodDescriptors: readonly [Readonly<{
         sourceKey: "GET /api/system/db/inspect";
     }>[];
 }>, Readonly<{
+    name: "system.dbRetentionRun";
+    kind: "request";
+    routes: readonly Readonly<{
+        method: "POST";
+        path: "/api/system/db/retention/run";
+        sourceKey: "POST /api/system/db/retention/run";
+    }>[];
+    requestBody: "forbidden";
+}>, Readonly<{
+    name: "system.dbRetentionStatus";
+    kind: "request";
+    routes: readonly Readonly<{
+        method: "GET";
+        path: "/api/system/db/retention/status";
+        sourceKey: "GET /api/system/db/retention/status";
+    }>[];
+    requestBody: "forbidden";
+}>, Readonly<{
     name: "system.health";
     kind: "request";
     routes: readonly Readonly<{
@@ -2432,6 +2450,8 @@ export interface AdminGeneratedApi {
         readonly config: AdminRouteMethod<"system.config", Record<never, AdminPathValue>, false, false>;
         readonly db: AdminRouteMethod<"system.db", Record<never, AdminPathValue>, false, false>;
         readonly dbInspect: AdminRouteMethod<"system.dbInspect", Record<never, AdminPathValue>, false, false>;
+        readonly dbRetentionRun: AdminDBRetentionRunMethod;
+        readonly dbRetentionStatus: AdminDBRetentionStatusMethod;
         readonly health: AdminRouteMethod<"system.health", Record<never, AdminPathValue>, false, false>;
         readonly policy: AdminRouteMethod<"system.policy", Record<never, AdminPathValue>, false, false>;
         readonly policySchema: AdminRouteMethod<"system.policySchema", Record<never, AdminPathValue>, false, false>;

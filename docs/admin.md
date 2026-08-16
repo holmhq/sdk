@@ -1,9 +1,10 @@
 # Admin and operator client
 
-`@holmhq/sdk/admin` is the preview operator surface introduced in `0.2.0`. It
-covers all 216 methods in Holm's audited admin inventory through 189 HTTP
-route/method contracts, while keeping credentials inside runtime adapters and
-requiring an explicit operator caller context.
+`@holmhq/sdk/admin` is the preview operator surface introduced in `0.2.0` with
+216 methods over 189 HTTP route/method contracts. The current checked-in source
+adds the two reviewed Holm `v0.207.0` retention contracts, bringing the audited
+inventory to 218 methods over 191 contracts, while keeping credentials inside
+runtime adapters and requiring an explicit operator caller context.
 
 Preview describes compatibility maturity, not a reduced quality gate. The
 entry point is built, typed, packaged, size-checked, and conformance-tested, but
@@ -124,6 +125,32 @@ union. `admin.methodNames`, `admin.describe(name)`, and
 `adminMethodDescriptors` expose immutable, source-pinned inventory metadata for
 operator tooling and tests.
 
+## Database retention
+
+The retention surface is deliberately narrower than the generic operation
+shape. Both methods are bodyless and return exact readonly Holm contracts:
+
+```ts
+import type {
+  AdminDBRetentionReport,
+  AdminDBRetentionStatus,
+} from '@holmhq/sdk/admin'
+
+const status: AdminDBRetentionStatus =
+  await holm.admin.system.dbRetentionStatus()
+const preview: AdminDBRetentionReport =
+  await holm.admin.system.dbRetentionRun()
+
+preview.dry_run // true
+preview.applied // false
+```
+
+`dbRetentionStatus()` is read-only. `dbRetentionRun()` can only request Holm's
+remote dry-run: its generated TypeScript signature exposes no `body`, `apply`,
+or `force` input, and low-level `admin.invoke()` rejects a body before runtime
+invocation. Holm independently rejects apply/force intent server-side, so the
+SDK does not create a remote retention mutation path.
+
 ## Command gateway
 
 Command helpers preserve Holm's canonical `POST /api/cmd` envelope. Prefixes are
@@ -158,9 +185,10 @@ filename, content type, and SDK `ReadonlyBytes` value.
 ## Authority and drift
 
 The packaged inventory is generated from
-`koder/evidence/004_issue008_admin_routes/route-audit.json`, pinned to an exact
-Holm commit. `npm run test:admin-api` fails if generated declarations or route
-metadata drift from that ledger. Refresh the ledger only after checking live,
+`koder/evidence/004_issue008_admin_routes/route-audit.json`, pinned to signed
+Holm `v0.207.0` commit
+`d66628674232b01e8c95d5b86617bc660d61410f`. `npm run test:admin-api`
+fails if generated declarations or route metadata drift from that ledger. Refresh the ledger only after checking live,
 read-only Holm route registrations and the legacy `packages/holm-sdk` audit.
 
 The legacy Holm admin client remains live. `0.2.0` does not delete, redirect, or

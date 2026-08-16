@@ -18,7 +18,7 @@
     "admin": {
       "path": "koder/evidence/004_issue008_admin_routes/route-audit.json",
       "schema": "holm.sdk.admin-route-audit/1",
-      "holm_commit": "3d229a414a0379d0a24221e975b8b4f1588f494d"
+      "holm_commit": "d66628674232b01e8c95d5b86617bc660d61410f"
     },
     "app": {
       "path": "koder/evidence/003_issue007_app_routes/route-audit.json",
@@ -322,14 +322,15 @@
       "source_group": "cmd/server/main.go",
       "lane": "dashboard",
       "classification": "adopted",
-      "implementation": "s3-candidate",
+      "implementation": "current",
+      "implemented_in": "sdk#019/S3",
       "covered_methods": [
         "GET"
       ],
       "sdk": [
         "admin:system.dbRetentionStatus"
       ],
-      "rationale": "Adopt the stable, read-only governed retention status already exposed by Holm's legacy admin SDK; S3 may add the canonical admin method without changing server authority.",
+      "rationale": "Adopt the stable, read-only governed retention status through the canonical admin method implemented by Issue 019 S3 without changing server authority.",
       "basis": [
         "holm:packages/holm-sdk/admin.audit.js#GET /api/system/db/retention/status",
         "holm:packages/holm-sdk/admin.js#system.dbRetentionStatus",
@@ -758,14 +759,15 @@
       "source_group": "cmd/server/main.go",
       "lane": "dashboard",
       "classification": "adopted",
-      "implementation": "s3-candidate",
+      "implementation": "current",
+      "implemented_in": "sdk#019/S3",
       "covered_methods": [
         "POST"
       ],
       "sdk": [
         "admin:system.dbRetentionRun"
       ],
-      "rationale": "Adopt only Holm's stable remote dry-run operation; S3 must preserve server rejection of apply or force intent and must not expose remote retention mutation.",
+      "rationale": "Adopt only Holm's stable remote dry-run operation as implemented by Issue 019 S3; the SDK exposes no request body and Holm still rejects apply or force intent server-side.",
       "basis": [
         "holm:packages/holm-sdk/admin.audit.js#POST /api/system/db/retention/run",
         "holm:packages/holm-sdk/admin.js#system.dbRetentionRun",
@@ -953,8 +955,8 @@
       "excluded": 38
     },
     "implementation": {
-      "current": 185,
-      "s3-candidate": 2,
+      "current": 187,
+      "s3-candidate": 0,
       "none": 74
     },
     "groups": {

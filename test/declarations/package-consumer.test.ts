@@ -60,6 +60,8 @@ import {
   createAdminClient,
   createAdminExtension,
   type AdminApi,
+  type AdminDBRetentionReport,
+  type AdminDBRetentionStatus,
   type AdminUploadService,
 } from "@holmhq/sdk/admin";
 import {
@@ -138,6 +140,13 @@ const adminClient = createAdminClient({ runtime, caller, uploads: adminUploadSer
 declare const adminApi: AdminApi;
 const adminHealth = adminApi.system.health<{ readonly status: string }>();
 const adminApp = adminApi.apps.get<{ readonly id: string }>({ path: { id: "decl-app" } });
+const adminRetentionStatus: Promise<AdminDBRetentionStatus> = adminApi.system.dbRetentionStatus();
+const adminRetentionReport: Promise<AdminDBRetentionReport> = adminApi.system.dbRetentionRun();
+const adminInvokedRetentionReport: Promise<AdminDBRetentionReport> = adminApi.invoke("system.dbRetentionRun");
+// @ts-expect-error Remote retention does not expose an apply/force request body.
+adminApi.system.dbRetentionRun({ body: { apply: true } });
+// @ts-expect-error Low-level invocation also keeps the retention operation bodyless.
+adminApi.invoke("system.dbRetentionRun", { body: { force: true } });
 const adminCapability: CapabilityOffer = {
   id: HOLM_ADMIN_HTTP_CAPABILITY.id,
   origin: "runtime",
@@ -299,6 +308,9 @@ void adminClient;
 void adminApi;
 void adminHealth;
 void adminApp;
+void adminRetentionStatus;
+void adminRetentionReport;
+void adminInvokedRetentionReport;
 void adminCapability;
 void adminStatus;
 void adminMethodCount;

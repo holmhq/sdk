@@ -568,6 +568,30 @@
       "methods": [
         "GET"
       ],
+      "path": "/api/system/db/retention/status",
+      "rationale": "Adopted as the read-only governed retention status contract approved by Issue 019 S3.",
+      "sdk": [
+        "system.dbRetentionStatus"
+      ],
+      "sourceKey": "GET /api/system/db/retention/status"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "POST"
+      ],
+      "path": "/api/system/db/retention/run",
+      "rationale": "Adopted only as Holm's server-enforced remote dry-run contract; apply and force intent remain unavailable.",
+      "sdk": [
+        "system.dbRetentionRun"
+      ],
+      "sourceKey": "POST /api/system/db/retention/run"
+    },
+    {
+      "classification": "adopted",
+      "methods": [
+        "GET"
+      ],
       "path": "/api/system/benchmark",
       "rationale": "Adopted through the explicit holm.http.admin transport capability.",
       "sdk": [
@@ -2246,7 +2270,7 @@
   ],
   "schema": "holm.sdk.admin-route-audit/1",
   "source": {
-    "commit": "3d229a414a0379d0a24221e975b8b4f1588f494d",
+    "commit": "d66628674232b01e8c95d5b86617bc660d61410f",
     "paths": [
       "packages/holm-sdk/admin.audit.js",
       "packages/holm-sdk/admin.js",

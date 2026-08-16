@@ -41,11 +41,10 @@ test("the composed disposition ledger classifies all 261 signed route identities
   assert.equal(result.resolved.length, 261);
   assert.equal(new Set(result.resolved.map((entry) => entry.identity)).size, 261);
   assert.deepEqual(result.summary, document.expected);
-  assert.equal(result.summary.implementation.current > 0, true);
   assert.deepEqual(result.summary.implementation, {
-    current: result.summary.implementation.current,
-    "s3-candidate": 2,
-    none: result.summary.implementation.none,
+    current: 187,
+    "s3-candidate": 0,
+    none: 74,
   });
 });
 
@@ -74,7 +73,7 @@ test("the two shared space-key route rows retain distinct lane dispositions", ()
   assert.deepEqual(memberHost?.sdk, []);
 });
 
-test("the 21-row admin delta admits only the two stable retention contracts to S3", () => {
+test("S3 promotes only the two stable retention contracts from the 21-row admin delta", () => {
   const result = validate();
   assert.deepEqual(result.errors, []);
   const delta = result.resolved.filter((entry) => entry.group === "s2-admin-delta");
@@ -107,18 +106,19 @@ test("the 21-row admin delta admits only the two stable retention contracts to S
     ].sort(),
   );
 
-  const candidates = delta.filter((entry) => entry.implementation === "s3-candidate");
+  const promoted = delta.filter((entry) => entry.implemented_in === "sdk#019/S3");
   assert.deepEqual(
-    candidates.map((entry) => `${entry.method} ${entry.path}`).sort(),
+    promoted.map((entry) => `${entry.method} ${entry.path}`).sort(),
     [
       "GET /api/system/db/retention/status",
       "POST /api/system/db/retention/run",
     ],
   );
-  assert.equal(candidates.every((entry) => entry.classification === "adopted"), true);
-  assert.equal(candidates.every((entry) => entry.stability === "stable"), true);
-  assert.equal(candidates.every((entry) => entry.sdk.length === 1), true);
-  assert.equal(candidates.every((entry) => entry.contract_authority !== undefined), true);
+  assert.equal(promoted.every((entry) => entry.classification === "adopted"), true);
+  assert.equal(promoted.every((entry) => entry.implementation === "current"), true);
+  assert.equal(promoted.every((entry) => entry.stability === "stable"), true);
+  assert.equal(promoted.every((entry) => entry.sdk.length === 1), true);
+  assert.equal(promoted.every((entry) => entry.contract_authority !== undefined), true);
 
   const deferred = delta.filter((entry) => entry.classification === "deferred");
   assert.equal(deferred.length, 19);
@@ -178,10 +178,10 @@ test("provenance and S3 admission constraints fail closed", () => {
   const status = previewRegistry.data.routes.find((route) =>
     route.method === "GET" && route.path === "/api/system/db/retention/status");
   status.stability = "preview";
-  assert.equal(validate({ registry: previewRegistry }).errors.some((error) => error.includes("s3-candidate") && error.includes("must be stable")), true);
+  assert.equal(validate({ registry: previewRegistry }).errors.some((error) => error.includes("implemented_in") && error.includes("must be stable")), true);
 
   const missingAuthority = clone(document);
-  const candidate = missingAuthority.overrides.find((entry) => entry.implementation === "s3-candidate");
-  delete candidate.contract_authority;
+  const promoted = missingAuthority.overrides.find((entry) => entry.implemented_in === "sdk#019/S3");
+  delete promoted.contract_authority;
   assert.equal(validate({ document: missingAuthority }).errors.some((error) => error.includes("contract_authority")), true);
 });

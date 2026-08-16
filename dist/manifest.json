@@ -1,39 +1,39 @@
 {
   "artifacts": [
     {
-      "bytes": 732,
+      "bytes": 1374,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/client.d.ts",
-      "sha256": "830901f3175a0f26cce9b22954d766b884e74c8196a29d02ca4966103719ff87"
+      "sha256": "7eb6bb252841206c2e29f46863f10f969a8802c8e3ebe977638e0e9b4aa6bb60"
     },
     {
-      "bytes": 722,
+      "bytes": 1197,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/client.d.ts.map",
-      "sha256": "f8f293c74092df6d69ad200d8840c4a6233cb08c90e36f51211f69cf0cd564ff"
+      "sha256": "9e810b9e62f3fab103b95792e4c2cae9520ee8f4e3305bdd6d3a0f3d91eb7b9e"
     },
     {
       "budgets": {
         "gzipBytes": 3328,
         "rawBytes": 12288
       },
-      "bytes": 10119,
-      "gzipBytes": 2656,
+      "bytes": 10372,
+      "gzipBytes": 2709,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
-      "minifiedBytes": 8412,
+      "minifiedBytes": 8607,
       "path": "dist/admin/client.js",
-      "rawBytes": 10119,
-      "sha256": "1b5589621ae4e992800a74d66907b6810344f98697c959ecee449e45e40849ed"
+      "rawBytes": 10372,
+      "sha256": "d89b8b2d30c51ee041547cb8e0ebd1f771cacc8c9e2709bad0fa4c2e381affec"
     },
     {
-      "bytes": 11501,
+      "bytes": 11697,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/client.js.map",
-      "sha256": "a4efdddb53faed634e9fec00dcfc665f968277719beb4e0a5a6f3a3282010935"
+      "sha256": "5acdbae9b68ef11cc7ea1f7147f429d52f7aaff31c9581b073db8808a4aae682"
     },
     {
       "bytes": 501,
@@ -106,39 +106,39 @@
       "sha256": "ddaf0071f84f1199197d1697a53b829c764a91f355b46d4dbc28110bcbfc9186"
     },
     {
-      "bytes": 86334,
+      "bytes": 87062,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/generated.d.ts",
-      "sha256": "770300bc54a2da6bf710a21ee122b64ebc47646feb723af37942d10ed2efb2c0"
+      "sha256": "115053eafebee9bf90d896fa65a98a0fdc9193aa8e4e0b0ac1bbae1b7dfac948"
     },
     {
-      "bytes": 32413,
+      "bytes": 32535,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/generated.d.ts.map",
-      "sha256": "b51e43baeafa3f2b19217f07d0eaee757cb587ff8fa20a5dd1ff6c5d90d1aaf4"
+      "sha256": "0f40bdfa7b1159f8eab75891304e28aa533b33c21d1cb84c0d6f86d4852f7390"
     },
     {
       "budgets": {
         "gzipBytes": 4096,
         "rawBytes": 55296
       },
-      "bytes": 46897,
-      "gzipBytes": 3414,
+      "bytes": 47390,
+      "gzipBytes": 3473,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
-      "minifiedBytes": 42397,
+      "minifiedBytes": 42848,
       "path": "dist/admin/generated.js",
-      "rawBytes": 46897,
-      "sha256": "7bf3eae1aa0cf58dc290fab3803afae626351b2aee3936a3702375c524b40264"
+      "rawBytes": 47390,
+      "sha256": "2e3e4a8cd945aeb1e13d1b3da7a60f40e35369f0798f6d16c867421151ddb8a0"
     },
     {
-      "bytes": 50935,
+      "bytes": 51419,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/generated.js.map",
-      "sha256": "ba8907c2ab1c1d226baf68757a9586ae8cbff7dd6d898880f62fc1bafbf933d4"
+      "sha256": "5a8bb260c7dbcfe3dd71109b6cf7018263127b48c0b081b0a565766a51421aad"
     },
     {
       "bytes": 982,
@@ -176,18 +176,18 @@
       "sha256": "0fd316c5a4e25ce4f58093292da821a30c0e3b3c04ee8456fd3dd2d68eb78199"
     },
     {
-      "bytes": 1566,
+      "bytes": 1798,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/index.d.ts",
-      "sha256": "e3460ed1301e77759cc95ff4ef4b9102fe4c35a5f9e9d14244f96489739110bf"
+      "sha256": "d3d740bb2bcadc600b4debc8458111efd0cbc623d428173233db6c33b3dc4d54"
     },
     {
-      "bytes": 855,
+      "bytes": 959,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/index.d.ts.map",
-      "sha256": "752667b204d4f7e1a7c58f90f574b7c102a143fdb9471756c03f0c95ada54782"
+      "sha256": "7ddd49ac017cbf5d7674aa8e8f906f2051f1f522580870ed956a55479f011f59"
     },
     {
       "budgets": {
@@ -246,18 +246,18 @@
       "sha256": "34ad21f5503e15dece6040571c6ca45b5b6c96cf492d49da1f8883e8dc5317a3"
     },
     {
-      "bytes": 3292,
+      "bytes": 5636,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/types.d.ts",
-      "sha256": "0642c15eb66dc98e665815d1bdccca0e9c28aa2519ad14fb53b539db44adb962"
+      "sha256": "05b52d7f082292b2c726920971adcd2e8aebb406212596bcfe76b90428d82088"
     },
     {
-      "bytes": 2914,
+      "bytes": 4685,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/types.d.ts.map",
-      "sha256": "0fc807aea6794ef2b4910c64f7669734a5218e9e2f89676b53adf389b40fd3f7"
+      "sha256": "52e466ca1bceee42fa5b74696da4b82a7f35e438fd6dbbd2285fe72c792efe66"
     },
     {
       "bytes": 101,

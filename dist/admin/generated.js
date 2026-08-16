@@ -197,6 +197,8 @@ export const adminMethodDescriptors = Object.freeze([
     Object.freeze({ name: "system.config", kind: "request", routes: Object.freeze([Object.freeze({ method: "GET", path: "/api/system/config", sourceKey: "GET /api/system/config" })]) }),
     Object.freeze({ name: "system.db", kind: "request", routes: Object.freeze([Object.freeze({ method: "GET", path: "/api/system/db", sourceKey: "GET /api/system/db" })]) }),
     Object.freeze({ name: "system.dbInspect", kind: "request", routes: Object.freeze([Object.freeze({ method: "GET", path: "/api/system/db/inspect", sourceKey: "GET /api/system/db/inspect" })]) }),
+    Object.freeze({ name: "system.dbRetentionRun", kind: "request", routes: Object.freeze([Object.freeze({ method: "POST", path: "/api/system/db/retention/run", sourceKey: "POST /api/system/db/retention/run" })]), requestBody: "forbidden" }),
+    Object.freeze({ name: "system.dbRetentionStatus", kind: "request", routes: Object.freeze([Object.freeze({ method: "GET", path: "/api/system/db/retention/status", sourceKey: "GET /api/system/db/retention/status" })]), requestBody: "forbidden" }),
     Object.freeze({ name: "system.health", kind: "request", routes: Object.freeze([Object.freeze({ method: "GET", path: "/api/system/health", sourceKey: "GET /api/system/health" })]) }),
     Object.freeze({ name: "system.policy", kind: "request", routes: Object.freeze([Object.freeze({ method: "GET", path: "/api/system/policy", sourceKey: "GET /api/system/policy" })]) }),
     Object.freeze({ name: "system.policySchema", kind: "request", routes: Object.freeze([Object.freeze({ method: "GET", path: "/api/system/policy/schema", sourceKey: "GET /api/system/policy/schema" })]) }),

@@ -158,6 +158,8 @@ function resolveOverride(route, override, errors) {
   const sdk = stringArray(override.sdk);
   const coveredMethods = stringArray(override.covered_methods);
   const basis = stringArray(override.basis);
+  const implementedIn = override.implemented_in;
+  const hasImplementationMarker = implementedIn !== undefined;
   const label = displayIdentity(route);
 
   if (!classifications.includes(classification)) errors.push(`${label} has invalid classification ${JSON.stringify(classification)}`);
@@ -170,6 +172,9 @@ function resolveOverride(route, override, errors) {
   if (override.group !== undefined && (typeof override.group !== "string" || override.group.trim() === "")) {
     errors.push(`${label} group must be a non-empty string when present`);
   }
+  if (hasImplementationMarker && (typeof implementedIn !== "string" || implementedIn.trim() === "")) {
+    errors.push(`${label} implemented_in must be a non-empty string when present`);
+  }
 
   const supported = classification === "adopted" || classification === "redesigned";
   if (supported && implementation === "none") errors.push(`${label} supported classification cannot have implementation none`);
@@ -181,10 +186,15 @@ function resolveOverride(route, override, errors) {
   validateCoveredMethods(route, coveredMethods, label, errors);
 
   if (implementation === "s3-candidate") {
+    if (hasImplementationMarker) errors.push(`${label} s3-candidate cannot set implemented_in`);
     if (route.stability !== "stable") errors.push(`${label} s3-candidate route must be stable`);
     validateContractAuthority(override.contract_authority, label, errors);
+  } else if (hasImplementationMarker) {
+    if (implementation !== "current") errors.push(`${label} implemented_in requires implementation current`);
+    if (route.stability !== "stable") errors.push(`${label} implemented_in promotion must be stable`);
+    validateContractAuthority(override.contract_authority, label, errors);
   } else if (override.contract_authority !== undefined) {
-    errors.push(`${label} contract_authority is reserved for s3-candidate routes`);
+    errors.push(`${label} contract_authority requires s3-candidate or implemented_in provenance`);
   }
 
   return {
@@ -197,6 +207,7 @@ function resolveOverride(route, override, errors) {
     rationale: typeof override.rationale === "string" ? override.rationale : "",
     basis,
     ...(typeof override.group === "string" && override.group !== "" ? { group: override.group } : {}),
+    ...(typeof implementedIn === "string" && implementedIn !== "" ? { implemented_in: implementedIn } : {}),
     ...(override.contract_authority === undefined ? {} : { contract_authority: override.contract_authority }),
   };
 }

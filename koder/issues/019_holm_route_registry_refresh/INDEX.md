@@ -2,7 +2,7 @@
 status: open
 priority: P1
 created: 2026-08-13
-updated: 2026-08-15
+updated: 2026-08-17
 tags: holm, routes, registry, parity, admin, drift, generation
 type: feature
 issue_kind: track
@@ -24,9 +24,12 @@ validation.
 
 The first execution session was authorized for **S1 only** and stopped after
 its landed ingestion checkpoint. On 2026-08-15, after independent Review `#069`
-approved S1, the owner explicitly activated **S2** in a fresh session. S2 is
-route-policy work only and must stop after an independently reviewed disposition
-checkpoint; S3 implementation remains separately gated.
+approved S1, the owner explicitly activated **S2** in a fresh session. S2 was
+route-policy work only and stopped after independent Review `#070` approved its
+disposition checkpoint. On 2026-08-16 the owner explicitly activated **S3** in
+a fresh session. S3 is limited to the two approved stable retention contracts
+and must stop at an independently reviewed checkpoint; S4 and release work
+remain separately gated.
 
 ## Problem
 
@@ -96,7 +99,7 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | --- | --- | --- | --- |
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
 | S2: route disposition refresh | complete | Reconciled all registry rows with SDK adopted/redesigned/deferred/excluded policy; 2 S3 candidates, 19 admin deltas deferred | Review `#070` approved; stop before S3 |
-| S3: approved stable parity | ready for owner activation | TDD implementation of the two owner-approved stable retention methods/types and tracked generated artifacts | Fresh owner activation after reviewed S2; stop at reviewed S3 checkpoint |
+| S3: approved stable parity | active — owner activated 2026-08-16 | TDD implementation of the two owner-approved stable retention methods/types and tracked generated artifacts | Stop at independently reviewed S3 checkpoint; no S4/release work |
 | S4: non-HTTP parity map | blocked | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Mapping only after route parity baseline |
 
 ## S1 execution contract
@@ -278,8 +281,73 @@ remain S4 parity requirements rather than invented HTTP claims.
   exact product range `82145ce..091e268` with `P1=0 P2=0 P3=0`. It repeated
   focused validation, accepted the complete policy, and independently verified
   the `v0.208.0` route-array equality and provenance-only live drift.
-- S2 is complete. The session stops here; S3 requires fresh explicit owner
-  activation and is not authorized by Review `#070`.
+- S2 is complete. Review `#070` did not authorize S3; the owner separately
+  activated S3 on 2026-08-16.
+
+## S3 execution contract — activated 2026-08-16
+
+S3 promotes only the two reviewed stable retention identities. It must:
+
+- add `system.dbRetentionStatus` and bodyless `system.dbRetentionRun` to the
+  canonical admin inventory without admitting any other S2 delta route;
+- expose readonly TypeScript contracts pinned to Holm
+  `DBRetentionStatus`/`DBRetentionReport`, including the remote literals
+  `dry_run: true` and `applied: false`;
+- expose no public request body, apply, or force input and reject a low-level
+  retention body before runtime invocation while retaining Holm's independent
+  server-side rejection;
+- update the disposition state from two candidates to two current identities,
+  retaining exact authority and `sdk#019/S3` provenance;
+- regenerate all affected tracked JavaScript, declarations, maps, manifests,
+  bundles, package smoke, and size evidence; and
+- stop after full validation and one independent SDK remediation review. S4,
+  version/release/publication/deployment, Holm writes, and Medialab writes remain
+  excluded.
+
+S3 RED evidence is recorded in
+[`test/evidence/issue019-s3-red.md`](../../../test/evidence/issue019-s3-red.md).
+
+### S3 acceptance criteria
+
+- [x] Source, type, disposition, declaration, and tracked-ESM RED failures were
+      observed before implementation.
+- [x] Only the two accepted stable retention methods are generated.
+- [x] Exact readonly response types and bodyless dry-run semantics are covered.
+- [x] Focused checks, full `npm run ci`, package smoke, size, reproducibility,
+      live read-only Holm authority, and diff hygiene pass.
+- [x] All affected tracked `dist/**` artifacts are regenerated and ready for
+      independent review.
+- [ ] One independent SDK remediation review approves the exact S3 range with
+      no unresolved findings.
+- [ ] The reviewed S3 checkpoint is committed and the session stops before S4
+      or release work.
+
+## S3 implementation checkpoint — 2026-08-17
+
+- Strict RED covered missing source methods/types, absent disposition promotion,
+  stale tracked declarations/ESM, and the initially over-broad low-level
+  `admin.invoke()` input.
+- The admin ledger now pins signed Holm `v0.207.0` and contains 176 keys, 191
+  route/method contracts, 218 generated methods, and the same 18 exclusions.
+  Only `system.dbRetentionStatus` and `system.dbRetentionRun` were added.
+- `AdminDBRetentionStatus` and `AdminDBRetentionReport` mirror the pinned Holm
+  JSON authority. Nested contracts are readonly; the remote report fixes
+  `dry_run: true` and `applied: false`.
+- Both generated methods expose only bodyless operation controls. Literal
+  low-level invocation is narrowed too, and runtime descriptor enforcement
+  rejects any body before adapter invocation for JavaScript/dynamic callers.
+- The disposition ledger remains complete at 261 identities: 187 current, no
+  S3 candidates, and 74 unimplemented; all 19 other admin-delta rows remain
+  deferred.
+- Focused admin/disposition/type/declaration/dist checks pass; source tests pass
+  231/231; `npm run build`, full `npm run ci`, 267-artifact reproducibility,
+  package install smoke (290 files), licenses, coverage, and size
+  (297,073 raw / 226,805 minified / 58,616 gzip bytes) are green.
+- Fresh read-only Holm authority passed at `97ed1f29…`: 176/191/218/18 matches
+  the ledger and relevant files are unchanged from `d6662867…`. Installed
+  signed Holm `v0.208.0` still differs from the snapshot by provenance only.
+- No package version, release, publication, deployment, Holm source, Medialab,
+  or `@zyt` change was made. Independent S3 review remains the stop gate.
 
 ## Validation commands
 

@@ -201,7 +201,7 @@ test("admin upload services never run before web and Node operator caller gates"
   await nodeMember.dispose();
 });
 
-test("generated admin inventory provides all 216 methods plus command, upload, binary, and URL behavior", async () => {
+test("generated admin inventory provides all 218 methods plus command, upload, binary, and URL behavior", async () => {
   const fake = createFakeClock(20);
   const runtime = createInMemoryRuntimeAdapter({
     clock: fake.clock,
@@ -268,7 +268,7 @@ test("generated admin inventory provides all 216 methods plus command, upload, b
     const firstRoute = descriptor.routes[0];
     const input = {
       ...(Object.keys(path).length === 0 ? {} : { path }),
-      ...(descriptor.command === undefined &&
+      ...(descriptor.command === undefined && descriptor.requestBody !== "forbidden" &&
         (firstRoute?.method === "POST" || firstRoute?.method === "PUT" || firstRoute?.method === "PATCH")
         ? { body: { fixture: descriptor.name } }
         : {}),
@@ -318,7 +318,7 @@ test("generated admin inventory provides all 216 methods plus command, upload, b
   assert.equal(uploads.includes("/api/apps/value%20id/links/import"), true);
   assert.equal(holm.admin.logs.streamUrl({ params: { follow: true, lines: 10 } }), "/api/system/logs/stream?follow=true&lines=10");
   assert.equal(adminOperationProtocol, "holm.sdk.admin-operation/1");
-  assert.equal(holm.admin.methodNames.length, 216);
+  assert.equal(holm.admin.methodNames.length, 218);
   assert.equal(holm.admin.describe("apps.get").routes[0]?.path, "/api/apps/{id}");
   assert.equal(Object.isFrozen(holm.admin), true);
   await holm.dispose();

@@ -8,19 +8,36 @@ import {
 import type { AdminHttpClient } from "./http.js";
 import type {
   AdminAuthorityRoute,
+  AdminDBRetentionOperationOptions,
+  AdminDBRetentionReport,
+  AdminDBRetentionStatus,
   AdminMethodDescriptor,
   AdminOperationOptions,
   AdminPathValues,
   AdminUploadService,
 } from "./types.js";
 
+type AdminDBRetentionMethodName = "system.dbRetentionStatus" | "system.dbRetentionRun";
+
+type AdminInvokeInput<Name extends AdminMethodName> =
+  [Name] extends [AdminDBRetentionMethodName]
+    ? AdminDBRetentionOperationOptions
+    : AdminOperationOptions<AdminPathValues>;
+
+type AdminInvokeResult<Name extends AdminMethodName, Result> =
+  [Name] extends ["system.dbRetentionStatus"]
+    ? Promise<AdminDBRetentionStatus>
+    : [Name] extends ["system.dbRetentionRun"]
+      ? Promise<AdminDBRetentionReport>
+      : Promise<Result> | string;
+
 export type AdminApi = AdminGeneratedApi & {
   readonly methodNames: readonly AdminMethodName[];
   describe(name: AdminMethodName): AdminMethodDescriptor;
-  invoke<Result = WireValue>(
-    name: AdminMethodName,
-    input?: AdminOperationOptions<AdminPathValues>,
-  ): Promise<Result> | string;
+  invoke<Result = WireValue, Name extends AdminMethodName = AdminMethodName>(
+    name: Name,
+    input?: AdminInvokeInput<Name>,
+  ): AdminInvokeResult<Name, Result>;
 };
 
 const descriptorsByName = new Map<AdminMethodName, AdminMethodDescriptor>(
@@ -159,6 +176,12 @@ function createRequestBody(
   descriptor: AdminMethodDescriptor,
   input: AdminOperationOptions<AdminPathValues>,
 ): WireValue | undefined {
+  if (descriptor.requestBody === "forbidden") {
+    if (input.body !== undefined) {
+      throw new TypeError(`${descriptor.name} does not accept a request body; remote retention is dry-run only.`);
+    }
+    return undefined;
+  }
   if (descriptor.command === undefined) {
     return input.body;
   }

@@ -20,6 +20,6 @@ export { adminOperationProtocol } from "./types.js";
 export type { AdminMethodName, AdminGeneratedApi } from "./generated.js";
 export type { AdminApi } from "./client.js";
 export type { AdminExtensionOptions } from "./extension.js";
-export type { AdminAuthorityRoute, AdminCommandDescriptor, AdminMethodDescriptor, AdminMethodKind, AdminOperationInput, AdminOperationOptions, AdminPathValue, AdminPathValues, AdminRouteMethod, AdminUploadInput, AdminUploadService, AdminUrlHelper, } from "./types.js";
+export type { AdminAuthorityRoute, AdminCommandDescriptor, AdminDBRetentionCandidate, AdminDBRetentionFamilyReport, AdminDBRetentionFamilyStatusReport, AdminDBRetentionOperationOptions, AdminDBRetentionReport, AdminDBRetentionRunMethod, AdminDBRetentionStatus, AdminDBRetentionStatusMethod, AdminMethodDescriptor, AdminMethodKind, AdminOperationInput, AdminOperationOptions, AdminPathValue, AdminPathValues, AdminRouteMethod, AdminUploadInput, AdminUploadService, AdminUrlHelper, } from "./types.js";
 export type { AdminHttpClient, AdminHttpInvocationOptions, AdminRequestIdFactory, } from "./http.js";
 //# sourceMappingURL=index.d.ts.map

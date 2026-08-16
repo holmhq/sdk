@@ -29,7 +29,7 @@ is shipped and tested but may change; **reserved** is a contract/probe only;
 | Framework-neutral state | stable | Immutable snapshots, subscriptions, query/mutation/derived resources, history, and reconcile hooks. |
 | Vanilla UI | stable example | Direct subscription example plus the production Sokoban pilot. |
 | React UI | stable example | A typed `useSyncExternalStore` adapter over the same model; this is an example, not a framework package. |
-| Admin client | preview | `createAdminClient()`, 216 generated typed methods over 189 audited route/method contracts, explicit operator caller gating, command/upload/binary seams, and deterministic drift checks. The legacy Holm package remains live. |
+| Admin client | preview | `createAdminClient()`, 218 generated typed methods over 191 audited route/method contracts, including typed read-only retention status and server-enforced dry-run retention, explicit operator caller gating, command/upload/binary seams, and deterministic drift checks. The legacy Holm package remains live. |
 | Generated actions/CLI | unavailable | Holm does not yet expose the stable registry needed for generated action helpers. |
 | Realtime transport | unavailable | A public reconcile seam exists, but no authenticated production subscription transport ships here. |
 | Collaboration/CRDT | unavailable | No oplog/provider package and no mandatory CRDT engine. |

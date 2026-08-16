@@ -86,6 +86,12 @@ async function executeMemberPicture(descriptor, input, http, uploads) {
     }, http);
 }
 function createRequestBody(descriptor, input) {
+    if (descriptor.requestBody === "forbidden") {
+        if (input.body !== undefined) {
+            throw new TypeError(`${descriptor.name} does not accept a request body; remote retention is dry-run only.`);
+        }
+        return undefined;
+    }
     if (descriptor.command === undefined) {
         return input.body;
     }

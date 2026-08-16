@@ -172,7 +172,7 @@ function runInstalledPackageSmoke() {
       if (Object.keys(loaded).length === 0) throw new Error(specifier + " has no exports");
     }
     const admin = await import("@holmhq/sdk/admin");
-    if (typeof admin.createAdminClient !== "function" || admin.adminMethodDescriptors.length !== 216) {
+    if (typeof admin.createAdminClient !== "function" || admin.adminMethodDescriptors.length !== 218) {
       throw new Error("installed admin entry point is incomplete");
     }
     const packageJson = JSON.parse(await readFile(new URL("./node_modules/@holmhq/sdk/package.json", import.meta.url), "utf8"));
