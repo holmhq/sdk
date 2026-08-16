@@ -1,5 +1,5 @@
 ---
-updated_at: "17 Aug 2026 | 12:32 AM IST"
+updated_at: "17 Aug 2026 | 12:38 AM IST"
 state: REVIEW_READY
 active_window: "Issue #019 S3 — implementation complete; independent review pending"
 active_issue: "019"
@@ -12,8 +12,8 @@ stop_gate: "one independent SDK remediation review must approve S3 before close;
 ## Current
 
 - Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) S3 strict-TDD
-  implementation is complete and ready for independent review. Only
-  `system.dbRetentionStatus` and `system.dbRetentionRun` were added.
+  implementation is committed in `c7e589b` and ready for independent review.
+  Only `system.dbRetentionStatus` and `system.dbRetentionRun` were added.
 - The generated methods return exact readonly Holm `v0.207.0` retention
   contracts. Remote run fixes `dry_run: true` / `applied: false`, exposes no
   body/apply/force input, and rejects dynamic bodies before runtime invocation.
@@ -32,13 +32,14 @@ stop_gate: "one independent SDK remediation review must approve S3 before close;
 - No version, release, publication, deployment, Holm, Medialab, or `@zyt` write
   was made. Independent S3 review is the only remaining active gate.
 
-## Review checkpoint
+## Next session
 
-1. Commit the exact S3 product checkpoint based on `914a1e2`.
-2. Obtain one independent SDK remediation review over that exact range; resolve
-   every accepted finding and rerun affected/full validation.
-3. Stop at the reviewed S3 checkpoint. S4 and every release/cross-repository
-   action remain separately owner-gated.
+1. Start with one fresh independent SDK remediation review of exact product
+   range `914a1e2..c7e589b`.
+2. Resolve every accepted finding and rerun affected/full validation; if the
+   review approves, record the S3 checkpoint without beginning S4.
+3. Stop at reviewed S3 acceptance. S4 and every release/cross-repository action
+   remain separately owner-gated.
 
 ## Later
 
