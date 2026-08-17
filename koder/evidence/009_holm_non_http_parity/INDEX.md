@@ -1,6 +1,7 @@
 ---
 title: Holm non-HTTP parity map
-status: review_ready
+status: changes_requested
+review: "#072 P1=0 P2=4 P3=1"
 issue: 019
 slice: S4
 captured: 2026-08-17
@@ -161,7 +162,15 @@ The live mode correctly reported drift; the pinned-object mode continued to
 verify every mapped byte at `44d51d0f…`. S4 did not inspect unfinished
 implementation detail, alter Holm, or repin from a dirty peer tree.
 
-## Stop gate
+## Review status and stop gate
+
+Independent Review
+[`#072`](../../reviews/072_issue019_s4_non_http_parity/INDEX.md) requested
+changes with `P1=0 P2=4 P3=1`: correct grouped operator-admin auth truth, the
+missing typed-channel count policy, logged-out member-media availability, and
+fail-closed provenance/authority validation; directly verify the transitive
+Default Projection payload manifest as P3 hardening. S4 remains open pending
+remediation and fresh independent review.
 
 This evidence and its validator are the full S4 product. No public SDK source,
 `dist/**`, version, release, publication, deployment, Holm, Medialab, or `@zyt`

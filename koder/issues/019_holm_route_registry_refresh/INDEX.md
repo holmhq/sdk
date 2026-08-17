@@ -102,7 +102,7 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
 | S2: route disposition refresh | complete | Reconciled all registry rows with SDK adopted/redesigned/deferred/excluded policy; 2 S3 candidates, 19 admin deltas deferred | Review `#070` approved; stop before S3 |
 | S3: approved stable parity | complete | TDD implementation of the two owner-approved stable retention methods/types and tracked generated artifacts | Review `#071` approved; stop before S4/release work |
-| S4: non-HTTP parity map | review ready | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Independent mapping/authority review; stop before public API implementation, release, or cross-repository writes |
+| S4: non-HTTP parity map | changes requested — Review `#072` | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Remediate `P2=4 P3=1`, rerun pinned validation, and obtain fresh independent review; stop before public API implementation, release, or cross-repository writes |
 
 ## S1 execution contract
 
@@ -437,8 +437,26 @@ slice and fresh RED evidence.
   are green. A later live check correctly detected unrelated concurrent Holm
   route-registry work; S4 retained the previously observed clean `44d51d0f…`
   snapshot and did not ingest dirty peer state.
-- The mapping is review ready. Public implementation, release, deployment, and
-  cross-repository writes remain outside S4.
+- The mapping reached its first review checkpoint. Public implementation,
+  release, deployment, and cross-repository writes remain outside S4.
+
+## S4 independent review — changes requested 2026-08-17
+
+- Independent Review
+  [`#072`](../../reviews/072_issue019_s4_non_http_parity/INDEX.md) assessed exact
+  product range `c06f98f..d941db5` and returned `NEEDS_FIXES` with
+  `P1=0 P2=4 P3=1`.
+- Material findings are: overstated authorization across grouped
+  `holm.admin.roles.*` operations; omitted typed-channel
+  `realtime.max_channels_per_socket` behavior; false all-context availability
+  for logged-out member media methods; and incomplete fail-closed provenance /
+  authority-status validation. Direct Default Projection payload verification
+  is a P3 hardening item.
+- Focused tests, 231 source tests, full `npm run ci`, diff hygiene, and fresh
+  pinned Holm verification all pass. Those green mechanical gates do not resolve
+  the source-truth findings.
+- S4 and Issue `#019` remain open. Remediation stays mapping/tooling-only and
+  requires a fresh independent review before acceptance or resolution.
 
 ## Validation commands
 
@@ -459,7 +477,8 @@ its route array equals the pinned 261 rows.
 
 ## Boundaries
 
-- S4 mapping is review ready; SDK-side evidence/tooling was the only write scope.
+- Review `#072` requested S4 remediation; SDK-side evidence/tooling remains the
+  only write scope.
 - Holm remains read-only authority; S4 must pin the exact clean source commit it
   verifies rather than silently treating the HTTP registry as non-HTTP truth.
 - Do not contact, upgrade, restart, or inspect `@zyt` for SDK refresh work.
