@@ -1,7 +1,8 @@
 ---
 title: Holm Source Map for SDK Extraction
-updated: 2026-07-13
+updated: 2026-08-17
 holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+latest_non_http_checkpoint: 44d51d0f785ff6208ecc034c720e76a8543891be
 ---
 
 # Holm Source Map
@@ -23,18 +24,30 @@ Use links of this form in durable design/review evidence:
 https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/<path>
 ```
 
+## Current non-HTTP checkpoint
+
+Issue `#019` S4 maps current WebSocket, injected Sobek, node/manifest
+capability, and action/schema truth in
+[`koder/evidence/009_holm_non_http_parity/INDEX.md`](../evidence/009_holm_non_http_parity/INDEX.md).
+Its machine map pins every source byte to clean Holm commit
+`44d51d0f785ff6208ecc034c720e76a8543891be` (`v0.208.0` marker,
+`v0.208.0-128-g44d51d0f7`). Use that evidence rather than this older
+architecture baseline when making a non-HTTP implementation claim.
+
 ## Universal runtime and surfaces
 
 | Contract | Holm path | Why it matters |
 | --- | --- | --- |
-| Converged universal app runtime | `koder/proposals/001_universal_app_runtime/INDEX.md` | Web as implicit root surface; optional CLI/desktop/mobile surfaces; shared action/state/schema contract; no universal UI DSL. |
-| Extraction map | `koder/issues/486_universal_app_runtime_extraction_map/INDEX.md` | Cross-child invariants, caller envelopes, mailbox/message-passing rule, CLI-first extraction order, desktop/mobile probe gates. |
+| Original universal app runtime | `koder/proposals/001_universal_app_runtime/INDEX.md` | Historical source for caller/surface, mailbox, BFBB, and no-universal-UI invariants. Its standalone CLI action shape is not current authority. |
+| Superseded extraction map | `koder/issues/486_universal_app_runtime_extraction_map/INDEX.md` | Historical extraction evidence only; Issue `#534` supersedes its CLI-owned action model. |
+| Contract-first app authority | `koder/issues/534_contract_first_holm_apps/INDEX.md` | Canonical schema-described GET/POST contract with optional CLI/default/agent projections; production registry/discovery slices remain separately gated. |
 | Holm protocol direction | `koder/issues/085_holm_protocol/INDEX.md` | Long-term implementation-independent identity/mesh direction and possible non-Go protocol participants. |
 | Framework compatibility probe | `koder/issues/485_node_lite_framework_compatibility_probe/INDEX.md` | Static React/Angular/Svelte feasibility versus unsupported arbitrary Node/SSR assumptions. |
 
-SDK rule: the durable action/state/schema registry is owned by Holm. SDK helpers
-may author or consume it, but must not make the contract dependent on this
-package.
+SDK rule: contract and schema authority is owned by Holm. Issue `#534` makes
+GET/POST the canonical invocation wire and projections consume route metadata;
+SDK helpers may author or consume ordinary data, but must not revive the
+superseded standalone action transport or make the contract package-dependent.
 
 ## Existing JavaScript client
 
@@ -79,18 +92,21 @@ be required by the core.
 
 | Contract | Holm path | Why it matters |
 | --- | --- | --- |
-| Realtime gap track | `koder/issues/517_realtime_channel_auth_presence/INDEX.md` | Current verified gaps: channel auth, presence, sender exclusion, whispers, policy, binary payloads. |
-| Earlier auth foundation | `koder/issues/388_authenticated_member_realtime_channels/INDEX.md` | Member/app-aware private channel requirements. |
+| Historical realtime gap track | `koder/issues/517_realtime_channel_auth_presence/INDEX.md` | Historical gap source; do not use it as current capability truth after private/presence/whisper work landed. |
+| Earlier auth foundation | `koder/issues/388_authenticated_member_realtime_channels/INDEX.md` | Member/app-aware private channel requirements and history. |
 | Group-private scopes | `koder/issues/341_app_member_scope_semantics/INDEX.md` | App/member/group privacy levels and scoped realtime/storage requirements. |
 | CRDT strategy | `koder/issues/342_collaboration_crdt_strategy/INDEX.md` | Oplog/snapshot substrate first; Yjs/Automerge/Loro evaluation; opaque update safety. |
-| Current server runtime API | `internal/hosting/realtime.go` | Existing server-side `holm.realtime` methods. |
-| Current websocket hub | `internal/hosting/ws.go` | Subscribe/unsubscribe and broadcast implementation. |
-| Current tests | `internal/hosting/{realtime_test.go,ws_test.go,ws_stress_test.go}` | Existing behavior and capacity evidence. |
+| Current server runtime API | `internal/hosting/realtime.go` | Existing server-side `holm.realtime` broadcast, subscriber/count, and kick methods. |
+| Current websocket hub | `internal/hosting/{ws.go,ws_auth.go}` | Exact `/_ws` JSON protocol, legacy/private/presence channels, whispers, heartbeat, loss, and lifecycle semantics. |
+| Current socket auth | `internal/realtimeauth/resolver.go` | Session/API-key/space-token resolution and app-read authorization. |
+| Current tests | `internal/hosting/{realtime_test.go,ws_auth_test.go,ws_test.go,ws_stress_test.go}` | Existing behavior and capacity evidence. |
 | App guidance | `knowledge-base/skills/app/references/multiplayer-patterns.md` | Durable-state-first, broadcast-then-reconcile pattern. |
 
-SDK rule: keep ephemeral realtime, authoritative query state, and durable
-collaboration logs as distinct contracts. CRDT engines are optional codecs or
-providers, never an implicit core dependency.
+SDK rule: keep ephemeral realtime, authoritative query state, durable events/
+queues, and collaboration logs as distinct contracts. Current Holm source has
+typed private/presence channels and whispers but still no binary/replay
+contract; use Evidence `#009` for exact limits and fanout. CRDT engines remain
+optional codecs/providers, never an implicit core dependency.
 
 ## Current documentation and app defaults
 

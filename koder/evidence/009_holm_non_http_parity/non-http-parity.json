@@ -1,0 +1,1449 @@
+{
+  "schema": "holm.sdk.non-http-parity/1",
+  "source": {
+    "repository": "holmhq/holm",
+    "holm_version_marker": "0.208.0",
+    "holm_commit": "44d51d0f785ff6208ecc034c720e76a8543891be",
+    "holm_describe": "v0.208.0-128-g44d51d0f7",
+    "tracked_tree_clean": true,
+    "captured_at": "2026-08-17",
+    "nearest_release": {
+      "tag": "v0.208.0",
+      "commit": "93606188a1ee064e8aade678891406a671609eb5"
+    }
+  },
+  "sdk_baseline": {
+    "repository": "holmhq/sdk",
+    "version": "0.2.1",
+    "commit": "c06f98fd6bd8ad447f2ae3dbe925b911e7e64bef",
+    "absent_paths": [
+      "src/actions",
+      "src/realtime"
+    ]
+  },
+  "identity_fields": [
+    "lane",
+    "id"
+  ],
+  "sources": [
+    {
+      "repository": "holm",
+      "path": "cmd/server/main.go",
+      "sha256": "36bb7f0c05cfd25107658f7ced50998e45467190adc5c14bb3822eeb088e690f"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/discovery.schema.json",
+      "sha256": "ebc1d700eacec6e9b644c5c84c2bc12af806e9932185cf404cdd7fd01611690e"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/fixtures/source-contract.json",
+      "sha256": "5313de944235c45d6de7b45818d0adec9002e53a8a26a47cd211bbdaa92db0a1"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/HANDOFF.md",
+      "sha256": "7f0f574fbf2c0768e00ac1b20eb8597c01bfc4b513699956a57bd50a962e9eb3"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/README.md",
+      "sha256": "00a1603f27a768c8dae18f8e8504a3690fcfb992f3f9a99b18341b160b63f8f1"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/agents/inject.go",
+      "sha256": "a2507ce7887702a90cb1641efe8cfdb40633df6c4f7df491ef6f692c8262e995"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/ai/inject.go",
+      "sha256": "efa42d246e8330339dd5e78062f61b98b34bfaa04b9c078e4ded822885a127f4"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/appcontract/defaultprojection/validator.go",
+      "sha256": "f798241d724cbb768f896ffce97d6a5e2c40d48ac19def8aa0186e4caa6b4b07"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/egress/inject.go",
+      "sha256": "052768f968167accc5a932504f908ddde2a87b3fc63ecec9da102c2441157fdb"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/hosting/realtime.go",
+      "sha256": "1a447d460921ef86195eff6571fd15fe0dc6d56e0f4a66aa41ab05581b6ad826"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/hosting/ws_auth.go",
+      "sha256": "25275bb2b8a8ed5e44a0225812c8b0bf9795a5b9e70ce9760c0dcbf0e8ab418f"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/hosting/ws.go",
+      "sha256": "fad0d84e63815ac34f0ec1597da6740bb0978ac26770335ac7ec4921783a2a15"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/policy/policy.go",
+      "sha256": "1205a0349d6add18713ec151a7740d344ac9ad973932fe281e9bef30fcd5a1a2"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/realtimeauth/resolver.go",
+      "sha256": "2a08d906bcfe872a6809866b42d3507f78226c6fe1860946073d6b6270ab20d3"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/admin_bindings.go",
+      "sha256": "abcb62adacd48ed0717047d50ec4f58d6f262d63190f50ad21f7a04faf6e1608"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/admin_member_foundations.go",
+      "sha256": "9364950f1a6069c7cc5d14a8e0c9e569fcbdeee2681622442f929461555ce60f"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/app_events_bindings.go",
+      "sha256": "6693ef0ec0db57d1223f104e4ca09b46ca8c7ce6b4f1e3941c42eca027898ec9"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/app_queue_bindings.go",
+      "sha256": "3004103b3ceee4557c2992943952b8b695c3cf2df1af959387acaa8e2b52e3f3"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/auth_bindings.go",
+      "sha256": "2e5b295239d4736efa1ca050bd9b2cbda961854fb5e2b6531ff36c99eaa2b3e9"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/holm.go",
+      "sha256": "93003a31f5afbb3e6443964e48d0a20d15762c940c551df9914e586f13a7e13d"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/injectors.go",
+      "sha256": "b2e3d60451c3068b2d46362377cb938da66a2f1c81ad9abbc47f2dedfb60e537"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/node_analytics_bindings.go",
+      "sha256": "16376bc40e9594eb5f7517995587290f9e60176716ff3f59f5e07160b2b7094c"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/private_bindings.go",
+      "sha256": "020ba413fc3ba0e46e624c863060082799374dd801f85eb413bacedbef9b99dd"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/proxy_response.go",
+      "sha256": "5753a53a25842d9ff55a772cbcef1f5baf13b9fbc9af7c0cbfaf11b4411f8198"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/runtime/worker_member_spawn_gate.go",
+      "sha256": "072ff8ed0b9ebf44c07f73c1f1b8b63a432e0a2c77e0dd7317b3b13ab9b7692b"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/services/image/bindings.go",
+      "sha256": "a0b4683f16f7ed2bb70ea7e287cc075ea9fc9f75c7bcbb9de4e8bc61ece81a0c"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/storage/app_bindings.go",
+      "sha256": "68d4dbcfec3d12d4876150a25753e85ac4b0e8280930d86b34883ccf32dbe5b7"
+    },
+    {
+      "repository": "holm",
+      "path": "internal/worker/bindings.go",
+      "sha256": "98465f9afd912327c6dede58d629ffdff41bb1a90b4cce69f2e45696e81b819a"
+    },
+    {
+      "repository": "holm",
+      "path": "knowledge-base/agent-context/app-runtime.md",
+      "sha256": "43f98083b7f6cfee39537faa216578535627bd04fe6f5781787c00319a621b8c"
+    },
+    {
+      "repository": "holm",
+      "path": "koder/issues/534_contract_first_holm_apps/INDEX.md",
+      "sha256": "5e864cd3e08999120d244fc2e100c5b090f31ed44c7f0bf5c2b94eb1de96b558"
+    },
+    {
+      "repository": "sdk",
+      "path": "docs/capabilities.md",
+      "sha256": "0f9dd38d8e8518acb8bde9efc7599f71d224c3002907996d317d9d75ad6115ba"
+    },
+    {
+      "repository": "sdk",
+      "path": "src/admin/protocol.ts",
+      "sha256": "12d901451fb4a6fb02e4726f12d2ced24fca6582f0d0f49895f821190ca4643f"
+    },
+    {
+      "repository": "sdk",
+      "path": "src/app/protocol.ts",
+      "sha256": "e2d5ecd7b8b5313a9c529eb082ab42cea60b4b4421db27cfd7641a918b271ca1"
+    },
+    {
+      "repository": "sdk",
+      "path": "src/node/runtime.ts",
+      "sha256": "5cfcf0eff1f437ba1658f012345c0780d8497455239242e65919171b4c727392"
+    },
+    {
+      "repository": "sdk",
+      "path": "src/node/services.ts",
+      "sha256": "37c6099ca59c91527272d2ce882a2283ed29b3286ed91be4955641379d8a0c9a"
+    },
+    {
+      "repository": "sdk",
+      "path": "src/sobek/runtime.ts",
+      "sha256": "36e88203e9ee1c5fb8ed1bd5570e32a8d2fbdc3e421133a9aae0262305334901"
+    }
+  ],
+  "entries": [
+    {
+      "id": "websocket:backpressure-and-delivery",
+      "lane": "websocket",
+      "surface": "App-host WebSocket frame delivery",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "frame.inbound.json",
+        "frame.outbound.json-lines",
+        "queue.outbound.drop-on-full",
+        "wire.max-inbound-bytes"
+      ],
+      "auth": "Delivery inherits the connection and channel authorization; a queued frame does not add authority.",
+      "wire": "Inbound messages are JSON in text frames with a 512 KiB read limit. The writer may coalesce queued JSON envelopes into one text frame separated by newline bytes.",
+      "lifecycle": "Each client has a 256-entry send queue. Hub broadcast and presence paths use non-blocking sends and may drop when the queue is full; no replay or durable cursor exists.",
+      "availability": "Current implementation behavior, not a versioned protocol export; clients must not assume one JSON envelope per WebSocket frame.",
+      "rationale": "A production transport must parse newline-delimited envelopes, bound its own queues, and treat loss as possible instead of promising exact delivery.",
+      "evidence": [
+        "holm:internal/hosting/ws.go"
+      ]
+    },
+    {
+      "id": "websocket:heartbeat-and-reconnect",
+      "lane": "websocket",
+      "surface": "App-host WebSocket liveness lifecycle",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "client.pong",
+        "server.ping",
+        "websocket.control.ping-pong"
+      ],
+      "auth": "Heartbeat frames retain the connection's resolved session and grant no new channel access.",
+      "wire": "The server emits an application JSON ping and a WebSocket control ping every 30 seconds; either control pong handling or an application-level {type:'pong'} extends the read deadline.",
+      "lifecycle": "The server closes on read/write failure. Holm defines no resume token, replay cursor, reconnect delay, or automatic resubscription contract.",
+      "availability": "Current source fixes server timings, while reconnect, backoff, and resubscription remain client responsibilities.",
+      "rationale": "SDK lifecycle work must be bounded and disposable and cannot advertise replay or gap-free recovery.",
+      "evidence": [
+        "holm:internal/hosting/ws.go"
+      ]
+    },
+    {
+      "id": "websocket:legacy-bare-channels",
+      "lane": "websocket",
+      "surface": "Legacy app-scoped bare channel subscription",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "client.subscribe(bare-channel)",
+        "client.unsubscribe(bare-channel)",
+        "server.message(bare-channel)",
+        "server.subscribed",
+        "server.unsubscribed"
+      ],
+      "auth": "A channel name without a colon bypasses typed-channel auth and remains usable by an anonymous socket; app scoping comes from the per-app hub.",
+      "wire": "Client envelopes use type plus channel. Server acknowledgements use subscribed or unsubscribed; broadcasts use message with channel, data, and Unix-millisecond timestamp.",
+      "lifecycle": "Subscriptions live only for the socket connection and are removed on unsubscribe or disconnect.",
+      "availability": "Legacy compatibility is current. The explicit public:<name> form is rejected; bare names are the only unauthenticated public form.",
+      "rationale": "Any SDK API must label this legacy public behavior honestly and must never silently downgrade private or presence requests to a bare channel.",
+      "evidence": [
+        "holm:internal/hosting/ws.go"
+      ]
+    },
+    {
+      "id": "websocket:negative-binary-and-client-broadcast",
+      "lane": "websocket",
+      "surface": "Realtime features not implemented by the app-host protocol",
+      "authority": "negative-evidence",
+      "holm_status": "absent",
+      "disposition": "excluded",
+      "sdk_status": "unsupported",
+      "operations": [
+        "binary.frames",
+        "client.broadcast",
+        "client.publish",
+        "durable.replay"
+      ],
+      "auth": "No authorization model exists for these absent operations.",
+      "wire": "The inbound switch accepts subscribe, unsubscribe, whisper, and pong JSON messages only; general client publish and a binary message contract are absent.",
+      "lifecycle": "There is no durable log, replay cursor, or exactly-once delivery lifecycle.",
+      "availability": "Unsupported at the pinned Holm source; server code can broadcast through holm.realtime and clients can whisper only under the typed rules.",
+      "rationale": "The SDK must fail closed rather than infer binary, client-publish, or durable-delivery support from WebSocket availability.",
+      "evidence": [
+        "holm:internal/hosting/realtime.go",
+        "holm:internal/hosting/ws.go"
+      ]
+    },
+    {
+      "id": "websocket:presence-channels",
+      "lane": "websocket",
+      "surface": "Authenticated presence:<name> channels",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "client.subscribe(presence:<name>)",
+        "server.presence_join",
+        "server.presence_leave",
+        "server.presence_roster"
+      ],
+      "auth": "Requires a socket principal with app-read authorization plus app policy realtime.presence_enabled=true; public: is rejected and names containing slash are invalid.",
+      "wire": "Roster and join/leave envelopes expose member_id, principal_kind, connection_count, joined_at, last_seen_at, reason, channel, and timestamp. The initial presence_roster currently contains only the joining principal entry, not a full channel snapshot.",
+      "lifecycle": "Presence is per app, channel, principal, and live connection. A new-principal join is sent to the joining socket; same-principal connection changes update that principal's sockets; the final unsubscribe or disconnect sends leave to remaining subscribers.",
+      "availability": "Enabled by default policy but operator-overridable; the protocol is source-defined and not exported as a versioned registry. Conventional full-roster or all-peer join fanout must not be inferred.",
+      "rationale": "Presence is an ephemeral typed capability with source-specific fanout semantics and cannot be represented as authoritative query state.",
+      "evidence": [
+        "holm:internal/hosting/ws.go",
+        "holm:internal/policy/policy.go",
+        "holm:internal/realtimeauth/resolver.go"
+      ]
+    },
+    {
+      "id": "websocket:private-channels",
+      "lane": "websocket",
+      "surface": "Authenticated private:<name> channels",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "client.subscribe(private:<name>)",
+        "client.unsubscribe(private:<name>)",
+        "server.message(private:<name>)"
+      ],
+      "auth": "The upgrade session must resolve once, the principal must have app-read authorization, and app policy realtime.private_enabled must allow the subscription.",
+      "wire": "Typed names are private:<name>; empty names, slash-containing names, public:<name>, and unknown kinds fail with stable realtime_* error strings.",
+      "lifecycle": "Authorization is checked for subscribe, while membership is connection-local and removed on unsubscribe or disconnect.",
+      "availability": "Enabled by default policy but operator-overridable; anonymous and resolver-failure sockets remain connected but protected subscribe fails closed.",
+      "rationale": "Private channels require an explicit capability and may never fall back to legacy bare channels.",
+      "evidence": [
+        "holm:internal/hosting/ws_auth.go",
+        "holm:internal/hosting/ws.go",
+        "holm:internal/policy/policy.go",
+        "holm:internal/realtimeauth/resolver.go"
+      ]
+    },
+    {
+      "id": "websocket:server-broadcast",
+      "lane": "websocket",
+      "surface": "Serverless-to-client realtime broadcast",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "holm.realtime.broadcast",
+        "holm.realtime.broadcastAll",
+        "server.message"
+      ],
+      "auth": "Only injected server code receives the broadcast functions; recipients are selected by the app-scoped hub and channel membership.",
+      "wire": "Arbitrary JSON-exportable data is wrapped in a message envelope with optional channel and Unix-millisecond timestamp.",
+      "lifecycle": "Broadcast is ephemeral and non-blocking; slow-client queue overflow can drop delivery and there is no replay.",
+      "availability": "Injected for app request runtimes; there is no corresponding general client broadcast operation.",
+      "rationale": "The SDK may expose server broadcast only through a future Sobek capability and should use client messages as reconcile hints, not durable truth.",
+      "evidence": [
+        "holm:internal/hosting/realtime.go",
+        "holm:internal/hosting/ws.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "websocket:upgrade-and-auth",
+      "lane": "websocket",
+      "surface": "Exact app-host /_ws upgrade and session resolution",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "GET /_ws",
+        "socket.resolve-session",
+        "websocket.upgrade"
+      ],
+      "auth": "Origin must match request scheme and host. The resolver checks member session cookie, then bearer API key, then bearer space token, and resolves at most once per connection; anonymous upgrade is allowed.",
+      "wire": "The app host reserves the exact /_ws path and upgrades with the WebSocket protocol. Empty, malformed, cross-scheme, or cross-host Origin fails before connection use.",
+      "lifecycle": "One app-scoped hub and random client id are attached after upgrade. Resolver errors yield an unauthenticated session rather than rejecting the connection.",
+      "availability": "Current app-host behavior outside the 261-row HTTP registry; only existing app hosts reach the path.",
+      "rationale": "A web transport must preserve browser cookies or explicit bearer proof without placing credentials in public caller context.",
+      "evidence": [
+        "holm:cmd/server/main.go",
+        "holm:internal/hosting/ws_auth.go",
+        "holm:internal/hosting/ws.go",
+        "holm:internal/realtimeauth/resolver.go"
+      ]
+    },
+    {
+      "id": "websocket:whispers",
+      "lane": "websocket",
+      "surface": "Client-to-peer typed-channel whispers",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "client.whisper",
+        "server.whisper"
+      ],
+      "auth": "Sender must already be subscribed to a valid private or presence channel; realtime.whispers_enabled and max-payload policy must pass.",
+      "wire": "Inbound {type:'whisper',channel,data} carries JSON data. Outbound whisper preserves channel and data, adds timestamp, and excludes the sending socket.",
+      "lifecycle": "Whispers are ephemeral, sender-excluded, and delivered only to currently subscribed peers; queue overflow can drop them.",
+      "availability": "Enabled by default policy with a default 512 KiB app payload ceiling, both operator-overridable.",
+      "rationale": "Whisper is materially different from server broadcast and needs its own negotiated SDK capability.",
+      "evidence": [
+        "holm:internal/hosting/ws.go",
+        "holm:internal/policy/policy.go"
+      ]
+    },
+    {
+      "id": "sobek:agent",
+      "lane": "sobek",
+      "surface": "HTTP-route-only holm.agent namespace",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.agent.get",
+        "holm.agent.list",
+        "holm.agent.send",
+        "holm.agent.token"
+      ],
+      "auth": "Runtime app and member identity are injected; individual operations retain Holm agent trust and registry checks.",
+      "wire": "Direct Sobek calls return exported JavaScript values and Go errors rather than HTTP envelopes.",
+      "lifecycle": "The namespace is request-local and registry/database backed.",
+      "availability": "Injected only in the HTTP-only injector group when database and app context exist.",
+      "rationale": "The preview SDK Sobek adapter does not expose this namespace; any public surface requires a separate capability contract.",
+      "evidence": [
+        "holm:internal/agents/inject.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:ai",
+      "lane": "sobek",
+      "surface": "HTTP-route-only holm.ai namespace",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.ai.chat",
+        "holm.ai.job"
+      ],
+      "auth": "App/member context, provider policy, usage limits, and remaining route budget are enforced by Holm.",
+      "wire": "chat accepts JavaScript option data and returns a result or AIError; job creates a native worker-backed task payload.",
+      "lifecycle": "chat is bounded by request/provider context; job is durable worker work whose wait lifecycle is separate.",
+      "availability": "Injected only in the HTTP-only group when database, app context, and AI blob storage exist.",
+      "rationale": "Direct AI host calls are not represented by the SDK Sobek adapter and must not be inferred from HTTP AI routes.",
+      "evidence": [
+        "holm:internal/ai/inject.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:app-events",
+      "lane": "sobek",
+      "surface": "Injected durable holm.app.events namespace",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.app.events.emit",
+        "holm.app.events.query",
+        "holm.app.events.subscribe",
+        "holm.app.events.unsubscribe"
+      ],
+      "auth": "Every operation checks its exact manifest capability: app.events.emit, app.events.query, or app.events.subscribe.",
+      "wire": "Calls exchange JSON-serializable event records, query options, and app-handler subscription targets directly in Sobek.",
+      "lifecycle": "Events and subscriptions are durable app-scoped records; delivery is not the same contract as ephemeral WebSocket channels.",
+      "availability": "Namespace is injected for app runtimes, but calls fail closed without database/app context and the required manifest capability.",
+      "rationale": "A future SDK surface must keep durable events separate from WebSocket realtime and route HTTP.",
+      "evidence": [
+        "holm:internal/runtime/app_events_bindings.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:app-metadata",
+      "lane": "sobek",
+      "surface": "Injected app identity and Holm version metadata",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.app.id",
+        "holm.app.name",
+        "holm.version"
+      ],
+      "auth": "Values come from the authoritative execution context, not caller-supplied fields.",
+      "wire": "Read-only JavaScript strings are installed on the request-local holm object.",
+      "lifecycle": "Values are fixed for one runtime execution.",
+      "availability": "holm exists even without app context, where app id/name become empty; the normal app injector supplies both.",
+      "rationale": "These direct host values are not exposed by the current SDK Sobek adapter and must not be synthesized from client claims.",
+      "evidence": [
+        "holm:internal/runtime/holm.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:app-queue",
+      "lane": "sobek",
+      "surface": "Injected durable holm.app.queue namespace",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.app.queue.ack",
+        "holm.app.queue.deadLetter",
+        "holm.app.queue.extend",
+        "holm.app.queue.receive",
+        "holm.app.queue.send"
+      ],
+      "auth": "send requires app.queue.send; receive, ack, extend, and deadLetter require app.queue.consume in manifest capabilities.",
+      "wire": "Payloads are JSON-serializable; claims use opaque receipt objects and millisecond visibility controls.",
+      "lifecycle": "Messages are durable app-scoped queue records with visibility, acknowledgement, and dead-letter state.",
+      "availability": "Namespace is injected for app runtimes, while calls fail closed without database/app context or capabilities.",
+      "rationale": "Queue semantics need a durable-work capability and cannot be collapsed into HTTP request or realtime delivery.",
+      "evidence": [
+        "holm:internal/runtime/app_queue_bindings.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:auth",
+      "lane": "sobek",
+      "surface": "Injected holm.auth caller and guard namespace",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.auth.getIdentity",
+        "holm.auth.getLoginURL",
+        "holm.auth.getLogoutURL",
+        "holm.auth.getMember",
+        "holm.auth.hasRole",
+        "holm.auth.isAdmin",
+        "holm.auth.isAnonymous",
+        "holm.auth.isAppAdmin",
+        "holm.auth.isAppMember",
+        "holm.auth.isAppOwner",
+        "holm.auth.isLoggedIn",
+        "holm.auth.isNodeAdmin",
+        "holm.auth.isNodeOwner",
+        "holm.auth.requireAdmin",
+        "holm.auth.requireLogin",
+        "holm.auth.requireOwner",
+        "holm.auth.requireRole"
+      ],
+      "auth": "Member, anonymous, node-role, and app-role truth comes from the injected AuthContext and database; app-admin predicates are additionally capability-gated.",
+      "wire": "Direct calls return projections/booleans/URLs or throw Go-backed authorization errors.",
+      "lifecycle": "Caller context is fixed for the request execution; guards do not create new proof.",
+      "availability": "Namespace is injected for route runtimes, including anonymous contexts.",
+      "rationale": "SDK caller metadata is not a substitute for this authoritative injected auth surface.",
+      "evidence": [
+        "holm:internal/runtime/auth_bindings.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:email",
+      "lane": "sobek",
+      "surface": "Injected holm.email transactional send",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.email.send"
+      ],
+      "auth": "The runtime fixes app identity and sender; provider credentials remain outside JavaScript and email.app_send policy must allow the app.",
+      "wire": "A synchronous object call returns structured ok/status metadata or safe ok:false code/message/retryable data.",
+      "lifecycle": "Provider dispatch is request-bounded; no outbox/retry ledger is implied by the primitive.",
+      "availability": "Present in the namespace but disabled by default policy and dependent on database, canonical app email identity, egress, and provider configuration.",
+      "rationale": "Direct server email is not represented by the SDK and requires its own policy-aware capability if adopted.",
+      "evidence": [
+        "holm:internal/runtime/holm.go",
+        "holm:knowledge-base/agent-context/app-runtime.md"
+      ]
+    },
+    {
+      "id": "sobek:environment",
+      "lane": "sobek",
+      "surface": "Injected holm.env application environment",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.env.get",
+        "holm.env.has"
+      ],
+      "auth": "Values are app execution configuration supplied by Holm; no remote caller field selects them.",
+      "wire": "Synchronous string lookup with optional default and boolean presence check.",
+      "lifecycle": "The environment map is captured for one execution.",
+      "availability": "Always installed by the core namespace injector, with missing keys returning undefined/default.",
+      "rationale": "This is not equivalent to the SDK NodeEnvironmentService and should not be bridged accidentally across trust boundaries.",
+      "evidence": [
+        "holm:internal/runtime/holm.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:image",
+      "lane": "sobek",
+      "surface": "Injected holm.image in-memory transforms",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.image.resize",
+        "holm.image.thumbnail"
+      ],
+      "auth": "Execution inherits app runtime admission; the binding adds no caller-selected authority.",
+      "wire": "ArrayBuffer image bytes and options cross the Go/Sobek boundary; results include copied bytes and dimensions.",
+      "lifecycle": "Transforms are synchronous and request-local.",
+      "availability": "Image namespace is installed in the normal injector chain.",
+      "rationale": "A direct image host capability is distinct from remote HTTP image routes and has no SDK representation.",
+      "evidence": [
+        "holm:internal/runtime/injectors.go",
+        "holm:internal/services/image/bindings.go"
+      ]
+    },
+    {
+      "id": "sobek:logging",
+      "lane": "sobek",
+      "surface": "Injected holm.log request logging",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.log.debug",
+        "holm.log.error",
+        "holm.log.info",
+        "holm.log.warn"
+      ],
+      "auth": "Logs are attributed to the authoritative execution; arguments grant no additional access.",
+      "wire": "The first argument is stringified and appended as a level/message log entry.",
+      "lifecycle": "Entries belong to the current execution result.",
+      "availability": "Always installed with the core namespace; console logging is a sibling runtime global.",
+      "rationale": "SDK diagnostics sinks and server app logs are different ownership surfaces.",
+      "evidence": [
+        "holm:internal/runtime/holm.go"
+      ]
+    },
+    {
+      "id": "sobek:member-storage",
+      "lane": "sobek",
+      "surface": "Injected holm.app.member private storage families",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.app.member.bl.create",
+        "holm.app.member.bl.get",
+        "holm.app.member.bl.list",
+        "holm.app.member.bl.revoke",
+        "holm.app.member.bl.update",
+        "holm.app.member.ds.aggregate",
+        "holm.app.member.ds.count",
+        "holm.app.member.ds.delete",
+        "holm.app.member.ds.find",
+        "holm.app.member.ds.findOne",
+        "holm.app.member.ds.insert",
+        "holm.app.member.ds.transaction",
+        "holm.app.member.ds.update",
+        "holm.app.member.kv.delete",
+        "holm.app.member.kv.get",
+        "holm.app.member.kv.increment",
+        "holm.app.member.kv.list",
+        "holm.app.member.kv.set",
+        "holm.app.member.media.probe",
+        "holm.app.member.media.serve",
+        "holm.app.member.media.transcode",
+        "holm.app.member.s3.delete",
+        "holm.app.member.s3.get",
+        "holm.app.member.s3.list",
+        "holm.app.member.s3.put"
+      ],
+      "auth": "Storage owner comes from Holm's resolved member/anonymous context. No owner yields login-required stubs; anonymous identities get KV/DS only and blob/media/link methods fail ANON_SURFACE_UNSUPPORTED.",
+      "wire": "Direct JavaScript values, document/page/cursor data, byte handles, and scoped storage errors cross the host boundary.",
+      "lifecycle": "Operations are request-bounded; durable values remain in member-owned Holm storage and transactions are synchronous, capped, and non-nestable.",
+      "availability": "Methods are installed for all contexts but their backing behavior depends on resolved owner kind and storage services.",
+      "rationale": "The SDK has no direct injected storage adapter and must not expose member storage by trusting a client-supplied member id.",
+      "evidence": [
+        "holm:internal/runtime/injectors.go",
+        "holm:internal/storage/app_bindings.go",
+        "holm:knowledge-base/agent-context/app-runtime.md"
+      ]
+    },
+    {
+      "id": "sobek:net",
+      "lane": "sobek",
+      "surface": "HTTP-route-only holm.net egress and stream proxy",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.net.fetch",
+        "holm.net.proxy"
+      ],
+      "auth": "Holm egress allowlists, app identity, call/body/response limits, and opaque secret refs govern outbound access.",
+      "wire": "fetch returns bounded response objects or staged file handles; proxy returns an opaque response descriptor consumed by Holm's HTTP response path.",
+      "lifecycle": "Calls share request context and limits; proxy can stream outside JS with bounded capture and completion callback semantics.",
+      "availability": "Injected only in the HTTP-only group when egress proxy and app context exist; proxy is added after fetch.",
+      "rationale": "This host egress capability is not the SDK Node fetch transport and must remain behind explicit server policy.",
+      "evidence": [
+        "holm:internal/egress/inject.go",
+        "holm:internal/runtime/injectors.go",
+        "holm:internal/runtime/proxy_response.go"
+      ]
+    },
+    {
+      "id": "sobek:node-analytics",
+      "lane": "sobek",
+      "surface": "Injected holm.node.analytics aggregate reads and maintenance",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.node.analytics.query",
+        "holm.node.analytics.queryNode",
+        "holm.node.analytics.refreshNodeRollups"
+      ],
+      "auth": "Requires authenticated node admin/owner plus manifest capability node-analytics-read; node-wide methods also require analytics.node_wide_read app policy.",
+      "wire": "Direct option objects select bounded aggregate windows and return aggregate-only maps; refresh returns a rollup report.",
+      "lifecycle": "Reads are request-local; refresh maintenance writes use the governed storage writer when present.",
+      "availability": "Namespace is injected for app contexts, but every method fails closed when its compound gate is absent.",
+      "rationale": "A platform-version string or route inventory cannot imply this privileged node capability.",
+      "evidence": [
+        "holm:internal/runtime/injectors.go",
+        "holm:internal/runtime/node_analytics_bindings.go"
+      ]
+    },
+    {
+      "id": "sobek:operator-admin",
+      "lane": "sobek",
+      "surface": "Injected app-scoped holm.admin namespace",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.admin.app.bl.list",
+        "holm.admin.app.ds.find",
+        "holm.admin.app.kv.list",
+        "holm.admin.app.media.list",
+        "holm.admin.app.s3.list",
+        "holm.admin.audit.list",
+        "holm.admin.lookupMember",
+        "holm.admin.member",
+        "holm.admin.member(id).bl.create",
+        "holm.admin.member(id).bl.get",
+        "holm.admin.member(id).bl.list",
+        "holm.admin.member(id).bl.revoke",
+        "holm.admin.member(id).bl.update",
+        "holm.admin.member(id).ds.count",
+        "holm.admin.member(id).ds.delete",
+        "holm.admin.member(id).ds.find",
+        "holm.admin.member(id).ds.findOne",
+        "holm.admin.member(id).ds.insert",
+        "holm.admin.member(id).ds.update",
+        "holm.admin.member(id).kv.delete",
+        "holm.admin.member(id).kv.get",
+        "holm.admin.member(id).kv.increment",
+        "holm.admin.member(id).kv.list",
+        "holm.admin.member(id).kv.set",
+        "holm.admin.member(id).media.probe",
+        "holm.admin.member(id).media.serve",
+        "holm.admin.member(id).media.transcode",
+        "holm.admin.member(id).s3.delete",
+        "holm.admin.member(id).s3.get",
+        "holm.admin.member(id).s3.list",
+        "holm.admin.member(id).s3.put",
+        "holm.admin.members.list",
+        "holm.admin.roles.add",
+        "holm.admin.roles.find",
+        "holm.admin.roles.list",
+        "holm.admin.roles.remove"
+      ],
+      "auth": "Calls require authenticated owner/admin/app-role checks plus app manifest capabilities app-admin, admin-member-read, admin-member-write, or admin-app-read according to operation.",
+      "wire": "Direct Sobek calls return member projections, role/audit rows, scoped storage values, and opaque cursor pages or throw authorization/storage errors.",
+      "lifecycle": "Bindings are request-local while mutations and audits are durable; member factory objects remain scoped to the current app and resolved active member.",
+      "availability": "Namespace is injected even when gates are absent, and calls fail closed. It is separate from the SDK's remote operator HTTP admin client.",
+      "rationale": "The direct app-runtime admin surface cannot be inferred from or flattened into remote admin route parity.",
+      "evidence": [
+        "holm:internal/runtime/admin_bindings.go",
+        "holm:internal/runtime/admin_member_foundations.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:private-files",
+      "lane": "sobek",
+      "surface": "Injected holm.private cartridge reads",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.private.exists",
+        "holm.private.list",
+        "holm.private.read",
+        "holm.private.readJSON"
+      ],
+      "auth": "Access is confined to the app's private cartridge loader; remote caller fields do not select another app path.",
+      "wire": "Synchronous string/JSON/boolean/list values or path/read errors cross into Sobek.",
+      "lifecycle": "Reads are execution-local against deployed private source.",
+      "availability": "Namespace is injected only when a PrivateLoader is configured.",
+      "rationale": "Private source must never become a generic remote SDK filesystem surface.",
+      "evidence": [
+        "holm:internal/runtime/injectors.go",
+        "holm:internal/runtime/private_bindings.go"
+      ]
+    },
+    {
+      "id": "sobek:realtime",
+      "lane": "sobek",
+      "surface": "Injected holm.realtime hub control",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.realtime.broadcast",
+        "holm.realtime.broadcastAll",
+        "holm.realtime.count",
+        "holm.realtime.kick",
+        "holm.realtime.subscribers"
+      ],
+      "auth": "The namespace is bound to the current app id; method calls do not accept a cross-app hub identifier.",
+      "wire": "Direct calls pass channel/client strings and exported data and return undefined, counts, client-id lists, or a kick boolean.",
+      "lifecycle": "Calls act on the process-local app hub; broadcast is ephemeral and kick closes a live connection.",
+      "availability": "Injected for app request runtimes; no SDK Sobek namespace contract currently represents it.",
+      "rationale": "Server hub control needs a distinct capability from browser subscription transport.",
+      "evidence": [
+        "holm:internal/hosting/realtime.go",
+        "holm:internal/runtime/injectors.go"
+      ]
+    },
+    {
+      "id": "sobek:sdk-http-preview-adapter",
+      "lane": "sobek",
+      "surface": "Current @holmhq/sdk/sobek structural HTTP-equivalent adapter",
+      "authority": "sdk-implementation",
+      "holm_status": "sdk-only",
+      "disposition": "redesigned",
+      "sdk_status": "current",
+      "operations": [
+        "holm.http.app/invalidate-cache",
+        "holm.http.app/request"
+      ],
+      "auth": "The SDK copies an injected server caller context into its internal envelope, but an external integration must still supply the authoritative runtime implementation.",
+      "wire": "Only canonical GET/POST app requests and stable HTTP-like responses/errors are modeled; no global holm object or namespace methods are touched.",
+      "lifecycle": "The preview adapter starts with one holm.http.app offer, invokes a supplied fake/structural runtime, and disposes locally.",
+      "availability": "Shipped and tested as preview/not-production. Holm does not wire this adapter into its actual Sobek host APIs.",
+      "rationale": "This is a semantics-preserving test/custom-integration seam, not parity with the injected namespace inventory.",
+      "evidence": [
+        "sdk:docs/capabilities.md",
+        "sdk:src/app/protocol.ts",
+        "sdk:src/sobek/runtime.ts"
+      ]
+    },
+    {
+      "id": "sobek:secrets",
+      "lane": "sobek",
+      "surface": "Injected holm.secrets app-scoped secret access",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.secrets.get",
+        "holm.secrets.ref"
+      ],
+      "auth": "The SecretGetter is app-scoped; node-wide secrets are not visible. ref creates an opaque marker for governed proxy headers/query.",
+      "wire": "get returns a secret string or undefined; ref returns a redacted object whose string/JSON representation is [secret-ref].",
+      "lifecycle": "Secret resolution occurs inside one execution and values must not enter snapshots, diagnostics, or caller context.",
+      "availability": "Namespace is always installed, while get returns undefined when no getter or secret exists.",
+      "rationale": "A universal SDK must not expose this server-only proof material as a serializable capability payload.",
+      "evidence": [
+        "holm:internal/runtime/holm.go"
+      ]
+    },
+    {
+      "id": "sobek:shared-storage",
+      "lane": "sobek",
+      "surface": "Injected holm.app shared storage families",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.app.bl.create",
+        "holm.app.bl.get",
+        "holm.app.bl.list",
+        "holm.app.bl.revoke",
+        "holm.app.bl.update",
+        "holm.app.ds.aggregate",
+        "holm.app.ds.count",
+        "holm.app.ds.delete",
+        "holm.app.ds.find",
+        "holm.app.ds.findOne",
+        "holm.app.ds.insert",
+        "holm.app.ds.search",
+        "holm.app.ds.transaction",
+        "holm.app.ds.update",
+        "holm.app.kv.compareAndSwap",
+        "holm.app.kv.delete",
+        "holm.app.kv.get",
+        "holm.app.kv.increment",
+        "holm.app.kv.list",
+        "holm.app.kv.set",
+        "holm.app.media.probe",
+        "holm.app.media.serve",
+        "holm.app.media.transcode",
+        "holm.app.s3.delete",
+        "holm.app.s3.get",
+        "holm.app.s3.list",
+        "holm.app.s3.put"
+      ],
+      "auth": "Every binding is fixed to the current app id; no operation accepts an app-id override that bypasses Holm ownership.",
+      "wire": "Direct JavaScript values, document/page/cursor data, bytes/upload handles, and storage errors cross the host boundary.",
+      "lifecycle": "Operations share request context, storage writer, deadline budget, and app storage; DS transactions are synchronous, capped, and non-nestable.",
+      "availability": "Injected for app contexts; some methods depend on concrete SQL stores, runtime storage, temp uploads, or filesystem services.",
+      "rationale": "The SDK must not expose raw SQLite or assume direct host storage is equivalent to remote app HTTP.",
+      "evidence": [
+        "holm:internal/runtime/injectors.go",
+        "holm:internal/storage/app_bindings.go",
+        "holm:knowledge-base/agent-context/app-runtime.md"
+      ]
+    },
+    {
+      "id": "sobek:task-and-worker",
+      "lane": "sobek",
+      "surface": "Injected holm.task and holm.worker durable work facades",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.task.cancel",
+        "holm.task.get",
+        "holm.task.list",
+        "holm.task.spawn",
+        "holm.task.wait",
+        "holm.worker.cancel",
+        "holm.worker.get",
+        "holm.worker.list",
+        "holm.worker.spawn",
+        "holm.worker.wait"
+      ],
+      "auth": "Jobs are app-scoped; explicit foreign member spawn additionally requires manifest capability worker-foreign-member-spawn, app policy, and node admin/owner authority.",
+      "wire": "Direct calls exchange handler/options and job snapshots; task is the preferred facade over the same worker executor and maps idempotencyKey to uniqueKey.",
+      "lifecycle": "Jobs are durable and independently cancellable/waitable; cancelling a local wait is not automatically the same as cancelling a job.",
+      "availability": "Injected for app runtimes. Spawn behavior depends on worker executor and compound member-spawn gates.",
+      "rationale": "Durable task semantics require a negotiated job capability rather than being hidden behind generic request cancellation.",
+      "evidence": [
+        "holm:internal/runtime/injectors.go",
+        "holm:internal/runtime/worker_member_spawn_gate.go",
+        "holm:internal/worker/bindings.go"
+      ]
+    },
+    {
+      "id": "sobek:worker-time",
+      "lane": "sobek",
+      "surface": "Worker-only holm.time sleep helper",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "holm.time.sleep"
+      ],
+      "auth": "Available only inside an admitted worker execution; it grants no storage or network authority.",
+      "wire": "A synchronous finite non-negative millisecond number is accepted; invalid or excessive values throw.",
+      "lifecycle": "Sleep is interruptible by worker cancellation or timeout and is deliberately absent from route-handler timer contracts.",
+      "availability": "Injected after worker namespace injectors; legacy global sleep remains compatibility-only.",
+      "rationale": "This worker clock primitive is not the SDK scheduler and must not leak into universal core.",
+      "evidence": [
+        "holm:internal/worker/bindings.go",
+        "holm:knowledge-base/agent-context/app-runtime.md"
+      ]
+    },
+    {
+      "id": "node:app-admin-capabilities",
+      "lane": "node",
+      "surface": "Holm app manifest gates for injected admin bindings",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "admin-app-read",
+        "admin-member-read",
+        "admin-member-write",
+        "app-admin"
+      ],
+      "auth": "Manifest strings are only one gate; caller must also be authenticated and satisfy node/app owner or admin role checks. admin-member-write implies read, not admin-app-read.",
+      "wire": "Strings are read from manifest.json capabilities and checked inside direct Sobek calls.",
+      "lifecycle": "Capability state is loaded for the current app execution and does not become a remote bearer proof.",
+      "availability": "Current injected-runtime gates with no versioned capability manifest export.",
+      "rationale": "The remote SDK admin HTTP capability does not imply these app-runtime manifest grants.",
+      "evidence": [
+        "holm:internal/runtime/admin_bindings.go",
+        "holm:internal/runtime/admin_member_foundations.go"
+      ]
+    },
+    {
+      "id": "node:app-events-capabilities",
+      "lane": "node",
+      "surface": "Holm app manifest gates for durable events",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "app.events.emit",
+        "app.events.query",
+        "app.events.subscribe"
+      ],
+      "auth": "Each direct events method checks the matching manifest capability against current app database context.",
+      "wire": "Unversioned strings live in manifest.json; they are not CapabilityOffer records.",
+      "lifecycle": "Checked on each operation and tied to the deployed app manifest.",
+      "availability": "Current Holm implementation, absent from SDK capability discovery.",
+      "rationale": "Durable event grants must not be conflated with ephemeral realtime capabilities.",
+      "evidence": [
+        "holm:internal/runtime/app_events_bindings.go"
+      ]
+    },
+    {
+      "id": "node:app-queue-capabilities",
+      "lane": "node",
+      "surface": "Holm app manifest gates for durable queues",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "app.queue.consume",
+        "app.queue.send"
+      ],
+      "auth": "send and consume-family calls check separate manifest strings against current app database context.",
+      "wire": "Unversioned strings live in manifest.json; they are not CapabilityOffer records.",
+      "lifecycle": "Checked on each operation and tied to the deployed app manifest.",
+      "availability": "Current Holm implementation, absent from SDK capability discovery.",
+      "rationale": "Queue producer and consumer authority must remain separately represented.",
+      "evidence": [
+        "holm:internal/runtime/app_queue_bindings.go"
+      ]
+    },
+    {
+      "id": "node:manifest-capability-model",
+      "lane": "node",
+      "surface": "Current Holm manifest capability strings versus SDK offers",
+      "authority": "implementation",
+      "holm_status": "current",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "manifest.json/capabilities",
+        "runtime.appManifestHasCapability"
+      ],
+      "auth": "A manifest declaration never replaces runtime caller, role, policy, and resource authorization checks.",
+      "wire": "Holm currently parses an array of exact strings from deployed manifest.json. There is no universal namespaced major/minor offer document or handshake.",
+      "lifecycle": "The manifest is loaded from app files when a gated call executes; missing or malformed state fails absent/error according to the binding.",
+      "availability": "Current internal mechanism only. Platform version and HTTP route existence do not prove a manifest-gated capability.",
+      "rationale": "SDK CapabilityOffer ids must not be auto-derived from these unversioned app grants; a future Holm export/handshake must define that bridge.",
+      "evidence": [
+        "holm:internal/runtime/admin_member_foundations.go",
+        "holm:internal/runtime/app_events_bindings.go",
+        "holm:internal/runtime/app_queue_bindings.go",
+        "holm:internal/runtime/node_analytics_bindings.go"
+      ]
+    },
+    {
+      "id": "node:node-analytics-capability",
+      "lane": "node",
+      "surface": "Privileged node analytics manifest and policy gate",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "analytics.node_wide_read",
+        "node-analytics-read"
+      ],
+      "auth": "Manifest capability, authenticated node admin/owner role, current app context, and for node-wide reads an app policy grant are all required.",
+      "wire": "The manifest grant and policy are internal Holm data, not transmitted as SDK caller claims.",
+      "lifecycle": "Evaluated for each direct analytics operation.",
+      "availability": "Current Holm implementation; no SDK Node adapter offer or discovery probe represents it.",
+      "rationale": "This compound gate demonstrates why a platform version cannot stand in for capability negotiation.",
+      "evidence": [
+        "holm:internal/runtime/node_analytics_bindings.go"
+      ]
+    },
+    {
+      "id": "node:sdk-auth-and-caller",
+      "lane": "node",
+      "surface": "Current SDK Node/CLI explicit operator and token composition",
+      "authority": "sdk-implementation",
+      "holm_status": "sdk-only",
+      "disposition": "adopted",
+      "sdk_status": "current",
+      "operations": [
+        "createNodeOperatorCaller",
+        "createNodeTokenAuth",
+        "nodeRuntime.authenticate"
+      ],
+      "auth": "Caller context is explicit and non-secret; bearer proof stays adapter-private. Browser session proof is rejected and Holm still re-authorizes every remote request.",
+      "wire": "Token proof becomes an Authorization header through transport auth and a non-secret cache partition; it is not placed in OperationRequest caller data.",
+      "lifecycle": "Token providers are read per request and cache partitions rotate when dynamic token text changes.",
+      "availability": "Shipped preview Node/CLI behavior; no ambient environment or cookie inference occurs.",
+      "rationale": "This satisfies the surface-dependent caller boundary for existing HTTP capabilities without claiming non-HTTP support.",
+      "evidence": [
+        "sdk:docs/capabilities.md",
+        "sdk:src/node/runtime.ts",
+        "sdk:src/node/services.ts"
+      ]
+    },
+    {
+      "id": "node:sdk-http-offers",
+      "lane": "node",
+      "surface": "Current SDK Node/CLI app and admin HTTP offers",
+      "authority": "sdk-implementation",
+      "holm_status": "sdk-only",
+      "disposition": "adopted",
+      "sdk_status": "current",
+      "operations": [
+        "holm.http.admin@1.0",
+        "holm.http.app@1.0"
+      ],
+      "auth": "App HTTP uses explicit transport auth; admin invocation additionally requires an operator caller context and server authorization.",
+      "wire": "Fetch-backed request/response transport supports JSON, raw, and binary bodies plus cancellation and caller-partitioned cache behavior.",
+      "lifecycle": "start advertises two fixed adapter offers; dispose aborts active fetches and clears cache.",
+      "availability": "Shipped preview adapter. Offers describe adapter support, not a live server capability probe or Holm version guarantee.",
+      "rationale": "These are the complete current Node runtime offers; route parity remains governed by the HTTP ledgers.",
+      "evidence": [
+        "sdk:src/admin/protocol.ts",
+        "sdk:src/app/protocol.ts",
+        "sdk:src/node/runtime.ts"
+      ]
+    },
+    {
+      "id": "node:sdk-non-http-offers",
+      "lane": "node",
+      "surface": "Non-HTTP capabilities not offered by the SDK Node adapter",
+      "authority": "sdk-implementation",
+      "holm_status": "sdk-only",
+      "disposition": "deferred",
+      "sdk_status": "unsupported",
+      "operations": [
+        "holm.actions.registry",
+        "holm.realtime.*",
+        "holm.sobek.namespaces"
+      ],
+      "auth": "No proof application exists because the adapter rejects unknown capability ids before transport invocation.",
+      "wire": "The adapter accepts only holm.http.app and holm.http.admin operations; no WebSocket, action discovery, or injected-host envelope is implemented.",
+      "lifecycle": "No socket, action registry, or Sobek host service is started by nodeRuntime.",
+      "availability": "Explicitly unavailable at SDK 0.2.1 despite Holm implementing some underlying server surfaces.",
+      "rationale": "Unknown capabilities must fail closed until separate adapters and Holm authority contracts exist.",
+      "evidence": [
+        "sdk:docs/capabilities.md",
+        "sdk:src/node/runtime.ts"
+      ]
+    },
+    {
+      "id": "node:sdk-runtime-services",
+      "lane": "node",
+      "surface": "Explicit SDK Node runtime service slots",
+      "authority": "sdk-implementation",
+      "holm_status": "sdk-only",
+      "disposition": "redesigned",
+      "sdk_status": "current",
+      "operations": [
+        "auth",
+        "clock",
+        "environment",
+        "fetch",
+        "scheduler",
+        "secureStore"
+      ],
+      "auth": "Environment and secure-store services are injected; they are not read from process globals by core and do not automatically become Holm auth proof.",
+      "wire": "Small structural interfaces return strings or promises; fetch uses explicit structural request/response types isolated to the Node subpath.",
+      "lifecycle": "Missing services throw typed unsupported_runtime_service errors; clocks and schedulers are required only when used.",
+      "availability": "Shipped preview SDK services. They are SDK adapter capabilities, not Holm node manifest grants.",
+      "rationale": "Keeping local runtime services separate prevents confusing Node process access with remote Holm capability support.",
+      "evidence": [
+        "sdk:src/node/runtime.ts",
+        "sdk:src/node/services.ts"
+      ]
+    },
+    {
+      "id": "node:worker-foreign-member-spawn",
+      "lane": "node",
+      "surface": "Compound gate for worker jobs targeting another member",
+      "authority": "implementation",
+      "holm_status": "conditional",
+      "disposition": "deferred",
+      "sdk_status": "none",
+      "operations": [
+        "worker-foreign-member-spawn",
+        "worker.foreign_member_spawn"
+      ],
+      "auth": "Requires the manifest string, an enabling app policy, and node admin/owner authority in addition to app-scoped worker execution.",
+      "wire": "Gate inputs stay internal to Holm; a caller-supplied member id alone is never authority.",
+      "lifecycle": "Evaluated before foreign-member job creation.",
+      "availability": "Current Holm implementation and absent from SDK Node capability offers.",
+      "rationale": "The SDK must not expose a generic memberId option as proof that foreign-member execution is allowed.",
+      "evidence": [
+        "holm:internal/runtime/worker_member_spawn_gate.go",
+        "holm:internal/worker/bindings.go"
+      ]
+    },
+    {
+      "id": "action-schema:canonical-http-contract",
+      "lane": "action-schema",
+      "surface": "Converged Holm contract-first app model",
+      "authority": "converged-design",
+      "holm_status": "design-only",
+      "disposition": "redesigned",
+      "sdk_status": "partial",
+      "operations": [
+        "GET /api/*",
+        "operation-metadata",
+        "POST /api/*"
+      ],
+      "auth": "Holm resolves caller/capabilities per invocation; future discovery is caller-filtered and cannot grant invocation authority.",
+      "wire": "GET/POST plus one canonical request/response/error envelope is the wire contract. Operation names and schemas are metadata over routes, not a second action transport.",
+      "lifecycle": "Synchronous operations return canonical HTTP results; long work uses durable job/status resources rather than an action-specific wait contract.",
+      "availability": "Issue #534 is converged, but its S02 registry/runtime and generic projections remain pending. The SDK currently supplies raw app HTTP invocation only.",
+      "rationale": "SDK architecture D009 and deferred Issue #010 must be reinterpreted through #534 before implementation: no standalone CLI action registry may be invented.",
+      "evidence": [
+        "holm:koder/issues/534_contract_first_holm_apps/INDEX.md",
+        "sdk:docs/capabilities.md",
+        "sdk:src/app/protocol.ts",
+        "sdk:src/node/runtime.ts",
+        "sdk:src/sobek/runtime.ts"
+      ]
+    },
+    {
+      "id": "action-schema:default-projection-fixture-v1",
+      "lane": "action-schema",
+      "surface": "Holm-owned offline Default Projection fixture boundary",
+      "authority": "offline-fixture",
+      "holm_status": "fixture-only",
+      "disposition": "redesigned",
+      "sdk_status": "candidate",
+      "operations": [
+        "holm.default-projection.fixture/1",
+        "projection.discovery",
+        "projection.invocation",
+        "projection.result",
+        "projection.theme-input"
+      ],
+      "auth": "Synthetic invoke-authorized, discover-only, and hidden caller views prove redaction/readiness behavior without providing live authorization.",
+      "wire": "Language-neutral canonical JSON schemas and fixtures pin contractVersion 1, discovery views, invocation/result examples, and bounded theme input.",
+      "lifecycle": "Offline immutable payloads are consumed directly with no SDK, runtime, or live server dependency; HANDOFF.md carries hashes and payload provenance.",
+      "availability": "Current fixture and validator only. It is not a production registry, discovery endpoint, generated CLI, or action transport.",
+      "rationale": "A future SDK helper can consume this fixture for conformance after separate authorization, but must not advertise production action support from it.",
+      "evidence": [
+        "holm:docs/reference/app-contracts/default-projection/v1/discovery.schema.json",
+        "holm:docs/reference/app-contracts/default-projection/v1/fixtures/source-contract.json",
+        "holm:docs/reference/app-contracts/default-projection/v1/HANDOFF.md",
+        "holm:docs/reference/app-contracts/default-projection/v1/README.md",
+        "holm:internal/appcontract/defaultprojection/validator.go"
+      ]
+    },
+    {
+      "id": "action-schema:generated-sdk-actions",
+      "lane": "action-schema",
+      "surface": "Generated SDK action authoring/list/invoke helpers",
+      "authority": "negative-evidence",
+      "holm_status": "absent",
+      "disposition": "deferred",
+      "sdk_status": "unsupported",
+      "operations": [
+        "sdk.actions.define",
+        "sdk.actions.invoke",
+        "sdk.actions.list"
+      ],
+      "auth": "No production registry capability exists to authorize discovery or invocation.",
+      "wire": "No @holmhq/sdk/actions export or source directory exists at the baseline; raw HTTP remains the supported route mechanism.",
+      "lifecycle": "No action extension is installed or started.",
+      "availability": "Unavailable in SDK 0.2.1 and not authorized by the offline fixture.",
+      "rationale": "Any implementation needs a fresh architecture/TDD slice aligned to #534 rather than the superseded standalone action design.",
+      "evidence": [
+        "holm:koder/issues/534_contract_first_holm_apps/INDEX.md",
+        "sdk:docs/capabilities.md"
+      ]
+    },
+    {
+      "id": "action-schema:generic-cli-projection",
+      "lane": "action-schema",
+      "surface": "Holm-generated generic CLI over route discovery",
+      "authority": "negative-evidence",
+      "holm_status": "absent",
+      "disposition": "deferred",
+      "sdk_status": "unsupported",
+      "operations": [
+        "holm app action",
+        "holm app contract",
+        "holm app routes"
+      ],
+      "auth": "The converged design requires the same caller-filtered discovery and canonical invocation policy as HTTP, but no production command implements it.",
+      "wire": "Future CLI JSON is a projection over canonical GET/POST route contracts, not terminal pixels or a separate app-authored registry.",
+      "lifecycle": "Issue #534 S04 remains pending and no CLI projection lifecycle exists.",
+      "availability": "Absent at the pinned Holm source; the SDK Node adapter is lower-level HTTP only.",
+      "rationale": "CLI projection support remains blocked on production registry/discovery and cannot be claimed from Node HTTP transport alone.",
+      "evidence": [
+        "holm:koder/issues/534_contract_first_holm_apps/INDEX.md",
+        "sdk:docs/capabilities.md",
+        "sdk:src/node/runtime.ts"
+      ]
+    },
+    {
+      "id": "action-schema:legacy-cli-action-registry",
+      "lane": "action-schema",
+      "surface": "Superseded surfaces/cli/main.js action registry design",
+      "authority": "converged-design",
+      "holm_status": "superseded",
+      "disposition": "excluded",
+      "sdk_status": "unsupported",
+      "operations": [
+        "holm app action (separate transport)",
+        "holm app actions",
+        "surfaces/cli/main.js"
+      ],
+      "auth": "The superseded model's caller ideas do not authorize reviving a parallel action plane.",
+      "wire": "A standalone sync/job action registry is no longer the canonical wire; #534 selects route-described GET/POST.",
+      "lifecycle": "No implementation lifecycle should be built from the superseded extraction map.",
+      "availability": "Explicitly superseded by Holm Issue #534.",
+      "rationale": "Exclude the old transport shape while retaining useful schema/helper ideas only if they map onto the canonical route contract.",
+      "evidence": [
+        "holm:koder/issues/534_contract_first_holm_apps/INDEX.md"
+      ]
+    },
+    {
+      "id": "action-schema:production-registry-discovery",
+      "lane": "action-schema",
+      "surface": "Live api/main.js registry validation and caller-filtered discovery",
+      "authority": "negative-evidence",
+      "holm_status": "absent",
+      "disposition": "deferred",
+      "sdk_status": "unsupported",
+      "operations": [
+        "contract.registry.evaluate",
+        "discovery.full",
+        "discovery.hidden",
+        "discovery.summary"
+      ],
+      "auth": "The design pins hidden, discover-only, and invoke-authorized detail levels, but no live endpoint/runtime evaluator currently supplies them.",
+      "wire": "The future document strips handlers and serializes route metadata, schemas, stable errors, limits, policy, invokeAuthorized, and projectionReadiness.",
+      "lifecycle": "Issue #534 S02 remains pending; only offline fixture validation exists.",
+      "availability": "No production registry/discovery capability is available to SDK adapters at the pinned source.",
+      "rationale": "This is the blocking Holm authority seam for generated SDK actions, CLI projection, and live schema discovery.",
+      "evidence": [
+        "holm:internal/appcontract/defaultprojection/validator.go",
+        "holm:koder/issues/534_contract_first_holm_apps/INDEX.md",
+        "sdk:docs/capabilities.md"
+      ]
+    },
+    {
+      "id": "action-schema:state-query-registry",
+      "lane": "action-schema",
+      "surface": "Independent production state/query schema registry",
+      "authority": "negative-evidence",
+      "holm_status": "absent",
+      "disposition": "deferred",
+      "sdk_status": "unsupported",
+      "operations": [
+        "state.discovery",
+        "state.query-schema"
+      ],
+      "auth": "No independent live registry exists whose caller filtering or authorization the SDK could preserve.",
+      "wire": "The current converged authority describes route input/output schemas; it does not freeze a separate production state/query wire document.",
+      "lifecycle": "No registry lifecycle or capability offer exists.",
+      "availability": "Absent at the pinned source; SDK resources operate over explicit loaders and HTTP instead.",
+      "rationale": "Do not invent the state/query shape from the older universal-runtime proposal or SDK architecture illustrations.",
+      "evidence": [
+        "holm:koder/issues/534_contract_first_holm_apps/INDEX.md",
+        "sdk:docs/capabilities.md"
+      ]
+    }
+  ],
+  "expected": {
+    "entry_count": 47,
+    "lanes": {
+      "websocket": 9,
+      "sobek": 21,
+      "node": 10,
+      "action-schema": 7
+    },
+    "authority": {
+      "implementation": 34,
+      "sdk-implementation": 5,
+      "offline-fixture": 1,
+      "converged-design": 2,
+      "negative-evidence": 5
+    },
+    "holm_status": {
+      "current": 12,
+      "conditional": 22,
+      "fixture-only": 1,
+      "design-only": 1,
+      "absent": 5,
+      "superseded": 1,
+      "sdk-only": 5
+    },
+    "disposition": {
+      "adopted": 2,
+      "redesigned": 12,
+      "deferred": 31,
+      "excluded": 2
+    },
+    "sdk_status": {
+      "current": 4,
+      "partial": 1,
+      "candidate": 9,
+      "none": 26,
+      "unsupported": 7
+    }
+  }
+}

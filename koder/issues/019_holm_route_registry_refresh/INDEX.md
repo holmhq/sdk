@@ -27,9 +27,11 @@ its landed ingestion checkpoint. On 2026-08-15, after independent Review `#069`
 approved S1, the owner explicitly activated **S2** in a fresh session. S2 was
 route-policy work only and stopped after independent Review `#070` approved its
 disposition checkpoint. On 2026-08-16 the owner explicitly activated **S3** in
-a fresh session. S3 is limited to the two approved stable retention contracts
-and must stop at an independently reviewed checkpoint; S4 and release work
-remain separately gated.
+a fresh session. S3 was limited to the two approved stable retention contracts
+and stopped after independent Review `#071` approved it. On 2026-08-17 the owner
+explicitly activated **S4** as a mapping-only window. S4 may write SDK-side
+evidence and validation, but it must stop before public API implementation,
+release work, or any cross-repository write.
 
 ## Problem
 
@@ -100,7 +102,7 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
 | S2: route disposition refresh | complete | Reconciled all registry rows with SDK adopted/redesigned/deferred/excluded policy; 2 S3 candidates, 19 admin deltas deferred | Review `#070` approved; stop before S3 |
 | S3: approved stable parity | complete | TDD implementation of the two owner-approved stable retention methods/types and tracked generated artifacts | Review `#071` approved; stop before S4/release work |
-| S4: non-HTTP parity map | blocked | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Mapping only after route parity baseline |
+| S4: non-HTTP parity map | review ready | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Independent mapping/authority review; stop before public API implementation, release, or cross-repository writes |
 
 ## S1 execution contract
 
@@ -361,13 +363,92 @@ S3 RED evidence is recorded in
   S3 is accepted and stops here; S4, release, publication, deployment, and
   cross-repository writes remain separately owner-gated.
 
+## S4 execution contract — activated 2026-08-17
+
+S4 is a source-conformance and disposition slice, not a product implementation
+slice. It must:
+
+- pin one exact clean live Holm commit and cite source paths for every claim;
+- map authenticated WebSocket handshake/frame behavior, injected Sobek
+  `holm.*` namespaces, node/runtime capability truth, and action/schema
+  authority that the HTTP route registry cannot encode;
+- distinguish runtime authority from docs/design intent and distinguish current
+  SDK behavior from candidate, deferred, excluded, or unsupported behavior;
+- record auth/caller, wire, lifecycle, and availability limits wherever source
+  proves them, without inferring support from a route or platform version;
+- keep the evidence deterministic and fail closed on missing source identity,
+  duplicate map identity, unknown vocabulary, or incomplete required lanes; and
+- change no public `src/**`, tracked `dist/**`, package version, release,
+  publication, deployment, Holm source, Medialab, or `@zyt` state.
+
+The S4 stop gate is a validated, committed mapping checkpoint. Any resulting
+public SDK API or capability implementation requires a separately activated
+slice and fresh RED evidence.
+
+### S4 acceptance criteria
+
+- [x] Focused RED evidence exists before the validator implementation.
+- [x] One exact clean Holm source commit and every relied-on source byte are
+      pinned independently of the moving peer checkout.
+- [x] WebSocket, Sobek, node/capability, and action/schema lanes are all present
+      with unique deterministic identities and explicit auth, wire, lifecycle,
+      availability, disposition, and SDK status.
+- [x] The map distinguishes implementation, SDK implementation, offline
+      fixture, converged design, and negative evidence authority.
+- [x] Current Holm manifest strings are not misrepresented as versioned SDK
+      capability offers.
+- [x] Holm Issue `#534` supersession of the standalone CLI action-registry model
+      is reflected without inventing production discovery support.
+- [x] Focused tests, source tests, full `npm run ci`, pinned read-only Holm
+      verification, and diff hygiene pass.
+- [x] No public `src/**`, tracked `dist/**`, version, release, publication,
+      deployment, Holm, Medialab, or `@zyt` change was made.
+- [ ] One independent SDK mapping review with fresh read-only Holm-authority
+      verification approves the S4 checkpoint with no unresolved findings.
+
+## S4 mapping checkpoint — 2026-08-17
+
+- Evidence
+  [`#009`](../../evidence/009_holm_non_http_parity/INDEX.md) resolves 47 exact
+  identities: 9 WebSocket, 21 Sobek, 10 node/capability, and 7 action/schema.
+  Disposition is 2 adopted, 12 redesigned, 31 deferred, and 2 excluded; SDK
+  status is 4 current, 1 partial, 9 candidate, 26 none, and 7 unsupported.
+- Holm now has authenticated private/presence subscriptions, policy gates, and
+  sender-excluded whispers, but the exact source also proves legacy bare public
+  channels, lossy queues, newline-coalesced text envelopes, source-specific
+  presence fanout, and no binary/replay/general-client-publish contract. The SDK
+  still has no production realtime transport.
+- Twenty grouped injected Holm host surfaces are distinct from the current
+  two-operation, not-production SDK Sobek preview seam. They remain deferred;
+  no broad Sobek support claim or generated API was created.
+- The SDK Node adapter still offers only `holm.http.app@1.0` and
+  `holm.http.admin@1.0`. Holm manifest grants remain unversioned internal inputs
+  to compound runtime authorization and are not SDK offers.
+- Issue `#534` makes schema-described GET/POST canonical and supersedes a
+  separate CLI-owned action transport. Holm's offline Default Projection
+  fixture is a future conformance candidate; live registry/discovery, generic
+  CLI, generated actions, and an independent state/query registry remain
+  unsupported.
+- The deterministic checker rejects provenance, source, vocabulary, identity,
+  ordering, summary, expected-absence, and SDK drift. Optional pinned/live modes
+  verify Holm Git/source authority without requiring Holm in normal CI.
+- Focused tests pass 4/4, source tests pass 231/231, full `npm run ci`, package
+  smoke, coverage, licenses, size, pinned Holm verification, and diff hygiene
+  are green. A later live check correctly detected unrelated concurrent Holm
+  route-registry work; S4 retained the previously observed clean `44d51d0f…`
+  snapshot and did not ingest dirty peer state.
+- The mapping is review ready. Public implementation, release, deployment, and
+  cross-repository writes remain outside S4.
+
 ## Validation commands
 
 ```bash
 npm run test:holm-route-dispositions
 npm run test:holm-route-registry
+npm run test:holm-non-http-parity
 npm run test:source
 npm run ci
+node scripts/check-holm-non-http-parity.mjs --check-pinned --holm-root ~/Projects/holmhq/holm/master
 node scripts/refresh-holm-route-registry.mjs --check-live --holm-bin "$(command -v holm)"
 git diff --check
 ```
@@ -378,12 +459,12 @@ its route array equals the pinned 261 rows.
 
 ## Boundaries
 
-- SDK repository was the sole write target for the reviewed S3 checkpoint.
-- Holm remains read-only authority; exact S3 contracts pin released commit
-  `d6662867…`, with read-only `v0.208.0` provenance drift recorded above.
+- S4 mapping is review ready; SDK-side evidence/tooling was the only write scope.
+- Holm remains read-only authority; S4 must pin the exact clean source commit it
+  verifies rather than silently treating the HTTP registry as non-HTTP truth.
 - Do not contact, upgrade, restart, or inspect `@zyt` for SDK refresh work.
-- S3 is complete. Do not begin S4, publish npm, tag, release, deploy, or change
-  the package version without separate explicit owner authorization.
+- Do not change public SDK source, generated API, `dist/`, package version,
+  publish npm, tag, release, deploy, or write another repository in S4.
 - Work serially on SDK `main`; preserve unrelated work if any appears.
 
 ## Sources

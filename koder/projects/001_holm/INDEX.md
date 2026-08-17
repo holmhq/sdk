@@ -2,11 +2,11 @@
 name: Holm
 status: active
 role: runtime-protocol-authority
-updated: 2026-07-13
+updated: 2026-08-17
 local_path: ~/Projects/holmhq/holm/master
 remote: git@github.com-holmhq:holmhq/holm.git
 branch: master
-verified_commit: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+verified_commit: 44d51d0f785ff6208ecc034c720e76a8543891be
 write_policy: explicit-approval-only
 ---
 
@@ -22,9 +22,12 @@ author those contracts; it must not create a competing server truth.
 
 - Existing clients: `packages/holm-sdk/`
 - Existing reactive state: `packages/holm-state/`
-- Universal surfaces: Proposal 001 and Issue 486
-- App scopes/collaboration/realtime: Issues 341, 342, 517
-- Runtime websocket/realtime: `internal/hosting/{ws.go,realtime.go}`
+- Universal-surface history: Proposal 001 and superseded Issue 486
+- Current contract-first app authority: Issue 534
+- App scopes/collaboration/realtime history: Issues 341, 342, 517
+- Runtime websocket/realtime: `internal/hosting/{ws.go,ws_auth.go,realtime.go}`
+  plus `internal/realtimeauth/resolver.go`
+- Current non-HTTP snapshot: SDK Evidence `009` at `44d51d0f…`
 - App docs/templates: `knowledge-base/skills/app/`, `internal/assets/templates/`
 
 See `koder/docs/HOLM_SOURCE_MAP.md` for the pinned path-level map.
@@ -39,5 +42,6 @@ See `koder/docs/HOLM_SOURCE_MAP.md` for the pinned path-level map.
 
 ## Drift checkpoint
 
-Refresh this card and the source map before a major conformance/migration wave or
-when Holm's action, realtime, collaboration, auth, or surface contracts change.
+Evidence `009` refreshed non-HTTP authority at clean commit `44d51d0f…`.
+Refresh again before implementation when Holm's action/discovery, realtime,
+collaboration, auth, injected namespace, or capability contracts move.
