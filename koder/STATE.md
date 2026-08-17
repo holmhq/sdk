@@ -1,58 +1,68 @@
 ---
-updated_at: "17 Aug 2026 | 12:57 AM IST"
-state: READY_FOR_EXECUTION
-active_window: "none — Issue #019 S3 accepted; S4 awaits explicit owner activation"
+updated_at: "17 Aug 2026 | 03:20 PM IST"
+state: REVIEW_READY
+active_window: "Issue #019 S4 — non-HTTP parity mapping checkpoint"
 active_issue: "019"
 orchestration_mode: "direct; serial main; no queue"
-stop_gate: "owner must explicitly activate Issue #019 S4 in a fresh session; no non-HTTP parity mapping, release, or cross-repository work is active"
+stop_gate: "one independent S4 mapping review with fresh read-only pinned Holm verification; no public implementation, release, or next issue"
 ---
 
 # Koder State
 
 ## Current
 
-- Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) S3 is complete
-  in `c7e589b`. Exactly `system.dbRetentionStatus` and
-  `system.dbRetentionRun` were added; the other 19 admin deltas remain deferred.
-- Independent Review
-  [`#071`](reviews/071_issue019_s3_retention_parity/INDEX.md) approved exact
-  product range `914a1e2..c7e589b` with `P1=0 P2=0 P3=0`.
-- The generated methods return exact readonly Holm `v0.207.0` retention
-  contracts. Remote run fixes `dry_run: true` / `applied: false`, exposes no
-  body/apply/force input, and rejects dynamic bodies before runtime invocation.
-- All 261 route identities resolve exactly once: 172 adopted, 15 redesigned,
-  36 deferred, and 38 excluded. Implementation is 187 current, 0 candidate,
-  and 74 none.
-- The unreleased admin inventory is 176 keys, 191 route/method contracts, 218
-  methods, and 18 exclusions. All affected tracked package artifacts are
-  generated and reproducible.
-- Fresh reviewer checks, 231 source tests, full `npm run ci`, package smoke,
-  coverage, licenses, size, and diff hygiene pass. Pinned read-only Holm source
-  confirms the contracts; signed `v0.208.0` registry drift is provenance-only.
-- No version, release, publication, deployment, Holm, Medialab, or `@zyt` write
-  was made. No S4 work has begun.
+- Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) S4 mapping
+  landed in `d941db5`. Evidence
+  [`#009`](evidence/009_holm_non_http_parity/INDEX.md) resolves 47 exact
+  identities: 9 WebSocket, 21 Sobek, 10 node/capability, and 7 action/schema.
+- The map pins every relied-on source byte to clean Holm commit `44d51d0f…`
+  (`v0.208.0` marker, `v0.208.0-128-g44d51d0f7`) and SDK product baseline
+  `c06f98f`. Disposition is 2 adopted, 12 redesigned, 31 deferred, and 2
+  excluded; SDK status is 4 current, 1 partial, 9 candidate, 26 none, and 7
+  unsupported.
+- Holm realtime now proves authenticated private/presence channels, policies,
+  and whispers, but also legacy bare channels, lossy/newline-coalesced delivery,
+  source-specific presence fanout, and no binary/replay/general-client-publish
+  contract. The SDK still ships no production realtime transport.
+- Twenty grouped Holm injected host surfaces remain distinct from the current
+  two-operation SDK Sobek preview seam. Holm manifest strings remain internal
+  inputs to compound authorization, not versioned SDK capability offers.
+- Holm Issue `#534` supersedes the standalone CLI action transport: GET/POST is
+  canonical. The offline Default Projection fixture is concrete, while live
+  registry/discovery, generic CLI, generated actions, and state/query registry
+  support remain unavailable.
+- The fail-closed map checker is wired into normal CI. Focused tests pass 4/4,
+  source tests pass 231/231, full `npm run ci`, pinned read-only Holm checking,
+  package smoke, coverage, licenses, size, and diff hygiene pass.
+- After the clean pin was captured, the read-only Holm checkout advanced and an
+  unrelated route-registry run dirtied tracked files. Live mode correctly
+  reports drift; pinned-object verification remains green. No unfinished peer
+  implementation was ingested and no Holm write was made.
+- S3 remains independently accepted in `c7e589b`; all 19 other admin deltas stay
+  deferred. No public SDK source, `dist`, version, release, publication,
+  deployment, Medialab, or `@zyt` change was made in S4.
 
 ## Next session
 
-1. The owner may explicitly activate Issue `#019` S4 in a fresh session.
-2. S4 is limited to mapping authenticated WebSockets, Sobek `holm.*`
-   namespaces, Node capabilities, and action/schema authority that HTTP routes
-   cannot describe; do not infer public SDK support from route existence.
-3. Until activation, stop at this reviewed S3 checkpoint. Release, publication,
-   deployment, API expansion, and cross-repository writes remain separately
-   owner-gated.
+1. Independently review exact S4 range `c06f98f..d941db5`, including all 47 map
+   identities, disposition truth, checker failure modes, and source-map updates.
+2. Run `npm run test:holm-non-http-parity`, full validation as needed, and fresh
+   read-only `--check-pinned` verification against Holm `44d51d0f…`; record all
+   P1/P2/P3 findings.
+3. If review is green, accept and resolve S4/Issue `#019`, then stop. Any
+   WebSocket, Sobek, capability, action/schema, release, or cross-repository
+   implementation requires a separately activated owner scope.
 
 ## Later
 
-- **S4:** produce the non-HTTP parity map under a separately named scope and
-  stop gate before any resulting public API implementation.
-- Any additional admin/operator delta remains demand-driven and separately
-  reviewed; the 19 deferred rows are not authorized by S3 acceptance.
+- Public implementation candidates require demand, an explicit architecture
+  reconciliation where needed, strict RED evidence, and their own stop gates.
+- The 19 deferred admin/operator rows remain separately demand-driven.
 - npm publication, SDK release, deployment, Holm edits, and Medialab writes
   require separate explicit owner approval.
 
 ## Stable baseline
 
 - `@holmhq/sdk@0.2.1` remains the current public immutable release.
-- Public `@holmhq/sdk@0.2.1` retains its released 189/216 admin inventory. The
-  unreleased checked-in source has 191 route/method contracts and 218 methods.
+- Public `0.2.1` retains 189/216 admin inventory; unreleased source has 191
+  route/method contracts and 218 methods.
