@@ -102,7 +102,7 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
 | S2: route disposition refresh | complete | Reconciled all registry rows with SDK adopted/redesigned/deferred/excluded policy; 2 S3 candidates, 19 admin deltas deferred | Review `#070` approved; stop before S3 |
 | S3: approved stable parity | complete | TDD implementation of the two owner-approved stable retention methods/types and tracked generated artifacts | Review `#071` approved; stop before S4/release work |
-| S4: non-HTTP parity map | changes requested — Review `#072` | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Remediate `P2=4 P3=1`, rerun pinned validation, and obtain fresh independent review; stop before public API implementation, release, or cross-repository writes |
+| S4: non-HTTP parity map | remediation ready for re-review | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Fresh full validation and independent review must approve the `#072` remediation; stop before public API implementation, release, or cross-repository writes |
 
 ## S1 execution contract
 
@@ -457,6 +457,35 @@ slice and fresh RED evidence.
   the source-truth findings.
 - S4 and Issue `#019` remain open. Remediation stays mapping/tooling-only and
   requires a fresh independent review before acceptance or resolution.
+
+## S4 remediation checkpoint — 2026-08-18
+
+- Strict Review `#072` remediation RED reproduced `7` focused failures before
+  implementation: complete provenance, authority/status semantics, nearest-tag
+  resolution, operator role auth, typed-channel limits, logged-out media
+  availability, and direct Default Projection payload pinning.
+- The map now records the source-specific `holm.admin.roles.*` checks instead of
+  extending member/storage/audit guards to every role call. The related node
+  capability row is explicitly operation-specific.
+- Private and presence truth records app-overridable
+  `realtime.max_channels_per_socket`, default `0` (unlimited), stable
+  `realtime_policy_channel_limit_exceeded`, and the no-colon legacy bypass.
+- Logged-out member storage now records that only
+  `holm.app.member.media.serve` is installed; `media.probe` and
+  `media.transcode` are absent in that context.
+- Validation now rejects malformed capture/nearest-release provenance, resolves
+  the declared nearest tag and commit in pinned mode, and enforces the complete
+  Holm-status/authority matrix including absence and supersession.
+- All nine Default Projection handoff payloads are direct hashed map sources;
+  no transitive payload claim remains outside pinned verification.
+- Focused `11/11`, 231 source tests, route registry/disposition checks, full
+  `npm run ci`, pinned Holm verification at `44d51d0f…`, syntax, canonical
+  JSON, package smoke, size, and diff hygiene pass. A fresh independent mapping
+  review remains the stop gate.
+- The moving Holm checkout was read-only and externally dirty at `fb0f3786…`;
+  remediation used pinned Git objects only and did not inspect or alter the
+  concurrent work. No public `src/**`, `dist/**`, version, release, deployment,
+  Holm, Medialab, or `@zyt` change was made.
 
 ## Validation commands
 

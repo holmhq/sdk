@@ -1,7 +1,7 @@
 ---
 title: Holm non-HTTP parity map
-status: changes_requested
-review: "#072 P1=0 P2=4 P3=1"
+status: review_ready
+review: "#072 P1=0 P2=4 P3=1 remediated; fresh review pending"
 issue: 019
 slice: S4
 captured: 2026-08-17
@@ -68,6 +68,10 @@ The source contract is narrower than a generic realtime promise:
   legacy compatibility;
 - private/presence subscribe requires app-read authority, but bare subscribe
   does not;
+- app-overridable `realtime.max_channels_per_socket` has default `0`
+  (unlimited); a typed private/presence subscription over a positive limit gets
+  stable `realtime_policy_channel_limit_exceeded`, while a no-colon bare
+  subscription returns before that policy check;
 - the initial `presence_roster` currently contains only the joining principal,
   and join/fanout behavior must not be assumed to match conventional full-roster
   presence systems;
@@ -94,6 +98,19 @@ environment, secrets, logging, email, and worker-only time. These remain
 mapped/deferred rather than mechanically exported. Their app, caller, policy,
 manifest, storage, and execution-context gates differ too much for one broad
 "Sobek supported" flag.
+
+The app-scoped admin namespace is not uniformly guarded. Member/storage/audit
+calls retain their operation-specific compound checks, but
+`roles.remove`/`list`/`find` have only argument and database/app-context checks.
+`roles.add` adds caller/capability checks only for selected reserved/elevated
+role values; arbitrary app roles do not pass a blanket guard. Future SDK work
+must preserve that runtime truth rather than presenting the manifest strings as
+a guarantee, while any Holm hardening remains a separate owner decision.
+
+Member storage also varies by owner context. Real-member and anonymous-owner
+contexts install all three media methods (the anonymous methods reject use),
+whereas the logged-out no-owner branch installs only login-required
+`holm.app.member.media.serve`; `media.probe` and `media.transcode` are absent.
 
 ### 3. Holm manifest grants are not SDK capability offers
 
@@ -127,11 +144,16 @@ an independent state/query registry remain absent. SDK architecture decision
 
 `scripts/check-holm-non-http-parity.mjs` fails closed on:
 
-- wrong schema or malformed Holm/SDK provenance;
+- wrong schema or malformed complete Holm/SDK provenance, including capture
+  date, nearest release tag/commit, describe/version relationships, and pinned
+  resolution of that nearest tag;
 - missing one of the four required lanes;
 - duplicate `lane + id` identity;
-- unknown authority/status/disposition vocabulary;
-- stale or unreferenced source evidence;
+- unknown authority/status/disposition vocabulary and contradictory
+  authority-to-Holm-status combinations, including absence and supersession;
+- stale or unreferenced source evidence; every Default Projection payload named
+  by its handoff is now a direct pinned source rather than only a transitive
+  manifest claim;
 - non-deterministic source, entry, operation, or evidence order;
 - mismatched exact summary;
 - changed SDK evidence files or an expected-absent SDK surface appearing; and
@@ -166,11 +188,16 @@ implementation detail, alter Holm, or repin from a dirty peer tree.
 
 Independent Review
 [`#072`](../../reviews/072_issue019_s4_non_http_parity/INDEX.md) requested
-changes with `P1=0 P2=4 P3=1`: correct grouped operator-admin auth truth, the
-missing typed-channel count policy, logged-out member-media availability, and
-fail-closed provenance/authority validation; directly verify the transitive
-Default Projection payload manifest as P3 hardening. S4 remains open pending
-remediation and fresh independent review.
+changes with `P1=0 P2=4 P3=1`. The mapping/tooling remediation now qualifies
+operator role guards, records the typed-channel count policy and bare bypass,
+fixes logged-out member-media availability, validates complete provenance and
+the authority/status matrix, resolves the nearest release tag in pinned mode,
+and directly hashes every Default Projection payload. Strict remediation RED
+and focused GREEN are recorded in
+[`test/evidence/issue019-s4-red.md`](../../../test/evidence/issue019-s4-red.md).
+Focused `11/11`, 231 source tests, full `npm run ci`, diff hygiene, and fresh
+pinned Holm verification pass. S4 remains open pending fresh independent
+review.
 
 This evidence and its validator are the full S4 product. No public SDK source,
 `dist/**`, version, release, publication, deployment, Holm, Medialab, or `@zyt`

@@ -14,6 +14,16 @@ const dispositions = ["adopted", "redesigned", "deferred", "excluded"];
 const sdkStatuses = ["current", "partial", "candidate", "none", "unsupported"];
 const sourceRepositories = ["holm", "sdk"];
 const requiredEntryStrings = ["surface", "auth", "wire", "lifecycle", "availability", "rationale"];
+const authorityByHolmStatus = {
+  current: "implementation",
+  conditional: "implementation",
+  "fixture-only": "offline-fixture",
+  "design-only": "converged-design",
+  absent: "negative-evidence",
+  superseded: "converged-design",
+  "sdk-only": "sdk-implementation",
+};
+const releaseTagPattern = /^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/;
 
 export function nonHttpParityIdentity(entry) {
   return `${entry?.lane ?? ""}\u0000${entry?.id ?? ""}`;
@@ -156,20 +166,39 @@ export function verifyPinnedHolmSources(document, holmRoot) {
   const root = resolve(holmRoot);
   if (!existsSync(root) || !statSync(root).isDirectory()) return [`Holm root is not a directory: ${root}`];
 
-  const commit = document?.source?.holm_commit;
+  const sourceProvenance = document?.source;
+  const commit = sourceProvenance?.holm_commit;
   try {
     runGit(root, ["cat-file", "-e", `${commit}^{commit}`]);
     const describe = runGit(root, ["describe", "--tags", "--always", commit]);
-    if (describe !== document?.source?.holm_describe) {
-      errors.push(`pinned Holm describe ${describe} does not match mapped ${document?.source?.holm_describe}`);
+    if (describe !== sourceProvenance?.holm_describe) {
+      errors.push(`pinned Holm describe ${describe} does not match mapped ${sourceProvenance?.holm_describe}`);
     }
     const version = JSON.parse(readGitFile(root, commit, "version.json").toString("utf8")).version;
-    if (version !== document?.source?.holm_version_marker) {
-      errors.push(`pinned Holm version marker ${version} does not match mapped ${document?.source?.holm_version_marker}`);
+    if (version !== sourceProvenance?.holm_version_marker) {
+      errors.push(`pinned Holm version marker ${version} does not match mapped ${sourceProvenance?.holm_version_marker}`);
     }
   } catch (error) {
     errors.push(`cannot inspect pinned Holm provenance: ${errorMessage(error)}`);
     return errors;
+  }
+
+  const nearestRelease = sourceProvenance?.nearest_release;
+  if (isRecord(nearestRelease) && releaseTagPattern.test(nearestRelease.tag ?? "") && /^[0-9a-f]{40}$/.test(nearestRelease.commit ?? "")) {
+    try {
+      const nearestTag = runGit(root, ["describe", "--tags", "--abbrev=0", commit]);
+      if (nearestTag !== nearestRelease.tag) {
+        errors.push(`nearest Holm release tag for ${commit} is ${nearestTag}, not mapped ${nearestRelease.tag}`);
+      }
+      const releaseCommit = runGit(root, ["rev-parse", `${nearestRelease.tag}^{commit}`]);
+      if (releaseCommit !== nearestRelease.commit) {
+        errors.push(`nearest Holm release tag ${nearestRelease.tag} resolves to ${releaseCommit}, not mapped ${nearestRelease.commit}`);
+      }
+    } catch (error) {
+      errors.push(`cannot inspect nearest Holm release tag: ${errorMessage(error)}`);
+    }
+  } else {
+    errors.push("cannot inspect nearest Holm release tag: mapped tag or commit is malformed");
   }
 
   for (const source of document?.sources ?? []) {
@@ -237,6 +266,23 @@ function validateProvenance(document, errors) {
     if (!/^[0-9a-f]{40}$/.test(source.holm_commit ?? "")) errors.push("Holm commit must be a full lowercase SHA-1");
     if (typeof source.holm_describe !== "string" || source.holm_describe.trim() === "") errors.push("Holm describe provenance is missing");
     if (source.tracked_tree_clean !== true) errors.push("Holm source must record a clean tracked tree");
+    if (!isIsoDate(source.captured_at)) errors.push("Holm source captured_at must be a valid YYYY-MM-DD date");
+
+    const nearestRelease = source.nearest_release;
+    if (!isRecord(nearestRelease)) {
+      errors.push("Holm nearest release provenance is missing");
+    } else {
+      if (!releaseTagPattern.test(nearestRelease.tag ?? "")) {
+        errors.push("Holm nearest release tag must be a stable vMAJOR.MINOR.PATCH tag");
+      }
+      if (!/^[0-9a-f]{40}$/.test(nearestRelease.commit ?? "")) {
+        errors.push("Holm nearest release commit must be a full lowercase SHA-1");
+      }
+      if (releaseTagPattern.test(nearestRelease.tag ?? "") && source.holm_version_marker !== nearestRelease.tag.slice(1)) {
+        errors.push(`Holm version marker ${source.holm_version_marker} does not match nearest release tag ${nearestRelease.tag}`);
+      }
+      validateDescribeProvenance(source, nearestRelease, errors);
+    }
   }
 
   const sdk = document.sdk_baseline;
@@ -293,17 +339,9 @@ function validateEntrySemantics(entry, label, errors) {
   const hasHolmEvidence = evidence.some((value) => value.startsWith("holm:"));
   const hasSdkEvidence = evidence.some((value) => value.startsWith("sdk:"));
 
-  if (["current", "conditional"].includes(entry.holm_status) && entry.authority !== "implementation") {
-    errors.push(`${label} current Holm behavior must use implementation authority`);
-  }
-  if (entry.holm_status === "fixture-only" && entry.authority !== "offline-fixture") {
-    errors.push(`${label} fixture-only behavior must use offline-fixture authority`);
-  }
-  if (entry.holm_status === "design-only" && entry.authority !== "converged-design") {
-    errors.push(`${label} design-only behavior must use converged-design authority`);
-  }
-  if (entry.holm_status === "sdk-only" && entry.authority !== "sdk-implementation") {
-    errors.push(`${label} sdk-only behavior must use sdk-implementation authority`);
+  const requiredAuthority = authorityByHolmStatus[entry.holm_status];
+  if (requiredAuthority !== undefined && entry.authority !== requiredAuthority) {
+    errors.push(`${label} ${entry.holm_status} Holm behavior must use ${requiredAuthority} authority`);
   }
   if (["current", "conditional", "fixture-only", "design-only", "absent", "superseded"].includes(entry.holm_status) && !hasHolmEvidence) {
     errors.push(`${label} Holm status requires Holm evidence`);
@@ -355,6 +393,31 @@ function isSafeRelativePath(value) {
   if (typeof value !== "string" || value.trim() === "" || isAbsolute(value)) return false;
   const normalized = normalize(value);
   return normalized === value && normalized !== ".." && !normalized.startsWith(`..${sep}`);
+}
+
+function isIsoDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+function validateDescribeProvenance(source, nearestRelease, errors) {
+  if (typeof source.holm_describe !== "string" || !releaseTagPattern.test(nearestRelease.tag ?? "")) return;
+  if (source.holm_describe === nearestRelease.tag) {
+    if (/^[0-9a-f]{40}$/.test(source.holm_commit ?? "") && source.holm_commit !== nearestRelease.commit) {
+      errors.push("Holm source at an exact release tag must match the nearest release commit");
+    }
+    return;
+  }
+
+  const prefix = `${nearestRelease.tag}-`;
+  const suffix = source.holm_describe.startsWith(prefix) ? source.holm_describe.slice(prefix.length) : "";
+  const match = /^(?:0|[1-9]\d*)-g([0-9a-f]{4,40})$/.exec(suffix);
+  if (match === null) {
+    errors.push(`Holm describe ${source.holm_describe} is not based on nearest release tag ${nearestRelease.tag}`);
+  } else if (/^[0-9a-f]{40}$/.test(source.holm_commit ?? "") && !source.holm_commit.startsWith(match[1])) {
+    errors.push(`Holm describe ${source.holm_describe} does not identify mapped commit ${source.holm_commit}`);
+  }
 }
 
 function verifyFileHash(root, path, expected, label, errors) {

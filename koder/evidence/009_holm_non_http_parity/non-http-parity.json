@@ -38,6 +38,26 @@
     },
     {
       "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/fixtures/discovery-caller-views.json",
+      "sha256": "549c16807a84c15b2045d2ec18000de700809d3e110c04a94b01099c47709c3b"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/fixtures/invocations.json",
+      "sha256": "665a71d7d1aa39efc7b2b982653333e64cbf07a42387b7beba5ad80b079650fd"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/fixtures/presentation/runo-theme-input-v1.json",
+      "sha256": "b1859f5df2de15557841057bdea396d7b1e533b3c33b60f68a39886dea06c364"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/fixtures/results.json",
+      "sha256": "ddb4f581331a35cbfbf880d93585da4d457caba72d0da8a360d4feb623f871a1"
+    },
+    {
+      "repository": "holm",
       "path": "docs/reference/app-contracts/default-projection/v1/fixtures/source-contract.json",
       "sha256": "5313de944235c45d6de7b45818d0adec9002e53a8a26a47cd211bbdaa92db0a1"
     },
@@ -50,6 +70,16 @@
       "repository": "holm",
       "path": "docs/reference/app-contracts/default-projection/v1/README.md",
       "sha256": "00a1603f27a768c8dae18f8e8504a3690fcfb992f3f9a99b18341b160b63f8f1"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/result.schema.json",
+      "sha256": "0a7178056cbfb916fe0406c1d9f6c3592598e5f67c94f13ec09e47d4c8f8ad26"
+    },
+    {
+      "repository": "holm",
+      "path": "docs/reference/app-contracts/default-projection/v1/theme-input-v1.schema.json",
+      "sha256": "2b3c726beeb1b395a45d5efc7947072a7d8c5cefbb6a7a67b03957791834d972"
     },
     {
       "repository": "holm",
@@ -271,7 +301,7 @@
       "auth": "A channel name without a colon bypasses typed-channel auth and remains usable by an anonymous socket; app scoping comes from the per-app hub.",
       "wire": "Client envelopes use type plus channel. Server acknowledgements use subscribed or unsubscribed; broadcasts use message with channel, data, and Unix-millisecond timestamp.",
       "lifecycle": "Subscriptions live only for the socket connection and are removed on unsubscribe or disconnect.",
-      "availability": "Legacy compatibility is current. The explicit public:<name> form is rejected; bare names are the only unauthenticated public form.",
+      "availability": "Legacy compatibility is current. A no-colon bare name returns before typed policy evaluation, so its subscription bypasses realtime.max_channels_per_socket; an existing bare membership still contributes to the socket count when a later typed subscribe is checked. The explicit public:<name> form is rejected; bare names are the only unauthenticated public form.",
       "rationale": "Any SDK API must label this legacy public behavior honestly and must never silently downgrade private or presence requests to a bare channel.",
       "evidence": [
         "holm:internal/hosting/ws.go"
@@ -318,7 +348,7 @@
       "auth": "Requires a socket principal with app-read authorization plus app policy realtime.presence_enabled=true; public: is rejected and names containing slash are invalid.",
       "wire": "Roster and join/leave envelopes expose member_id, principal_kind, connection_count, joined_at, last_seen_at, reason, channel, and timestamp. The initial presence_roster currently contains only the joining principal entry, not a full channel snapshot.",
       "lifecycle": "Presence is per app, channel, principal, and live connection. A new-principal join is sent to the joining socket; same-principal connection changes update that principal's sockets; the final unsubscribe or disconnect sends leave to remaining subscribers.",
-      "availability": "Enabled by default policy but operator-overridable; the protocol is source-defined and not exported as a versioned registry. Conventional full-roster or all-peer join fanout must not be inferred.",
+      "availability": "Enabled by default policy but operator-overridable. On a typed subscription, app-overridable integer policy realtime.max_channels_per_socket has default 0 (unlimited); a resulting per-socket channel count over a positive limit is rejected with stable reason realtime_policy_channel_limit_exceeded. The protocol is source-defined and not exported as a versioned registry. Conventional full-roster or all-peer join fanout must not be inferred.",
       "rationale": "Presence is an ephemeral typed capability with source-specific fanout semantics and cannot be represented as authoritative query state.",
       "evidence": [
         "holm:internal/hosting/ws.go",
@@ -342,7 +372,7 @@
       "auth": "The upgrade session must resolve once, the principal must have app-read authorization, and app policy realtime.private_enabled must allow the subscription.",
       "wire": "Typed names are private:<name>; empty names, slash-containing names, public:<name>, and unknown kinds fail with stable realtime_* error strings.",
       "lifecycle": "Authorization is checked for subscribe, while membership is connection-local and removed on unsubscribe or disconnect.",
-      "availability": "Enabled by default policy but operator-overridable; anonymous and resolver-failure sockets remain connected but protected subscribe fails closed.",
+      "availability": "Enabled by default policy but operator-overridable. On a typed subscription, app-overridable integer policy realtime.max_channels_per_socket has default 0 (unlimited); a resulting per-socket channel count over a positive limit is rejected with stable reason realtime_policy_channel_limit_exceeded. Anonymous and resolver-failure sockets remain connected but protected subscribe fails closed.",
       "rationale": "Private channels require an explicit capability and may never fall back to legacy bare channels.",
       "evidence": [
         "holm:internal/hosting/ws_auth.go",
@@ -700,10 +730,10 @@
         "holm.app.member.s3.list",
         "holm.app.member.s3.put"
       ],
-      "auth": "Storage owner comes from Holm's resolved member/anonymous context. No owner yields login-required stubs; anonymous identities get KV/DS only and blob/media/link methods fail ANON_SURFACE_UNSUPPORTED.",
+      "auth": "Storage owner comes from Holm's resolved member/anonymous context. Installed no-owner methods use login-required stubs; anonymous identities get KV/DS while blob/media/link methods throw ANON_SURFACE_UNSUPPORTED.",
       "wire": "Direct JavaScript values, document/page/cursor data, byte handles, and scoped storage errors cross the host boundary.",
       "lifecycle": "Operations are request-bounded; durable values remain in member-owned Holm storage and transactions are synchronous, capped, and non-nestable.",
-      "availability": "Methods are installed for all contexts but their backing behavior depends on resolved owner kind and storage services.",
+      "availability": "Real-member and anonymous-owner contexts install all three listed media methods. In the logged-out no-owner branch, only holm.app.member.media.serve is installed as a login-required stub; media.probe and media.transcode are absent. Other listed families install owner-specific real or stub methods and remain storage-service dependent.",
       "rationale": "The SDK has no direct injected storage adapter and must not expose member storage by trusting a client-supplied member id.",
       "evidence": [
         "holm:internal/runtime/injectors.go",
@@ -760,7 +790,7 @@
     {
       "id": "sobek:operator-admin",
       "lane": "sobek",
-      "surface": "Injected app-scoped holm.admin namespace",
+      "surface": "Injected app-scoped holm.admin namespace with operation-specific guards",
       "authority": "implementation",
       "holm_status": "conditional",
       "disposition": "deferred",
@@ -803,11 +833,11 @@
         "holm.admin.roles.list",
         "holm.admin.roles.remove"
       ],
-      "auth": "Calls require authenticated owner/admin/app-role checks plus app manifest capabilities app-admin, admin-member-read, admin-member-write, or admin-app-read according to operation.",
+      "auth": "Member/app storage, member lookup/list, and audit calls require their operation-specific authenticated owner/admin/app-role checks plus app-admin, admin-member-read, admin-member-write, or admin-app-read manifest capabilities. roles.remove, roles.list, and roles.find have argument and database/app-context checks but no general authenticated-caller or manifest-capability guard. roles.add applies caller/capability checks only to reserved or elevated app-admin, app-owner, node-admin, mesh-owner, and mesh-admin values; arbitrary app roles have no blanket guard.",
       "wire": "Direct Sobek calls return member projections, role/audit rows, scoped storage values, and opaque cursor pages or throw authorization/storage errors.",
       "lifecycle": "Bindings are request-local while mutations and audits are durable; member factory objects remain scoped to the current app and resolved active member.",
-      "availability": "Namespace is injected even when gates are absent, and calls fail closed. It is separate from the SDK's remote operator HTTP admin client.",
-      "rationale": "The direct app-runtime admin surface cannot be inferred from or flattened into remote admin route parity.",
+      "availability": "The namespace is installed by the normal injector chain even when operation gates are absent. Compound-guarded calls fail closed, while role operations retain the source-specific checks described above. It is separate from the SDK's remote operator HTTP admin client.",
+      "rationale": "The direct app-runtime admin surface cannot be flattened into remote admin route parity, and future adapters must not present the current role calls as runtime-guarded. Runtime hardening belongs to a separate Holm decision.",
       "evidence": [
         "holm:internal/runtime/admin_bindings.go",
         "holm:internal/runtime/admin_member_foundations.go",
@@ -1010,7 +1040,7 @@
     {
       "id": "node:app-admin-capabilities",
       "lane": "node",
-      "surface": "Holm app manifest gates for injected admin bindings",
+      "surface": "Holm app manifest gates for selected injected admin bindings",
       "authority": "implementation",
       "holm_status": "conditional",
       "disposition": "deferred",
@@ -1021,10 +1051,10 @@
         "admin-member-write",
         "app-admin"
       ],
-      "auth": "Manifest strings are only one gate; caller must also be authenticated and satisfy node/app owner or admin role checks. admin-member-write implies read, not admin-app-read.",
-      "wire": "Strings are read from manifest.json capabilities and checked inside direct Sobek calls.",
+      "auth": "These manifest strings combine with authenticated node/app owner or admin checks for selected member/app storage and audit calls and reserved/elevated role additions. They are not blanket guards for roles.remove, roles.list, roles.find, or arbitrary-role add; admin-member-write implies read, not admin-app-read.",
+      "wire": "Strings are read from manifest.json capabilities and checked inside the direct Sobek calls that explicitly invoke them.",
       "lifecycle": "Capability state is loaded for the current app execution and does not become a remote bearer proof.",
-      "availability": "Current injected-runtime gates with no versioned capability manifest export.",
+      "availability": "Current source-specific injected-runtime gates with no versioned capability manifest export; their existence does not imply every holm.admin operation uses them.",
       "rationale": "The remote SDK admin HTTP capability does not imply these app-runtime manifest grants.",
       "evidence": [
         "holm:internal/runtime/admin_bindings.go",
@@ -1285,9 +1315,15 @@
       "rationale": "A future SDK helper can consume this fixture for conformance after separate authorization, but must not advertise production action support from it.",
       "evidence": [
         "holm:docs/reference/app-contracts/default-projection/v1/discovery.schema.json",
+        "holm:docs/reference/app-contracts/default-projection/v1/fixtures/discovery-caller-views.json",
+        "holm:docs/reference/app-contracts/default-projection/v1/fixtures/invocations.json",
+        "holm:docs/reference/app-contracts/default-projection/v1/fixtures/presentation/runo-theme-input-v1.json",
+        "holm:docs/reference/app-contracts/default-projection/v1/fixtures/results.json",
         "holm:docs/reference/app-contracts/default-projection/v1/fixtures/source-contract.json",
         "holm:docs/reference/app-contracts/default-projection/v1/HANDOFF.md",
         "holm:docs/reference/app-contracts/default-projection/v1/README.md",
+        "holm:docs/reference/app-contracts/default-projection/v1/result.schema.json",
+        "holm:docs/reference/app-contracts/default-projection/v1/theme-input-v1.schema.json",
         "holm:internal/appcontract/defaultprojection/validator.go"
       ]
     },

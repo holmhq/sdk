@@ -1,6 +1,6 @@
 ---
 title: Holm Source Map for SDK Extraction
-updated: 2026-08-17
+updated: 2026-08-18
 holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
 latest_non_http_checkpoint: 44d51d0f785ff6208ecc034c720e76a8543891be
 ---
@@ -31,7 +31,10 @@ capability, and action/schema truth in
 [`koder/evidence/009_holm_non_http_parity/INDEX.md`](../evidence/009_holm_non_http_parity/INDEX.md).
 Its machine map pins every source byte to clean Holm commit
 `44d51d0f785ff6208ecc034c720e76a8543891be` (`v0.208.0` marker,
-`v0.208.0-128-g44d51d0f7`). Use that evidence rather than this older
+`v0.208.0-128-g44d51d0f7`). Review `#072` remediation additionally pins complete
+nearest-release provenance and every Default Projection payload, and corrects
+operation-specific admin-role guards, typed-channel limits, and logged-out
+member-media availability. Use that evidence rather than this older
 architecture baseline when making a non-HTTP implementation claim.
 
 ## Universal runtime and surfaces
