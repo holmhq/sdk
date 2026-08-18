@@ -1,13 +1,13 @@
 ---
-status: open
+status: resolved
 priority: P1
 created: 2026-08-13
-updated: 2026-08-17
+updated: 2026-08-18
 tags: holm, routes, registry, parity, admin, drift, generation
 type: feature
 issue_kind: track
 slice_count: 4
-slices_done: 3
+slices_done: 4
 source_holm_version: 0.207.0
 source_holm_commit: d66628674232b01e8c95d5b86617bc660d61410f
 context: Holm Issue #633 shipped a provenance-bearing offline route registry; the canonical SDK must replace its frozen Holm authority link with a generated snapshot and explicit parity workflow.
@@ -102,7 +102,7 @@ caller-supplied `HOLM_BIN` and compare its export to the snapshot.
 | S1: registry ingestion and drift gate | complete | Captured/validated canonical Holm export; deterministic write/check/live-check tooling; CI wiring; no SDK API changes | Landed and validated; `/close` before any S2 work |
 | S2: route disposition refresh | complete | Reconciled all registry rows with SDK adopted/redesigned/deferred/excluded policy; 2 S3 candidates, 19 admin deltas deferred | Review `#070` approved; stop before S3 |
 | S3: approved stable parity | complete | TDD implementation of the two owner-approved stable retention methods/types and tracked generated artifacts | Review `#071` approved; stop before S4/release work |
-| S4: non-HTTP parity map | remediation ready for re-review | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Fresh full validation and independent review must approve the `#072` remediation; stop before public API implementation, release, or cross-repository writes |
+| S4: non-HTTP parity map | complete — Review `#073` approved | WebSocket frames, Sobek `holm.*` namespaces, Node capabilities, and action/schema authority that HTTP routes cannot describe | Accepted at the mapping-only boundary; stop before public API implementation, release, or cross-repository writes |
 
 ## S1 execution contract
 
@@ -403,7 +403,7 @@ slice and fresh RED evidence.
       verification, and diff hygiene pass.
 - [x] No public `src/**`, tracked `dist/**`, version, release, publication,
       deployment, Holm, Medialab, or `@zyt` change was made.
-- [ ] One independent SDK mapping review with fresh read-only Holm-authority
+- [x] One independent SDK mapping review with fresh read-only Holm-authority
       verification approves the S4 checkpoint with no unresolved findings.
 
 ## S4 mapping checkpoint — 2026-08-17
@@ -487,6 +487,22 @@ slice and fresh RED evidence.
   concurrent work. No public `src/**`, `dist/**`, version, release, deployment,
   Holm, Medialab, or `@zyt` change was made.
 
+## S4 outcome — 2026-08-18
+
+- Independent Review
+  [`#073`](../../reviews/073_issue019_s4_non_http_parity_remediation/INDEX.md)
+  re-reviewed cumulative S4 range `c06f98f..f623a8c` and remediation delta
+  `1ca72c8..f623a8c`; it approved with `P1=0 P2=0 P3=0`.
+- The fresh reviewer reproduced all seven pre-remediation defects against the
+  old checkpoint, independently verified every correction against pinned Holm
+  `44d51d0f…`, reconciled all nine Default Projection payloads, and reran
+  focused tests, 231 source tests, full `npm run ci`, and diff hygiene.
+- S4 is accepted at its mapping-only boundary and Issue `#019` is resolved with
+  all four slices complete. The result authorizes no WebSocket, Sobek,
+  capability, action/schema, or other public implementation.
+- Version/release/publication/deployment, Holm writes, Medialab writes, and any
+  next issue remain separately owner-gated.
+
 ## Validation commands
 
 ```bash
@@ -506,8 +522,8 @@ its route array equals the pinned 261 rows.
 
 ## Boundaries
 
-- Review `#072` requested S4 remediation; SDK-side evidence/tooling remains the
-  only write scope.
+- Issue `#019` and S4 are resolved; their acceptance creates no active SDK
+  implementation or follow-on write scope.
 - Holm remains read-only authority; S4 must pin the exact clean source commit it
   verifies rather than silently treating the HTTP registry as non-HTTP truth.
 - Do not contact, upgrade, restart, or inspect `@zyt` for SDK refresh work.

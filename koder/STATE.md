@@ -1,62 +1,56 @@
 ---
-updated_at: "17 Aug 2026 | 08:55 PM IST"
-state: BLOCKED
-active_window: "Issue #019 S4 — non-HTTP parity mapping remediation"
-active_issue: "019"
+updated_at: "18 Aug 2026 | 08:57 PM IST"
+state: READY
+active_window: "none — Issue #019 resolved; no next issue/window active"
+active_issue: "none; #019 resolved at f623a8c with Review #073"
 orchestration_mode: "direct; serial main; no queue"
-stop_gate: "resolve Review #072 P2=4 P3=1, pass fresh pinned Holm validation, and obtain a new independent S4 review; no public implementation, release, or next issue"
+stop_gate: "owner must explicitly select and authorize any next issue/window; no public implementation, release, deployment, or cross-repository write is active"
 ---
 
 # Koder State
 
 ## Current
 
+- Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) is resolved
+  with all four slices complete. The signed HTTP route snapshot, complete route
+  dispositions, two accepted retention methods, and non-HTTP parity map now
+  form one reviewed SDK parity workflow.
+- Review `#072` requested `P2=4 P3=1` corrections. Strict remediation RED
+  reproduced seven failures before commit `f623a8c` corrected operator-role
+  auth truth, typed-channel limits, logged-out member-media availability,
+  provenance/authority semantics, and direct Default Projection payload pins.
 - Independent Review
-  [`#072`](reviews/072_issue019_s4_non_http_parity/INDEX.md) assessed exact S4
-  product range `c06f98f..d941db5` and returned `NEEDS_FIXES` with
-  `P1=0 P2=4 P3=1`; Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md)
-  remains open.
-- The map overstates compound authorization across grouped
-  `holm.admin.roles.*` operations. Pinned Holm has source-specific guards, while
-  role remove/list/find and arbitrary-role add do not have the blanket caller /
-  manifest checks claimed by the row.
-- WebSocket truth omits the app-overridable typed-channel
-  `realtime.max_channels_per_socket` limit, default unlimited behavior, stable
-  rejection, and legacy bare-channel bypass.
-- Logged-out member storage installs only `holm.app.member.media.serve`; the map
-  incorrectly says all listed media methods exist in every owner context.
-- The checker accepts malformed/absent nearest-release provenance and an
-  `absent` Holm status with `implementation` authority. Default Projection
-  payload hashes are correct, but their handoff manifest is only transitively
-  pinned and not directly verified by the SDK checker.
-- The other identity, disposition, SDK-status, WebSocket, Sobek, node, action /
-  schema, source-map, and scope checks passed. The inventory remains 47 unique
-  identities with no public SDK support inferred from Holm existence.
-- `npm run test:holm-non-http-parity`, 231 source tests, full `npm run ci`, diff
-  hygiene, package checks, and fresh read-only pinned Holm verification pass.
-  Live Holm had moved cleanly to `cc916bb…` / `0.209.2`; live mode correctly
-  reported drift and relevant finding sources were unchanged from the pin.
-- No public `src/**`, `dist/**`, version, release, publication, deployment,
-  Holm, Medialab, or `@zyt` change was made.
+  [`#073`](reviews/073_issue019_s4_non_http_parity_remediation/INDEX.md)
+  approved cumulative S4 range `c06f98f..f623a8c` with
+  `P1=0 P2=0 P3=0` after fresh pinned Holm authority verification.
+- Evidence `#009` retains 47 unique identities: 9 WebSocket, 21 Sobek, 10 node,
+  and 7 action/schema. No public SDK support is inferred from Holm existence.
+- Focused `11/11`, 231 source tests, route checks, full `npm run ci`, package
+  smoke, coverage, licenses, size, reproducibility, diff hygiene, and pinned
+  Holm `44d51d0f…` verification pass.
+- Holm remained read-only. Its moving checkout was externally dirty/newer, so
+  conformance used exact pinned Git objects; no unfinished peer detail was
+  ingested and no Holm, Medialab, or `@zyt` write occurred.
+- No public `src/**`, tracked `dist/**`, package version, release, publication,
+  or deployment changed in S4.
 
 ## Next session
 
-1. Add strict RED regressions for complete provenance/authority semantics and
-   direct Default Projection payload verification.
-2. Correct operator-admin auth, typed-channel limit, and per-owner member-media
-   truth in Evidence `#009` without changing Holm or implementing a public API.
-3. Rerun focused/full validation and `--check-pinned`, commit the bounded S4
-   remediation, and request a fresh independent mapping review. If green, accept
-   and resolve Issue `#019`, then stop.
+1. Return to the owner for selection of a new bounded issue/window; do not
+   infer one from Issue `#019` completion.
+2. Public WebSocket, Sobek, capability, or action/schema work requires demand,
+   architecture reconciliation where needed, fresh RED evidence, and its own
+   implementation/review stop gate.
+3. A genuine SDK release, npm publication, deployment, Holm edit, or Medialab
+   write requires separate explicit owner approval.
 
 ## Later
 
-- Public WebSocket, Sobek, capability, or action/schema implementation requires
-  demand, architecture reconciliation where needed, fresh RED evidence, and a
-  separately activated stop gate.
-- The 19 deferred admin/operator route rows remain separately demand-driven.
-- npm publication, SDK release, deployment, Holm edits, and Medialab writes
-  require separate explicit owner approval.
+- The 19 deferred admin/operator route rows remain demand-driven.
+- Reconfirm npm trusted-publisher and package-access hardening before the next
+  genuine release; never manufacture a dummy release to test the flow.
+- Medialab owner acceptance remains separately blocked on Holm Track `#550`;
+  do not add an app workaround from this repository.
 
 ## Stable baseline
 

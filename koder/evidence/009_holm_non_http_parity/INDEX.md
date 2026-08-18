@@ -1,7 +1,7 @@
 ---
 title: Holm non-HTTP parity map
-status: review_ready
-review: "#072 P1=0 P2=4 P3=1 remediated; fresh review pending"
+status: accepted
+review: "#073 approved P1=0 P2=0 P3=0"
 issue: 019
 slice: S4
 captured: 2026-08-17
@@ -196,8 +196,12 @@ and directly hashes every Default Projection payload. Strict remediation RED
 and focused GREEN are recorded in
 [`test/evidence/issue019-s4-red.md`](../../../test/evidence/issue019-s4-red.md).
 Focused `11/11`, 231 source tests, full `npm run ci`, diff hygiene, and fresh
-pinned Holm verification pass. S4 remains open pending fresh independent
-review.
+pinned Holm verification pass. Independent Review
+[`#073`](../../reviews/073_issue019_s4_non_http_parity_remediation/INDEX.md)
+reproduced all seven prior defects against the old checkpoint, verified the
+remediation and all nine payloads against pinned Holm `44d51d0f…`, and approved
+cumulative S4 range `c06f98f..f623a8c` with `P1=0 P2=0 P3=0`. S4 is accepted
+and Issue `#019` is resolved at the mapping-only boundary.
 
 This evidence and its validator are the full S4 product. No public SDK source,
 `dist/**`, version, release, publication, deployment, Holm, Medialab, or `@zyt`
