@@ -186,10 +186,10 @@ filename, content type, and SDK `ReadonlyBytes` value.
 
 The packaged inventory is generated from
 `koder/evidence/004_issue008_admin_routes/route-audit.json`, pinned to signed
-Holm `v0.207.0` commit
-`d66628674232b01e8c95d5b86617bc660d61410f`. `npm run test:admin-api`
-fails if generated declarations or route metadata drift from that ledger. Refresh the ledger only after checking live,
-read-only Holm route registrations and the legacy `packages/holm-sdk` audit.
+Holm `v0.207.0`. `npm run test:admin-api` fails if generated declarations or
+route metadata drift from that ledger. Refresh the ledger only after reviewing
+versioned public HTTP behaviour and a maintainer conformance verdict. Internal
+source verification is kept privately by Holm maintainers.
 
 The legacy Holm admin client remains live. `0.2.0` does not delete, redirect, or
 deprecate it, and it does not imply that possessing the SDK or browser bundle

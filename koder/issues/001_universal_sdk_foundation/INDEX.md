@@ -6,9 +6,8 @@ updated: 2026-07-18
 tags: sdk, typescript, surfaces, state, realtime, frameworks, bfbb
 source:
   repo: holmhq/holm
-  commit: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
-  proposal: koder/proposals/001_universal_app_runtime/INDEX.md
-  issue: koder/issues/486_universal_app_runtime_extraction_map/INDEX.md
+  version: 0.182.0
+  docs: https://holmhq.com/llms-full.txt
 type: design
 issue_kind: track
 slice_count: 15
@@ -160,24 +159,12 @@ dist/holm-node.js
 
 Names are not frozen until architecture and build slices pass review.
 
-## Holm source baseline
+## Holm conformance baseline
 
-Canonical routing document:
-[`koder/docs/HOLM_SOURCE_MAP.md`](../../docs/HOLM_SOURCE_MAP.md).
-
-Highest-value sources at Holm commit
-`11ceae0d88e9c800eb77916e3244fbd231ad81bb`:
-
-- `koder/proposals/001_universal_app_runtime/INDEX.md`
-- `koder/issues/486_universal_app_runtime_extraction_map/INDEX.md`
-- `koder/issues/196_holm_ui_framework/INDEX.md`
-- `koder/issues/341_app_member_scope_semantics/INDEX.md`
-- `koder/issues/342_collaboration_crdt_strategy/INDEX.md`
-- `koder/issues/485_node_lite_framework_compatibility_probe/INDEX.md`
-- `koder/issues/517_realtime_channel_auth_presence/INDEX.md`
-- `packages/holm-sdk/`
-- `packages/holm-state/`
-- `internal/hosting/{ws.go,realtime.go}`
+The architecture was reviewed against Holm `0.182.0`. Contributor verification
+uses [Holm public documentation](https://holmhq.com/llms-full.txt), public HTTP
+behaviour and SDK fixtures. Maintainers keep internal design/source maps and
+verification privately; private repository paths are not contributor inputs.
 
 ## Slice Ledger
 
@@ -239,7 +226,7 @@ explicit worktree ownership; parallelism is expected across repositories.
 6. No SDK API bypasses Holm authorization or exposes raw SQLite.
 7. Framework and CRDT runtimes remain optional peers.
 8. Source and generated JS are both tested.
-9. Every migrated Holm behavior names its source path/commit and conformance
+9. Every migrated Holm behavior names its version/public behaviour and conformance
    evidence.
 10. No npm publish, production deploy, or Holm source mutation occurs without
     explicit user approval.

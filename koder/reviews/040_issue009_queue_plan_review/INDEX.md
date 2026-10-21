@@ -8,7 +8,7 @@ p2_count: 0
 p3_count: 0
 reviewer: q004-plan-review-01 pi/gpt-5.5
 reviewed_at: 2026-07-16
-holm_authority_commit: 55cd8213af9878f63432586a8a58c093b3aaa47a
+holm_reference: the release tested (internal verification kept privately)
 ---
 
 # Issue 009 queue plan review
@@ -27,8 +27,8 @@ serial overnight blind queue:
 - `koder/plans/003_S06_exports_dist_authority_gate/INDEX.md`
 
 Authority checked: `koder/docs/ARCHITECTURE.md`, `koder/docs/DECISIONS.md`,
-`koder/docs/HOLM_SOURCE_MAP.md`, and Holm Issue `#534` at
-`55cd8213af9878f63432586a8a58c093b3aaa47a`.
+[Holm public documentation](https://holmhq.com/llms-full.txt), and Holm Issue `#534` at
+`the Holm release tested`.
 
 ## Verdict
 

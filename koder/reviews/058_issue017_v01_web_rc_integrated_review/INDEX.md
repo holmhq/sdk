@@ -155,7 +155,7 @@ credentials, cloud/production mutation, and promotion to `0.1.0`.
 ### Holm compatibility note
 
 Read-only SDK-side Holm compatibility was checked against the local Holm
-checkout at `748cbe5e8f673d9a5a3d276e6826eecac32b8612` (`version.json`
+checkout at `the Holm release tested` (`version.json`
 `0.185.1`) by reading committed `koder/issues/534_contract_first_holm_apps/INDEX.md`.
 The SDK RC claims remain aligned with Holm `#534`: GET observes resources/state,
 POST performs commands/transitions, BFBB/static hosting remains first-class,

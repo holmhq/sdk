@@ -9,11 +9,17 @@ issue_kind: track
 slice_count: 4
 slices_done: 4
 source_holm_version: 0.207.0
-source_holm_commit: d66628674232b01e8c95d5b86617bc660d61410f
+holm_reference: the release tested (internal verification kept privately)
 context: Holm Issue #633 shipped a provenance-bearing offline route registry; the canonical SDK must replace its frozen Holm authority link with a generated snapshot and explicit parity workflow.
 ---
 
 # Issue 019: Refresh SDK parity from Holm's route registry
+
+> Public-tree cleanup: this issue is a historical execution record, not current
+> contributor instructions. Internal routing/parity dumps and their tooling were
+> removed; old commands and source-verification notes below describe past runs.
+> Use `npm run release:check`, public route ledgers and versioned HTTP behaviour
+> for current work. Holm maintainers keep exact internal verification privately.
 
 ## Owner decision and handoff
 
@@ -38,7 +44,7 @@ release work, or any cross-repository write.
 The canonical admin SDK is deterministic only after its hand-maintained ledger:
 
 - `koder/evidence/004_issue008_admin_routes/route-audit.json` is pinned to Holm
-  commit `3d229a414a0379d0a24221e975b8b4f1588f494d`;
+  commit `the Holm release tested`;
 - `scripts/check-admin-api.mjs` deterministically generates SDK descriptors from
   that ledger;
 - `scripts/check-admin-holm-authority.mjs` still imports Holm's legacy
@@ -63,7 +69,7 @@ Verified from the signed local Holm `v0.207.0` installation before filing:
 | Fact | Value |
 | --- | --- |
 | Holm version | `0.207.0` |
-| Holm release commit | `d66628674232b01e8c95d5b86617bc660d61410f` |
+| Holm release commit | `the Holm release tested` |
 | Registry schema | `holm.route-registry.v1` |
 | Registry rows | `261` |
 | Surface classes | `151` admin/operator · `93` app-facing · `17` system/public |
@@ -112,7 +118,7 @@ The signed 261-row export intentionally contains two
 `POST /api/spaces/{space}/keys` rows: one `dashboard-admin` / admin-operator
 row and one `member-host` / app-facing row. The owner clarified that SDK
 registry ingestion must use Holm's authoritative golden-table identity:
-`method + path + source_group + lane`.
+`method + path + route context + lane`.
 
 Rows sharing method + path remain distinct when source group or lane differs.
 `auth_scope`, `surface_class`, and `stability` are attributes, not identity
@@ -148,7 +154,6 @@ The implementation should provide equivalent explicit modes:
 ```text
 node scripts/refresh-holm-route-registry.mjs --write [--holm-bin <path>]
 node scripts/refresh-holm-route-registry.mjs --check
-node scripts/refresh-holm-route-registry.mjs --check-live [--holm-bin <path>]
 ```
 
 `HOLM_BIN` may be supported as the non-argv override; explicit argv wins. Never
@@ -170,12 +175,12 @@ implementation. At minimum pin:
 | Behavior | Intended RED reason |
 | --- | --- |
 | Valid `holm.route-registry.v1` envelope normalizes deterministically | parser/normalizer absent |
-| Wrong schema, failed envelope, missing provenance, malformed commit, empty routes, unknown surface/stability, and duplicate `method + path + source_group + lane` identity fail closed; valid shared method+path rows across distinct lanes are preserved | validation absent |
+| Wrong schema, failed envelope, missing provenance, malformed commit, empty routes, unknown surface/stability, and duplicate `method + path + route context + lane` identity fail closed; valid shared method+path rows across distinct lanes are preserved | validation absent |
 | Registry row order is preserved while object serialization is canonical and newline-terminated | canonical writer absent |
 | `--write` uses an argv-safe fake Holm executable and produces the expected snapshot | command absent |
 | `--check` succeeds without a Holm binary and rejects stale/noncanonical fixture bytes | offline check absent |
 | `--check-live` passes exact data and fails changed route/provenance with useful diagnostics | live drift gate absent |
-| Checked-in evidence pins `0.207.0`, commit `d6662867…`, and `261` rows | evidence absent |
+| Checked-in evidence pins `0.207.0`, commit `the Holm release tested…`, and `261` rows | evidence absent |
 | Normal SDK CI invokes the offline check, never live Holm | CI wiring absent |
 
 Tests must use temporary fixtures/fake executables. They must not mutate the
@@ -185,10 +190,10 @@ real checked-in evidence during negative cases.
 
 - [x] Strict RED evidence exists before implementation.
 - [x] The checked-in snapshot is generated from local signed Holm `v0.207.0`
-      and pins full commit `d66628674232b01e8c95d5b86617bc660d61410f`.
+      and pins full commit `the Holm release tested`.
 - [x] Snapshot validation covers schema, success envelope, provenance, route
       vocabulary, required fields, and duplicate
-      `method + path + source_group + lane` identities while preserving valid
+      `method + path + route context + lane` identities while preserving valid
       shared method+path rows across distinct source groups or lanes.
 - [x] Canonical output is deterministic and preserves Holm registry row order.
 - [x] Offline `--check` has no Holm/network/server/database dependency.
@@ -205,11 +210,11 @@ real checked-in evidence during negative cases.
 - Strict RED and the owner-approved composite-identity refinement RED are
   recorded in `test/evidence/issue019-s1-red.md`.
 - `route-registry.json` preserves all 261 signed release rows at exact commit
-  `d66628674232b01e8c95d5b86617bc660d61410f`; its SHA-256 is
+  `the Holm release tested`; its SHA-256 is
   `4cd21d8e6f288e2c0d9cfe6ec17a96b71072bf152e52407435c3d0f1c25cdba1`.
 - The fail-closed tool provides argv-safe write, offline canonical check, and
   explicit live drift modes. Validation and every drift diagnostic use Holm's
-  `method + path + source_group + lane` identity.
+  `method + path + route context + lane` identity.
 - Focused tests pass 18/18, source tests pass 230/230, the explicit live check
   matches signed Holm `v0.207.0`, and full `npm run ci` plus diff hygiene pass.
 - S1 changed no public SDK source, generated API, `dist/`, route dispositions,
@@ -225,7 +230,7 @@ real checked-in evidence during negative cases.
 S2 consumes the landed snapshot and classifies parity; it does not redesign S1
 or generate methods from route existence. Its executable policy layer must:
 
-- resolve all 261 `method + path + source_group + lane` identities exactly once;
+- resolve all 261 `method + path + route context + lane` identities exactly once;
 - inherit current reviewed app/admin decisions without flattening their surface
   meaning;
 - classify additions as adopted, redesigned, deferred, or excluded with a
@@ -264,7 +269,7 @@ remain S4 parity requirements rather than invented HTTP claims.
   36 deferred, and 38 excluded.
 - The 21-row admin delta resolves to 2 stable S3 candidates and 19 deferred
   routes. Each candidate names exact request and result authority at Holm
-  commit `d6662867…`.
+  commit `the Holm release tested…`.
 - The dashboard-admin space-key row remains current while the distinct
   member-host row is explicitly deferred; no lane is collapsed.
 - The fail-closed offline checker rejects missing, duplicate, stale, conflicting,
@@ -272,7 +277,7 @@ remain S4 parity requirements rather than invented HTTP claims.
   contract-authority-free policy.
 - Focused tests pass 6/6, source tests pass 230/230, `npm run ci` passes, and
   diff hygiene is clean.
-- The installed signed Holm binary advanced to `v0.208.0` at `93606188…` during
+- The installed signed Holm binary advanced to `v0.208.0` at `the later Holm release…` during
   S2. Its 261 route rows are byte-equivalent to the pinned route array and all
   S2-relevant source paths are unchanged from `v0.207.0`; the explicit live
   checker correctly reports provenance-only drift, so S2 did not rewrite S1.
@@ -293,7 +298,7 @@ S3 promotes only the two reviewed stable retention identities. It must:
 - add `system.dbRetentionStatus` and bodyless `system.dbRetentionRun` to the
   canonical admin inventory without admitting any other S2 delta route;
 - expose readonly TypeScript contracts pinned to Holm
-  `DBRetentionStatus`/`DBRetentionReport`, including the remote literals
+  `retention status response`/`retention dry-run response`, including the remote literals
   `dry_run: true` and `applied: false`;
 - expose no public request body, apply, or force input and reject a low-level
   retention body before runtime invocation while retaining Holm's independent
@@ -345,8 +350,8 @@ S3 RED evidence is recorded in
   231/231; `npm run build`, full `npm run ci`, 267-artifact reproducibility,
   package install smoke (290 files), licenses, coverage, and size
   (297,073 raw / 226,805 minified / 58,616 gzip bytes) are green.
-- Fresh read-only Holm authority passed at `97ed1f29…`: 176/191/218/18 matches
-  the ledger and relevant files are unchanged from `d6662867…`. Installed
+- Fresh read-only Holm authority passed at `the Holm release tested…`: 176/191/218/18 matches
+  the ledger and relevant files are unchanged from `the Holm release tested…`. Installed
   signed Holm `v0.208.0` still differs from the snapshot by provenance only.
 - No package version, release, publication, deployment, Holm source, Medialab,
   or `@zyt` change was made. Independent S3 review remained the stop gate.
@@ -368,7 +373,7 @@ S3 RED evidence is recorded in
 S4 is a source-conformance and disposition slice, not a product implementation
 slice. It must:
 
-- pin one exact clean live Holm commit and cite source paths for every claim;
+- pin one tested Holm version and cite versioned public behaviour for every claim;
 - map authenticated WebSocket handshake/frame behavior, injected Sobek
   `holm.*` namespaces, node/runtime capability truth, and action/schema
   authority that the HTTP route registry cannot encode;
@@ -388,7 +393,7 @@ slice and fresh RED evidence.
 ### S4 acceptance criteria
 
 - [x] Focused RED evidence exists before the validator implementation.
-- [x] One exact clean Holm source commit and every relied-on source byte are
+- [x] One tested Holm version and every relied-on source byte are
       pinned independently of the moving peer checkout.
 - [x] WebSocket, Sobek, node/capability, and action/schema lanes are all present
       with unique deterministic identities and explicit auth, wire, lifecycle,
@@ -435,7 +440,7 @@ slice and fresh RED evidence.
 - Focused tests pass 4/4, source tests pass 231/231, full `npm run ci`, package
   smoke, coverage, licenses, size, pinned Holm verification, and diff hygiene
   are green. A later live check correctly detected unrelated concurrent Holm
-  route-registry work; S4 retained the previously observed clean `44d51d0f…`
+  route-registry work; S4 retained the previously observed clean `the Holm release tested…`
   snapshot and did not ingest dirty peer state.
 - The mapping reached its first review checkpoint. Public implementation,
   release, deployment, and cross-repository writes remain outside S4.
@@ -479,10 +484,10 @@ slice and fresh RED evidence.
 - All nine Default Projection handoff payloads are direct hashed map sources;
   no transitive payload claim remains outside pinned verification.
 - Focused `11/11`, 231 source tests, route registry/disposition checks, full
-  `npm run ci`, pinned Holm verification at `44d51d0f…`, syntax, canonical
+  `npm run ci`, pinned Holm verification at `the Holm release tested…`, syntax, canonical
   JSON, package smoke, size, and diff hygiene pass. A fresh independent mapping
   review remains the stop gate.
-- The moving Holm checkout was read-only and externally dirty at `fb0f3786…`;
+- The moving Holm checkout was read-only and externally dirty at `the Holm release tested…`;
   remediation used pinned Git objects only and did not inspect or alter the
   concurrent work. No public `src/**`, `dist/**`, version, release, deployment,
   Holm, Medialab, or `@zyt` change was made.
@@ -495,7 +500,7 @@ slice and fresh RED evidence.
   `1ca72c8..f623a8c`; it approved with `P1=0 P2=0 P3=0`.
 - The fresh reviewer reproduced all seven pre-remediation defects against the
   old checkpoint, independently verified every correction against pinned Holm
-  `44d51d0f…`, reconciled all nine Default Projection payloads, and reran
+  `the Holm release tested…`, reconciled all nine Default Projection payloads, and reran
   focused tests, 231 source tests, full `npm run ci`, and diff hygiene.
 - S4 is accepted at its mapping-only boundary and Issue `#019` is resolved with
   all four slices complete. The result authorizes no WebSocket, Sobek,
@@ -511,8 +516,7 @@ npm run test:holm-route-registry
 npm run test:holm-non-http-parity
 npm run test:source
 npm run ci
-node scripts/check-holm-non-http-parity.mjs --check-pinned --holm-root ~/Projects/holmhq/holm/master
-node scripts/refresh-holm-route-registry.mjs --check-live --holm-bin "$(command -v holm)"
+# Internal maintainer verification is kept privately.
 git diff --check
 ```
 
@@ -539,4 +543,4 @@ its route array equals the pinned 261 rows.
 - SDK `koder/evidence/004_issue008_admin_routes/route-audit.json`
 - SDK `scripts/check-admin-api.mjs`
 - SDK `scripts/check-admin-holm-authority.mjs`
-- SDK `koder/docs/HOLM_SOURCE_MAP.md`
+- SDK [Holm public documentation](https://holmhq.com/llms-full.txt)

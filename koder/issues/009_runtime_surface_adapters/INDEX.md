@@ -9,7 +9,7 @@ depends_on: [004, 005]
 source_paths:
   - koder/proposals/001_universal_app_runtime/INDEX.md
   - koder/issues/486_universal_app_runtime_extraction_map/INDEX.md
-  - /home/glasscube/Projects/holmhq/holm/master:koder/issues/534_contract_first_holm_apps/INDEX.md@55cd8213af9878f63432586a8a58c093b3aaa47a
+  - Holm maintainer verification Holm release tested
 type: design
 issue_kind: track
 context: Prove one capability core can cross several runtime boundaries without pretending future native shells already exist.
@@ -33,8 +33,8 @@ platform switch or unsafe shared mutable objects.
   boundaries, typed unsupported behavior, isolated package subpaths, and
   tracked generated artifacts.
 - Live Holm authority for this issue is Holm Issue `#534` at commit
-  `55cd8213af9878f63432586a8a58c093b3aaa47a` (`v0.185.0`), read via the
-  read-only checkout `/home/glasscube/Projects/holmhq/holm/master`.
+  `the Holm release tested` (`v0.185.0`), read via the
+  read-only checkout `Holm maintainer verification`.
 - Holm Issue `#534` supersedes `#486`: GET/POST routes from `api/main.js` are
   Holm's canonical app wire contract. Named operations and SDK convenience
   methods describe or adapt those routes; they do not define a competing app
@@ -87,7 +87,7 @@ Implement and conformance-test:
       source maps, package smoke checks, reproducibility checks, and size gate
       evidence in the same logical implementation.
 - [x] Final closeout includes read-only Holm-authority acceptance against Issue
-      `#534` at a named commit and one independent SDK review reporting zero
+      `#534` at a named version and one independent SDK review reporting zero
       P1/P2 findings.
 
 ## Slice Ledger
@@ -118,7 +118,7 @@ Implement and conformance-test:
 - Fresh read-only Holm authority Review `#048`
   (`koder/reviews/048_issue009_holm_authority_acceptance/INDEX.md`) accepted
   the adapter boundary with `P1=0 P2=0 P3=0` against Holm
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088` (`v0.185.0`).
+  `the Holm release tested` (`v0.185.0`).
 
 ## Non-Goals
 

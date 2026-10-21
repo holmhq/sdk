@@ -22,7 +22,7 @@ updated: 2026-07-17
   metrics, clean reproducibility, declarations/dist/examples/size/license/API
   drift gates, independent SDK review with zero P1/P2, and fresh read-only Holm
   authority acceptance.
-- Fresh Holm evidence must be read-only and pinned to a named Holm commit.
+- Fresh Holm evidence must be read-only and pinned to a tested Holm version.
 
 ## Capability statement
 
@@ -38,11 +38,8 @@ pilot or release process.
   manifest, S03/S04 P3 disposition evidence, S07 docs/metadata, `package.json`,
   generated manifests/reports, and changed source/tests only as needed for
   integrated review.
-- Authority drift check: read current committed Holm Issue `#534` with
-  read-only `git -C /home/glasscube/Projects/holmhq/holm/master show
-  <commit>:koder/issues/534_contract_first_holm_apps/INDEX.md`; compare against
-  prior pin `fb34d6b768f15f9bc596e0b82430e5c678fd2088` and record the named
-  Holm commit/version. Do not mutate or test Holm.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm Git is clean before final report except for owned review/handoff
   artifacts authorized by the queue/coordinator.
 
@@ -98,11 +95,8 @@ npm run check:licenses
 git status --short --untracked-files=all
 ```
 
-Read-only Holm authority check command shape:
-
-```bash
-git -C /home/glasscube/Projects/holmhq/holm/master show <holm-commit>:koder/issues/534_contract_first_holm_apps/INDEX.md >/tmp/holm-534-rc-authority.txt
-```
+Public Holm authority check: review https://holmhq.com/llms-full.txt and cite the
+Holm version plus observed HTTP behaviour in the acceptance note.
 
 ## Acceptance checklist
 
@@ -116,7 +110,7 @@ git -C /home/glasscube/Projects/holmhq/holm/master show <holm-commit>:koder/issu
 - [ ] Issue `#014` closure evidence exists through S05/S06 bundle and vendoring
       gates.
 - [ ] Independent integrated SDK review reports zero P1/P2 findings.
-- [ ] Fresh read-only Holm authority acceptance at a named Holm commit reports
+- [ ] Fresh read-only Holm authority acceptance at a tested Holm version reports
       zero P1/P2 and no mapped drift contradicting v0.1-web RC claims.
 - [ ] Git is clean after committed evidence.
 - [ ] Owner handoff includes exact post-RC pilot/promotion checklist and an

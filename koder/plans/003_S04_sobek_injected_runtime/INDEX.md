@@ -20,7 +20,7 @@ Add the server/Sobek injected-runtime adapter contract and fake implementation s
 ## Source and build-on checks
 
 - Require S01 common conformance and S03 Node/CLI fetch adapter to be green.
-- Read `koder/issues/009_runtime_surface_adapters/INDEX.md`, Holm Issue `#534` at `55cd8213af9878f63432586a8a58c093b3aaa47a`, `src/core/runtime.ts`, `src/app/protocol.ts`, and existing conformance helper only as needed.
+- Read `koder/issues/009_runtime_surface_adapters/INDEX.md`, the public Holm GET/POST contract, `src/core/runtime.ts`, `src/app/protocol.ts`, and existing conformance helper only as needed.
 - Confirm `@holmhq/sdk/sobek` is an approved architecture subpath but is not currently exported in `package.json`.
 
 ## Expected files or seam

@@ -2270,12 +2270,7 @@
   ],
   "schema": "holm.sdk.admin-route-audit/1",
   "source": {
-    "commit": "d66628674232b01e8c95d5b86617bc660d61410f",
-    "paths": [
-      "packages/holm-sdk/admin.audit.js",
-      "packages/holm-sdk/admin.js",
-      "packages/holm-sdk/surface.audit.js"
-    ],
+    "version": "0.207.0",
     "repository": "holmhq/holm"
   }
 }

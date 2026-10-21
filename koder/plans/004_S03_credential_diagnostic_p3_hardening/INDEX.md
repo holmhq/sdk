@@ -36,8 +36,8 @@ approved structural-marking authority model.
   `src/transports/index.ts`, `src/core/cache-key.ts`, `src/core/errors.ts`,
   `src/transports/cache.ts`, and related tests.
 - Reconfirm S01/S02 gates do not expose new stable API without inventory.
-- Authority drift check: read-only Holm Issue `#534` at
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088`; no Holm write/test is needed.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm no new dependency is needed for hashing/redaction; if cryptographic
   behavior requires a dependency or runtime ambient, stop for owner/API review.
 

@@ -2,46 +2,32 @@
 name: Holm
 status: active
 role: runtime-protocol-authority
-updated: 2026-08-17
-local_path: ~/Projects/holmhq/holm/master
-remote: git@github.com-holmhq:holmhq/holm.git
-branch: master
-verified_commit: 44d51d0f785ff6208ecc034c720e76a8543891be
+updated: 2026-10-21
+public_docs: https://holmhq.com/llms-full.txt
+reviewed_version: 0.208.0
 write_policy: explicit-approval-only
 ---
 
 # Project 001: Holm
 
-## Relationship
+Holm owns runtime, protocol, authentication, storage and authorization semantics.
+`@holmhq/sdk` consumes the public HTTP contracts without creating server truth.
 
-Holm is the runtime, HTTP/API, serverless/Sobek, action/state/schema, auth,
-storage, realtime, and protocol authority. `@holmhq/sdk` consumes and helps
-author those contracts; it must not create a competing server truth.
+## Contributor verification
 
-## SDK-relevant contracts
+- Use [Holm public documentation](https://holmhq.com/llms-full.txt) and versioned
+  HTTP behaviour, supported by deterministic SDK fixtures.
+- This repository is public. Never record Holm source paths, Holm commit IDs or
+  Go identifiers. Holm maintainers keep the internal source map privately.
+- Request a maintainer conformance verdict for uncertain behaviour; do not read
+  private source or infer support from a version number.
+- Existing Holm SDK/state packages remain live until a separately approved cutover.
+- Missing runtime capabilities require a separately authorized Holm decision,
+  not a client simulation of production support.
 
-- Existing clients: `packages/holm-sdk/`
-- Existing reactive state: `packages/holm-state/`
-- Universal-surface history: Proposal 001 and superseded Issue 486
-- Current contract-first app authority: Issue 534
-- App scopes/collaboration/realtime history: Issues 341, 342, 517
-- Runtime websocket/realtime: `internal/hosting/{ws.go,ws_auth.go,realtime.go}`
-  plus `internal/realtimeauth/resolver.go`
-- Current non-HTTP snapshot: SDK Evidence `009` at `44d51d0f…`
-- App docs/templates: `knowledge-base/skills/app/`, `internal/assets/templates/`
+## Historical checkpoint
 
-See `koder/docs/HOLM_SOURCE_MAP.md` for the pinned path-level map.
-
-## Agent policy
-
-- Read source and tests directly; record the Holm commit in conformance evidence.
-- Do not edit this repository from an SDK slice without explicit user approval.
-- When a missing runtime capability blocks the SDK, file/coordinate a Holm issue
-  rather than simulating production support in the client.
-- Existing Holm SDK/state packages remain operational until a separate cutover.
-
-## Drift checkpoint
-
-Evidence `009` refreshed non-HTTP authority at clean commit `44d51d0f…`.
-Refresh again before implementation when Holm's action/discovery, realtime,
-collaboration, auth, injected namespace, or capability contracts move.
+Evidence `#009` records the reviewed non-HTTP boundary around Holm `0.208.0`.
+It does not promise production WebSocket, direct Sobek, action discovery or
+native-runtime support in this SDK. Internal manifests and source hashes have
+been removed from the public tree; maintainers retain verification privately.

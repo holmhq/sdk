@@ -25,7 +25,7 @@ Fresh independent planning review of Issue `#017` and plan family
 Read scope stayed within the requested budget: Issue `#017`, plans `004_S01`-
 `004_S08`, Issues `#014`/`#015`, Review `#033`, package/build/export/test seams,
 approved decisions `D013`/`D014`, and read-only Holm Issue `#534` at
-`fb34d6b768f15f9bc596e0b82430e5c678fd2088`. No plan, product, queue, state,
+`the Holm release tested`. No plan, product, queue, state,
 release, or Holm files were changed.
 
 ## Verdict

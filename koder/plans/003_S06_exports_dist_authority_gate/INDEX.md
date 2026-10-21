@@ -20,7 +20,7 @@ Integrate Issue `#009` runtime subpaths into package exports, declarations, dist
 ## Source and build-on checks
 
 - Require S01-S05 implementation commits and slice reviews to be green or explicitly in the same integrated review range.
-- Read `koder/issues/009_runtime_surface_adapters/INDEX.md`, changed public subpath manifests, `package.json`, `test/dist/index.test.mjs`, declaration fixtures, examples README/files, and Holm Issue `#534` at the named authority pin only as needed.
+- Read `koder/issues/009_runtime_surface_adapters/INDEX.md`, changed public subpath manifests, `package.json`, `test/dist/index.test.mjs`, declaration fixtures, examples README/files, and the public Holm GET/POST contract only as needed.
 - Confirm no queue/state/execution/README mutation is required for product integration unless the owning coordinator separately authorizes metadata closeout.
 
 ## Expected files or seam
@@ -55,7 +55,8 @@ First add failing integration/package assertions proving:
 - `FORCE_COLOR=1 npm run ci`
 - `npm run check:repro`
 - `npm run test:holm-smoke` if the smoke is configured and does not require credentials or Holm writes; otherwise record a skip reason in implementation evidence.
-- Read-only Holm authority check: `git -C /home/glasscube/Projects/holmhq/holm/master show 55cd8213af9878f63432586a8a58c093b3aaa47a:koder/issues/534_contract_first_holm_apps/INDEX.md >/tmp/holm-534-authority.txt` plus a manual acceptance note mapping SDK adapter boundaries to the pinned GET/POST contract.
+- Authority check: confirm the GET/POST compatibility boundary with the public
+  Holm docs and a versioned maintainer verdict.
 - Independent SDK final review via the authorized dispatch model must report zero P1/P2 before issue closure.
 
 ## Deferred / non-goals

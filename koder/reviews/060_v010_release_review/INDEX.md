@@ -24,7 +24,7 @@ None.
 - Target verified: `git rev-parse HEAD` = `396f991c48334225fa262805ca4e25bba964c01d`; branch `main`.
 - Package identity is public `@holmhq/sdk@0.1.0`; package-lock root also records `0.1.0` (`package.json:2-3`, `package-lock.json:2-9`).
 - Package is not private, sets public scoped publish access, and gates publication through `prepublishOnly -> npm run release:check` (`package.json:75-88`).
-- Tarball dry-run: `holmhq-sdk-0.1.0.tgz`, 255 files, 175600 packed bytes, 992851 unpacked bytes. Top-level contents are exactly `CHANGELOG.md`, `LICENSE`, `README.md`, `dist/`, `docs/`, `examples/`, `package.json`; no internal/unallowed paths observed.
+- Tarball dry-run: `holmhq-sdk-0.1.0.tgz`, 255 files, 175600 packed bytes, 992851 unpacked bytes. Top-level contents are exactly `CHANGELOG.md`, `LICENSE`, `README.md`, `dist/`, `docs/`, `examples/`, `package.json`; no Holm runtime behaviour paths observed.
 - Generated artifact metadata records `@holmhq/sdk 0.1.0`, MIT notices, `private: false`, 232 manifest artifacts, 232 license-report artifacts, and size status `pass` with 50254 gzip bytes total (`dist/manifest.json`, `dist/license-report.json`, `dist/size-report.json`).
 - Runtime dependency surface remains empty for the universal package; `scripts/check-package.mjs:26-30` enforces no runtime dependencies and the release gate.
 

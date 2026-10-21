@@ -31,9 +31,8 @@ is either fixed, tested, documented, or explicitly accepted before RC gating.
 - Read Review `#033` advisories 5-9, S01/S02/S03 outputs if implemented,
   `src/test/index.ts`, `src/core/extensions.ts`, `src/core/correlation.ts`,
   relevant source tests, type tests, and docs/examples as needed.
-- Authority drift check: read-only Holm Issue `#534` at
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088`; confirm no GET/POST contract
-  change affects request-ID or extension namespace decisions.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm no new dependency, version bump, queue/state/execution edit, or
   release action is needed.
 

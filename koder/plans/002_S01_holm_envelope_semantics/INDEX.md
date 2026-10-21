@@ -17,7 +17,7 @@ Establish source-pinned, executable conformance for Holm response envelope handl
 ## Authority and build-on evidence
 
 - Required correction source: `koder/reviews/024_a2_holm_authority_conformance/INDEX.md` (P1-1) and `koder/reviews/025_a2r_remediation_plan_conformance/INDEX.md`.
-- Holm authority map: `koder/docs/HOLM_SOURCE_MAP.md` (runtime/protocol authority constraints).
+- Holm authority map: [Holm public documentation](https://holmhq.com/llms-full.txt) (runtime/protocol authority constraints).
 - Existing SDK seams cited by review `#024`: `src/transports/index.ts` around response parsing and command-envelope paths.
 - Migration-evidence dependency: `koder/issues/005_*` ledger updates are required output of this slice before closure.
 

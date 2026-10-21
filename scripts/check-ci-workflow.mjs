@@ -16,22 +16,15 @@ if (packageJson.scripts?.["test:ci-workflow"] !== "node scripts/check-ci-workflo
 if (!(packageJson.scripts?.ci ?? "").includes("npm run test:ci-workflow")) {
   failures.push(`${packagePath}: canonical CI must run test:ci-workflow`);
 }
-const routeRegistryScript = packageJson.scripts?.["test:holm-route-registry"] ?? "";
-if (!routeRegistryScript.includes("node scripts/refresh-holm-route-registry.mjs --check")) {
-  failures.push(`${packagePath}: test:holm-route-registry must run the offline snapshot check`);
+if (!/uses: actions\/checkout@v4\s*\n\s*with:\s*\n\s*fetch-depth: 0/.test(workflow)) {
+  failures.push(`${workflowPath}: privacy gate requires SDK history to distinguish own commit IDs`);
 }
-if (routeRegistryScript.includes("--check-live")) {
-  failures.push(`${packagePath}: normal CI must not run the live Holm route-registry check`);
+const privacyScript = packageJson.scripts?.["check:public-privacy"] ?? "";
+if (!privacyScript.includes("node scripts/check-public-privacy.mjs") || !privacyScript.includes("node --test test/tooling/check-public-privacy.test.mjs")) {
+  failures.push(`${packagePath}: privacy gate must exercise its regression test and tracked-file scanner`);
 }
-if (!(packageJson.scripts?.ci ?? "").includes("npm run test:holm-route-registry")) {
-  failures.push(`${packagePath}: canonical CI must run test:holm-route-registry`);
-}
-const routeDispositionScript = packageJson.scripts?.["test:holm-route-dispositions"] ?? "";
-if (!routeDispositionScript.includes("node scripts/check-holm-route-dispositions.mjs")) {
-  failures.push(`${packagePath}: test:holm-route-dispositions must run the offline disposition check`);
-}
-if (!(packageJson.scripts?.ci ?? "").includes("npm run test:holm-route-dispositions")) {
-  failures.push(`${packagePath}: canonical CI must run test:holm-route-dispositions`);
+if (!(packageJson.scripts?.ci ?? "").includes("npm run check:public-privacy")) {
+  failures.push(`${packagePath}: canonical CI must run check:public-privacy`);
 }
 
 for (const [needle, label] of [
@@ -75,7 +68,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log("CI workflow check passed: canonical source validation uses Node 24 with offline Holm route-registry and disposition gates, and shipped artifacts are exercised on the declared Node 20 minimum without development dependencies.");
+console.log("CI workflow check passed: canonical source validation uses Node 24 with the public-tree privacy gate, and shipped artifacts are exercised on the declared Node 20 minimum without development dependencies.");
 
 function workflowSection(jobName) {
   const marker = `  ${jobName}:\n`;

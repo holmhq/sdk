@@ -4,9 +4,9 @@ reviewer: pi/gpt-5.5
 date: 2026-07-20
 sdk_commit: 189eaa6261b9c357a6a61bf813cd9fcd1eeb372a
 sdk_product_target: 96485b7d2922893efb3477cd174a3017e3de10ce
-holm_commit: 9a02784b5b8004ed946003cb650b1325f29763a1
-ledger_commit: 3d229a414a0379d0a24221e975b8b4f1588f494d
-accepted_web_checkpoint: 748cbe5e8f673d9a5a3d276e6826eecac32b8612
+holm_reference: the release tested (internal verification kept privately)
+ledger_commit: the Holm release tested
+accepted_web_checkpoint: the Holm release tested
 p1: 0
 p2: 0
 p3: 1
@@ -18,7 +18,7 @@ p3: 1
 
 Accepted for exact SDK candidate `189eaa6261b9c357a6a61bf813cd9fcd1eeb372a`
 and product target `96485b7d2922893efb3477cd174a3017e3de10ce` against live
-Holm authority `9a02784b5b8004ed946003cb650b1325f29763a1`. Counts:
+Holm authority `the Holm release tested`. Counts:
 **P1=0 P2=0 P3=1**. The SDK may truthfully release the preview
 `@holmhq/sdk/admin` capability after the remaining exact-target release gates,
 provided release notes do not claim the full Holm package test is green.
@@ -32,7 +32,7 @@ provided release notes do not claim the full Holm package test is green.
   `koder/issues/181_developer_surface_audit/inventory.md`. The relevant admin
   route audit tests in that run passed (`route audit classifies every live
   admin/auth registration`, `route audit points at real SDK methods`, `agent
-  admin route inventory covers every supported main.go route`, and related
+  admin route inventory covers every supported Holm runtime behaviour route`, and related
   package checks). Because clearing the failure would require a Holm write and
   the narrower authority inventory below passes, this is a disclosed Holm
   documentation/audit-artifact advisory, not an SDK admin release blocker.
@@ -43,18 +43,18 @@ provided release notes do not claim the full Holm package test is green.
   live `packages/holm-sdk/admin.audit.js` at Holm HEAD. `npm run
   test:holm-admin-authority` passed with **174 keys**, **189 route/method
   contracts**, **216 unique methods**, and **18 exclusions**; it also reported
-  relevant paths unchanged since ledger commit `3d229a4...`.
+  relevant paths unchanged since ledger commit `the Holm release tested...`.
 - The ledger remains structured as schema `holm.sdk.admin-route-audit/1` with
   `166` adopted entries, `8` redesigned entries, `2` helper entries, and `2`
   note-bearing entries. I found no stale/missing admin route and no unsupported
   convenience claim in the normalized inventory.
 - Live Holm registrations agree with the audit source: dashboard/admin routes
-  are registered in `cmd/server/main.go:5216-5386`, auth/member/provider routes
-  in `internal/auth/handlers.go:169-191`, and Space admin/member routes in
-  `internal/handlers/spaces.go:29-46`. The main host dispatcher keeps deploy
-  behind `APIAuthMiddleware`, most `/api/*` behind `AdminMiddleware`, and
+  are registered in Holm runtime behaviour, auth/member/provider routes
+  in Holm runtime behaviour, and Space admin/member routes in
+  Holm runtime behaviour. The main host dispatcher keeps deploy
+  behind API-key authentication, most `/api/*` behind admin authentication, and
   special public/internal ingress out of the admin claim at
-  `cmd/server/main.go:3482-3524`.
+  Holm runtime behaviour.
 ## SDK descriptor and protocol assessment
 
 - `src/admin/generated.ts` preserves live method/path authority rather than
@@ -94,13 +94,12 @@ provided release notes do not claim the full Holm package test is green.
 
 - Existing Holm `packages/holm-sdk` and `packages/holm-state` were not touched.
   Scoped relevant status was empty before and after review, and no relevant diff
-  exists from ledger `3d229a414a0379d0a24221e975b8b4f1588f494d` to live HEAD for
-  `packages/holm-sdk`, `packages/holm-state`, `cmd/server/main.go`,
-  `internal/auth/handlers.go`, `internal/handlers/spaces.go`, or
-  `internal/middleware/auth.go`.
+  exists from ledger `the Holm release tested` to live HEAD for
+  `packages/holm-sdk`, `packages/holm-state`, Holm runtime behaviour, or
+  Holm runtime behaviour.
 - There is also no relevant diff from the accepted web checkpoint
-  `748cbe5e8f673d9a5a3d276e6826eecac32b8612` to live HEAD for those paths. Holm
-  HEAD has moved to `v0.185.2` (`9a02784...`) but the admin/package authority
+  `the Holm release tested` to live HEAD for those paths. Holm
+  HEAD has moved to `v0.185.2` (`the Holm release tested...`) but the admin/package authority
   reviewed here is unchanged from the ledger content.
 - SDK migration/cutover language is honest: `docs/admin.md` calls the entry
   point preview, keeps the legacy Holm admin client live, and does not claim a
@@ -109,8 +108,8 @@ provided release notes do not claim the full Holm package test is green.
 ## Read-only fingerprint and dirty-state evidence
 
 - Holm relevant pre-status: empty for `packages/holm-sdk`, `packages/holm-state`,
-  `cmd/server/main.go`, `internal/auth/handlers.go`, `internal/handlers/spaces.go`,
-  and `internal/middleware/auth.go`.
+  Holm runtime behaviour,
+  and Holm runtime behaviour.
 - Holm relevant post-status: empty for the same paths.
 - Relevant Git index fingerprint before and after:
   `9c634dc39355232e3b6d4c2c4d15b8f4113aa2b0e9a17e581a78959854164433`.
@@ -121,8 +120,8 @@ provided release notes do not claim the full Holm package test is green.
 
 - `git rev-parse HEAD` in SDK — exit `0`;
   `189eaa6261b9c357a6a61bf813cd9fcd1eeb372a`.
-- `git -C /home/glasscube/Projects/holmhq/holm/master rev-parse HEAD` — exit
-  `0`; `9a02784b5b8004ed946003cb650b1325f29763a1`.
+- a private maintainer verification (not a contributor command) — exit
+  `0`; `the Holm release tested`.
 - `git -C <holm> status --short --untracked-files=all -- <relevant paths>` —
   exit `0`; no output before or after review.
 - `npm run test:holm-admin-authority` — exit `0`; normalized live Holm admin
@@ -134,9 +133,9 @@ provided release notes do not claim the full Holm package test is green.
   source mutation and relevant route/package tests passed.
 - Narrow read-only Holm SDK authority script over live audits/registrations and
   package SDK methods — exit `0`; 174/189/216/18 counts passed.
-- Scoped `git diff --name-status 3d229a414a0379d0a24221e975b8b4f1588f494d..HEAD
+- Scoped `git diff --name-status the Holm release tested..HEAD
   -- <relevant paths>` — exit `0`; no output.
-- Scoped `git diff --name-status 748cbe5e8f673d9a5a3d276e6826eecac32b8612..HEAD
+- Scoped `git diff --name-status the Holm release tested..HEAD
   -- <relevant paths>` — exit `0`; no output.
 
 ## Exact-target gate recommendation

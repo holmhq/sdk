@@ -23,7 +23,7 @@ import {
 import { createNodeUploadFile } from "../../../src/node/index.js";
 import { createWebUploadFile, createWebUploadSource, type WebUploadBlobLike } from "../../../src/web/index.js";
 
-const uploadSourceCommit = "11ceae0d88e9c800eb77916e3244fbd231ad81bb";
+const uploadHolmVersion = "0.182.0";
 
 test("upload composition reports acknowledged resumable progress and emits binary-safe diagnostics", async () => {
   const progress: Array<{ readonly loaded: number; readonly total: number; readonly percent: number }> = [];
@@ -349,10 +349,10 @@ test("upload web helpers validate structural blob defaults and bounds", async ()
   assert.equal((await source.slice(0, 1)).body.type, "text/plain");
 });
 
-test("upload migration ledger pins Issue 005 behavior to Holm source without secrets", async () => {
+test("upload migration ledger cites public Holm behaviour by version without secrets", async () => {
   const ledger = await readFile("koder/evidence/001_issue005_transport_uploads/INDEX.md", "utf8");
 
-  assert.match(ledger, new RegExp(uploadSourceCommit));
+  assert.equal(ledger.includes(`holm_version: ${uploadHolmVersion}`), true);
   assert.match(ledger, /packages\/holm-sdk\/client\.js/);
   assert.match(ledger, /adopted: resumable upload sessions/i);
   assert.match(ledger, /redesigned: DOM and XMLHttpRequest progress/i);

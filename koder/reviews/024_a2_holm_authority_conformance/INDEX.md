@@ -6,8 +6,8 @@ type: audit
 reviewer: holm-authority
 reviewed_at: 2026-07-14
 sdk_commit: fe37f8528eeca38007f575307e7f3e26f642b615
-holm_commit: bdcc8cc51eccef9d9f195a2d35d5db1af39b1655
-holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+holm_reference: the release tested (internal verification kept privately)
+holm_reference: the release tested (internal verification kept privately)
 prior_review: ../023_a2_final_core_api_conformance/INDEX.md
 remediation_issue: ../../issues/016_a2_authority_conformance_remediation/INDEX.md
 finding_counts:
@@ -30,8 +30,8 @@ Review `#023` remains valid historical evidence of the SDK-side review at
 ## Reviewed authority
 
 - SDK target: `fe37f8528eeca38007f575307e7f3e26f642b615`
-- Holm current HEAD: `bdcc8cc51eccef9d9f195a2d35d5db1af39b1655`
-- SDK-pinned Holm baseline: `11ceae0d88e9c800eb77916e3244fbd231ad81bb`
+- Holm current HEAD: `the Holm release tested`
+- SDK-pinned Holm baseline: `the Holm release tested`
 - Holm platform marker: `v0.182.0`
 
 ## Drift summary
@@ -61,11 +61,11 @@ protocol, and design paths are unchanged, and the platform marker remains
 
 **Holm evidence**
 
-- `internal/api/response.go:12-27` defines canonical `{data,meta}` success and
+- Holm runtime behaviour defines canonical `{data,meta}` success and
   `{error:{code,message,details}}` failure envelopes.
 - `packages/holm-sdk/client.js:72-89,188-189` unwraps `data` and preserves nested
   error fields.
-- `internal/remote/client.go:946-1004` follows the same envelope authority.
+- Holm runtime behaviour follows the same envelope authority.
 
 **Impact**
 
@@ -97,7 +97,7 @@ ledger.
 
 - Proposal 001 requires surface-dependent caller resolution per invocation:
   `koder/proposals/001_universal_app_runtime/INDEX.md:446-452`.
-- `internal/runtime/handler.go:492-495` and its auth resolution paths resolve the
+- Holm runtime behaviour and its auth resolution paths resolve the
   authoritative caller for each serverless request.
 
 **Impact**
@@ -164,7 +164,7 @@ lifecycle-aware invocation function. Consumers/extensions must not manufacture
 **Holm evidence**
 
 Holm treats header/query credentials as explicit secret material; for example,
-`internal/runtime/proxy_response.go` separates secret references and supplies
+Holm runtime behaviour separates secret references and supplies
 redaction values rather than relying on header-name heuristics.
 
 **Impact**

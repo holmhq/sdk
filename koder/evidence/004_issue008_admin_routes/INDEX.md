@@ -3,7 +3,7 @@ title: Issue 008 admin route conformance ledger
 status: current
 issue: 008
 sdk_target: 0.2.0
-holm_commit: d66628674232b01e8c95d5b86617bc660d61410f
+holm_reference: the release tested (internal verification kept privately)
 source_paths:
   - packages/holm-sdk/admin.audit.js
   - packages/holm-sdk/admin.js
@@ -39,5 +39,6 @@ explicit operator context, adapters keep auth proof private, and Holm still
 authenticates and authorizes every request. Existing Holm SDK files remain
 read-only and operational; this evidence does not authorize cutover or deletion.
 
-Before final acceptance, verify the live read-only Holm checkout has no relevant
-source drift from the pinned commit and record the fresh authority verdict.
+Before final acceptance, review the public HTTP contract by Holm version and
+obtain a fresh maintainer conformance verdict. Never store private source
+provenance in this public ledger.

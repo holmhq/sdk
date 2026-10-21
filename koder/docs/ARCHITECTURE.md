@@ -3,7 +3,7 @@ title: Holm SDK Architecture Contract
 status: approved
 updated: 2026-07-14
 issue: 002
-holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+holm_version: 0.182.0
 ---
 
 # Holm SDK Architecture Contract
@@ -21,9 +21,9 @@ enough to become type fixtures in Issue `#003`, but names and syntax are not a
 published compatibility promise until implementation and review make them one.
 
 Holm remains the runtime and protocol authority. This repository owns a portable
-client implementation, not a parallel server contract. Source evidence is pinned
-to Holm commit
-[`11ceae0d88e9c800eb77916e3244fbd231ad81bb`](https://github.com/holmhq/holm/tree/11ceae0d88e9c800eb77916e3244fbd231ad81bb).
+client implementation, not a parallel server contract. The architecture was
+reviewed against Holm `0.182.0`; public behaviour and SDK fixtures are cited here.
+Holm maintainers keep internal verification and the source map privately.
 
 ## Architectural thesis
 
@@ -317,7 +317,7 @@ signal where relevant.
 
 Holm does not yet expose the universal capability manifest described here. Until
 it does, production adapters use conservative, conformance-generated manifests
-pinned to named Holm commits and probes. They may advertise proven existing
+reviewed against named Holm versions and public behaviour probes. They may advertise proven existing
 routes, but must not infer action, private realtime, presence, scope, oplog,
 desktop, or mobile support from a Holm version number.
 
@@ -917,7 +917,7 @@ not rely on a public CDN at runtime and never use `@main`.
 ## Migration and compatibility policy
 
 Breaking redesign is allowed, but behavior is not claimed migrated until a
-conformance fixture names a Holm source path and commit.
+conformance fixture names a Holm version and public behaviour.
 
 ### Existing `holm-sdk`
 
@@ -945,12 +945,12 @@ global debug state, browser assumptions, or implicit writes.
 - Each adopted namespace gets a machine-readable adopted/redesigned/deferred/
   excluded ledger at its migration issue.
 - Source and generated artifacts both pass tests.
-- Holm behavior references a named commit and protocol fixture.
+- Holm behaviour references a named version and protocol fixture.
 - No alias/deprecation/deletion occurs merely because a replacement exists.
 
 ## Baseline capability truth
 
-| Area | Holm at `11ceae0` | New SDK at this architecture checkpoint |
+| Area | Holm at `the Holm release tested` | New SDK at this architecture checkpoint |
 | --- | --- | --- |
 | App/admin HTTP | Existing zero-dependency JS client and audited wrappers are migration sources | Not implemented; planned behind web/Node transport conformance |
 | Browser member auth | Existing cookie and explicit-token app flows | Not implemented; explicit web auth/caller adapters proposed |
@@ -1041,23 +1041,12 @@ approval is required for the load-bearing recommendations in
 
 Issue `#003` must not begin until that review approves or revises this contract.
 
-## Pinned evidence
+## Public conformance references
 
-### Universal runtime and design issues
+- [Holm documentation](https://holmhq.com/llms-full.txt)
+- [Holm website](https://holmhq.com)
+- [Public V1 specification](https://v1-spec.zyt.app/llms.txt)
+- SDK migration ledgers: `docs/migration.md` and `koder/evidence/`.
 
-- [Proposal 001 — Universal App Runtime](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/proposals/001_universal_app_runtime/INDEX.md)
-- [Issue 486 — extraction map](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/issues/486_universal_app_runtime_extraction_map/INDEX.md)
-- [Issue 085 — Holm Protocol](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/issues/085_holm_protocol/INDEX.md)
-- [Issue 196 — `holm-state` / `holm-ui`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/issues/196_holm_ui_framework/INDEX.md)
-- [Issue 341 — app scopes](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/issues/341_app_member_scope_semantics/INDEX.md)
-- [Issue 342 — collaboration/CRDT](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/issues/342_collaboration_crdt_strategy/INDEX.md)
-- [Issue 485 — framework compatibility](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/issues/485_node_lite_framework_compatibility_probe/INDEX.md)
-- [Issue 517 — realtime gaps](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/koder/issues/517_realtime_channel_auth_presence/INDEX.md)
-
-### Existing implementation evidence
-
-- [`packages/holm-sdk/index.js`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-sdk/index.js)
-- [`client.js`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-sdk/client.js), [`cache.js`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-sdk/cache.js), [`app.js`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-sdk/app.js), and [`runtime.js`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-sdk/runtime.js)
-- [`errors.js`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-sdk/errors.js) and [`build.sh`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-sdk/build.sh)
-- [`packages/holm-state/src/`](https://github.com/holmhq/holm/tree/11ceae0d88e9c800eb77916e3244fbd231ad81bb/packages/holm-state/src)
-- [`internal/hosting/ws.go`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/internal/hosting/ws.go) and [`realtime.go`](https://github.com/holmhq/holm/blob/11ceae0d88e9c800eb77916e3244fbd231ad81bb/internal/hosting/realtime.go)
+Historical maintainer design reviews inform this contract, but private source
+paths, commit identities and implementation names are not contributor inputs.

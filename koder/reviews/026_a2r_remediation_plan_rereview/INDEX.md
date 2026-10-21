@@ -20,7 +20,7 @@ p3: 0
 Independent re-review of Issue `#016` remediation planning family `002` after Review `#025` fixes, constrained to review-only authority and canonical set validation:
 
 - Governance/constraints: `AGENTS.md`, `koder/STATE.md`, `koder/docs/EXECUTION.md`, `koder/docs/BLIND_ORCHESTRATION.md`.
-- Authority/problem source: Issue `#001`, Issue `#016`, Review `#024`, Review `#025`, `koder/docs/ARCHITECTURE.md`, `koder/docs/DECISIONS.md`, `koder/docs/HOLM_SOURCE_MAP.md`, `package.json`.
+- Authority/problem source: Issue `#001`, Issue `#016`, Review `#024`, Review `#025`, `koder/docs/ARCHITECTURE.md`, `koder/docs/DECISIONS.md`, [Holm public documentation](https://holmhq.com/llms-full.txt), `package.json`.
 - Plan/queue set under review: conveyor `S00`, slices `S01`-`S06`, queue `#002`.
 - Commit and anomaly target: reviewed HEAD must be `68684adce9e46d82eabf3c23f7d04e8059aaf5a2`; prior compact receipt long-SHA anomaly treated as serialization fault and reconciled against Git truth.
 

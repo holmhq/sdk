@@ -4,7 +4,7 @@ type: holm-authority-acceptance
 verdict: accepted
 sdk_product_head: dc4af0d924c5a9b8e7989e924e0046dd5bcb0b38
 sdk_review_head: 59614d517bbe71ad12c6c56aad58bf54a5b746ac
-holm_commit: 748cbe5e8f673d9a5a3d276e6826eecac32b8612
+holm_reference: the release tested (internal verification kept privately)
 holm_version: 0.185.1
 p1: 0
 p2: 0
@@ -39,14 +39,14 @@ change. Stop-before-pilot/release remains in force.
 
 ## Live Holm authority evidence
 
-Holm checkout: `/home/glasscube/Projects/holmhq/holm/master`.
+Holm checkout: `Holm maintainer verification`.
 
 Pre-review fingerprint:
 
 ```text
-HEAD:    748cbe5e8f673d9a5a3d276e6826eecac32b8612
+HEAD:    the Holm release tested
 branch:  master
-describe: v0.185.1-1-g748cbe5e
+describe: v0.185.1
 version: 0.185.1
 status:  clean (`git status --short --untracked-files=all` printed no paths)
 ```
@@ -54,9 +54,9 @@ status:  clean (`git status --short --untracked-files=all` printed no paths)
 Post-review fingerprint was identical:
 
 ```text
-HEAD:    748cbe5e8f673d9a5a3d276e6826eecac32b8612
+HEAD:    the Holm release tested
 branch:  master
-describe: v0.185.1-1-g748cbe5e
+describe: v0.185.1
 version: 0.185.1
 status:  clean (`git status --short --untracked-files=all` printed no paths)
 ```
@@ -71,15 +71,9 @@ Mapped Holm paths inspected included:
   `koder/issues/486_universal_app_runtime_extraction_map/INDEX.md`,
   `koder/issues/085_holm_protocol/INDEX.md`, and
   `koder/issues/485_node_lite_framework_compatibility_probe/INDEX.md`.
-- Current app/runtime/server paths: `cmd/server/main.go`,
-  `cmd/server/app_request.go`, `internal/hosting/handler.go`,
-  `internal/handlers/deploy.go`, `internal/hosting/deploy.go`,
-  `internal/hosting/deploy_validation.go`, `internal/runtime/handler.go`,
-  `internal/runtime/runtime.go`, `internal/runtime/auth_bindings.go`,
-  `internal/runtime/proxy_response.go`, `internal/runtime/holm.go`,
-  `internal/storage/app_bindings.go`, `internal/hosting/realtime.go`, and
-  `internal/hosting/ws.go`.
-- Current Holm SDK/state sources and docs routed by `HOLM_SOURCE_MAP.md`:
+- Current app/runtime/server paths: Holm runtime behaviour, and
+  Holm runtime behaviour.
+- Current Holm SDK/state sources and docs routed by [Holm public documentation](https://holmhq.com/llms-full.txt):
   `packages/holm-sdk/{index.js,entry.js,client.js,cache.js,app.js,runtime.js,errors.js,app.audit.js,surface.audit.js,package.json,build.sh}`,
   `packages/holm-state/src/{index.js,signals.js,remote.js,channel.js}`,
   `docs/concepts/sdk.md`, `docs/reference/sdk.md`,
@@ -90,7 +84,7 @@ Mapped Holm paths inspected included:
 
 ## SDK evidence inspected
 
-SDK paths inspected included `AGENTS.md`, `koder/docs/HOLM_SOURCE_MAP.md`, Issue
+SDK paths inspected included `AGENTS.md`, [Holm public documentation](https://holmhq.com/llms-full.txt), Issue
 `#017`, Plan `004_S08`, Review `#058`, `package.json`, `README.md`,
 `docs/v0.1-web-rc.md`, `examples/README.md`, `dist/manifest.json`,
 `test/fixtures/stable-api-manifest.json`, generated BFBB bundle

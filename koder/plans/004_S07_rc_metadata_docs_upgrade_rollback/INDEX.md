@@ -38,9 +38,8 @@ closing broad foundation docs.
   `D013`/`D014`, `package.json`, examples README, root README if it already
   contains SDK usage, generated manifest/size/license reports, and package
   exports.
-- Authority drift check: read-only Holm Issue `#534` at
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088`; docs must preserve GET/POST as
-  Holm's app wire contract and BFBB authored-web precedence.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm `package.json` remains private and any `0.1.0-rc.1` marker is metadata
   only unless the owner explicitly approves a version bump.
 

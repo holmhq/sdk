@@ -38,10 +38,8 @@ exports or unreviewed stable API drift.
 - Read current `package.json`, stable source barrels under `src/{index,core,
   transports,app,web,state,test}.ts` or `src/*/index.ts`, declaration fixtures,
   `test/dist/index.test.mjs`, and generated `dist/**` only as needed.
-- Authority drift check: verify Holm Issue `#534` remains readable at
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088` via read-only `git show`; if live
-  authority materially changes package/export assumptions, stop for owner
-  review instead of widening the API.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm no queue, release, version bump, dependency, or cross-repo action is
   required for this slice.
 

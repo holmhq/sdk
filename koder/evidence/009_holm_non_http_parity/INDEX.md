@@ -6,7 +6,7 @@ issue: 019
 slice: S4
 captured: 2026-08-17
 holm_version_marker: 0.208.0
-holm_commit: 44d51d0f785ff6208ecc034c720e76a8543891be
+holm_reference: the release tested (internal verification kept privately)
 sdk_baseline: c06f98fd6bd8ad447f2ae3dbe925b911e7e64bef
 schema: holm.sdk.non-http-parity/1
 ---
@@ -24,18 +24,12 @@ that Holm's 261-row HTTP registry cannot encode:
 - Holm app-manifest/node gates versus the SDK Node adapter's actual offers; and
 - current action/schema authority after Holm's contract-first redesign.
 
-The machine-readable map is
-[`non-http-parity.json`](non-http-parity.json). Every claim cites a source file
-whose SHA-256 is pinned to clean Holm commit
-`44d51d0f785ff6208ecc034c720e76a8543891be` or to SDK product baseline
-`c06f98fd6bd8ad447f2ae3dbe925b911e7e64bef`. Holm remained read-only.
-
-The Holm source snapshot is exact but post-release: its version marker is
-`0.208.0` and `git describe` is `v0.208.0-128-g44d51d0f7`. The nearest release
-commit is `93606188a1ee064e8aade678891406a671609eb5`. The map therefore records
-implementation truth, fixture truth, design truth, and negative evidence
-separately; it does not promote post-release source into a public compatibility
-promise.
+The original machine-readable source/parity dump (`non-http-parity.json`) was
+removed during the public-tree privacy cleanup, together with its internal
+provenance validator/tests. Maintainers keep the source map and exact internal
+verification privately. This summary preserves the reviewed SDK boundary and
+historical outcomes, not a production compatibility promise inferred from a
+post-release implementation checkpoint around Holm `0.208.0`.
 
 ## Result
 
@@ -140,49 +134,24 @@ an independent state/query registry remain absent. SDK architecture decision
 `D009` and deferred Issue `#010` require an explicit future reconciliation with
 `#534` before product implementation.
 
-## Validation contract
-
-`scripts/check-holm-non-http-parity.mjs` fails closed on:
-
-- wrong schema or malformed complete Holm/SDK provenance, including capture
-  date, nearest release tag/commit, describe/version relationships, and pinned
-  resolution of that nearest tag;
-- missing one of the four required lanes;
-- duplicate `lane + id` identity;
-- unknown authority/status/disposition vocabulary and contradictory
-  authority-to-Holm-status combinations, including absence and supersession;
-- stale or unreferenced source evidence; every Default Projection payload named
-  by its handoff is now a direct pinned source rather than only a transitive
-  manifest claim;
-- non-deterministic source, entry, operation, or evidence order;
-- mismatched exact summary;
-- changed SDK evidence files or an expected-absent SDK surface appearing; and
-- optional pinned/live Holm commit, version, describe, cleanliness, or source
-  hash drift.
-
-Normal CI runs the self-contained SDK/map check. Read-only authority checks are
-explicit:
+## Current contributor validation
 
 ```text
-npm run test:holm-non-http-parity
-node scripts/check-holm-non-http-parity.mjs --check-pinned \
-  --holm-root ~/Projects/holmhq/holm/master
-node scripts/check-holm-non-http-parity.mjs --check-live \
-  --holm-root ~/Projects/holmhq/holm/master
+npm run check:public-privacy
+npm run test:source
+npm run release:check
 ```
 
-The pinned-object check is safe while another Holm session moves its checkout.
-A live check intentionally reports any newer/dirty peer state instead of
-silently changing this map.
+The former internal parity validator is no longer part of public CI. Changes to
+this SDK require versioned public behaviour evidence, deterministic fixtures and
+a maintainer conformance verdict when a runtime contract is uncertain. Public
+notes never contain internal source paths, provenance IDs or Go identifiers.
 
-## Concurrent Holm drift observed
+## Historical validation boundary
 
-The snapshot was read and hashed while Holm's tracked tree was clean at
-`44d51d0f…`. Later in this SDK session the read-only checkout advanced and an
-unrelated route-registry run began modifying tracked route-registration files.
-The live mode correctly reported drift; the pinned-object mode continued to
-verify every mapped byte at `44d51d0f…`. S4 did not inspect unfinished
-implementation detail, alter Holm, or repin from a dirty peer tree.
+The original maintainer review distinguished implementation, fixture, design
+and negative evidence. Later runtime changes did not silently expand the accepted
+SDK support boundary or authorize new APIs. No Holm write occurred.
 
 ## Review status and stop gate
 
@@ -199,11 +168,11 @@ Focused `11/11`, 231 source tests, full `npm run ci`, diff hygiene, and fresh
 pinned Holm verification pass. Independent Review
 [`#073`](../../reviews/073_issue019_s4_non_http_parity_remediation/INDEX.md)
 reproduced all seven prior defects against the old checkpoint, verified the
-remediation and all nine payloads against pinned Holm `44d51d0f…`, and approved
+remediation and all nine payloads against pinned Holm `the Holm release tested…`, and approved
 cumulative S4 range `c06f98f..f623a8c` with `P1=0 P2=0 P3=0`. S4 is accepted
 and Issue `#019` is resolved at the mapping-only boundary.
 
-This evidence and its validator are the full S4 product. No public SDK source,
+The retained review summary records the historical S4 outcome. No public SDK source,
 `dist/**`, version, release, publication, deployment, Holm, Medialab, or `@zyt`
 change is authorized here. WebSocket transport, direct Sobek capabilities,
 capability discovery, action helpers, and architecture amendments each require

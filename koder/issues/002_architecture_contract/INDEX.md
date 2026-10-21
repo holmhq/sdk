@@ -6,7 +6,7 @@ updated: 2026-07-14
 tags: architecture, contracts, capabilities, extensions
 parent: 001
 source:
-  holm_commit: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+  holm_reference: the release tested (internal verification kept privately)
 type: design
 issue_kind: slice
 autonomy_window: A1
@@ -41,9 +41,9 @@ settle:
 - error, cancellation, clock, lifecycle, and serialization rules;
 - what can be redesigned versus what requires migration parity evidence.
 
-Use `koder/docs/HOLM_SOURCE_MAP.md`; read Holm Proposal 001 and Issue 486 in
-full. Explicitly reconcile this design with Issues 085, 196, 341, 342, 485, and
-517 rather than treating web HTTP as the universal center.
+Use [Holm public documentation](https://holmhq.com/llms-full.txt) and the
+maintainer-reviewed runtime boundaries recorded here. Do not treat HTTP as the
+universal center or instruct contributors to inspect private design sources.
 
 ## Autonomous Work Contract
 
@@ -83,9 +83,9 @@ approval activates A2.
 
 ## A1 Progress and Evidence
 
-Architecture baseline: Holm
-`11ceae0d88e9c800eb77916e3244fbd231ad81bb` (`v0.182.0`). The checkout was at
-that exact clean commit while evidence was read. No Holm file was modified.
+Architecture baseline: Holm `v0.182.0`. Maintainer verification found the
+relevant behaviour unchanged while the evidence was reviewed. No Holm file was
+modified; internal provenance is retained privately.
 
 | Criterion | Evidence | State |
 | --- | --- | --- |
@@ -104,7 +104,7 @@ that exact clean commit while evidence was read. No Holm file was modified.
   commit, along with Issues 085, 196, 341, 342, 485, and 517.
 - Existing `packages/holm-sdk` factory, transport, cache, app runtime, error, and
   build sources; all `packages/holm-state/src` primitives; and current
-  `internal/hosting/{ws.go,realtime.go}` were inspected.
+  Holm runtime behaviour were inspected.
 - Current truth is recorded explicitly: action registry, app scopes,
   private/presence realtime, collaboration substrate, desktop, and mobile are
   not claimed shipped.

@@ -6,36 +6,25 @@ issue: 019
 slice: S2-S3
 schema: holm.sdk.route-dispositions/1
 holm_version: 0.207.0
-holm_commit: d66628674232b01e8c95d5b86617bc660d61410f
+holm_reference: the release tested (internal verification kept privately)
 route_count: 261
 updated: 2026-08-17
 ---
 
 # Holm v0.207.0 SDK Route Dispositions
 
-[`route-dispositions.json`](route-dispositions.json) is the curated SDK policy
-layer over the signed machine snapshot in
-[`../007_holm_v0207_route_registry/route-registry.json`](../007_holm_v0207_route_registry/route-registry.json).
-It classifies every composite route identity without treating route existence as
-permission to generate a public method.
+The historical policy layer classified all 261 reviewed route contexts without
+assuming route existence permitted a public SDK method. The original internal
+routing dump (`route-dispositions.json`) was removed in the public-tree privacy
+cleanup. Maintainers retain internal evidence privately; this summary and the
+public app/admin route ledgers preserve the product decisions.
 
 ## Composition
 
-The executable ledger keeps machine facts and human decisions separate:
-
-1. the signed snapshot supplies exact `method + path + source_group + lane`
-   identities and route attributes;
-2. the reviewed Issue `#007` app and Issue `#008` admin ledgers supply existing
-   adopted, redesigned, and excluded decisions;
-3. 65 exact-identity overrides classify newly visible routes, preserve deliberate
-   cross-ledger choices, and prevent a method/path match from collapsing distinct
-   lanes.
-
-`node scripts/check-holm-route-dispositions.mjs` resolves that composition and
-fails closed on missing, duplicate, stale, or conflicting decisions; provenance
-or summary drift; noncanonical JSON; unsupported classification/implementation
-pairs; preview S3 admission; or an S3 candidate without request and result
-authority.
+The historical composition kept route facts separate from SDK adoption policy,
+inherited the reviewed app/admin decisions, and explicitly distinguished auth
+and host contexts. Its internal-only validator and regression tests were removed
+with the dump; they are no longer public CI gates.
 
 ## Full disposition summary
 
@@ -66,17 +55,12 @@ cite multiple authority rows.
 
 The two S3 promotions are:
 
-- `GET /api/system/db/retention/status` →
-  `admin:system.dbRetentionStatus`; request authority is
-  `internal/handlers/system.go#SystemDBRetentionStatusHandler`, and result
-  authority is `internal/database/db_retention.go#DBRetentionStatus`.
-- `POST /api/system/db/retention/run` →
-  `admin:system.dbRetentionRun`; request and dry-run enforcement authority is
-  `internal/handlers/system.go#SystemDBRetentionRunHandler`, and result authority
-  is `internal/database/db_retention.go#DBRetentionReport`.
+- `GET /api/system/db/retention/status` → `admin:system.dbRetentionStatus`:
+  authenticated read-only status, no request body.
+- `POST /api/system/db/retention/run` → `admin:system.dbRetentionRun`:
+  authenticated, bodyless, server-enforced dry-run.
 
-Both references are pinned by this evidence to Holm commit
-`d66628674232b01e8c95d5b86617bc660d61410f`. S3 implements exact readonly
+These public Holm `0.207.0` contracts map to readonly
 `AdminDBRetentionStatus` and `AdminDBRetentionReport` declarations. The remote
 report narrows `dry_run` to `true` and `applied` to `false`; both generated
 methods expose only bodyless operation controls.
@@ -104,24 +88,20 @@ Focused RED evidence is in
 [`../../../test/evidence/issue019-s2-red.md`](../../../test/evidence/issue019-s2-red.md)
 and
 [`../../../test/evidence/issue019-s3-red.md`](../../../test/evidence/issue019-s3-red.md).
-Normal CI runs the offline-only disposition gate after validating the signed
-route snapshot:
+Current CI checks public-tree privacy, the supported admin route ledger,
+source/generated behaviour and package integrity:
 
 ```text
-npm run test:holm-route-dispositions
-npm run test:holm-route-registry
+npm run check:public-privacy
+npm run test:admin-api
 npm run test:source
-npm run test:ci-workflow
 npm run ci
 ```
 
-Observed at the accepted S2 checkpoint: focused disposition tests passed 6/6,
-registry tests passed 18/18, source tests passed 230/230, full CI and diff hygiene
-passed. The installed signed Holm binary is now `v0.208.0` at `93606188…`; its
-261-route array is byte-equivalent to this snapshot and the S2-relevant Holm
-source paths have no `d6662867..93606188` diff. The explicit live checker
-correctly fails on version/commit provenance only, and S2 does not rewrite the
-accepted S1 snapshot.
+Historical S2 validation passed 6/6 disposition tests, 18/18 registry tests,
+230/230 source tests, full CI and diff hygiene. A maintainer check against Holm
+`0.208.0` reported unchanged route behaviour. Internal routing provenance is no
+longer kept in this public tree.
 
 S2 changed no public package surface. Independent Review
 [`#070`](../../reviews/070_issue019_s2_route_dispositions/INDEX.md) approved
@@ -134,7 +114,7 @@ tracked package artifacts. Focused checks, 231 source tests, full `npm run ci`,
 267-artifact reproducibility, package install smoke, licenses, coverage, size,
 and diff hygiene pass. Fresh read-only Holm admin authority matches 176 keys,
 191 route/method contracts, 218 methods, and 18 exclusions; relevant source is
-unchanged from `d6662867…`, and the signed `v0.208.0` registry drift remains
+unchanged from `the Holm release tested…`, and the signed `v0.208.0` registry drift remains
 provenance-only.
 
 S3 does not change the package version, publish, release, deploy, write Holm or

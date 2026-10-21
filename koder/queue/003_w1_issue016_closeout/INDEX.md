@@ -22,14 +22,14 @@ constraints:
 
 Close Issue `#016`: remediate Review `#033` P2-2 (unbounded `keyGenerations`
 growth in `src/transports/cache.ts`), obtain focused independent confirmation,
-then fresh read-only Holm-authority A2 acceptance at a named Holm commit.
+then fresh read-only Holm-authority A2 acceptance at a tested Holm version.
 
 ## Entries
 
 | Order | Ref | Status | Validation | Stop |
 | ---: | --- | --- | --- | --- |
 | 1 | `koder/reviews/033_a2r_integrated_sdk_remediation_rereview_2/INDEX.md` P2-2 + required next action 1 (bound `keyGenerations`; strict TDD; owned `dist/` artifacts) | done | `npm run ci`; `FORCE_COLOR=1 npm run ci`; `NODE_OPTIONS='--test-reporter=tap' npm run test:coverage`; `FORCE_COLOR=1 NODE_OPTIONS='--test-reporter=tap' npm run test:coverage`; clean tree | entry review must report 0 P1/P2 on the fix; `max_fix_cycles: 2`; scope limited to `src/transports/cache.ts` + tests + owned dist — any wider change blocks |
-| 2 | Issue `#016` acceptance criterion: fresh read-only Holm-authority A2 review at a named current Holm commit (`~/Projects/holmhq/holm/master`, read-only); durable review artifact `koder/reviews/034_*` | done | review artifact filed with `verdict`, `p1`, `p2`, `p3`, pinned Holm commit; A2 accepted requires 0 P1/P2 | any P1/P2 finding → block and return to owner; no Holm writes |
+| 2 | Issue `#016` acceptance criterion: fresh read-only Holm-authority A2 review at a tested Holm version (`Holm maintainer verification`, read-only); durable review artifact `koder/reviews/034_*` | done | review artifact filed with `verdict`, `p1`, `p2`, `p3`, tested Holm version; A2 accepted requires 0 P1/P2 | any P1/P2 finding → block and return to owner; no Holm writes |
 | 3 | Close Issue `#016` (check remaining acceptance boxes, ledger S06 → done) + batched checkpoint | done | issue frontmatter/ledger updated; `koder/STATE.md` mirror current; clean, committed tree | coordinator-owned accounting; no worker dispatch |
 
 ## Completion contract
@@ -72,9 +72,9 @@ then fresh read-only Holm-authority A2 acceptance at a named Holm commit.
   fix semantics re-reviewed (refcounted generation release, structural
   zero-residue test, red-proof), all four CI modes green at `fe7879e`.
   Entry 1 done; 0 outstanding P1/P2.
-- Entry 2 done directly: Review `#034` accepts A2 at Holm `ded755f8`
-  (v0.184.0) — authority paths drift-free since `#024` HEAD `bdcc8cc5`
-  (`internal/api/`, `cmd/server/app.go`, `internal/hosting/`,
+- Entry 2 done directly: Review `#034` accepts A2 at Holm `the Holm release tested`
+  (v0.184.0) — authority paths drift-free since `#024` HEAD `the Holm release tested`
+  (Holm runtime behaviour,
   `packages/holm-{sdk,state}`, SDK docs); no Holm writes.
 - Entry 3 done: Issue `#016` resolved (all acceptance boxes checked,
   ledger S01-S06 done), this checkpoint commit.

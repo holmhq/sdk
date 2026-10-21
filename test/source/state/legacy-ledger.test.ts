@@ -7,7 +7,7 @@ const ledgerPath = "koder/evidence/002_issue006_state_legacy/INDEX.md";
 test("Issue 006 legacy holm-state disposition ledger is complete and keeps state canonical", () => {
   const ledger = readFileSync(ledgerPath, "utf8");
 
-  assert.match(ledger, /source_commit:\s*11ceae0d88e9c800eb77916e3244fbd231ad81bb/);
+  assert.match(ledger, /holm_version:\s*0\.182\.0/);
   assert.match(ledger, /packages\/holm-state\/src\/remote\.js/);
   assert.match(ledger, /packages\/holm-state\/src\/channel\.js/);
   assert.match(ledger, /packages\/holm-state\/src\/guard\.js/);

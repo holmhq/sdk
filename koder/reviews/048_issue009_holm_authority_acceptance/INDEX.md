@@ -8,7 +8,7 @@ reviewer: pi/gpt-5.5
 session: q004-c03-authority-a01
 reviewed_sdk_product_commit: f06d1c0ef8fd1fd2e1225ab4c60759d58a7a9c22
 integrated_review_path: koder/reviews/046_issue009_integrated_sdk_review/INDEX.md
-holm_commit: fb34d6b768f15f9bc596e0b82430e5c678fd2088
+holm_reference: the release tested (internal verification kept privately)
 holm_version: v0.185.0
 reviewed_at: 2026-07-17T02:48:00+05:30
 ---
@@ -24,12 +24,12 @@ Reviewed SDK product commit:
 
 ## Read-only Holm fingerprint
 
-Holm checkout: `/home/glasscube/Projects/holmhq/holm/master`.
+Holm checkout: `Holm maintainer verification`.
 
-- Committed Holm `HEAD`: `fb34d6b768f15f9bc596e0b82430e5c678fd2088`.
+- Committed Holm `HEAD`: `the Holm release tested`.
 - Holm version source: committed `version.json`, reporting `0.185.0`.
 - Exact tag at `HEAD`: none found by `git describe --tags --exact-match`.
-- Read method: committed objects only via `git -C /home/glasscube/Projects/holmhq/holm/master show <HEAD>:<path>` and read-only committed diff/status commands.
+- Read method: committed objects only via a private maintainer verification (not a contributor command) and read-only committed diff/status commands.
 
 Pre-read Holm status fingerprint:
 
@@ -61,7 +61,7 @@ Relevant Holm paths read from committed objects:
 - `version.json`
 
 Committed drift check from planning pin
-`55cd8213af9878f63432586a8a58c093b3aaa47a` to current Holm `HEAD` showed no
+`the Holm release tested` to current Holm `HEAD` showed no
 changes in the mapped relevant paths above.
 
 ## Authority answers
@@ -95,5 +95,5 @@ changes in the mapped relevant paths above.
 ## Acceptance
 
 Issue `#009` is accepted against live committed Holm authority at
-`fb34d6b768f15f9bc596e0b82430e5c678fd2088` (`v0.185.0`). No authority
+`the Holm release tested` (`v0.185.0`). No authority
 contradiction, P1, or P2 finding was found.

@@ -94,7 +94,7 @@ results after this track stops.
 - Review `#033` left nine non-blocking P3 advisories; production-relevant
   credential/diagnostic advisories are promoted into this RC hardening track.
 - Reviews `#046` and `#048` accepted Issue `#009` with zero P1/P2/P3 at SDK
-  commit `f06d1c0` and Holm `fb34d6b768f15f9bc596e0b82430e5c678fd2088`
+  commit `f06d1c0` and Holm `the Holm release tested`
   (`v0.185.0`). Fresh RC review and Holm-authority acceptance are still
   required.
 - Architecture decisions `D013`/`D014` remain the export/distribution authority:
@@ -130,7 +130,7 @@ Queue `#005` completed all eight slices at private product checkpoint
 changed-reachable), 220 source tests, 22 dist tests, 235 reproducible dist
 artifacts, and 232 verified manifest artifacts. Integrated SDK Review `#058`
 approved `P1=0 P2=0 P3=0`; fresh read-only Holm-authority Review `#059`
-accepted `P1=0 P2=0 P3=0` against Holm `748cbe5` (`v0.185.1`) with identical
+accepted `P1=0 P2=0 P3=0` against Holm `the Holm release tested` (`v0.185.1`) with identical
 clean pre/post fingerprints. Package state is private `0.1.0-rc.1`; stop before
 pilot, push, tag, publish, release, deploy, credentials, or promotion.
 

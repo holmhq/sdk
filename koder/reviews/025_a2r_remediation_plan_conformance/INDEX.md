@@ -9,8 +9,8 @@ issue: 016
 plan_family: 002
 queue: 002_a2r_authority_conformance
 reviewed_commit: b1bac2d7f1b0ec5129c436e07d547661c6b2ff58
-holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
-holm_head_reviewed: bdcc8cc51eccef9d9f195a2d35d5db1af39b1655
+holm_reference: the release tested (internal verification kept privately)
+holm_reference: the release tested (internal verification kept privately)
 p1: 1
 p2: 2
 p3: 2
@@ -23,12 +23,12 @@ p3: 2
 Independent plan-review of the A2R remediation plan family `002` and Queue
 `#002` at SDK `b1bac2d`, against Holm-authority Review `#024`, Issue `#016`, and
 approved decisions `D001`-`D015`. Reviewed the full canonical set: `AGENTS.md`,
-`koder/STATE.md`, `koder/docs/{EXECUTION,BLIND_ORCHESTRATION,ARCHITECTURE,DECISIONS,HOLM_SOURCE_MAP}.md`,
+`koder/STATE.md`, `koder/docs/{EXECUTION,BLIND_ORCHESTRATION,ARCHITECTURE,DECISIONS}.md`,
 `koder/issues/001` and `016`, `koder/reviews/024`, conveyor
 `koder/plans/002_S00_a2r_conveyor/INDEX.md`, the six slice plans
 `002_S01`-`002_S06`, and `koder/queue/002_a2r_authority_conformance/INDEX.md`.
 Cross-checked cited SDK seams and `package.json`; Holm conclusions pinned to
-baseline `11ceae0` / reviewed HEAD `bdcc8cc`. This is review only; no plan,
+baseline `the Holm release tested` / reviewed HEAD `the Holm release tested`. This is review only; no plan,
 queue, product, or state file was edited.
 
 ## Verdict
@@ -76,7 +76,7 @@ give: an executable first red test (exact `test/source/**` path + failing
 assertion), a minimal green seam citing the exact A2 source file/line from Review
 `#024`, a refactor step, the full validation command list (aligned with
 `package.json` and Queue `#002`), bounded per-file write-ownership, authority
-evidence pinned to Holm `11ceae0`/`bdcc8cc`, and the row stop rule. Verify no
+evidence pinned to Holm `the Holm release tested`/`the Holm release tested`, and the row stop rule. Verify no
 `$(...)` / single-quoted-heredoc literal survives and every body is substantive.
 
 ### P2-1 — S00 conveyor prescribes npm scripts that do not exist
@@ -197,8 +197,8 @@ mutation. Commands and exits recorded during finalization:
 5. `git diff --name-only b1bac2d7f1b0ec5129c436e07d547661c6b2ff58` → only this
    review path changed.
 
-Evidence pins: SDK reviewed `b1bac2d`; Holm baseline `11ceae0`; Holm HEAD
-`bdcc8cc`. No Holm drift affecting these conclusions was assumed.
+Evidence pins: SDK reviewed `b1bac2d`; Holm baseline `the Holm release tested`; Holm HEAD
+`the Holm release tested`. No Holm drift affecting these conclusions was assumed.
 
 ## Required Next Action
 

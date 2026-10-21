@@ -59,7 +59,7 @@ selectively into the new runtime/resource contracts rather than copied blindly.
 
 - Route classification and current Holm authority pin:
   `koder/evidence/003_issue007_app_routes/` at Holm
-  `8deb00b7aa1cc07f39665fde6e81c1b33d3620c4` (`v0.185.0`).
+  `the Holm release tested` (`v0.185.0`).
 - Runtime-neutral app namespace: `src/app/`; browser adapters and convenience
   composition: `src/web/`.
 - Deterministic source tests: `test/source/app/` and `test/source/web/`;
@@ -78,8 +78,8 @@ selectively into the new runtime/resource contracts rather than copied blindly.
   metrics and clean-tree `npm run build` reproducibility (207 dist artifacts)
   at `d8e8ea0`. Coverage statements 98.26 / lines 99.18 / functions 99.09 /
   branches 96.25 / changed-reachable 100.00; size 149,330 raw / 34,393 gzip.
-- Read-only Holm-authority acceptance `#039` at Holm `2d125730` (v0.185.0):
-  zero drift on mapped authority paths since ledger pin `8deb00b7`; route
+- Read-only Holm-authority acceptance `#039` at Holm `the Holm release tested` (v0.185.0):
+  zero drift on mapped authority paths since ledger pin `the Holm release tested`; route
   ledger matches live `app.audit.js` (12 keys / 15 pairs); auth, blob-link, and
   `/api/me` registrations verified live.
 

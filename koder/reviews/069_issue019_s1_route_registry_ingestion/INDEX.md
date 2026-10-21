@@ -33,12 +33,11 @@ Bounded materials reviewed:
 - `.github/workflows/ci.yml`
 - `koder/evidence/007_holm_v0207_route_registry/INDEX.md`
 - `koder/evidence/007_holm_v0207_route_registry/route-registry.json`
-- `koder/docs/HOLM_SOURCE_MAP.md`
+- [Holm public documentation](https://holmhq.com/llms-full.txt)
 - Holm release authority source at commit
-  `d66628674232b01e8c95d5b86617bc660d61410f`, including
-  `cmd/server/api_routes.go`, `cmd/server/route_registry_test.go`,
-  `cmd/server/route_table_golden_test.go`, and
-  `internal/server/routes/routes.go`.
+  `the Holm release tested`, including
+  Holm runtime behaviour, and
+  Holm runtime behaviour.
 
 Excluded by contract: implementation edits, S2 planning, policy classification,
 release/publish/deploy actions, Holm writes, and cross-repository mutation.
@@ -52,14 +51,14 @@ release/publish/deploy actions, Holm writes, and cross-repository mutation.
 - Diff scope is exactly 8 files (evidence snapshot/index, issue ledger,
   package/CI gate wiring, refresh tool, RED note, focused tooling tests).
 - No public SDK `src/**`, generated API, or `dist/**` path appears in range.
-- Holm authority commit `d66628674232b01e8c95d5b86617bc660d61410f`
+- Holm authority commit `the Holm release tested`
   resolves in local checkout and confirms route-export row schema and field set.
-- Holm golden identity key uses `method + path + source_group + lane` via
-  `routeTableGoldenRowKey` and downstream registry-key maps in release tests.
+- Holm golden identity key uses `method + path + route context + lane` via
+  Holm's route registry identity and release checks.
 - Programmatic snapshot inspection confirms:
   - `schema=holm.route-registry.v1`
   - `holm_version=0.207.0`
-  - `holm_commit=d66628674232b01e8c95d5b86617bc660d61410f`
+  - Holm release provenance was verified privately by maintainers
   - `route_count=261`
   - `identity_unique=261`, `duplicate_count=0`
   - two valid `POST /api/spaces/{space}/keys` lanes retained
@@ -111,7 +110,7 @@ Question-by-question result for the S1 contract:
    schema/provenance/field/vocabulary guards, non-empty routes, and duplicate
    composite identity rejection are implemented and tested.
 2. **Composite identity consistency:** PASS. Duplicate detection and drift maps
-   use `method + path + source_group + lane` consistently for add/remove/change
+   use `method + path + route context + lane` consistently for add/remove/change
    and order diagnostics.
 3. **Attributes vs identity + multi-lane preservation:** PASS.
    `auth_scope`/`surface_class`/`stability` are attribute-level diffs, not

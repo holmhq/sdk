@@ -38,7 +38,7 @@ That leaves a reachable abort path outside S12's upload cancellation contract: f
 - Clean/synced `main` was confirmed at implementation commit `f9f3cd588af0d53e8c1842060bc605efd63925fa` before review; validation left the tree clean and synchronized.
 - Implementation sidecar records red evidence for `npm run test:source -- upload`; S12 tests cover upload composition, acknowledged progress/resume, chunk abort, binary diagnostics, web/Node structural helpers, declaration consumers, dist smoke, and the migration ledger.
 - The upload seam otherwise keeps core free of DOM/Node ambient types, keeps web/Node helper declarations isolated, and avoids app/admin wrappers, offline queues, Issue `#007+` scope, framework/resource expansion, publication/release/tag/deploy/credential work, direct SQLite, or cross-repository edits.
-- The Issue `#005` migration ledger is concise, pinned to Holm commit `11ceae0d88e9c800eb77916e3244fbd231ad81bb`, classifies resumable upload/progress/abort/binary diagnostics/fallback/app-admin wrapper behavior, and did not expose tokens, cookies, request bodies, file contents, or long Holm excerpts.
+- The Issue `#005` migration ledger is concise, pinned to Holm version `the Holm release tested`, classifies resumable upload/progress/abort/binary diagnostics/fallback/app-admin wrapper behavior, and did not expose tokens, cookies, request bodies, file contents, or long Holm excerpts.
 - Generated declarations, ESM artifacts, manifest, and size report are synchronized with reviewed source by validation.
 
 ## Validation

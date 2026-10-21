@@ -40,8 +40,8 @@ console.log(
 function validateLedger(document) {
   const failures = [];
   if (document.schema !== "holm.sdk.admin-route-audit/1") failures.push("unexpected ledger schema");
-  if (document.source?.repository !== "holmhq/holm" || !/^[0-9a-f]{40}$/.test(document.source?.commit ?? "")) {
-    failures.push("ledger must pin a full holmhq/holm commit");
+  if (document.source?.repository !== "holmhq/holm" || !/^\d+\.\d+\.\d+$/.test(document.source?.version ?? "")) {
+    failures.push("ledger must identify a public Holm version");
   }
   if (!Array.isArray(document.entries) || document.entries.length === 0) failures.push("ledger entries are missing");
   if (!Array.isArray(document.exclusions)) failures.push("ledger exclusions are missing");

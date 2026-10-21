@@ -36,7 +36,7 @@ closeout rather than an npm release or old-code deletion.
 
 Angular/Svelte/Vue examples; CLI/action, realtime, and collaboration extension
 examples; contribution/security/release-workflow docs; Holm template/docs
-migration notes; conformance refresh (already pinned to Holm `748cbe5` in W4 —
+migration notes; conformance refresh (already pinned to Holm `the Holm release tested` in W4 —
 refresh only when Holm moves). These follow demand, not the roadmap.
 
 ## Acceptance Criteria
@@ -67,8 +67,8 @@ refresh only when Holm moves). These follow demand, not the roadmap.
   `@holmhq/sdk@0.1.0`, tag `v0.1.0`, and the GitHub release are live.
 - Independent Review `#060` and narrow publish-gate Review `#061`: APPROVE,
   `P1=0 P2=0 P3=0`.
-- Live Holm source `afe4057` has no `packages/holm-sdk` or
-  `packages/holm-state` drift from accepted authority checkpoint `748cbe5`.
+- Live Holm source `the Holm release tested` has no `packages/holm-sdk` or
+  `packages/holm-state` drift from accepted authority checkpoint `the Holm release tested`.
 
 ## Non-Goals
 

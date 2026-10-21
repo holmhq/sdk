@@ -14,7 +14,7 @@ export type AdminPathValue = string | number;
 export type AdminPathValues = Readonly<Record<string, AdminPathValue>>;
 export type AdminUploadInput = Omit<UploadRequest, "path">;
 
-/** Exact Holm `DBRetentionFamilyStatusReport` JSON contract at v0.207.0. */
+/** Per-family retention status in Holm v0.207.0's public HTTP response. */
 export interface AdminDBRetentionFamilyStatusReport {
   readonly family: string;
   readonly last_status: string;
@@ -38,7 +38,7 @@ export interface AdminDBRetentionCandidate {
   readonly age_ms: number;
 }
 
-/** Exact Holm `DBRetentionFamilyReport` JSON contract at v0.207.0. */
+/** Per-family dry-run result in Holm v0.207.0's public HTTP response. */
 export interface AdminDBRetentionFamilyReport {
   readonly family: string;
   readonly rows: number;
@@ -54,8 +54,7 @@ export interface AdminDBRetentionFamilyReport {
 
 /**
  * Remote retention result. The authenticated HTTP operation is permanently
- * narrowed to dry-run behavior even though Holm's internal report also serves
- * local apply workflows.
+ * narrowed to dry-run behavior: dry_run is true and applied is false.
  */
 export interface AdminDBRetentionReport {
   readonly dry_run: true;

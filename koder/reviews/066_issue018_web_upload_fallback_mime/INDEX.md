@@ -5,7 +5,7 @@ created: 2026-07-20
 review_kind: independent_sdk_review
 issue: 018
 sdk_head: 6fca6cadf7a8c0bfbe62b92505a760a312d65eba
-holm_authority: 4d84c6b285c43a4bb97974179fff2fc7ccbf05d9
+holm_authority: the Holm release tested
 verdict: APPROVE
 p1: 0
 p2: 0
@@ -30,7 +30,7 @@ Reviewed surfaces were limited to the brief's bounded scope:
 - `test/dist/index.test.mjs`
 - `dist/web/upload-service.js`
 - affected `dist/manifest.json` entries
-- Holm `internal/runtime/handler.go` multipart file parsing at the pinned
+- Holm runtime behaviour multipart file parsing at the pinned
   authority commit
 - `src/web/upload.ts` chunk slicing behavior
 
@@ -95,14 +95,14 @@ None.
 ## Authority Check
 
 Pinned Holm authority
-`4d84c6b285c43a4bb97974179fff2fc7ccbf05d9` reads multipart file type from each
+`the Holm release tested` reads multipart file type from each
 part's `Content-Type` header, defaults only an absent header to
 `application/octet-stream`, stores bytes with that content type, and exposes
-`FileUpload.Type` from the same value.
+the runtime file's declared type from the same value.
 
 The local Holm checkout had advanced to
-`9fbc0b418674d39dfa6f6b98dd2a73155ff9c523` during this review. I checked the
-same `parseMultipartFiles` block there as well; the content-type behavior
+`the Holm release tested` during this review. I checked the
+same multipart HTTP behaviour there as well; the content-type behaviour
 relevant to this review is unchanged. No Holm edit is required.
 
 ## Gate Evidence

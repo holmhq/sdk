@@ -36,7 +36,7 @@ inventing a protocol beyond Holm's canonical GET/POST contract.
 
 The reviewed source family is approved by Review `#040` at SDK commit
 `bbf938857bdc0d5363a869e1bb4b6100ae8ac997`. Live Holm planning authority is
-Issue `#534` at commit `55cd8213af9878f63432586a8a58c093b3aaa47a`
+Issue `#534` at commit `the Holm release tested`
 (`v0.185.0`). The Holm checkout has unrelated pre-existing dirty work and is
 strictly read-only.
 
@@ -62,7 +62,7 @@ does not consume a semantic fix cycle.
 - `done_state`: Issue `#009` resolved with S01-S06 done, all acceptance boxes
   checked, four reporter/color CI modes green with identical coverage metrics,
   clean-tree build reproducibility, fresh integrated SDK review reporting zero
-  P1/P2, fresh read-only Holm-authority acceptance at a named current commit,
+  P1/P2, fresh read-only Holm-authority acceptance at a tested version,
   and a clean committed SDK tree.
 - `timebox_gate`: no new implementation phase after `2026-07-17 07:00 IST`;
   reserve through `07:45 IST` for validation, final review, durable accounting,
@@ -105,7 +105,7 @@ does not consume a semantic fix cycle.
   no-change report; no fallback is authorized. Process failures `0/6`.
 - Planning worker committed the six-slice family at `bbf9388`; independent
   Review `#040` approved it at `079f360` with `P1=0, P2=0, P3=0`, including
-  reconciliation of live Holm Issue `#534` at `55cd8213`.
+  reconciliation of live Holm Issue `#534` at `the Holm release tested`.
 - Overnight blind execution authorized by the owner and started from clean
   `main`, three expected local commits ahead of upstream (planning, review, and
   authorization); no push is authorized. First eligible entry is S01.
@@ -147,7 +147,7 @@ does not consume a semantic fix cycle.
   with verdict approved `P1=0 P2=0 P3=0`. Fresh read-only Holm authority
   acceptance `q004-c03-authority-a01` committed
   `koder/reviews/048_issue009_holm_authority_acceptance/INDEX.md` at `6a7509f`,
-  accepted `P1=0 P2=0 P3=0` against Holm `fb34d6b` (`v0.185.0`) with clean
+  accepted `P1=0 P2=0 P3=0` against Holm `the Holm release tested` (`v0.185.0`) with clean
   read-only fingerprints. Process failures used `4/6`; blocker: none. Queue
   drained; Issue `#009` resolved at product commit `f06d1c0`.
 - Governor monitoring correction from the owner: the outer session used a

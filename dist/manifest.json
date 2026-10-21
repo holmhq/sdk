@@ -246,18 +246,18 @@
       "sha256": "34ad21f5503e15dece6040571c6ca45b5b6c96cf492d49da1f8883e8dc5317a3"
     },
     {
-      "bytes": 5636,
+      "bytes": 5604,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/types.d.ts",
-      "sha256": "05b52d7f082292b2c726920971adcd2e8aebb406212596bcfe76b90428d82088"
+      "sha256": "67f1f0f30a1abe2f5449011c5d66165fc76a9bd533ea8ab3ffcc9cb9954e50fa"
     },
     {
-      "bytes": 4685,
+      "bytes": 4684,
       "license": "MIT",
       "licenseNotice": "@holmhq/sdk 0.2.1 generated artifact; MIT license.",
       "path": "dist/admin/types.d.ts.map",
-      "sha256": "52e466ca1bceee42fa5b74696da4b82a7f35e438fd6dbbd2285fe72c792efe66"
+      "sha256": "3e8cfde8d9a621d35ca2fd3e1d71be2ac64d7ac734382adcd9e83cc40b7f8130"
     },
     {
       "bytes": 101,

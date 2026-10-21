@@ -208,7 +208,7 @@ cycle.
 - Fresh integrated SDK Review `#058` committed at `59614d5` and approved the
   W4 candidate with `P1=0 P2=0 P3=0`. Fresh read-only Holm-authority Review
   `#059` committed at `5acda19` and accepted `P1=0 P2=0 P3=0` against Holm
-  `748cbe5e8f673d9a5a3d276e6826eecac32b8612` (`v0.185.1`); Holm pre/post
+  `the Holm release tested` (`v0.185.1`); Holm pre/post
   fingerprints were identical and clean.
 - Queue drained with S01-S08 done, Issues `#014` and `#017` resolved, package
   private `0.1.0-rc.1`, process failures `7/8`, no unresolved blocker, and no

@@ -36,9 +36,8 @@ runtime CDN.
 - Read Issue `#014`, Issue `#017`, examples, `scripts/test-examples.mjs`,
   `scripts/check-repro.mjs`, `scripts/lib/artifacts.mjs`, `dist/manifest.json`,
   and current raw BFBB/Vite fixtures.
-- Authority drift check: read-only Holm Issue `#534` at
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088`; confirm the static BFBB floor and
-  authored web precedence still hold.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm no external network, credential, package publication, or Holm test is
   needed.
 

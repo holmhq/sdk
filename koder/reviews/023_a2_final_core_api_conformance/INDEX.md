@@ -27,7 +27,7 @@ must still stop before Issue `#007`.
 ## Scope reviewed
 
 - Baseline: A1 approved base `0d443cf`; reviewed HEAD `56a81d118e99afe239b8453b74add6607bc0e4c4`.
-- Durable contracts: `AGENTS.md`, `koder/STATE.md`, `koder/docs/{EXECUTION,BLIND_ORCHESTRATION,ARCHITECTURE,DECISIONS,HOLM_SOURCE_MAP}.md`, Issues `#001`-`#006`, Queue `#001`, A2 evidence ledgers, and prior approval summaries.
+- Durable contracts: `AGENTS.md`, `koder/STATE.md`, `koder/docs/{EXECUTION,BLIND_ORCHESTRATION,ARCHITECTURE,DECISIONS}.md`, Issues `#001`-`#006`, Queue `#001`, A2 evidence ledgers, and prior approval summaries.
 - Product scope: strict TS configs/scripts, `src/core`, `src/transports`, `src/web`, `src/node`, `src/test`, `src/state`, source/type/declaration/dist tests, generated reports and manifests.
 - Read budget remained under the requested 100 relevant repository files; no worker transcripts, private prompts, long logs, or future Issue `#007+` materials were read for implementation detail.
 
@@ -46,7 +46,7 @@ None.
 7. **Immutable snapshots/subscriptions:** snapshots are frozen, revisioned, referentially stable between transitions, listener failures are isolated, and public values are copied through wire/copy hooks.
 8. **Declarations and bundles:** consumer declarations and generated ESM smoke tests pass for root/core, transports, web, node, test, and state subpaths; `dist/manifest.json` records SHA-256 for 116 artifacts.
 9. **Reproducibility:** `check:repro` rebuilt `dist`, license, and size reports with no drift; package remains private.
-10. **Source-pinned migration evidence:** Issue `#005` and `#006` ledgers pin Holm source to `11ceae0d88e9c800eb77916e3244fbd231ad81bb` and classify adopted/redesigned/deferred/excluded behavior without copying secrets or modifying Holm.
+10. **Source-pinned migration evidence:** Issue `#005` and `#006` ledgers pin Holm source to `the Holm release tested` and classify adopted/redesigned/deferred/excluded behavior without copying secrets or modifying Holm.
 11. **License and size:** MIT package, private npm state, three allowed dev packages only; size report passes with totals `73,771` raw / `54,390` minified / `15,941` gzip bytes.
 12. **Forbidden scope:** no Issue `#007+` implementation, no publication/release/tag/deploy/cloud/credential action, no direct SQLite, no framework/runtime expansion, no Holm/Sobek/CDN edits, and no `@holmhq/sdk/resources`.
 

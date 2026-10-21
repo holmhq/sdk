@@ -34,11 +34,11 @@ state, Holm checkout, Medialab, or other repository was modified.
 ## Review basis
 
 - `AGENTS.md`, `koder/STATE.md`, the active Issue `#019` contract, Review
-  `#072`, `HOLM_SOURCE_MAP.md`, and the Holm project card;
+  `#072`, [Holm public documentation](https://holmhq.com/llms-full.txt), and the Holm project card;
 - Evidence `#009`, its complete 47-entry JSON map, remediation RED chronology,
   focused tests, checker, and cumulative/remediation diffs;
 - the exact pinned Holm Git object
-  `44d51d0f785ff6208ecc034c720e76a8543891be`, not moving worktree content;
+  `the Holm release tested`, not moving worktree content;
 - pinned admin bindings/injectors, WebSocket/policy implementation and focused
   tests, member-storage bindings, Default Projection handoff/payloads, and
   every map source hash through the checker; and
@@ -62,21 +62,21 @@ None.
 
 1. **Operator-admin authorization — fixed.** `sobek:operator-admin` no longer
    extends compound member/storage/audit guards to every role call. Pinned
-   `admin_bindings.go` confirms that `roles.remove`, `roles.list`, and
+   Holm runtime behaviour confirms that `roles.remove`, `roles.list`, and
    `roles.find` have argument plus database/app-context behavior without a
    general authenticated-caller or manifest-capability guard. Arbitrary role
    values in `roles.add` likewise have no blanket guard; selected reserved or
    elevated values retain their source-specific capability, caller, or reserved
    rejection branches. `node:app-admin-capabilities` now limits its claim to
    selected bindings and role additions.
-2. **Typed-channel limit — fixed.** Pinned `policy.go` defines the app-scoped,
+2. **Typed-channel limit — fixed.** Pinned Holm runtime behaviour defines the app-scoped,
    app-overridable `realtime.max_channels_per_socket` integer at default `0`
-   (unlimited). Pinned `ws.go` applies it after typed authorization and returns
+   (unlimited). Pinned Holm runtime behaviour applies it after typed authorization and returns
    `realtime_policy_channel_limit_exceeded` when the resulting count exceeds a
    positive limit. Its focused test subscribes `private:one` then rejects
    `presence:two` at limit one. A no-colon channel returns before typed policy;
    an already subscribed bare channel still contributes to a later typed count.
-3. **Logged-out media availability — fixed.** Pinned `app_bindings.go` installs
+3. **Logged-out media availability — fixed.** Pinned Holm runtime behaviour installs
    all three member-media methods for real and anonymous owners, but the
    no-owner branch installs only login-required `media.serve`. It omits
    `media.probe` and `media.transcode`; the map now says exactly that.
@@ -130,11 +130,11 @@ None.
 ## Fresh pinned Holm-authority verification
 
 - Exact inspected commit:
-  `44d51d0f785ff6208ecc034c720e76a8543891be`.
+  `the Holm release tested`.
 - Pinned version marker: `0.208.0`.
-- Pinned describe: `v0.208.0-128-g44d51d0f7`.
+- Pinned describe: `v0.208.0`.
 - Exact nearest stable tag: `v0.208.0` at
-  `93606188a1ee064e8aade678891406a671609eb5`.
+  `the Holm release tested`.
 - `node scripts/check-holm-non-http-parity.mjs --check-pinned` passed against
   the supplied Holm root. It verified all mapped source bytes via Git objects,
   so no moving or dirty Holm worktree detail was used.
@@ -152,7 +152,7 @@ None.
 - `npm run ci` — passed, including type/declaration/dist/example/coverage,
   route checks, reproducibility, licenses, size, and installed-package smoke.
 - `node scripts/check-holm-non-http-parity.mjs --check-pinned --holm-root
-  ~/Projects/holmhq/holm/master` — passed: 47 entries and pinned provenance.
+  Holm maintainer verification` — passed: 47 entries and pinned provenance.
 - Independent payload reconciliation passed for all nine `HANDOFF.md` payloads.
 - Package scope remained `0.2.1` with unchanged dependency counts; package
   changes only add the offline non-HTTP parity CI/test script.

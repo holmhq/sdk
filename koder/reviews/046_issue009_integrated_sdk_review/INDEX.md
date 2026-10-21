@@ -82,8 +82,8 @@ Coverage equality gate: passed.
 ## Holm compatibility note
 
 Read-only Holm authority was checked from SDK side against live Holm Issue
-`#534` at `/home/glasscube/Projects/holmhq/holm/master` commit
-`2f7eb0d074b4feb6d40d81a23022f8104fdb46ea`. The Holm worktree had unrelated
+`#534` at `Holm maintainer verification` commit
+`the Holm release tested`. The Holm worktree had unrelated
 pre-existing dirty paths and was not modified.
 
 Compatibility assessment: SDK Issue `#009` remains aligned with Holm `#534` by

@@ -62,7 +62,7 @@ Use current Holm client tests as evidence, not as an API-shape mandate.
 - [x] Binary/raw and JSON envelopes are tested. (`S09`: `ebbd434`, review
       `328140a`; `S12`: `f9f3cd5`, fix `9107bb1`, re-review `75384d1`)
 - [x] Existing Holm behavior is mapped as adopted, redesigned, or deferred with
-      source paths and conformance proof. (`S12`: ledger
+      public behaviour and conformance proof. (`S12`: ledger
       `koder/evidence/001_issue005_transport_uploads/INDEX.md`, re-review
       `75384d1`)
 - [x] Source, declarations, web bundle, and Node bundle tests pass. (`S12`
@@ -71,7 +71,7 @@ Use current Holm client tests as evidence, not as an API-shape mandate.
 
 ## Slice Evidence
 
-- A2R `S01` authority remediation adopts Holm JSON response envelope semantics for `{data,meta}` success, `{error:{code,message,details}}` failure, response-header preservation, and `/api/cmd` HTTP-200 command failure detection in `src/transports/index.ts`. Source evidence is pinned to Holm `11ceae0d88e9c800eb77916e3244fbd231ad81bb` at `internal/api/response.go`, `packages/holm-sdk/client.js`, and `internal/remote/client.go`; app/admin route-wrapper migration remains deferred to `#007`/`#008`.
+- A2R `S01` authority remediation adopts Holm JSON response envelope semantics for `{data,meta}` success, `{error:{code,message,details}}` failure, response-header preservation, and `/api/cmd` HTTP-200 command failure detection in `src/transports/index.ts`. Source evidence is pinned to Holm `the Holm release tested` at Holm runtime behaviour, `packages/holm-sdk/client.js`, and Holm runtime behaviour; app/admin route-wrapper migration remains deferred to `#007`/`#008`.
 - `S09` transport/auth/error contract passed at implementation `ebbd434` and independent review `328140a`; validation and coverage passed.
 - `S10` caller-partitioned cache passed at implementation `04cab72`, fix `02f0f63`, and independent re-review `a0a4032`; validation and coverage passed.
 - `S11` cache invalidation/diagnostics passed at implementation `6a8496e`, fix `eb88125`, and independent re-review `62810a5`; validation and coverage passed.

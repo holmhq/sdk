@@ -37,9 +37,8 @@ composition without claiming future runtime capabilities.
 - Read Issue `#014`, Issue `#017`, architecture `D014`, `package.json`, current
   `scripts/{size,write-dist-manifest,check-repro}.mjs`, `tsconfig*`, examples,
   dist smoke tests, and relevant source barrels.
-- Authority drift check: read-only Holm Issue `#534` at
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088`; confirm BFBB/static floor and
-  authored `index.html` precedence still align with bundled web artifacts.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm no dependency install is needed for bundle generation; if a bundler or
   minifier dependency is necessary, stop for owner approval.
 

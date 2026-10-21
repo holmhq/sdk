@@ -15,8 +15,7 @@ interface AppRouteAudit {
   readonly schema: "holm.sdk.app-route-audit/1";
   readonly source: {
     readonly repository: "holmhq/holm";
-    readonly commit: string;
-    readonly path: "packages/holm-sdk/app.audit.js";
+    readonly version: "0.185.0";
   };
   readonly entries: readonly AppRouteAuditEntry[];
 }
@@ -54,14 +53,13 @@ const expectedRoutes = [
   "GET /api/me",
 ] as const;
 
-test("Issue 007 classifies every live app.audit.js route at a named Holm commit", async () => {
+test("Issue 007 classifies every public app route at the tested Holm version", async () => {
   const audit = JSON.parse(await readFile(ledgerPath, "utf8")) as AppRouteAudit;
 
   assert.equal(audit.schema, "holm.sdk.app-route-audit/1");
   assert.deepEqual(audit.source, {
     repository: "holmhq/holm",
-    commit: "8deb00b7aa1cc07f39665fde6e81c1b33d3620c4",
-    path: "packages/holm-sdk/app.audit.js",
+    version: "0.185.0",
   });
   assert.deepEqual(
     audit.entries.map((entry) => entry.sourceKey).sort(),

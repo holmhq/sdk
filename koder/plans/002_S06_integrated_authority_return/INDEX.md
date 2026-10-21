@@ -64,7 +64,7 @@ with normal TDD; do not create a metadata-only fix/review chain.
 - Full validation suite passes from clean, synced checkout.
 - Dist/source provenance contract is reconciled and evidenced.
 - Independent SDK remediation review returns no P1/P2 findings.
-- Fresh Holm authority acceptance at named current Holm commit confirms A2 accepted.
+- Fresh Holm authority acceptance at named current Holm version confirms A2 accepted.
 - Issue `#016` acceptance criteria are met; Issue `#007` remains blocked until A2 acceptance and explicit owner direction.
 
 ## Verification evidence to attach in implementation review

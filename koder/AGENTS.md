@@ -11,8 +11,8 @@ product work safer or easier to resume.
   for the user's task. Do not preload parent issues, queues, reviews, or long
   architecture documents merely because they exist.
 - For an architecture decision, read `koder/docs/{ARCHITECTURE,DECISIONS}.md`.
-  For Holm protocol conformance, read `koder/docs/HOLM_SOURCE_MAP.md` and verify
-  the relevant live Holm source. For cross-repository work, read
+  For Holm protocol conformance, use versioned public HTTP behaviour and the
+  public docs at https://holmhq.com/llms-full.txt. For cross-repository work, read
   `koder/projects/INDEX.md` and only the relevant project card.
 - Treat older plans and queues as evidence, not as standing authorization or
   permanent execution policy.
@@ -49,9 +49,11 @@ product work safer or easier to resume.
 
 - Mission: build `@holmhq/sdk`, a strict-TypeScript universal SDK for Holm
   across web, CLI, server/Sobek, and future desktop/mobile surfaces.
-- Holm is the runtime and protocol authority. Its primary checkout is
-  `~/Projects/holmhq/holm/master`; do not edit it from this repository without
-  explicit approval. Pin conformance evidence to a Holm commit.
+- This repo is public: never record Holm source paths, Holm commit IDs, or Go
+  identifiers. Cite Holm by version and public HTTP behaviour; Holm maintainers
+  keep the internal source map privately.
+- Holm is the runtime and protocol authority. Verify conformance using public
+  behaviour and public documentation, not instructions to open private source.
 - Existing Holm `packages/holm-sdk` and `packages/holm-state` remain live during
   migration. Do not delete, redirect, or silently fork their ownership.
 - Strict red → green → refactor TDD is mandatory for product implementation.

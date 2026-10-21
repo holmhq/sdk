@@ -31,10 +31,10 @@ storing the reference and selecting the downstream image content type.
 - SDK release reproduced: public `@holmhq/sdk@0.2.0`.
 - SDK source: `src/web/upload-service.ts` multipart fallback and
   `src/web/upload.ts` chunk slicing.
-- Fresh accepted Holm authority: `9fbc0b418674d39dfa6f6b98dd2a73155ff9c523`
+- Fresh accepted Holm authority: `the Holm release tested`
   in Review `#067`; relevant upload/runtime paths were unchanged from the
-  initial `4d84c6b285c43a4bb97974179fff2fc7ccbf05d9` reproduction baseline.
-- Holm `internal/runtime/handler.go` derives runtime `FileUpload.Type` from the
+  initial `the Holm release tested` reproduction baseline.
+- Holm's multipart upload behaviour derives the runtime file type from the
   multipart part's `Content-Type`, defaulting to `application/octet-stream`
   only when absent.
 - Holm's resumable handoff separately carries the declared descriptor type;

@@ -8,8 +8,8 @@ parent: 001
 depends_on: [004, 006, 009]
 source_paths:
   - koder/issues/517_realtime_channel_auth_presence/INDEX.md
-  - internal/hosting/ws.go
-  - internal/hosting/realtime.go
+  - Holm runtime behaviour
+  - Holm runtime behaviour
 type: feature
 issue_kind: slice
 context: Ship an honest current realtime client while reserving typed extensions for authorized channels, presence, and binary collaboration updates.

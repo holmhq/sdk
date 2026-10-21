@@ -3,15 +3,15 @@ title: Issue 005 Upload Seam Migration Ledger
 status: implemented
 queue: 001_a2_core_foundation
 entry: S12
-source_commit: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+holm_version: 0.182.0
 updated: 2026-07-14
 ---
 
 # Issue 005 Upload Seam Migration Ledger
 
 Scope: secret-safe conformance ledger for the upload behavior adopted in S12.
-Holm source is read-only and pinned to commit
-`11ceae0d88e9c800eb77916e3244fbd231ad81bb`.
+Conformance was reviewed against Holm `0.182.0`; the public HTTP contracts
+below are the evidence retained here.
 
 ## Source evidence
 

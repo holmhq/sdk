@@ -17,7 +17,7 @@ updated: 2026-07-20
 - Admin product/fix target: `96485b7d2922893efb3477cd174a3017e3de10ce`.
 - Independent SDK Review `#063`: approved, `P1=0 P2=0 P3=1` advisory.
 - Fresh Holm-authority Review `#064`: accepted against Holm
-  `9a02784b5b8004ed946003cb650b1325f29763a1`, `P1=0 P2=0 P3=1` advisory.
+  `the Holm release tested`, `P1=0 P2=0 P3=1` advisory.
 
 ## Final gate proof
 

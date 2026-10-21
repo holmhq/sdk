@@ -35,8 +35,8 @@ semantics.
 ## Authority baseline
 
 - SDK checkpoint reviewed: `fe37f8528eeca38007f575307e7f3e26f642b615`
-- Holm baseline used by A2: `11ceae0d88e9c800eb77916e3244fbd231ad81bb`
-- Holm HEAD used by Review `#024`: `bdcc8cc51eccef9d9f195a2d35d5db1af39b1655`
+- Holm baseline used by A2: `the Holm release tested`
+- Holm HEAD used by Review `#024`: `the Holm release tested`
 - Governing finding set: [`Review #024`](../../reviews/024_a2_holm_authority_conformance/INDEX.md)
 
 Refresh live Holm evidence before final authority return; Holm remains read-only
@@ -85,7 +85,7 @@ chain. Update their assumptions when live source or validation proves them stale
 | S03 | done | generated package surface is read-only and measured; confirmed by rereview `#033` |
 | S04 | done | structural redaction, opaque identity, and redacted observer events; confirmed by `#033` |
 | S05 | done | mismatch rejection plus bounded duplicate/late tracking and diagnostics; confirmed by `#033` |
-| S06 | done | P2-2 fixed (`9825963` + `fe7879e`), entry review 0 P1/P2 outstanding, four CI modes green; A2 accepted by Review `#034` at Holm `ded755f8` |
+| S06 | done | P2-2 fixed (`9825963` + `fe7879e`), entry review 0 P1/P2 outstanding, four CI modes green; A2 accepted by Review `#034` at Holm `the Holm release tested` |
 
 ## Required behavior
 
@@ -127,7 +127,7 @@ source and expose the same public contract.
 - [x] Mismatched response IDs fail; duplicate/late response behavior is deterministic and tested.
 - [x] `npm run build` and `npm run ci` pass from a clean checkout.
 - [x] One fresh independent SDK review reports no P1/P2 findings. (Entry review of `9825963`: 1 P2, fixed at `fe7879e` and re-verified; 0 outstanding — Review `#034` §entry-1.)
-- [x] A fresh read-only Holm authority review accepts A2 at a named current commit. (Review `#034`, Holm `ded755f8`, v0.184.0.)
+- [x] A fresh read-only Holm authority review accepts A2 at a tested version. (Review `#034`, Holm `the Holm release tested`, v0.184.0.)
 - [x] Existing Holm SDK/state packages remain operational and npm remains private. (`packages/holm-{sdk,state}` unchanged since baseline; `"private": true` verified.)
 - [x] Issue `#007` has not begun under this issue.
 

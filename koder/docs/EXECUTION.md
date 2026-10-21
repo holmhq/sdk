@@ -8,7 +8,7 @@ completed_issue: 018
 queue: none
 release: v0.2.1 public and verified on npm/GitHub; exact target 81d5732
 release_review: "#066 approved Issue 018 at bb663d9; P1=0 P2=0 P3=0"
-holm_authority_review: "#067 accepted Issue 018 against Holm 9fbc0b4; P1=0 P2=0 P3=0"
+holm_authority_review: "#067 accepted Issue 018 against the Holm release tested; P1=0 P2=0 P3=0"
 external_blocker: "Medialab owner acceptance blocked by Holm P1 design Track #550 for research-led runtime admission; SDK migration itself remains green"
 security_followup: "GitHub hardened; owner reports npm publish-only trust and package-access 2FA/token lockout appear persisted; re-confirm before the next genuine release"
 trusted_publishing_review: "#068 approved unified workflow; P1=0 P2=0 with final P3 remediated"
@@ -46,7 +46,7 @@ remain immutable.
 Issue `#018` is resolved at `bb663d9` and released in `@holmhq/sdk@0.2.1`:
 web multipart fallback preserves declared upload MIME while resumable chunks
 remain octet-stream. Independent Review `#066` approved and fresh read-only
-Holm Review `#067` accepted against `9fbc0b4`, both with `P1=0 P2=0 P3=0`.
+Holm Review `#067` accepted against the Holm release tested, both with `P1=0 P2=0 P3=0`.
 
 `0.2.1` is public on npm and is the latest GitHub release. Annotated `v0.2.1`
 peels to exact target `81d5732f1ba71dcbe1d42a7fe52868dedada9e56`.
@@ -152,8 +152,8 @@ work, or additional deployments.
 
 After live proof isolated `runtime_vm_pool`, the owner explicitly authorized a
 new Holm issue requesting detailed prior-art research and a better-informed
-serverless architecture. Holm P1 design Track `#550` was filed and pushed at
-`5857d5bb`; it requires measured memory, research, architecture convergence,
+serverless architecture. Holm P1 design Track `#550` was filed and pushed;
+it requires measured memory, research, architecture convergence,
 and cross-profile proof before implementation. This authorized the issue filing
 only—not Holm implementation, release, peer mutation, or an app workaround.
 

@@ -34,10 +34,8 @@ surfaces cannot accidentally claim Node/Sobek/bridge production support.
 - Read Issue `#017`, Review `#046`, Review `#048`, `package.json`,
   `src/node/index.ts`, `src/sobek/index.ts`, `src/bridge/index.ts`, examples,
   declaration fixtures, and dist smokes as needed.
-- Authority drift check: read-only Holm Issue `#534` at
-  `fb34d6b768f15f9bc596e0b82430e5c678fd2088`; confirm it still supports the
-  SDK claim that generated CLI/default projection/production native runtimes are
-  Holm-owned or future, not shipped by this SDK.
+- Authority drift check: review versioned public Holm behaviour at
+  https://holmhq.com/llms-full.txt; request a maintainer verdict for uncertainty.
 - Confirm no `package.json` public publish metadata, tag workflow, release
   workflow, or dependency install is needed.
 

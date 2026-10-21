@@ -40,7 +40,7 @@ This review does not approve S4 or resolve Issue `#019`.
 - `AGENTS.md`
 - `koder/STATE.md`
 - `koder/docs/EXECUTION.md`
-- `koder/docs/{ARCHITECTURE,DECISIONS,HOLM_SOURCE_MAP}.md`
+- `koder/docs/{ARCHITECTURE,DECISIONS}.md`
 - `koder/issues/019_holm_route_registry_refresh/INDEX.md`
 - `koder/evidence/009_holm_non_http_parity/{INDEX.md,non-http-parity.json}`
 - `koder/projects/{INDEX.md,001_holm/INDEX.md}`
@@ -51,7 +51,7 @@ This review does not approve S4 or resolve Issue `#019`.
 - `test/tooling/check-holm-non-http-parity.test.mjs`
 - SDK baseline `c06f98f` evidence files named by the map
 - all 30 Holm files named by the map at
-  `44d51d0f785ff6208ecc034c720e76a8543891be`
+  `the Holm release tested`
 - the omitted Default Projection payload files transitively named and hashed by
   the pinned `HANDOFF.md`
 - bounded pinned Holm tests/source used to confirm the channel-limit and role
@@ -72,17 +72,17 @@ owner/admin/app-role checks plus one of the named manifest capabilities
 (`non-http-parity.json:761-810`, especially line 806). That is not the pinned
 runtime behavior.
 
-At Holm `44d51d0f…`:
+At Holm `the Holm release tested…`:
 
 - `holm.admin.roles.remove` performs its app-scoped update after only argument
-  and database/app-context checks (`internal/runtime/admin_bindings.go:187-210`);
+  and database/app-context checks (Holm runtime behaviour);
 - `holm.admin.roles.list` and `holm.admin.roles.find` read role data after only
   argument and database/app-context checks (`:212-291`);
 - `holm.admin.roles.add` applies caller/capability checks only to selected
   reserved/elevated role values; arbitrary app role values do not pass through
   a general authenticated-caller or manifest-capability guard (`:119-185`);
-- `InjectAdminNamespace` is installed by the normal injector chain even when
-  those caller gates are absent (`internal/runtime/injectors.go`).
+- The admin namespace is available in the normal runtime context even when
+  those caller gates are absent (Holm runtime behaviour).
 
 The member/storage/audit branches do have the compound guards summarized by the
 map, but the 36-operation grouped statement incorrectly extends them to the
@@ -102,8 +102,8 @@ repository; any runtime hardening is a separate Holm owner decision.
 The private/presence rows record their enable policies but omit
 `realtime.max_channels_per_socket` entirely. Pinned Holm defines it as an
 app-overridable integer with default `0` (unlimited)
-(`internal/policy/policy.go:71,160,643-646`) and applies it to typed private and
-presence subscriptions (`internal/hosting/ws.go:868-895`). An over-limit
+(Holm runtime behaviour) and applies it to typed private and
+presence subscriptions (Holm runtime behaviour). An over-limit
 subscription fails with `realtime_policy_channel_limit_exceeded`; pinned tests
 exercise private-one followed by presence-two at a limit of one.
 
@@ -123,7 +123,7 @@ inventing a new SDK capability.
 
 `sobek:member-storage` states that all listed methods are installed in every
 context (`non-http-parity.json:669-710`). Pinned
-`internal/storage/app_bindings.go` installs all three member media methods for a
+Holm runtime behaviour installs all three member media methods for a
 real member and anonymous-owner stubs (`:165-167,192-194`), but the no-owner
 login-required branch installs only `holm.app.member.media.serve` (`:206-252`,
 line 240). `media.probe` and `media.transcode` are absent in that context.
@@ -138,7 +138,7 @@ all-context claim from returning.
 
 #### P2-4 — Declared provenance and authority semantics do not fail closed
 
-The checker validates the main Holm commit/describe/version fields, but ignores
+The checker validates the main Holm version/describe/version fields, but ignores
 `source.captured_at` and the entire `source.nearest_release` object even in
 `--check-pinned`. It also permits an entry with `holm_status: "absent"` and
 `authority: "implementation"`, despite the map's explicit distinction between
@@ -232,18 +232,18 @@ manual transitive check.
 
 ## Authority verification
 
-- Fresh pinned command passed against exact Holm commit
-  `44d51d0f785ff6208ecc034c720e76a8543891be`.
+- Fresh pinned command passed against exact Holm version
+  `the Holm release tested`.
 - The pinned version is `0.208.0`; `git describe` is
-  `v0.208.0-128-g44d51d0f7`; tag `v0.208.0` resolves to
-  `93606188a1ee064e8aade678891406a671609eb5`.
+  `v0.208.0`; tag `v0.208.0` resolves to
+  `the Holm release tested`.
 - SDK baseline `c06f98f` has neither `src/actions` nor `src/realtime`.
 - All nine files named by the Default Projection handoff manifest independently
   matched their recorded SHA-256 values.
 - At the live-check instant, the read-only Holm checkout was clean at
-  `cc916bb53e392071a5a85e68738724c3fedf3cf6` (`0.209.2`,
-  `v0.209.2-6-gcc916bb53`). Live mode correctly failed on HEAD/describe/version
-  and changed `cmd/server/main.go`; the Holm files underlying the source-truth
+  `the Holm release tested` (`0.209.2`,
+  `v0.209.2`). Live mode correctly failed on HEAD/describe/version
+  and changed Holm runtime behaviour; the Holm files underlying the source-truth
   findings were unchanged from the pinned commit.
 - No Holm file, checkout state, service, database, or generated artifact was
   modified by this review.
@@ -254,7 +254,7 @@ manual transitive check.
 - `npm run test:holm-non-http-parity` — 4/4 focused tests and 47-entry offline
   map check passed
 - `node scripts/check-holm-non-http-parity.mjs --check-pinned --holm-root
-  ~/Projects/holmhq/holm/master` — passed
+  Holm maintainer verification` — passed
 - `npm run test:source` — 231/231 passed
 - `npm run ci` — passed, including reproducibility, declarations, dist/examples,
   coverage, licenses, size, and installed package smoke

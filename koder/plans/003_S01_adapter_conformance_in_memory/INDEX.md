@@ -19,7 +19,7 @@ Create the common runtime-adapter conformance suite and make the deterministic i
 
 ## Source and build-on checks
 
-- Read `koder/issues/009_runtime_surface_adapters/INDEX.md` and confirm Holm Issue `#534` pin `55cd8213af9878f63432586a8a58c093b3aaa47a` remains the live compatibility source.
+- Read `koder/issues/009_runtime_surface_adapters/INDEX.md` and confirm the versioned public Holm GET/POST compatibility contract.
 - Build on existing seams: `src/core/runtime.ts`, `src/core/invoke.ts`, `src/test/index.ts`, `test/source/core/runtime-invocation.test.ts`, `test/dist/index.test.mjs`, and `test/declarations/package-consumer.test.ts`.
 - Confirm root/core ambient constraints before implementation with `npm run typecheck:core`.
 

@@ -6,10 +6,9 @@ state package; it is not a removal plan.
 
 ## Source verification
 
-- Runtime/protocol authority: `holmhq/holm`
-- Live read-only verification: `3d229a414a0379d0a24221e975b8b4f1588f494d`
-- Previously accepted web-release Holm-authority checkpoint: `748cbe5`
-- `git diff 748cbe5..3d229a4 -- packages/holm-sdk packages/holm-state` is empty.
+- Runtime/protocol authority: Holm `0.185.1` and its public HTTP behaviour.
+- Previously accepted web-release conformance was rechecked without a change
+  to the legacy SDK/state public contracts.
 - Main SDK export source: `packages/holm-sdk/index.js`
 - State export source: `packages/holm-state/src/index.js`
 
@@ -53,7 +52,7 @@ HTTP client can represent other methods used by adopted routes.
 The `0.2.0` preview classifies all 174 audited inventory keys from
 `packages/holm-sdk/admin.audit.js`, 189 expanded route/method contracts, 216
 unique method names, and 18 intentional exclusions
-at the named Holm verification commit. `@holmhq/sdk/admin` preserves route and
+at the Holm release tested. `@holmhq/sdk/admin` preserves route and
 command-envelope behavior while redesigning invocation around one typed
 operation object, explicit operator caller context, adapter-private auth,
 runtime-neutral uploads, SDK bytes, and immutable generated descriptors.

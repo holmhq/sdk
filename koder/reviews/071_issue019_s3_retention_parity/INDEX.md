@@ -40,7 +40,7 @@ S4, version changes, release, publication, deployment, or cross-repository work.
 - `koder/STATE.md`
 - `koder/docs/EXECUTION.md`
 - `koder/issues/019_holm_route_registry_refresh/INDEX.md`
-- `koder/docs/HOLM_SOURCE_MAP.md`
+- [Holm public documentation](https://holmhq.com/llms-full.txt)
 - `git diff --find-renames 914a1e2..c7e589b`
 - `koder/evidence/004_issue008_admin_routes/INDEX.md`
 - `koder/evidence/004_issue008_admin_routes/route-audit.json`
@@ -71,9 +71,8 @@ S4, version changes, release, publication, deployment, or cross-repository work.
 - `test/declarations/package-consumer.test.ts`
 - `test/dist/index.test.mjs`
 - Holm authority at commit
-  `d66628674232b01e8c95d5b86617bc660d61410f`:
-  `internal/database/db_retention.go`, `internal/handlers/system.go`,
-  `cmd/server/main.go`, `docs/reference/http-api.md`,
+  `the Holm release tested`:
+  Holm runtime behaviour, `docs/reference/http-api.md`,
   `packages/holm-sdk/admin.audit.js`, and `packages/holm-sdk/admin.js`.
 
 ## Findings
@@ -101,12 +100,10 @@ None.
    contracts, while exclusions remain 18 and generated methods become 218.
 
 2. **Holm contract fidelity:** PASS.
-   Pinned Holm `DBRetentionStatus`, `DBRetentionFamilyStatusReport`,
-   `DBRetentionReport`, `DBRetentionFamilyReport`, and retention candidates
-   match the SDK readonly TypeScript fields, JSON names, and optionality.
+   Holm v0.207.0's public retention status, dry-run report, per-family results,
+   and candidates match the SDK readonly TypeScript fields, JSON names, and optionality.
    Remote report literals are correctly narrowed to `dry_run: true` and
-   `applied: false` because the pinned handler invokes
-   `RunDBRetention(..., DBRetentionRunOptions{Apply: false, Owner: "remote"})`.
+   `applied: false`, matching the public server-enforced remote dry-run contract.
 
 3. **Bodyless safety:** PASS.
    Generated descriptors mark both retention methods with
@@ -152,19 +149,18 @@ None.
 
 ## Authority Verification
 
-- Pinned Holm source at `d66628674232b01e8c95d5b86617bc660d61410f` registers:
+- Pinned Holm source at `the Holm release tested` registers:
   `GET /api/system/db/retention/status` and
   `POST /api/system/db/retention/run`.
-- `SystemDBRetentionStatusHandler` returns
-  `database.DBRetentionCurrentStatus(...)` through the normal success envelope.
-- `SystemDBRetentionRunHandler` rejects `apply` or `force` request bodies before
-  retention work, then runs retention with `Apply: false` and `Owner: "remote"`.
+- Holm v0.207.0 returns retention status through the normal success envelope.
+- The retention run endpoint rejects `apply` and `force` inputs and returns
+  a remote dry-run result with `dry_run: true` and `applied: false`.
 - `docs/reference/http-api.md` names both SDK methods and documents remote run
   as dry-run only.
 - Installed Holm live check required sandbox escalation because executing the
   Holm binary was blocked by `EPERM`. The escalated read-only check failed only
   on expected provenance drift:
-  snapshot `0.207.0` / `d6662867...`, live `0.208.0` / `93606188...`.
+  snapshot `0.207.0` / `the Holm release tested...`, live `0.208.0` / `the later Holm release...`.
 - The local Holm checkout was dirty before review and was not modified. Pinned
   source was read with `git show`; live dirty changes observed in Holm were
   outside the retention database structs and handlers.

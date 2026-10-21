@@ -8,8 +8,7 @@ interface AdminRouteLedger {
   readonly schema: "holm.sdk.admin-route-audit/1";
   readonly source: {
     readonly repository: "holmhq/holm";
-    readonly commit: string;
-    readonly paths: readonly string[];
+    readonly version: string;
   };
   readonly entries: readonly {
     readonly sourceKey: string;
@@ -32,12 +31,7 @@ test("Issue 008 classifies every audited admin route and generates every public 
   const ledger = JSON.parse(await readFile(ledgerPath, "utf8")) as AdminRouteLedger;
   assert.equal(ledger.schema, "holm.sdk.admin-route-audit/1");
   assert.equal(ledger.source.repository, "holmhq/holm");
-  assert.equal(ledger.source.commit, "d66628674232b01e8c95d5b86617bc660d61410f");
-  assert.deepEqual(ledger.source.paths, [
-    "packages/holm-sdk/admin.audit.js",
-    "packages/holm-sdk/admin.js",
-    "packages/holm-sdk/surface.audit.js",
-  ]);
+  assert.equal(ledger.source.version, "0.207.0");
   assert.equal(ledger.entries.length, 176);
   assert.equal(ledger.entries.reduce((count, entry) => count + entry.methods.length, 0), 191);
   assert.equal(ledger.exclusions.length, 18);

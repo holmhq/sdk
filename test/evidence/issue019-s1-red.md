@@ -13,20 +13,20 @@ The executable RED suite pins these missing behaviors before production code:
   order, and a trailing newline;
 - fail-closed envelope, provenance, route-field, and vocabulary validation;
 - preservation of rows sharing method + path across distinct Holm source/lane
-  contexts, with exact duplicate `method + path + source_group + lane`
+  contexts, with exact duplicate `method + path + route context + lane`
   identities rejected;
 - argv-safe `--write` execution with explicit binary precedence;
 - Holm-independent `--check` plus noncanonical-byte rejection;
 - exact `--check-live` acceptance and attributable route/provenance drift;
 - signed Holm `v0.207.0` evidence at commit
-  `d66628674232b01e8c95d5b86617bc660d61410f` with 261 rows; and
+  `the Holm release tested` with 261 rows; and
 - canonical CI wiring to the offline gate without a live Holm dependency.
 
 ## Composite-identity refinement RED
 
 The first GREEN attempt correctly stopped on the signed authority export's two
 intentional `POST /api/spaces/{space}/keys` rows. Holm's golden-table identity
-is `method + path + source_group + lane`, not method + path alone. After owner
+is `method + path + route context + lane`, not method + path alone. After owner
 approval, the tests were amended before implementation.
 
 Command: `node --test test/tooling/refresh-holm-route-registry.test.mjs`

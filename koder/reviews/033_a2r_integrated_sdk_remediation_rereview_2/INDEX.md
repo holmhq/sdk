@@ -181,6 +181,6 @@ approved model and is recorded as P3 advisory, not a batch defect.
    `dist/` artifacts; rerun all four CI gate modes.
 2. Obtain a focused independent confirmation that P2-2 is closed (no full
    batch rereview required; S03-S05 findings are confirmed clean).
-3. Then refresh live read-only Holm evidence at a named commit and request
+3. Then refresh live read-only Holm evidence at a named version and request
    fresh Holm-authority A2 acceptance; close Issue `#016` after both gates.
 4. Issue `#007` remains blocked until the A2 gate passes and the owner directs.

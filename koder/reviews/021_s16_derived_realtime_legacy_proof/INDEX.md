@@ -55,8 +55,8 @@ NEEDS_FIXES: 0 P1, 1 P2.
   `@holmhq/sdk/resources` or legacy resource export was introduced.
 - Universal core/source and generated state artifacts show no DOM or Node
   ambient leakage in the focused grep checks.
-- Legacy `holm-state` disposition is pinned to Holm commit
-  `11ceae0d88e9c800eb77916e3244fbd231ad81bb` and keeps existing Holm packages
+- Legacy `holm-state` disposition is pinned to Holm version
+  `the Holm release tested` and keeps existing Holm packages
   live and unmodified.
 - TDD red evidence is limited to the implementation sidecar's
   `npm run test:source -- state` observed flag; the committed S16 behavior,

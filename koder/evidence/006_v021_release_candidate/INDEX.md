@@ -32,9 +32,9 @@ outside this release window.
 - Independent SDK Review `#066` approved the MIME remediation with
   `P1=0 P2=0 P3=0`.
 - Fresh read-only Holm Review `#067` accepted it against Holm
-  `9fbc0b418674d39dfa6f6b98dd2a73155ff9c523`, also with
+  `the Holm release tested`, also with
   `P1=0 P2=0 P3=0`.
-- Live Holm advanced to `3eb1c3b23e89e938fe77b940199f192d2a9efc65`
+- Live Holm advanced to `the Holm release tested`
   before release, but the reviewed upload authority paths have no diff and no
   relevant working-tree changes from the Review `#067` pin.
 

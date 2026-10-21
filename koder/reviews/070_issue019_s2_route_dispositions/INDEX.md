@@ -43,16 +43,16 @@ Review boundaries honored:
   - `koder/evidence/003_issue007_app_routes/route-audit.json`
   - `koder/evidence/004_issue008_admin_routes/route-audit.json`
 - `koder/docs/ARCHITECTURE.md` and `koder/docs/DECISIONS.md` (`D001`, `D015`)
-- `koder/docs/HOLM_SOURCE_MAP.md`
+- [Holm public documentation](https://holmhq.com/llms-full.txt)
 - Holm authority source at commit
-  `d66628674232b01e8c95d5b86617bc660d61410f`, including:
+  `the Holm release tested`, including:
   - `packages/holm-sdk/surface.audit.js`
   - `packages/holm-sdk/admin.audit.js`
   - `packages/holm-sdk/admin.js`
   - `docs/reference/http-api.md`
-  - `internal/handlers/system.go`
-  - `internal/database/db_retention.go`
-  - `internal/handlers/spaces.go`
+  - Holm runtime behaviour
+  - Holm runtime behaviour
+  - Holm runtime behaviour
 
 ## Findings
 ### P1
@@ -85,7 +85,7 @@ Observed outcomes:
 - `npm run test:ci-workflow` passed and confirms CI includes offline
   route-registry and route-disposition gates.
 - `node scripts/refresh-holm-route-registry.mjs --check` passed with pinned
-  Holm `0.207.0` and commit `d66628674232b01e8c95d5b86617bc660d61410f`.
+  Holm `0.207.0` and commit `the Holm release tested`.
 
 Additional bounded checks run:
 
@@ -105,7 +105,7 @@ Additional bounded checks run:
 ## Policy and Authority Verification
 
 1. **261 identity coverage and no silent broadening:** PASS.
-   Composite identity `method + path + source_group + lane` resolves exactly
+   Composite identity `method + path + route context + lane` resolves exactly
    once. Supported `ANY` routes explicitly carry `covered_methods`; no inferred
    method expansion was observed.
 
@@ -116,20 +116,20 @@ Additional bounded checks run:
 
 3. **21-row admin delta exactness:** PASS.
    Delta rows are exactly admin/operator dashboard rows from
-   `cmd/server/main.go`; disposition is exactly `2` S3 candidates + `19`
+   Holm runtime behaviour; disposition is exactly `2` S3 candidates + `19`
    deferred.
 
 4. **Candidate method naming and authority coherence:** PASS.
    Candidate names are coherent and authority anchors match Holm source:
-   - status request: `internal/handlers/system.go#SystemDBRetentionStatusHandler`
-   - status result: `internal/database/db_retention.go#DBRetentionStatus`
+   - status request: Holm runtime behaviour
+   - status result: Holm runtime behaviour
    - run request + dry-run enforcement:
-     `internal/handlers/system.go#SystemDBRetentionRunHandler`
-   - run result: `internal/database/db_retention.go#DBRetentionReport`.
+     Holm runtime behaviour
+   - run result: Holm runtime behaviour.
 
 5. **Dry-run rejection semantics for retention run:** PASS.
-   `SystemDBRetentionRunHandler` rejects `apply/force` intent and executes
-   `RunDBRetention(..., Apply: false, Owner: "remote")`.
+   The public retention run endpoint rejects `apply/force` intent and returns
+   a server-enforced remote dry-run (`dry_run: true`, `applied: false`).
 
 6. **Overrides and non-operation routes consistency:** PASS.
    Upload transport routes remain redesigned behind
@@ -148,20 +148,19 @@ Additional bounded checks run:
    Holm, or Medialab edits are in range.
 
    Read-only Holm authority checks against installed signed `v0.208.0`
-   `93606188a1ee064e8aade678891406a671609eb5`:
+   `the Holm release tested`:
 
    - `node scripts/refresh-holm-route-registry.mjs --check-live --holm-bin /home/glasscube/.local/bin/holm`
      fails on provenance only:
      `holm_version 0.207.0 -> 0.208.0` and
-     `holm_commit d6662867... -> 93606188...`.
+     The later Holm release had different private provenance.
    - Programmatic comparison confirms route-array equality:
      `261 == 261`, `route_arrays_equal=true`, identical route-array hash
      `f90642c34baecf6b5dd0a0ed26503277c70796fbb58d8d7197bcf1275ff69110`.
-   - `git diff --name-only d6662867..93606188 -- <S2-relevant paths>` returned
+   - `git diff --name-only the Holm release tested..the later Holm release -- <S2-relevant paths>` returned
      no file changes for:
      `packages/holm-sdk/{surface.audit.js,admin.audit.js,admin.js}`,
-     `docs/reference/http-api.md`, `internal/handlers/system.go`,
-     `internal/database/db_retention.go`, and `internal/handlers/spaces.go`.
+     `docs/reference/http-api.md`, Holm runtime behaviour, and Holm runtime behaviour.
 
 Execution note: live Holm binary execution required sandbox escalation after
 in-sandbox `EPERM`; rerun was read-only and produced the provenance-only drift

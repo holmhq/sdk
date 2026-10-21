@@ -1,59 +1,51 @@
 ---
-updated_at: "18 Aug 2026 | 08:57 PM IST"
-state: READY
-active_window: "none — Issue #019 resolved; no next issue/window active"
-active_issue: "none; #019 resolved at f623a8c with Review #073"
-orchestration_mode: "direct; serial main; no queue"
-stop_gate: "owner must explicitly select and authorize any next issue/window; no public implementation, release, deployment, or cross-repository write is active"
+updated_at: "21 Oct 2026 | 11:37 PM IST"
+state: REVIEW_READY
+active_window: "public-tree privacy cleanup; supervisor review before push"
+active_issue: "privacy cleanup; Issue #019 remains historically resolved"
+orchestration_mode: "direct worker; privacy-cleanup worktree; no queue"
+stop_gate: "supervisor reviews and pushes; no worker push, tag, publish, deploy or cross-repository access"
 ---
 
 # Koder State
 
-## Current
+## Current handoff
 
-- Issue [`#019`](issues/019_holm_route_registry_refresh/INDEX.md) is resolved
-  with all four slices complete. The signed HTTP route snapshot, complete route
-  dispositions, two accepted retention methods, and non-HTTP parity map now
-  form one reviewed SDK parity workflow.
-- Review `#072` requested `P2=4 P3=1` corrections. Strict remediation RED
-  reproduced seven failures before commit `f623a8c` corrected operator-role
-  auth truth, typed-channel limits, logged-out member-media availability,
-  provenance/authority semantics, and direct Default Projection payload pins.
-- Independent Review
-  [`#073`](reviews/073_issue019_s4_non_http_parity_remediation/INDEX.md)
-  approved cumulative S4 range `c06f98f..f623a8c` with
-  `P1=0 P2=0 P3=0` after fresh pinned Holm authority verification.
-- Evidence `#009` retains 47 unique identities: 9 WebSocket, 21 Sobek, 10 node,
-  and 7 action/schema. No public SDK support is inferred from Holm existence.
-- Focused `11/11`, 231 source tests, route checks, full `npm run ci`, package
-  smoke, coverage, licenses, size, reproducibility, diff hygiene, and pinned
-  Holm `44d51d0f…` verification pass.
-- Holm remained read-only. Its moving checkout was externally dirty/newer, so
-  conformance used exact pinned Git objects; no unfinished peer detail was
-  ingested and no Holm, Medialab, or `@zyt` write occurred.
-- No public `src/**`, tracked `dist/**`, package version, release, publication,
-  or deployment changed in S4.
+- The current public tree was cleaned without accessing the private Holm checkout
+  or rewriting history. Source-map/internal routing dumps were removed; historical
+  issues, plans and reviews retain neutral summaries and product decisions.
+- This repo is public: never record Holm source paths, Holm commit IDs or Go
+  identifiers. Cite Holm versions and public HTTP behaviour; maintainers keep
+  the internal source map and exact verification privately.
+- `scripts/check-public-privacy.mjs` and its regression test are wired into CI and
+  therefore `release:check`. The scanner checks tracked working-tree bytes and
+  symlink text without following links outside the repo.
+- Public app/admin route ledgers remain useful: 12 app route keys / 15 pairs,
+  176 admin keys / 191 route-method contracts / 218 methods / 18 exclusions.
+- The admin authority tool accepts an optional JSON export; it skips cleanly
+  without an explicit file. No private checkout is required by release validation.
+- Source changes are comment-only privacy rewrites; public API shapes and runtime
+  behaviour are unchanged. Affected tracked declarations/maps/manifest were rebuilt.
+- Full release gate passed: 231 source tests, 25 dist tests, 267 reproducible
+  artifacts, 290-file installed-package smoke, 72-package license check and size.
+  Coverage: statements 98.06, lines 98.95, functions 98.65, branches 95.32,
+  changed reachable 100.00. Privacy/tooling regression tests pass 4/4.
+- Dependency install reported 4 existing audit findings (1 moderate, 3 high);
+  dependency/security remediation is outside this cleanup. No audit fix was run.
 
-## Next session
+## Product memory
 
-1. Return to the owner for selection of a new bounded issue/window; do not
-   infer one from Issue `#019` completion.
-2. Public WebSocket, Sobek, capability, or action/schema work requires demand,
-   architecture reconciliation where needed, fresh RED evidence, and its own
-   implementation/review stop gate.
-3. A genuine SDK release, npm publication, deployment, Holm edit, or Medialab
-   write requires separate explicit owner approval.
+- Issue `#019` remains resolved through Review `#073` at SDK `f623a8c`.
+  Historical full-server/internal parity checks are no longer public CI gates.
+- `@holmhq/sdk@0.2.1` remains the public immutable release; unreleased retention
+  helpers remain in the reviewed source. No version or release changed here.
+- WebSocket transport, direct Sobek capabilities, discovery, action/schema and
+  native-runtime work remain separately demand- and review-gated.
+- Release access recovery and Medialab acceptance remain deferred; this cleanup
+  grants no authority to use credentials or mutate another repository.
 
-## Later
+## Next
 
-- The 19 deferred admin/operator route rows remain demand-driven.
-- Reconfirm npm trusted-publisher and package-access hardening before the next
-  genuine release; never manufacture a dummy release to test the flow.
-- Medialab owner acceptance remains separately blocked on Holm Track `#550`;
-  do not add an app workaround from this repository.
-
-## Stable baseline
-
-- `@holmhq/sdk@0.2.1` remains the current public immutable release.
-- Public `0.2.1` retains 189/216 admin inventory; unreleased source has 191
-  route/method contracts and 218 methods.
+Supervisor reviews this branch and the removal receipt, then decides whether to
+push. Preserve unrelated untracked `.harnex/dispatch.jsonl` telemetry; it is not
+part of the public-tree changes. Do not begin another issue or release operation.

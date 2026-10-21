@@ -3,15 +3,15 @@ title: Issue 006 holm-state Disposition Ledger
 status: implemented
 queue: 001_a2_core_foundation
 entry: S16
-source_commit: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+holm_version: 0.182.0
 updated: 2026-07-14
 ---
 
 # Issue 006 holm-state Disposition Ledger
 
 Scope: compact migration disposition for the existing Holm `packages/holm-state`
-experiment. Holm source remains read-only and pinned to commit
-`11ceae0d88e9c800eb77916e3244fbd231ad81bb`.
+experiment. Conformance was reviewed against Holm `0.182.0`; private maintainer
+verification is not stored in this public ledger.
 
 ## Source evidence
 

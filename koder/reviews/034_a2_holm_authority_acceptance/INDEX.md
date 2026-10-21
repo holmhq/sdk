@@ -8,17 +8,16 @@ p2: 0
 p3: 0
 reviewer: owner-present direct session (Claude Fable 5), read-only Holm access
 sdk_commit: fe7879e985b4b26815ac5463e2c03555ac591b8d
-holm_commit: ded755f8033e8abfe7b0efa8c4faa2aaef1072a4
+holm_reference: the release tested (internal verification kept privately)
 holm_version: 0.184.0
 prior_authority_review: ../024_a2_holm_authority_conformance/INDEX.md
-scope: A2 acceptance at named current Holm commit + entry-1 P2 remediation confirmation
+scope: A2 acceptance at tested Holm version + entry-1 P2 remediation confirmation
 ---
 
 # Review 034: A2 Holm-Authority Acceptance
 
-Fresh read-only Holm-authority review accepting A2 at Holm commit
-`ded755f8033e8abfe7b0efa8c4faa2aaef1072a4` (v0.184.0, clean checkout of
-`~/Projects/holmhq/holm/master`). SDK reviewed at `fe7879e`. No Holm writes.
+Fresh read-only Holm-authority review accepting A2 at the Holm release tested (v0.184.0, clean checkout of
+`Holm maintainer verification`). SDK reviewed at `fe7879e`. No Holm writes.
 
 ## Verdict
 
@@ -28,20 +27,20 @@ not drifted since the reviewed baselines.
 
 ## Authority drift check (read-only)
 
-`git diff --name-only bdcc8cc5..ded755f8` (Review `#024` HEAD → current HEAD)
+`git diff --name-only the Holm release tested..the Holm release tested` (Review `#024` HEAD → current HEAD)
 is **empty** for every A2-relevant authority path:
 
-- `internal/api/` (canonical `{data,meta}` / `{error:{code,message,details}}`
-  envelopes — verified live in `internal/api/response.go`)
-- `cmd/server/app.go` (`/api/cmd` command surface)
-- `internal/hosting/` (realtime/ws runtime)
-- `packages/holm-sdk/` (also unchanged since baseline `11ceae0d`; existing
+- Holm runtime behaviour (canonical `{data,meta}` / `{error:{code,message,details}}`
+  envelopes — verified live in Holm runtime behaviour)
+- Holm runtime behaviour (`/api/cmd` command surface)
+- Holm runtime behaviour (realtime/ws runtime)
+- `packages/holm-sdk/` (also unchanged since baseline `the Holm release tested`; existing
   client remains operational untouched)
 - `packages/holm-state/`
 - `docs/{concepts,reference}/sdk.md`
 
 Holm advanced v0.182.0 → v0.184.0 with no change to the protocol surfaces the
-SDK conforms to. SDK fixture pins to `11ceae0d` therefore remain valid.
+SDK conforms to. SDK fixture pins to `the Holm release tested` therefore remain valid.
 
 ## Area-by-area confirmation
 

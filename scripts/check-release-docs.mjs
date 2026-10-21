@@ -76,8 +76,8 @@ for (const unavailable of ["generated actions/CLI", "realtime transport", "colla
 }
 
 for (const needle of [
-  "3d229a414a0379d0a24221e975b8b4f1588f494d",
-  "748cbe5",
+  "Holm `0.185.1`",
+  "public HTTP behaviour",
   "packages/holm-sdk/index.js",
   "createAppClient()",
   "createClient()",

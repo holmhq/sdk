@@ -3,7 +3,7 @@ title: Holm SDK Architecture Decision Register
 status: approved
 updated: 2026-07-14
 issue: 002
-holm_baseline: 11ceae0d88e9c800eb77916e3244fbd231ad81bb
+holm_version: 0.182.0
 ---
 
 # Architecture Decision Register
@@ -104,7 +104,7 @@ match the same major and at least a minimum minor. Missing and mismatched
 capabilities fail with distinct typed errors before invocation.
 
 Runtime offers come from actual adapter support, future handshakes, or
-conservative conformance manifests pinned to Holm commits. Holm version strings
+conservative conformance manifests reviewed against public Holm behaviour. Holm version strings
 never imply capability support.
 
 **Rationale:** Additive evolution is simple and dependency-free. Granular IDs
@@ -363,8 +363,8 @@ composition. First implementation establishes reviewed size budgets.
 ## `D015` — Conformance-led migration
 
 **Recommendation:** Existing Holm SDK/state packages stay operational. Each
-behavior is classified adopted, redesigned, deferred, or excluded, with a source
-path/commit and source plus generated-artifact conformance evidence. Do not
+behaviour is classified adopted, redesigned, deferred, or excluded, with a Holm
+version/public HTTP contract and source plus generated-artifact conformance evidence. Do not
 preserve old shape by default and do not delete/deprecate at replacement time.
 
 **Rationale:** The old SDK contains valuable HTTP/cache/upload/admin behavior,

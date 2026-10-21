@@ -56,7 +56,7 @@ core contracts, weaken types, or silently diverge from Holm.
 - Fresh Review `#063` approves the remediation with `P1=0 P2=0 P3=1`; the P3
   records bounded caller-transition TOCTOU while Holm/upload-adapter auth remains
   authoritative. Fresh Holm-authority Review `#064` accepts candidate `189eaa6`
-  against Holm `9a02784`, `P1=0 P2=0 P3=1`.
+  against Holm `the Holm release tested`, `P1=0 P2=0 P3=1`.
 - Exact-target release/dry-run/audit/package gates and prepared asset checksums
   pass. `@holmhq/sdk@0.2.0` is public with `latest` pointing to it; annotated tag
   `v0.2.0` and the latest GitHub release point to reviewed target `189eaa6`, and
@@ -78,7 +78,7 @@ core contracts, weaken types, or silently diverge from Holm.
 - [x] Full convenience and narrow admin artifacts report size and pass smoke
       tests.
 - [x] No Holm route is claimed supported without conformance evidence against a
-      named commit.
+      tested version.
 - [x] Existing Holm admin client remains untouched during this slice.
 
 ## Non-Goals
