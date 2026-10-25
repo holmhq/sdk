@@ -48,6 +48,31 @@ Non-negotiable boundaries:
 
 Check [capabilities.md](capabilities.md) before promising a product surface.
 
+## Get the SDK from GitHub
+
+The latest release is the newest [GitHub tag](https://github.com/holmhq/sdk/tags),
+not the npm registry package. Bundled apps (including Vite) use:
+
+```bash
+npm install "github:holmhq/sdk#semver:*"
+```
+
+Use the package imports below after installation. A lockfile keeps the resolved
+commit; rerun the command to update. For reproducible builds, install
+`github:holmhq/sdk#vX.Y.Z` with an actual release tag and retain the lockfile.
+
+Raw/BFBB apps can import the browser entry directly through jsDelivr:
+
+```js
+import { createWebApp, createWebCaller } from
+  'https://cdn.jsdelivr.net/gh/holmhq/sdk@latest/dist/web/index.js'
+```
+
+`@latest` resolves to the newest GitHub tag and the relative ESM imports resolve
+on the CDN. Holm's hosted-app CSP allows jsDelivr. Pin an actual `@vX.Y.Z` tag
+for reproducible builds. Vendoring the complete immutable GitHub `dist/` tree
+still works without a runtime CDN dependency; see [vendoring.md](vendoring.md).
+
 ## Standard web composition
 
 ```ts
@@ -131,8 +156,8 @@ npm run ci
 ```
 
 Do not hand-edit `dist/`. `npm run check:repro` proves regeneration is clean.
-BFBB consumers must copy the whole module tree from an immutable source and
-verify hashes; see [vendoring.md](vendoring.md).
+BFBB consumers using local files must copy the whole module tree from an
+immutable GitHub source and verify hashes; see [vendoring.md](vendoring.md).
 
 ## Change workflow
 
@@ -168,8 +193,8 @@ unless the owner explicitly authorizes a change. Pin protocol claims to a Holm
 commit. Existing Holm packages remain operational; consult
 [migration.md](migration.md) before claiming an old namespace is replaced.
 
-For release scope and compatibility, read [v0.2.md](v0.2.md). Future npm
-publication uses the tag-pinned OIDC staging contract in
-[releasing.md](releasing.md), never a repository publish token. For current repo
-handoff, read `koder/STATE.md`; `koder/` is operator memory and is not part of
-the npm package contract.
+For release scope and compatibility, read [v0.2.md](v0.2.md). Releases are
+GitHub tags; npm publishing is paused. The protected OIDC workflow is retained
+for future owner-approved resumption; see [releasing.md](releasing.md).
+For current repo handoff, read `koder/STATE.md`; `koder/` is operator memory and
+is not part of the installed package contract.

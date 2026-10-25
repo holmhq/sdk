@@ -1,7 +1,41 @@
-# Releasing with one protected OIDC workflow
+# Releasing from GitHub
 
-Future npm and GitHub releases use one manual GitHub Actions workflow. After an
-immutable reviewed tag exists, the owner gives a single protected GitHub approval.
+## Current distribution: GitHub tags only
+
+npm publishing is paused. Release distribution uses immutable reviewed GitHub
+tags with the built `dist/` tree committed at the tag. The latest SDK release
+is the newest tag at https://github.com/holmhq/sdk/tags; do not infer it from
+the npm registry package.
+
+After the normal validation and owner review, the owner may create and push an
+immutable annotated release tag. Do not dispatch the npm publish workflow for
+a GitHub-only release: that retained workflow couples npm publication to
+GitHub Release creation. A worker must not push or tag without authorization.
+
+Consumers use `npm install "github:holmhq/sdk#semver:*"` for bundled apps,
+or this ESM browser entry for raw/BFBB apps:
+
+```js
+import { createWebApp } from
+  'https://cdn.jsdelivr.net/gh/holmhq/sdk@latest/dist/web/index.js'
+```
+
+`@latest` resolves to the newest GitHub tag. For reproducible builds, pin an
+actual `@vX.Y.Z` CDN tag or install `github:holmhq/sdk#vX.Y.Z` and keep the
+lockfile. Existing lockfiles retain the resolved commit; rerun the latest-tag
+install command to update. Vendoring the complete immutable GitHub `dist/`
+tree remains supported; see [vendoring.md](vendoring.md).
+
+## Retained protected OIDC workflow (paused)
+
+The remainder documents the existing `.github/workflows/publish.yml` for a
+future owner-approved resumption of npm publishing. It is retained, not the
+current distribution procedure. Do not execute its publication or recovery
+steps while publishing is paused.
+
+If npm publishing resumes, npm and GitHub releases use one manual GitHub Actions
+workflow. After an immutable reviewed tag exists, the owner gives a single
+protected GitHub approval.
 One workflow validates the tag without publish authority, publishes directly to
 npm through OIDC in one protected job, then verifies both registries without
 publish authority.
@@ -89,7 +123,7 @@ Node `24.8.0` bundles npm `11.6.0`, satisfying those floors without installing
 registry-hosted CLI code inside the OIDC-authorized job. `npm whoami` cannot test
 OIDC configuration because npm exchanges the identity only during publication.
 
-## Release procedure
+## Paused npm release procedure (resumption only)
 
 1. Finish implementation, generated artifacts, changelog, docs, and evidence.
 2. Obtain the required independent SDK and fresh Holm-authority reviews.
@@ -110,7 +144,7 @@ are still not transactionally atomic, but the workflow is safely resumable.
 Do not queue multiple release tags: GitHub concurrency intentionally serializes
 releases, and additional pending runs may replace an older pending run.
 
-## Safe resumption
+## Paused npm safe resumption
 
 A run may publish npm successfully and then fail before creating the GitHub
 Release. Rerun the same workflow from the same immutable tag:

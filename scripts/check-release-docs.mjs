@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 
 import { readJson } from "./lib/artifacts.mjs";
 
@@ -31,6 +31,7 @@ const capabilities = readText("docs/capabilities.md");
 const migration = readText("docs/migration.md");
 const vendoring = readText("docs/vendoring.md");
 const agentGuide = readText("docs/agent-guide.md");
+const releasing = readText("docs/releasing.md");
 const examplesReadme = readText("examples/README.md");
 const currentDocs = [readme, release, admin, capabilities, migration, vendoring, agentGuide, examplesReadme].join("\n");
 
@@ -49,10 +50,25 @@ for (const needle of [
   "Quick start",
   "For coding agents",
   "docs/agent-guide.md",
-  "npm install @holmhq/sdk",
+  'npm install "github:holmhq/sdk#semver:*"',
+  "https://cdn.jsdelivr.net/gh/holmhq/sdk@latest/dist/web/index.js",
+  "https://github.com/holmhq/sdk/tags",
 ]) {
   requireIncludes(readme, needle, `README ${needle}`);
 }
+
+const installDocs = ["README.md", ...readdirSync("docs").filter((name) => name.endsWith(".md")).map((name) => `docs/${name}`)];
+for (const path of installDocs) {
+  if (/\bnpm\s+(?:i|install|pack)\s+(?:[^;\n]*?\s)?["']?@holmhq\/sdk(?:@[\w.*^-]+)?\b/.test(readText(path))) {
+    failures.push(`${path}: SDK install instructions must use GitHub, not the npm registry`);
+  }
+}
+for (const [label, text] of [["release", release], ["vendoring", vendoring], ["agent guide", agentGuide], ["releasing", releasing]]) {
+  for (const needle of ['npm install "github:holmhq/sdk#semver:*"', "https://cdn.jsdelivr.net/gh/holmhq/sdk@latest/dist/web/index.js", "https://github.com/holmhq/sdk/tags"]) {
+    requireIncludes(text, needle, `${label} GitHub distribution ${needle}`);
+  }
+}
+requireIncludes(releasing, "npm publishing is paused", "paused npm publishing");
 
 const expectedRows = [
   ["`@holmhq/sdk`", "stable"],
@@ -109,7 +125,7 @@ for (const needle of [
 for (const needle of [
   "whole `dist/` tree",
   "immutable Git SHA or reviewed tag",
-  "@holmhq/sdk@0.2.1",
+  "https://github.com/holmhq/sdk.git",
   "v0.2.1",
   "Never use `@main`",
   "dist/manifest.json",

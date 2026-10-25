@@ -1,6 +1,8 @@
 # Capability matrix
 
-This matrix describes `@holmhq/sdk` `0.2.1`, not Holm's entire platform. A
+This matrix describes the SDK's supported contracts, not Holm's entire platform.
+The latest release is the newest [GitHub tag](https://github.com/holmhq/sdk/tags).
+Get it from GitHub using the [README quick start](../README.md#quick-start). A
 stable lower-level primitive does not imply that every higher-level product
 surface is shipped.
 

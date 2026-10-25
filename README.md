@@ -57,9 +57,16 @@ Those limits are explicit in the [capability matrix](docs/capabilities.md).
 
 ## Quick start
 
+For bundled apps (including Vite), install directly from GitHub:
+
 ```bash
-npm install @holmhq/sdk
+npm install "github:holmhq/sdk#semver:*"
 ```
+
+This selects the newest release tag at [GitHub tags](https://github.com/holmhq/sdk/tags),
+not the npm registry package. A lockfile keeps the resolved commit; rerun the
+install command when you want an update. For reproducible builds, use
+`github:holmhq/sdk#vX.Y.Z` with an actual release tag and retain the lockfile.
 
 ```ts
 import { createWebApp } from '@holmhq/sdk/web'
@@ -80,10 +87,21 @@ That is enough for a same-origin Holm web app. Add `@holmhq/sdk/state` when the
 UI should subscribe to server-backed data instead of manually coordinating
 loading, refresh, stale, and error state.
 
-Prefer a no-build app? Vendor the complete ESM tree from an immutable Git SHA or
-reviewed tag; never use `@main` in a deployed app. The
-[vendoring guide](docs/vendoring.md) gives the copy, integrity, update, and
-rollback workflow.
+For a raw/no-build app, import the browser entry from GitHub through jsDelivr:
+
+```js
+import { createWebApp } from
+  'https://cdn.jsdelivr.net/gh/holmhq/sdk@latest/dist/web/index.js'
+
+const holm = createWebApp()
+```
+
+`@latest` resolves to the newest GitHub tag, not a branch or npm. Relative
+imports in `dist/` resolve on the CDN; Holm's hosted-app CSP allows jsDelivr.
+Pin `@vX.Y.Z` instead of `@latest` for reproducible builds with an actual tag.
+Vendoring the complete `dist/` tree from an immutable Git SHA or reviewed tag
+still works without a runtime CDN dependency; never use `@main` in a deployed
+app. The [vendoring guide](docs/vendoring.md) covers integrity, updates, and rollback.
 
 ## See the idea in practice
 
@@ -94,7 +112,8 @@ rollback workflow.
 
 ## Release status
 
-`0.2.1` preserves the stable **web/BFBB** contract, includes the audited
+The latest release is the newest [GitHub tag](https://github.com/holmhq/sdk/tags).
+The stable **web/BFBB** contract includes the audited
 `@holmhq/sdk/admin` operator client as preview, and preserves declared upload
 MIME types in web multipart fallback. The stable entry points remain root,
 `core`, `transports`, `app`, `web`, `state`, and `test`; admin, Node, and Sobek
@@ -103,9 +122,9 @@ are preview, and the native bridge is reserved.
 Read the [0.2 support contract](docs/v0.2.md), the
 [admin/operator guide](docs/admin.md), or the [migration ledger](docs/migration.md)
 if you are moving from Holm's existing `holm-sdk` or `holm-state` packages.
-Those packages remain live during migration. Future npm and GitHub releases use
-one protected GitHub approval with direct OIDC publishing and end-to-end
-artifact verification; see the [release guide](docs/releasing.md).
+Those packages remain live during migration. npm publishing is paused;
+releases are distributed through GitHub tags. The protected OIDC workflow is
+retained for a future owner-approved resumption; see the [release guide](docs/releasing.md).
 
 ## For coding agents
 

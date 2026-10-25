@@ -5,41 +5,61 @@ runtime. The preparation step copies the whole `dist/` tree into the app,
 verifies it, and records an immutable source. Copying only `holm.js` does not
 work: it imports a relative ESM module graph.
 
+## Import from GitHub through jsDelivr
+
+Raw/BFBB apps can import the browser entry without installing a package:
+
+```js
+import { createWebApp } from
+  'https://cdn.jsdelivr.net/gh/holmhq/sdk@latest/dist/web/index.js'
+const holm = createWebApp()
+```
+
+`@latest` resolves to the newest release tag at
+[GitHub tags](https://github.com/holmhq/sdk/tags), not a branch or npm. Its
+relative ESM imports resolve on jsDelivr, which Holm's hosted-app script CSP
+allows. Replace `@latest` with an actual `@vX.Y.Z` tag for reproducible builds.
+For no runtime CDN dependency, vendor the complete tree as described below.
+
+Bundled/Vite apps instead install from GitHub and use `@holmhq/sdk/web` imports:
+
+```bash
+npm install "github:holmhq/sdk#semver:*"
+```
+
+This selects the newest GitHub tag, not the npm registry package. Lockfiles
+keep the resolved commit; rerun the command to update. For reproducible builds,
+use `github:holmhq/sdk#vX.Y.Z` with an actual tag and retain the lockfile.
+
 ## Choose an immutable source
 
-Use one of:
+Use an immutable Git SHA or reviewed tag from `https://github.com/holmhq/sdk`.
+For example, `v0.2.1` is a fixed historical tag; find the newest release at
+[GitHub tags](https://github.com/holmhq/sdk/tags). Never use `@main` for a
+deployed app. A branch can move after review and invalidate both the evidence
+and rollback path.
 
-- the immutable npm version `@holmhq/sdk@0.2.1`;
-- an immutable Git SHA; or
-- the reviewed Git tag `v0.2.1`.
+## Copy from GitHub
 
-Use an immutable Git SHA or reviewed tag for Git/CDN addresses. Never use `@main`
-for a deployed app. A branch can move after review and invalidate both
-the evidence and rollback path.
-
-## Copy from npm
-
-This uses npm only while preparing the app. The deployed app serves local
-files.
+This downloads a reviewed tag or commit into a temporary checkout, then copies
+its tracked `dist/` tree. The deployed app serves local files. Set `SDK_REF` to
+an actual release tag (`vX.Y.Z`) or full commit SHA before running:
 
 ```bash
 set -eu
-SDK_VERSION=0.2.1
+: "${SDK_REF:?Set SDK_REF to an immutable GitHub release tag or commit SHA}"
 TMP="$(mktemp -d)"
-TARBALL="$(cd "$TMP" && npm pack "@holmhq/sdk@${SDK_VERSION}" --silent)"
-tar -xzf "$TMP/$TARBALL" -C "$TMP"
-rm -rf vendor/holm-sdk
-mkdir -p vendor
-cp -R "$TMP/package/dist" vendor/holm-sdk
-printf '%s\n' "$SDK_VERSION" > vendor/holm-sdk.version
-rm -rf "$TMP"
+trap 'rm -rf "$TMP"' EXIT
+git clone --quiet https://github.com/holmhq/sdk.git "$TMP/sdk"
+git -C "$TMP/sdk" checkout --quiet --detach "$SDK_REF"
+mkdir -p web/vendor
+rm -rf web/vendor/holm-sdk
+cp -R "$TMP/sdk/dist" web/vendor/holm-sdk
+git -C "$TMP/sdk" rev-parse HEAD > web/vendor/holm-sdk.version
 ```
 
-For a Git source, check out the SHA or reviewed tag in a temporary directory
-and copy its tracked `dist/` directory in the same way. A jsDelivr URL may be a
-download source for an individually verified file, but BFBB composition still
-needs the complete relative module tree and must not depend on the CDN at
-runtime.
+Run the integrity verifier below against `web/vendor/holm-sdk`. The whole tree
+must come from the same GitHub tag or commit; do not mix CDN or release files.
 
 ## Verify every artifact
 
@@ -47,7 +67,7 @@ runtime.
 artifact except the generated reports themselves. Run this after copying:
 
 ```bash
-node --input-type=module - vendor/holm-sdk <<'NODE'
+node --input-type=module - web/vendor/holm-sdk <<'NODE'
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -69,7 +89,7 @@ NODE
 Record the version/ref and the manifest hash next to the vendored tree:
 
 ```bash
-sha256sum vendor/holm-sdk/manifest.json > vendor/holm-sdk.manifest.sha256
+sha256sum web/vendor/holm-sdk/manifest.json > web/vendor/holm-sdk.manifest.sha256
 ```
 
 A useful app pin records `{ version, gitRef, manifestSha256 }`; the production
@@ -91,7 +111,7 @@ for normal app code.
 ## Update checklist
 
 1. Read the target release notes and capability matrix.
-2. Fetch the exact npm version, immutable Git SHA, or reviewed tag.
+2. Fetch the immutable GitHub SHA or reviewed release tag.
 3. Replace the entire vendored tree and pin metadata together.
 4. Verify every manifest entry and the saved manifest checksum.
 5. Run the app's static/build tests and a real-browser auth/API smoke test.
